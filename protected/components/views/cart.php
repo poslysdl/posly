@@ -42,42 +42,42 @@
 <div class="portlet box blue boxshadown bRd">
 	<div class="portlet-title">
 		<div class="caption"> 
-		<img src="<?php echo $avatar;?>" alt="" class="avatar-user-l img-responsive">
-		<div class="cap1"> 
-		<a class="username" href="#">
-		<?php echo CHtml::link($cartuser_firstname.' '.$cartuser_lastname, array('profile/index', 'url'=>$cartuser_url), array('class'=>'username')); ?>
-		</a>
-		<span class="user-locaion"><?php echo $location;?></span> 
-		</div>
+			<img src="<?php echo $avatar;?>" alt="" class="avatar-user-l img-responsive">
+			<div class="cap1"> 
+			<a class="username" href="#">
+			<?php echo CHtml::link($cartuser_firstname.' '.$cartuser_lastname, array('profile/index', 'url'=>$cartuser_url), array('class'=>'username')); ?>
+			</a>
+			<span class="user-locaion"><?php echo $location;?></span> 
+			</div>
 		</div>
 		<div class="rank">
 			<div class="share-on"> 
-			<a href="#" class="dropdown-toggle"  data-toggle="dropdown" data-close-others="true"><i class="icon-retweet"></i></a>
-			<div class="dropdown-menu share-pic">
-			<div><span>Share now on</span></div>
-			<div>
-			<button type="button" class="btn faceS" >Facebook</button>
-			</div>
-			<div>
-			<button type="button" class="btn twistS" >Twitter</button>
-			</div>
-			<div>
-			<button type="button" class="btn vkS" >VK</button>
-			</div>
-			<div>
-			<button type="button" class="btn pinter" >Pinterest</button>
-			</div>
-			<div>
-			<button type="button" class="btn insta" >Instagram</button>
-			</div>
-			<div>
-			<button type="button" class="btn googlep" >Google +</button>
-			</div>
-			<div>
-			<button type="button" class="btn meoS" data-toggle="modal" href="#sign-up">Email</button>
-			</div>
-			<div class="endles text"> <span><a href="#">Mark as spam</a></span> </div>
-			</div>
+				<a href="#" class="dropdown-toggle"  data-toggle="dropdown" data-close-others="true"><i class="icon-retweet"></i></a>
+				<div class="dropdown-menu share-pic">
+				<div><span>Share now on</span></div>
+				<div>
+				<button type="button" class="btn faceS" >Facebook</button>
+				</div>
+				<div>
+				<button type="button" class="btn twistS" >Twitter</button>
+				</div>
+				<div>
+				<button type="button" class="btn vkS" >VK</button>
+				</div>
+				<div>
+				<button type="button" class="btn pinter" >Pinterest</button>
+				</div>
+				<div>
+				<button type="button" class="btn insta" >Instagram</button>
+				</div>
+				<div>
+				<button type="button" class="btn googlep" >Google +</button>
+				</div>
+				<div>
+				<button type="button" class="btn meoS" data-toggle="modal" href="#sign-up">Email</button>
+				</div>
+				<div class="endles text"> <span><a href="#">Mark as spam</a></span> </div>
+				</div>
 			</div>
 		<h2> #<?php echo $p->user->userDetails->user_rank_worldwide; ?> Rank </h2>
 		<span class="arrow"> </span> 
@@ -98,9 +98,9 @@
 				$dlike = LogPhotosHearts::model()->find("user_id=$uid and photos_id=$photo_id"); 				
 			?>
 				<div class="article-image" data-dot="<img class='img-responsive' src='<?php echo $photo_src;?>' photo_id='<?php echo $photo_id;?>' onclick='showcartComments(this);'>"> 
-				<!-- ***** above div data-dot image to be shown in carousel**** -->
+				<!-- ***** above div data-dot image to be shown in carousel**** --> 
 				<a class="hover-zomm" href="#share-pic"  data-toggle="modal" >
-				<img src="<?php echo $photo_src;?>" data-src="<?php echo $photo_src;?>" class="lazyOwl img-responsive"  alt="">
+				<img src="<?php echo $photo_src;?>" data-src="<?php echo $photo_src;?>" class="lazyOwl img-responsive img-zoom"  alt="">
 				</a>				
 				<div class="mask"> 
 					<?php  
@@ -124,11 +124,11 @@
 					} 
 					?>					
 				</div>				
-				</div>			
+				</div>		
 			<?php
 			}
 			?>
-			</div>		
+			</div>
 		</div>
 		<?php
 		$firstphoto = true; //to track first image in Cart
@@ -141,25 +141,10 @@
 			$com=LogPhotosComment::model()->with('user.userDetails')->findAll("photos_id=$firstId");
 			$phototags = PhotosHashtags::model()->with('hashtags')->findAll("photos_id=$firstId");
 			$total_comments = count($com);
-			//People Likes
-			$peopleLike = array();
 			$lcount = $likescount;
-			$you = false;
+			$likehtml = '';
 			if(!empty($uid))
-				$peopleLike = LogPhotosHearts::model()->getpeopleWhoLikes($photo_id);
-			if(count($peopleLike)>0)
-			{
-				$person_likes = array();				
-				foreach($peopleLike as $keys=>$values)
-				{
-					if($values['user_id']==$uid){
-						$you = true;
-					} else{
-						$person_likes[] = array('userid'=>$values['user_id'],
-						'fname'=>$values['firstname'],'lname'=>$values['lastname']);
-					}
-				}
-			}
+				$likehtml = LogPhotosHearts::model()->createLikeCountHtml($photo_id,$likescount);
 			
 		?>
 		<!--divcomments contains,total likes, comments,comment Post etc -->
@@ -185,23 +170,8 @@
 			<?php 
 			} 
 			else{
-				//if User Logged In
-				if(count($peopleLike)==0){
-			?>
-				<i class="icon-heart"></i><span lphid="<?php echo $firstId; ?>">0 Likes</span>
-			<?php
-				} elseif(count($peopleLike)==1){
-					$firstname = ($you)?'You':$person_likes[0]['fname'].' '.$person_likes[0]['lname'];
-			?>
-				<i class="icon-heart"></i> <a href="#"><?php echo $firstname; ?></a> 
-				<span lphid="<?php echo $firstId; ?>"> like this</span>
-			<?php } else{ 
-				$firstname = ($you)?'You':$person_likes[0]['fname'].' '.$person_likes[0]['lname'];
-			?>
-				<i class="icon-heart"></i> <a href="#"><?php echo $firstname; ?></a> 
-				<span lphid="<?php echo $firstId; ?>"> & <?php echo $lcount-1;?> others like this</span>				
-			<?php 
-				} 
+				//if User Logged In, show Likes with name
+				echo $likehtml;	//** You & 7 others like it
 			} ?>
 			</div>
 			
@@ -277,8 +247,10 @@
 				<div class="comment-form"> 
 					<img src="<?php echo $loggedIn_UserAvatar;?>" alt="" class="avatar img-responsive">
 					<div class="input-cont">
-					<?php if(!empty($uid)){ ?>
-					<textarea data-reactid="" value="Write a comment..." placeholder="Write a comment..." title="Write a comment..."  name="add_comment_text_text" id="js_17" aria-owns="js_23" aria-haspopup="true" aria-expanded="false" aria-label="Write a comment..." style="height: 40px;"></textarea>
+					<?php if(!empty($uid)){ 
+					//** Comment Box, write your comments here
+					?>
+					<textarea data-reactid="" class="custom-comment-box" value="Write a comment..." placeholder="Write a comment..." title="Write a comment..."  name="add_comment_text_text" id="js_17" aria-owns="js_23" aria-haspopup="true" aria-expanded="false" aria-label="Write a comment..." style="height: 40px;" photo_id="<?php echo $firstId; ?>"></textarea>					
 					<!--coder use JS detect height of text to fix size when input like FB--> 
 					<?php } ?>
 					</div>

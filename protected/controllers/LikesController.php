@@ -24,7 +24,7 @@ class LikesController extends Controller
 	{
 		return array(
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('cincrease','cdecrease'),
+				'actions'=>array('cincrease','cdecrease','getlikehtml'),
 				'users'=>array('@'),
 			),
 			array('deny',  // deny all users
@@ -33,7 +33,7 @@ class LikesController extends Controller
 		);
 	}
 
-		//this is the action for increase the like count.
+	//this is the action for increase the like count.
 	public function actionCincrease()
 	{
 		$id= $_GET['id'];
@@ -67,8 +67,25 @@ class LikesController extends Controller
 
 		$dlike=LogPhotosHearts::model()->find("user_id=$uid and photos_id=$id");
 		$dlike->delete();
-		echo $count->photos_hearts_count;
+		echo $count->photos_hearts_count;		
 		Yii::app()->end();
+	}
+	
+	/* This user define Ajax function is used to return the html for rendering of
+		People who like it section at Cart
+		* Add getlikehtml to accessRules function, so that program can access it.
+	*/
+	public function actionGetlikehtml()
+	{
+		$photoid= $_POST['pid'];
+		$totallike_count = $_POST['pdata'];		
+		$html = LogPhotosHearts::model()->createLikeCountHtml($photoid,$totallike_count);
+		echo $html;
+		 /*echo CJSON::encode(array(
+			  'status'=>'success',
+			  'values'=>$html
+		));*/
+		Yii::app()->end();		
 	}
 	
 
