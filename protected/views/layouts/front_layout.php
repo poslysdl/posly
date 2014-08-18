@@ -197,50 +197,88 @@ function readCookie(name) {
 
 <!--end file upload --> 
 
-<script>
-/*jslint unparam: true */
-/*global window, $ */
-$(function () {
-    'use strict'; //http://blueimp.github.io/jQuery-File-Upload/ --for File Upload..***********Newly Added in New HTML
-    // Change this to the location of your server-side upload handler:
-    var url = window.location.hostname === 'blueimp.github.io' ?
-                '//jquery-file-upload.appspot.com/' : 'server/php/';
-    $('#fileupload').fileupload({
-        url: url,
-        dataType: 'json',
-        done: function (e, data) {
-            $.each(data.result.files, function (index, file) {
-                $('<p/>').text(file.name).appendTo('#files');
-            });
-        },
-        progressall: function (e, data) {
-            var progress = parseInt(data.loaded / data.total * 100, 10);
-            $('#progress .progress-bar').css(
-                'width',
-                progress + '%'
-            );
-        }
-    }).prop('disabled', !$.support.fileInput)
-        .parent().addClass($.support.fileInput ? undefined : 'disabled');
-});
-</script> 
-
+<script src="<?php echo Yii::app()->theme->baseUrl; ?>/scripts/poslyfunctions.js"></script> <!---Important JS Functions mainly for PHP developers --->
 
 <script>
-jQuery(document).ready(function() {   
- App.init(); // initlayout and core plugins
- App.initOWL();
- QuickSidebar.init()
- 
+
+var posWas; 
+$(window).bind('scroll', function(){ //when the user is scrolling...
+	var pos = $(window).scrollTop(); //position of the scrollbar	
+	if(pos > posWas){ 
+		//do something
+		 $("#top-shadow").addClass("lentren");
+			   $("#right-slide").addClass("addin");
+	}
+	else if(pos < posWas){ 
+		//do something
+		$("#top-shadow").removeClass("lentren");
+						  $("#right-slide").removeClass("addin");
+	}	
+	if (pos == 0 ) { $("#top-shadow").removeClass("topsha");  $(".mosota").removeClass("rightsha"); $("#top-shadow").removeClass("lentren");}	
+	else {$("#top-shadow").addClass("topsha");  $(".mosota").addClass("rightsha");}
+	posWas = pos;	
 });
 
-// on click of image in carousel in Cart, show related comments & likes
-function showcartComments(elmn){
-	photoid = $(elmn).attr('photo_id');
-	$(elmn).parents('.portlet-body').parents('.portlet').children('.portlet-body').children('.divcomments').hide();	
-	$('#cart-data'+photoid).show();	
+//*** When user Scroll down, append more cart " more images "
+var present=2;
+$(window).scroll(function(){
+if($(document).height()==$(window).scrollTop()+$(window).height()){
+	present+=2;
+	if($('.nomore').html()!=undefined)
+	$('.page-content-wrapper > .page-content > .nomore').remove();
+	if($('.page-content-wrapper > .page-content > .loader').html()==undefined)
+	$('.page-content-wrapper > .page-content').append('<div class="row loader"></div>');
+	var url="<?php echo Yii::app()->createUrl('/site/somemore'); ?>?act=<?php echo Yii::app()->controller->action->id; ?>&l="+present;
+   $.get(url, function( data ) {
+		ind=$.trim(data);
+		var html = $.parseHTML(ind);
+		$('body').append(html);
+		var left=$('#leftside').css('display', 'none').html();
+		var right=$('#rightside').css('display', 'none').html();
+		if($.trim(left)=='')
+		{
+			if($('.nomore').html()==undefined)
+				$('.page-content-wrapper > .page-content').append('<div class="row nomore">No more images</div>');
+			$('.page-content-wrapper > .page-content > .loader').remove();
+			$('#leftside').remove();
+			$('#rightside').remove();
+		}
+		else
+		{	
+			$('.page-content-wrapper > .page-content > .loader').remove();
+			$('#leftside').remove();
+			$('#rightside').remove();
+			$('.page-content-wrapper > .page-content > .container > .row > .col-md-6:first-child').append(left);
+			$('.page-content-wrapper > .page-content > .container > .row > .col-md-6:last-child').append(right);		
+			/*  $('.bxslider').bxSlider({
+				slideWidth: 400,
+				minSlides: 5,
+				maxSlides: 5,
+				moveSlides: 5,
+				slideMargin: 5,
+				pager:false,
+				infiniteLoop: false,
+			  });
+			*/
+			
+			//$(".owl-carousel").owlCarousel();
+			App.init(); // initlayout and core plugins
+			App.initOWL();
+			QuickSidebar.init();
+			
+		}
+	});
+	
+	
 }
-
+else
+{
+	if($('.nomore').html()!=undefined)
+	$('.page-content-wrapper > .page-content > .nomore').remove();
+	if($('.page-content-wrapper > .page-content > .loader').html()!=undefined)
+	$('.page-content-wrapper > .page-content > .loader').remove();
+}
+});
 
 
 /* Heart Likes
@@ -288,118 +326,6 @@ $(document).on('click', '.like', function(){
 	}
 	return false;
 });
- 
-/* Add Comments Box
-	this method is to add & save comments under Cart image	
-*/
-$(document).on('keypress', '.custom-comment-box', function(e){
-	var code= (e.keyCode ? e.keyCode : e.which); 
-	if(code == 13)
-	{
-		var url= "<?php echo Yii::app()->createUrl('comments/addcomment'); ?>";
-		var id= $(this).attr('photo_id');
-		var comment= $(this).val();
-		url+='/?id='+id+'&comment='+comment;
-		$.get(url,function(data,status){ 
-			var data = JSON.parse(data);
-			if(data.avatar.indexOf('http')!= -1)
-			{
-				var end="<li class='in'> <img class='avatar img-responsive' alt='' src='"+data.avatar+"'";
-				end=end+' />';
-				end= end+'<div class="message"> <a href="#" class="name">';
-				end= end+ data.firstName+' '+data.lastName;
-				end=end+'</a> <span class="datetime">@ '+data.created_date;
-				end=end+'</span>';
-				end=end+' <span class="body">'+data.comment+'</span> </div> </li>';
-			}
-			else
-			{
-				var end="<li class='in'> <img class='avatar img-responsive' alt='' src='<?php echo Yii::app()->baseUrl.'/profiles/'; ?>"+data.avatar+"'";
-				end=end+' />';
-				end= end+'<div class="message"> <a href="#" class="name">';
-				end= end+ data.firstName+' '+data.lastName;
-				end=end+'</a> <span class="datetime">@ '+data.created_date;
-				end=end+'</span>';
-				end=end+' <span class="body">'+data.comment+'</span> </div> </li>';
-			 }			 
-			 $('#cart-data-maincomments'+id).append(end);
-			/* var h= $('#'+id).height()+10;
-			 if(h<225)
-			 {
-				$('#'+id).parent().parent().css('height', h);
-				$('#'+id).parent().parent().find('.scrollercm').css('height', h);
-			 }
-			 else
-			 {
-				$('#'+id).parent().parent().css('height', 225);
-				$('#'+id).parent().parent().find('.scrollercm').css('height', 225);					
-				$('#'+id).parent().parent().find('.scrollercm').scrollTop( $('#'+id).height() );
-			 }			
-			$("#"+id ).scrollTop( $('#'+id).height());			
-			*/
-		});
-		$(this).val('');
-		return false;
-	}
-});	
-
-/* Image Zoom function
-	when click on Cart Image, it Open in Modal Poup with Zoom, magnify
-	Modal code is in Index.php Line-133
-*/
-$(document).on('click', '.img-zoom', function(){
-	var pid=$(this).attr('dphoto_id');
-	var rank=$(this).closest('.portlet').find('.portlet-title > .rank > h2').html();
-	var profileimg=$(this).closest('.portlet').find('.portlet-title > .caption').html();
-	var cartimg=$(this).closest('.portlet').find('.main-img-user').html();
-	
-	/*var allimgs=$(this).closest('.portlet').find('.portlet-body  .carousel-inner').html();
-	var ind=$(this).closest('.portlet').find('.portlet-body  .carousel-indicators').html();
-	var tags=$(this).closest('.portlet').find('.portlet-body  .main-tag').html();
-	var mname=$(this).closest('.portlet').find('.portlet-body  .main-name').html();
-	var comment=$(this).closest('.portlet').find('.portlet-body  .main-comment').html();
-	var commentbox=$(this).closest('.portlet').find('.portlet-body  .comment-form').html();
-	*/
-	
-	//following will replace html elements in Index.php Line-133
-	$('#share-pic .caption').html(profileimg); //Avatar image & name,country here ZOOM (A)
-	$('#share-pic .rank > h2').html(rank);	 // Rank ZOOM (B)
-	
-	//imgstr = '<div class="article-image" data-dot="<img class=\'img-responsive\' src=\'assets/img/gallery/album2/b1s.jpg\'>"><a class="hover-zomm">	<img src="assets/img/gallery/album2/b1.jpg" class="lazyOwl img-responsive" alt="">	</a>	<div class="mask">	<a class="like" data-toggle="modal" href="#sign-in">	<i class="icon-heart-empty"></i>	</a>	</div>	</div>	';	
-	
-	
-	//$('#share-pic .portlet-body > .main-img-user > .owl-carousel').html(imgstr);
-	
-	/*$('.dynamic-carousel-inner').html(allimgs);
-	ind=$.trim(ind);
-	var html = $.parseHTML(ind);
-	$.each( html, function( i, el ) {
-		$.each(el.childNodes[0].childNodes[0].childNodes, function(j, ele){
-							
-		if($(ele).attr('data-target'))
-		{
-			$(ele).attr('data-target', '#myCarousel4pop');
-			$(ele).attr('class', 'slider-data');
-		}
-		});
-
-	});
-	$('.dynamic-carousel-indicators').html(html);
-	$('.dynamic-main-tag').html(tags);
-	$('.dynamic-main-name').html(mname);
-	$('.dynamic-main-comment').html(comment);
-	$('.dynamic-comment-form').html(commentbox);
-	$('.dynamic-carousel-indicators').find('.bx-viewport').css('height', '70');
-	$('.dynamic-main-comment > .slimScrollDiv > .scrollercm').find('.chats').attr('chatid', pid);
-	$('.dynamic-comment-form > .input-cont').find('.custom-comment-box').removeAttr('class').attr('class', 'dynamic-box');
-	 var url="<?php echo Yii::app()->createUrl('/photo/wholiked'); ?>?id="+pid;
-	$.get(url, function( data ) {
-	$("#share-pic > #modalbody > .row").remove();
-	$('#share-pic > #modalbody').append(data);
-	}); */
-
-});
-
 
 /* ** This is for site Login by EmailId
 ** Yii CActiveForm is used to show site Login Modal box
@@ -427,46 +353,8 @@ function signInByEmail()
 		}
 	});
 }
-
-/*
- * This function is used to Render 
- "You & 12 person Like This"..Like txt below cart Image
-*/
-function poslyAjaxLikecalls(ajaxurl,id,sdata)
-{	
-	var returnstring;
-	$.ajax({
-		type: 'POST',  
-		url: ajaxurl,		
-		data:{                            
-			  pid: id,
-			  pdata: sdata			  
-		},
-		success:function(data){		
-			returnstring = encodeURIComponent(data); //as return text contains HTML, so decode it first
-			$('#cart-data'+id).children('.main-name').html(decodeURIComponent(returnstring));
-		},
-		error: function(data) { // if error occured
-
-		}
-	});	
-}
+ 
 </script> 
-
-
-
-<?php if(!Yii::app()->user->isGuest)
-{
-?>
-
-<?php	
-}
-else
-{ ?>
-
-<?php } ?>
-
-
 
 <!-- END JAVASCRIPTS -->
 <?php

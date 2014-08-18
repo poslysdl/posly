@@ -64,14 +64,26 @@
 	</div>
 	<div class="clearfix"></div>
       
-      <!--*--> 
-      
-      <!-- Modals--> 
-      
-    <!-- /.modal  sign in-->
-		
-    <!-- /.modal --> 
-      
+    <!--*-->       
+    <!-- Modals--> 
+	
+    <!-- Modal Box img-zoom ZOOM IMAGE ------->
+    <div id="share-pic" class="modal  modal-scroll share-image" tabindex="-1" data-replace="true">
+	<?php
+	if(isset($photos)) 
+	{	
+		$i=1;
+		foreach($photos as $p)
+		{
+			
+			$this->widget('application.components.CartZoom', array('cartinfo' => array('data'=>$p,'i'=>$i))); //ZOOM Image Cart			
+			$i++;
+		}
+	}
+	?>
+	</div>
+    <!--Modal Box img-zoom END --> 
+	
     <!--modal sign up-->
 		<div class="modal fade modal-dialog modal-sign-up" id="sign-up" tabindex="-1" data-focus-on="input:first" aria-hidden="true">
 		<div class="modal-content">
@@ -130,196 +142,7 @@
     <!-- /.modal share big images --> 
       
 	<!-- Modal Box img-zoom -->
-		<!-- ** The image comes as Modal PopUp with large size when click on Cart image 
-			below all the values ( inner div elements ) are changes through javascript Image Zoom function 
-			and will be Replaced by the values of main Cart image html from Cart.php
-		** -->
-		<div id="share-pic" class="modal  modal-scroll share-image" tabindex="-1" data-replace="true">
-			<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icon-remove"></i></button>
-			</div>
-			<div class="modal-body">
-			
-			<div class="portlet box blue">
-			<div class="portlet-title">
-				<div class="caption"><!--Avatar & name,country here ZOOM (A) -->		
-					<img src="assets/img/avatar1_small.jpg" alt="" class="avatar-user-l img-responsive">			
-					<div class="cap1"> 
-						<a class="username" href="#">Sugargirl</a><span class="user-locaion">Germany, Berlin</span> 
-					</div>
-				</div>
-				<div class="rank">
-					<div class="share-ranks"> 
-						<a href="#" class="dropdown-toggle"  data-toggle="dropdown" data-close-others="true"><i class="icon-retweet"></i></a>
-						<ul class="dropdown-menu share-pic">
-						<li><span>Share now on</span></li>
-						<li>
-						<button type="button" class="btn faceS" >Facebook</button>
-						</li>
-						<li>
-						<button type="button" class="btn twistS" >Twitter</button>
-						</li>
-						<li>
-						<button type="button" class="btn vkS" >VK</button>
-						</li>
-						<li>
-						<button type="button" class="btn pinter" >Pinterest</button>
-						</li>
-						<li>
-						<button type="button" class="btn insta" >Instagram</button>
-						</li>
-						<li>
-						<button type="button" class="btn googlep" >Google +</button>
-						</li>
-						<li class="endles">
-						<button type="button" class="btn meoS" data-toggle="modal" href="#sign-up">Email</button>
-						</li>
-						</ul>
-					</div>
-					<h2> #6 Rank </h2> <!-- Rank ZOOM (B) -->
-					<span class="arrow"></span> 
-				</div>
-			</div>
-			<div class="portlet-body">
-				<div class="main-img-user"><!-- Cart Image & carousel Appends Here (C) -->
-				<div class="owl-carousel owl-carousel-chanhny3 view-first noscale">
-					<div class="article-image" data-dot="<img class='img-responsive' src='assets/img/gallery/album2/b1s.jpg'>">
-						<a class="hover-zomm">
-						<img src="assets/img/gallery/album2/b1.jpg" class="lazyOwl img-responsive" alt="">
-						</a>
-						<div class="mask"> 
-						<a class="like" data-toggle="modal" href="#sign-in">
-						<i class="icon-heart-empty"></i>
-						</a> 
-						</div>
-					</div>				
-				</div>
-				</div>
-				<div class="panel-title">
-				<h3>Tagged with</h3>
-				</div>
-				<div class="main-tag">
-				<div class="tagcloud"> <a href="#">Gucci</a> <a href="#">Louis Vuitton</a> <a href="#l">Love</a> <a href="#">MC</a> <a href="#">Prada  Maksita</a> <a href="#">D&amp;G</a></div>
-				</div>
-				</div>
-			</div>
-
-			<!--part2-->
-
-			<div class="portlet box blue">
-			<div class="portlet-body">
-			<div class="main-name"> <i class="icon-heart"></i> <a href="#">Kamasumi Benzo</a> <span>& 95 others like this</span> </div>
-			<div class="main-comment"  >
-			<div class="scrollercm" style="height: 220px;" data-always-visible="1" data-rail-visible1="1">
-			<ul class="CMn">
-			<li class="in"> <img class="avatar img-responsive" alt="" src="assets/img/avatar1.jpg" />
-			<div class="message"> <a href="#" class="name">Ny Nilson</a> <span class="datetime">@ Jul 25, 2012 11:09</span> <span class="body"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </span> </div>
-			</li>
-			<li class="in"> <img class="avatar img-responsive" alt="" src="assets/img/avatar2.jpg" />
-			<div class="message"> <a href="#" class="name">Lisa Wong</a> <span class="datetime">@ Jul 25, 2012 11:09</span> <span class="body"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </span> </div>
-			</li>
-			<li class="in"> <img class="avatar img-responsive" alt="" src="assets/img/avatar1.jpg" />
-			<div class="message"> <a href="#" class="name">Ny Nilson</a> <span class="datetime">@ Jul 25, 2012 11:09</span> <span class="body"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </span> </div>
-			</li>
-			<li class="in"> <img class="avatar img-responsive" alt="" src="assets/img/avatar3.jpg" />
-			<div class="message"> <a href="#" class="name">Richard Doe</a> <span class="datetime">@ Jul 25, 2012 11:09</span> <span class="body"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </span> </div>
-			</li>
-			<li class="in"> <img class="avatar img-responsive" alt="" src="assets/img/avatar3.jpg" />
-			<div class="message"> <a href="#" class="name">Richard Doe</a> <span class="datetime">@ Jul 25, 2012 11:09</span> <span class="body"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </span> </div>
-			</li>
-			</ul>
-			</div>
-			</div>
-			<div class="comment-form"> <img src="assets/img/avatar1.jpg" alt="" class="avatar img-responsive">
-			<div class="input-cont">
-			<textarea data-reactid="" value="Write a comment..." placeholder="Write a comment..." title="Write a comment..."  name="add_comment_text_text" id="js_17" aria-owns="js_23" aria-haspopup="true" aria-expanded="false" aria-label="Write a comment..." style="height: 40px;"></textarea>
-			<!--coder use JS detect height of text to fix size when input like FB--> 
-
-			</div>
-			</div>
-			</div>
-			</div>
-
-			<!--like-->
-			<div class="row">
-			<div class="col-md-12 more-loked">
-			<h3> People who liked this also liked:</h3>
-			</div>
-			<div class="col-md-6 col-sm-6">
-			<div class="portlet box blue">
-			<div class="portlet-title">
-			<div class="caption"> <img src="assets/img/avatar1_small.jpg" alt="" class="avatar-user-l img-responsive">
-			<div class="cap1"> <a class="username" href="#">Sugargirl</a><span class="user-locaion">Germany, Berlin</span> </div>
-			</div>
-			<div class="rank">
-			<h2> #1 Rank </h2>
-			<span class="arrow"> </span> </div>
-			</div>
-			<div class="portlet-body loked">
-			<div class="main-img-user">
-			<div id="myCarousel" class="carousel image-carousel slide view-first">
-			<div class="carousel-inner ">
-			<div class="active item loked"><a  href="#" > <img src="assets/img/gallery/album2/b1.jpg" class="img-responsive" alt=""></a> </div>
-			</div>
-			<!-- Carousel nav --> 
-
-			</div>
-			</div>
-			<form>
-			<div class="main-tag loked">
-			<div class="tagcloud"> <a href="#">Gucci</a> <a href="#">Louis Vuitton</a> <a href="#l">Love</a> <a href="#">MC</a> <a href="#">Prada  Maksita</a> <a href="#">D&amp;G</a></div>
-			</div>
-			<div class="main-name"> <i class="icon-heart"></i> <a href="#">Kamasumi Benzo</a> <span>& 95 others like this</span> </div>
-			<div class="comment-form"> <img src="assets/img/avatar1.jpg" alt="" class="avatar img-responsive">
-			<div class="input-cont">
-			<textarea data-reactid="" value="Write a comment..." placeholder="Write a comment..." title="Write a comment..."  name="add_comment_text_text" id="js_17" aria-owns="js_23" aria-haspopup="true" aria-expanded="false" aria-label="Write a comment..." style="height: 40px;"></textarea>
-			<!--coder use JS detect height of text to fix size when input like FB--> 
-
-			</div>
-			</div>
-			</form>
-			</div>
-			</div>
-			</div>
-			<div class="col-md-6 col-sm-6">
-			<div class="portlet box blue">
-			<div class="portlet-title">
-			<div class="caption"> <img src="assets/img/avatar1_small.jpg" alt="" class="avatar-user-l img-responsive">
-			<div class="cap1"> <a class="username" href="#">Sugargirl</a><span class="user-locaion">Germany, Berlin</span> </div>
-			</div>
-			<div class="rank">
-			<h2> #1 Rank </h2>
-			<span class="arrow"> </span> </div>
-			</div>
-			<div class="portlet-body loked">
-			<div class="main-img-user">
-			<div id="myCarousel" class="carousel image-carousel slide view-first">
-			<div class="carousel-inner ">
-			<div class="active item loked"><a href="#"> <img src="assets/img/gallery/avanta.jpg" class="img-responsive" alt=""></a> </div>
-			</div>
-			<!-- Carousel nav --> 
-
-			</div>
-			</div>
-			<form>
-			<div class="main-tag loked">
-			<div class="tagcloud"> <a href="#">Gucci</a> <a href="#">Louis Vuitton</a> <a href="#l">Love</a> <a href="#">MC</a> <a href="#">Prada  Maksita</a> <a href="#">D&amp;G</a></div>
-			</div>
-			<div class="main-name"> <i class="icon-heart"></i> <a href="#">Kamasumi Benzo</a> <span>& 95 others like this</span> </div>
-			<div class="comment-form"> <img src="assets/img/avatar1.jpg" alt="" class="avatar img-responsive">
-			<div class="input-cont">
-			<textarea data-reactid="" value="Write a comment..." placeholder="Write a comment..." title="Write a comment..."  name="add_comment_text_text" id="js_17" aria-owns="js_23" aria-haspopup="true" aria-expanded="false" aria-label="Write a comment..." style="height: 40px;"></textarea>
-			<!--coder use JS detect height of text to fix size when input like FB--> 
-
-			</div>
-			</div>
-			</form>
-			</div>
-			</div>
-			</div>
-			</div>
-			</div>
-		</div>  <!-- share-pic -->    
+	 
     <!--end- Modal Box img-zoom --> 
       
    </div>

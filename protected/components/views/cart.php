@@ -6,6 +6,7 @@
 	$p = $this->cartinfo['data'];
 	$i = $this->cartinfo['i'];
 	$avatar = '';
+	$userPhotos = array();
 	$fromurl=strstr($p->user->userDetails->user_details_avatar, '://', true);
 	if($fromurl=='http' || $fromurl=='https')
 		$avatar = $p->user->userDetails->user_details_avatar; 
@@ -38,50 +39,51 @@
 	$cartuser_firstname = $p->user->userDetails->user_details_firstname;
 	$cartuser_lastname = $p->user->userDetails->user_details_lastname;
 	$cartuser_url = $p->user->userDetails->user_unique_url;
+	$cart_userId = $p->user_id;
 ?>
 <div class="portlet box blue boxshadown bRd">
 	<div class="portlet-title">
-		<div class="caption"> 
-			<img src="<?php echo $avatar;?>" alt="" class="avatar-user-l img-responsive">
-			<div class="cap1"> 
-			<a class="username" href="#">
-			<?php echo CHtml::link($cartuser_firstname.' '.$cartuser_lastname, array('profile/index', 'url'=>$cartuser_url), array('class'=>'username')); ?>
-			</a>
-			<span class="user-locaion"><?php echo $location;?></span> 
+	<div class="caption"> 
+		<img src="<?php echo $avatar;?>" alt="" class="avatar-user-l img-responsive">
+		<div class="cap1"> 
+		<a class="username" href="#">
+		<?php echo CHtml::link($cartuser_firstname.' '.$cartuser_lastname, array('profile/index', 'url'=>$cartuser_url), array('class'=>'username')); ?>
+		</a>
+		<span class="user-locaion"><?php echo $location;?></span> 
+		</div>
+	</div>
+	<div class="rank">
+		<div class="share-on"> 
+			<a href="#" class="dropdown-toggle"  data-toggle="dropdown" data-close-others="true"><i class="icon-retweet"></i></a>
+			<div class="dropdown-menu share-pic">
+			<div><span>Share now on</span></div>
+			<div>
+			<button type="button" class="btn faceS" >Facebook</button>
+			</div>
+			<div>
+			<button type="button" class="btn twistS" >Twitter</button>
+			</div>
+			<div>
+			<button type="button" class="btn vkS" >VK</button>
+			</div>
+			<div>
+			<button type="button" class="btn pinter" >Pinterest</button>
+			</div>
+			<div>
+			<button type="button" class="btn insta" >Instagram</button>
+			</div>
+			<div>
+			<button type="button" class="btn googlep" >Google +</button>
+			</div>
+			<div>
+			<button type="button" class="btn meoS" data-toggle="modal" href="#sign-up">Email</button>
+			</div>
+			<div class="endles text"> <span><a href="#">Mark as spam</a></span> </div>
 			</div>
 		</div>
-		<div class="rank">
-			<div class="share-on"> 
-				<a href="#" class="dropdown-toggle"  data-toggle="dropdown" data-close-others="true"><i class="icon-retweet"></i></a>
-				<div class="dropdown-menu share-pic">
-				<div><span>Share now on</span></div>
-				<div>
-				<button type="button" class="btn faceS" >Facebook</button>
-				</div>
-				<div>
-				<button type="button" class="btn twistS" >Twitter</button>
-				</div>
-				<div>
-				<button type="button" class="btn vkS" >VK</button>
-				</div>
-				<div>
-				<button type="button" class="btn pinter" >Pinterest</button>
-				</div>
-				<div>
-				<button type="button" class="btn insta" >Instagram</button>
-				</div>
-				<div>
-				<button type="button" class="btn googlep" >Google +</button>
-				</div>
-				<div>
-				<button type="button" class="btn meoS" data-toggle="modal" href="#sign-up">Email</button>
-				</div>
-				<div class="endles text"> <span><a href="#">Mark as spam</a></span> </div>
-				</div>
-			</div>
-		<h2> #<?php echo $p->user->userDetails->user_rank_worldwide; ?> Rank </h2>
-		<span class="arrow"> </span> 
-		</div>
+	<h2> #<?php echo $p->user->userDetails->user_rank_worldwide; ?> Rank </h2>
+	<span class="arrow"> </span> 
+	</div>
 	</div>
 	
 	<div class="portlet-body">
@@ -100,7 +102,7 @@
 				<div class="article-image" data-dot="<img class='img-responsive' src='<?php echo $photo_src;?>' photo_id='<?php echo $photo_id;?>' onclick='showcartComments(this);'>"> 
 				<!-- ***** above div data-dot image to be shown in carousel**** --> 
 				<a class="hover-zomm" href="#share-pic"  data-toggle="modal" >
-				<img src="<?php echo $photo_src;?>" data-src="<?php echo $photo_src;?>" class="lazyOwl img-responsive img-zoom"  alt="">
+				<img src="<?php echo $photo_src;?>" data-src="<?php echo $photo_src;?>" class="lazyOwl img-responsive img-zoom"  alt="" data-userid="<?php echo $cart_userId;?>"  dphoto_id='<?php echo $photo_id;?>' >
 				</a>				
 				<div class="mask"> 
 					<?php  
@@ -216,10 +218,10 @@
 					for($i=0;$i<$cnt-1;$i++){
 					?>    
 						<li class="in"> 
-						<img class="avatar img-responsive" alt="" src="<?php echo $commentsArray[$i]['useravatar'];?>" />					
-						<div class="message"> <a href="#" class="name"><?php echo $commentsArray[$i]['uname'];?></a> 
-						<span class="datetime">@ <?php echo $commentsArray[$i]['commentDate'];?></span> 
-						<span class="body"> <?php echo $commentsArray[$i]['commentDesc']; ?> </span> 
+						<img class="avatar img-responsive" alt="" src="<?php //echo $commentsArray[$i]['useravatar'];?>" />					
+						<div class="message"> <a href="#" class="name"><?php //echo $commentsArray[$i]['uname'];?></a> 
+						<span class="datetime">@ <?php //echo $commentsArray[$i]['commentDate'];?></span> 
+						<span class="body"> <?php //echo $commentsArray[$i]['commentDesc']; ?> </span> 
 						</div>					
 						</li>
 					<?php 
@@ -233,11 +235,11 @@
 					<div>
 					<ul class="CMn" id="cart-data-maincomments<?php echo $firstId; ?>">
 					<li class="in"> 
-					<img class="avatar img-responsive" alt="" src="<?php echo $commentsArray[$cnt-1]['useravatar']; ?>" />
+					<img class="avatar img-responsive" alt="" src="<?php //echo $commentsArray[$cnt-1]['useravatar']; ?>" />
 					<div class="message"> 
-					<a href="#" class="name"><?php echo $commentsArray[$cnt-1]['uname']; ?></a> 
-					<span class="datetime">@ <?php echo $commentsArray[$cnt-1]['commentDate']; ?></span> 
-					<span class="body"> <?php echo $commentsArray[$cnt-1]['commentDesc']; ?></span> 
+					<a href="#" class="name"><?php //echo $commentsArray[$cnt-1]['uname']; ?></a> 
+					<span class="datetime">@ <?php //echo $commentsArray[$cnt-1]['commentDate']; ?></span> 
+					<span class="body"> <?php //echo $commentsArray[$cnt-1]['commentDesc']; ?></span> 
 					</div>
 					</li>
 					</ul>
@@ -245,15 +247,15 @@
 				</div>
 				<form>
 				<div class="comment-form"> 
-					<img src="<?php echo $loggedIn_UserAvatar;?>" alt="" class="avatar img-responsive">
-					<div class="input-cont">
 					<?php if(!empty($uid)){ 
-					//** Comment Box, write your comments here
+					//** Comment Box, write your comments here, if user is Logged In
 					?>
-					<textarea data-reactid="" class="custom-comment-box" value="Write a comment..." placeholder="Write a comment..." title="Write a comment..."  name="add_comment_text_text" id="js_17" aria-owns="js_23" aria-haspopup="true" aria-expanded="false" aria-label="Write a comment..." style="height: 40px;" photo_id="<?php echo $firstId; ?>"></textarea>					
-					<!--coder use JS detect height of text to fix size when input like FB--> 
-					<?php } ?>
+					<img src="<?php echo $loggedIn_UserAvatar;?>" alt="" class="avatar img-responsive">
+					<div class="input-cont">					
+					<textarea data-reactid="" class="custom-comment-box" value="Write a comment..." placeholder="Write a comment..." title="Write a comment..."  name="add_comment_text_text" id="js_17" aria-owns="js_23" aria-haspopup="true" aria-expanded="false" aria-label="Write a comment..." style="height: 40px;" photo_id="<?php echo $firstId; ?>" data-url="<?php echo Yii::app()->createUrl('comments/addcomment'); ?>"></textarea>					
+					<!--coder use JS detect height of text to fix size when input like FB--> 					
 					</div>
+					<?php } ?>
 				</div>
 				</form>
 			</div> <!-- CMc Ends -->
@@ -264,4 +266,4 @@
 		?>
 				
 	</div> <!--portlet-body Ends -->
-</div>
+</div> <!-- portlet box blue ENDS ---> 
