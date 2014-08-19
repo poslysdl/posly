@@ -11,7 +11,10 @@
 		'validateOnSubmit'=>true,
 	),*/
 	'htmlOptions'=> array('class'=>'reg-form','onsubmit'=>'return false;')
-)); ?>
+));
+
+$url = Yii::app()->createUrl('/site/login'); //$this->createUrl("/site/login");
+?>
 
 	<h3 class="form-title">SIGN IN WITH YOUR PASSWORD</h3>
 
@@ -47,7 +50,7 @@
           <div class="modal-footer">
             <label> Need an account? <a  data-toggle="modal" href="#sign-up"> Sign Up</a> </label>
             <?php 
-				echo CHtml::Button('SUBMIT',array('onclick'=>'signInByEmail();','class'=>'btn blue', 'data-dismiss'=>'model'));     
+				echo CHtml::Button('SUBMIT',array('onclick'=>'signInByEmail();','class'=>'btn blue', 'data-dismiss'=>'model', 'data-url'=>$url));     
             ?>
           </div>
         </div>

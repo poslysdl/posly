@@ -180,11 +180,11 @@
 			<div class="CMc">			
 				<div class="main-commnet" id="cart-data-topcomments<?php echo $firstId; ?>">
 					<div class="tools">
-					<a href="#" class="collapseed" data-src="<?php echo $total_comments;?>">
+					<a href="javascript(void);" class="collapseed" data-src="<?php echo $total_comments;?>">
 					<?php echo $total_comments;?> comments </a> <!--app.js Handle this --->
 					</div>
 					<div class="oCM">
-					<div class="sort"> <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">Top comment</a>
+					<div class="sort"> <a href="javascript(void);" class="dropdown-toggle" data-toggle="dropdown">Top comment</a>
 					<ul class="dropdown-menu" role="menu" >
 					<li> <a class="slect" href="#">Top comment </a> </li>
 					<li> <a href="#">Recent activity</a> </li>
@@ -213,18 +213,22 @@
 							'commentDate'=>$commentDate,'commentDesc'=>$commentDesc);
 						}
 					}
-					if(count($commentsArray)>0){
+					$cnt = 0;
+					if(isset($commentsArray) && count($commentsArray)>0){	
 					$cnt = count($commentsArray);
-					for($i=0;$i<$cnt-1;$i++){
-					?>    
-						<li class="in"> 
-						<img class="avatar img-responsive" alt="" src="<?php //echo $commentsArray[$i]['useravatar'];?>" />					
-						<div class="message"> <a href="#" class="name"><?php //echo $commentsArray[$i]['uname'];?></a> 
-						<span class="datetime">@ <?php //echo $commentsArray[$i]['commentDate'];?></span> 
-						<span class="body"> <?php //echo $commentsArray[$i]['commentDesc']; ?> </span> 
-						</div>					
-						</li>
-					<?php 
+					if($cnt>1)
+					{
+						for($i=0;$i<$cnt-1;$i++){
+						?>    
+							<li class="in"> 
+							<img class="avatar img-responsive" alt="" src="<?php echo $commentsArray[$i]['useravatar'];?>" />					
+							<div class="message"> <a href="#" class="name"><?php echo $commentsArray[$i]['uname'];?></a> 
+							<span class="datetime">@ <?php echo $commentsArray[$i]['commentDate'];?></span> 
+							<span class="body"> <?php echo $commentsArray[$i]['commentDesc']; ?> </span> 
+							</div>					
+							</li>
+						<?php 
+						}
 					}
 					}					
 					?>					
@@ -233,16 +237,18 @@
 				</div>
 				<div class="main-comment2"> <!--Main Comments -->
 					<div>
+					<?php if(isset($cnt) && $cnt>1){  ?>
 					<ul class="CMn" id="cart-data-maincomments<?php echo $firstId; ?>">
 					<li class="in"> 
-					<img class="avatar img-responsive" alt="" src="<?php //echo $commentsArray[$cnt-1]['useravatar']; ?>" />
+					<img class="avatar img-responsive" alt="" src="<?php echo $commentsArray[$cnt-1]['useravatar']; ?>" />
 					<div class="message"> 
-					<a href="#" class="name"><?php //echo $commentsArray[$cnt-1]['uname']; ?></a> 
-					<span class="datetime">@ <?php //echo $commentsArray[$cnt-1]['commentDate']; ?></span> 
-					<span class="body"> <?php //echo $commentsArray[$cnt-1]['commentDesc']; ?></span> 
+					<a href="#" class="name"><?php echo $commentsArray[$cnt-1]['uname']; ?></a> 
+					<span class="datetime">@ <?php echo $commentsArray[$cnt-1]['commentDate']; ?></span> 
+					<span class="body"> <?php echo $commentsArray[$cnt-1]['commentDesc']; ?></span> 
 					</div>
 					</li>
 					</ul>
+					<?php } ?>
 					</div>
 				</div>
 				<form>
@@ -252,7 +258,7 @@
 					?>
 					<img src="<?php echo $loggedIn_UserAvatar;?>" alt="" class="avatar img-responsive">
 					<div class="input-cont">					
-					<textarea data-reactid="" class="custom-comment-box" value="Write a comment..." placeholder="Write a comment..." title="Write a comment..."  name="add_comment_text_text" id="js_17" aria-owns="js_23" aria-haspopup="true" aria-expanded="false" aria-label="Write a comment..." style="height: 40px;" photo_id="<?php echo $firstId; ?>" data-url="<?php echo Yii::app()->createUrl('comments/addcomment'); ?>"></textarea>					
+					<textarea data-reactid="" class="custom-comment-box" value="Write a comment..." placeholder="Write a comment..." title="Write a comment..."  name="add_comment_text_text" id="js_17" aria-owns="js_23" aria-haspopup="true" aria-expanded="false" aria-label="Write a comment..." style="height: 40px;" photo_id="<?php echo $firstId; ?>" data-url="<?php echo Yii::app()->createUrl('comments/addcomment'); ?>" data-profileurl="<?php echo Yii::app()->baseUrl.'/profiles/'; ?>" data-zoomimg="0"></textarea>					
 					<!--coder use JS detect height of text to fix size when input like FB--> 					
 					</div>
 					<?php } ?>

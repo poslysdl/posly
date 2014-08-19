@@ -222,7 +222,7 @@
 					}
 					if(count($commentsArray)>0){
 					$cnt = count($commentsArray);
-					for($i=0;$i<$cnt-1;$i++){
+					for($i=0;$i<$cnt;$i++){
 					?>    
 						<li class="in"> 
 						<img class="avatar img-responsive" alt="" src="<?php echo $commentsArray[$i]['useravatar'];?>" />					
@@ -242,10 +242,10 @@
 			<?php if(!empty($uid)){
 				//** Comment Box, write your comments here, if user is Logged In
 			?>
-				<img src="assets/img/avatar1.jpg" alt="" class="avatar img-responsive">
-				<div class="input-cont">
-					<textarea data-reactid="" value="Write a comment..." placeholder="Write a comment..." title="Write a comment..."  name="add_comment_text_text" id="js_17" aria-owns="js_23" aria-haspopup="true" aria-expanded="false" aria-label="Write a comment..." style="height: 40px;"></textarea>
-				<!--coder use JS detect height of text to fix size when input like FB--> 
+				<img src="<?php echo $loggedIn_UserAvatar;?>" alt="" class="avatar img-responsive">
+				<div class="input-cont">					
+					<textarea data-reactid="" class="custom-comment-box" value="Write a comment..." placeholder="Write a comment..." title="Write a comment..."  name="add_comment_text_text" id="js_17" aria-owns="js_23" aria-haspopup="true" aria-expanded="false" aria-label="Write a comment..." style="height: 40px;" photo_id="<?php echo $firstId; ?>" data-url="<?php echo Yii::app()->createUrl('comments/addcomment'); ?>" data-profileurl="<?php echo Yii::app()->baseUrl.'/profiles/'; ?>" data-zoomimg="1"></textarea>					
+					<!--coder use JS detect height of text to fix size when input like FB--> 		
 				</div>
 			<?php } ?>
 			</div>

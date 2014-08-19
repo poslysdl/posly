@@ -41,5 +41,20 @@ $this->pageTitle=Yii::app()->name;
 ?>
 </div>
 
-
+<!-- Modal Box img-zoom ZOOM IMAGE, Get Zoom images of Images going to append while window scrolls ------->
+<div id="zoomimagediv">
+<?php
+if(isset($photos)) 
+{	
+	$i=1;
+	foreach($photos as $p)
+	{
+		
+		$this->widget('application.components.CartZoom', array('cartinfo' => array('data'=>$p,'i'=>$i))); //ZOOM Image Cart			
+		$i++;
+	}
+}
+?>
+</div>
+<!--Modal Box img-zoom END --> 
 

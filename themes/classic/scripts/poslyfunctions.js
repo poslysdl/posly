@@ -79,7 +79,9 @@ $(document).on('keypress', '.custom-comment-box', function(e){
 	if(code == 13)
 	{
 		var url= $(this).attr('data-url');
+		var profileurl = $(this).attr('data-profileurl');
 		var id= $(this).attr('photo_id');
+		var isfromzoom_img = $(this).attr('data-zoomimg'); //weather comment is trigger from ZoomImage or NormalImage
 		var comment= $(this).val();
 		url+='/?id='+id+'&comment='+comment;
 		$.get(url,function(data,status){ 
@@ -96,7 +98,7 @@ $(document).on('keypress', '.custom-comment-box', function(e){
 			}
 			else
 			{
-				var end="<li class='in'> <img class='avatar img-responsive' alt='' src='<?php echo Yii::app()->baseUrl.'/profiles/'; ?>"+data.avatar+"'";
+				var end="<li class='in'> <img class='avatar img-responsive' alt='' src='"+profileurl+data.avatar+"'";
 				end=end+' />';
 				end= end+'<div class="message"> <a href="#" class="name">';
 				end= end+ data.firstName+' '+data.lastName;
@@ -105,6 +107,17 @@ $(document).on('keypress', '.custom-comment-box', function(e){
 				end=end+' <span class="body">'+data.comment+'</span> </div> </li>';
 			 }			 
 			 $('#cart-data-maincomments'+id).append(end);
+			 
+			 //Now increase the comment count at '5 comments' at Cart Data.
+			 var totcom = $('#cart-data-topcomments'+id+' .tools a').attr('data-src');
+			 totcom = parseInt(totcom) + 1;
+			 $('#cart-data-topcomments'+id+' .tools a').text(totcom+' comments');
+			 
+			 if(isfromzoom_img=='1'){
+				// As User has Put comment from Zoom Image Textarea, append the new comment Text
+				$('#zoomcart-data-comments'+id).append(end);
+			 }
+			
 			/* var h= $('#'+id).height()+10;
 			 if(h<225)
 			 {
@@ -125,6 +138,33 @@ $(document).on('keypress', '.custom-comment-box', function(e){
 	}
 });
 
+/* ** This is for site Login by EmailId
+** Yii CActiveForm is used to show site Login Modal box
+** /views/site/login.php
+*/
+function signInByEmail()
+{
+	var data=$("#login-form").serialize();
+	var url1 = $('#login-form .blue').attr('data-url');
+	$.ajax({
+		type: 'POST',  
+		url: url1,
+		data:data,
+		success:function(data){
+			data = jQuery.parseJSON(data);
+			if(data.status=="success"){
+				window.location=data.returnUrl;				
+			}
+			else{				
+				$("#lerrormsg").show();
+				$("#lerrormsg").html(data.msg);
+			}       
+		},
+		error: function(data) { // if error occured
+
+		}
+	});
+}
 
 /*
  * This function is used to Render 

@@ -20,6 +20,7 @@
 <link href="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/2prettyicon/style.css" rel="stylesheet" type="text/css"/>
 <link href="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 <link href="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+<link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/custom.css" rel="stylesheet" type="text/css"/>
 <!-- END GLOBAL MANDATORY STYLES -->
 
 <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
@@ -212,7 +213,7 @@ $(window).bind('scroll', function(){ //when the user is scrolling...
 	else if(pos < posWas){ 
 		//do something
 		$("#top-shadow").removeClass("lentren");
-						  $("#right-slide").removeClass("addin");
+		$("#right-slide").removeClass("addin");
 	}	
 	if (pos == 0 ) { $("#top-shadow").removeClass("topsha");  $(".mosota").removeClass("rightsha"); $("#top-shadow").removeClass("lentren");}	
 	else {$("#top-shadow").addClass("topsha");  $(".mosota").addClass("rightsha");}
@@ -235,6 +236,7 @@ if($(document).height()==$(window).scrollTop()+$(window).height()){
 		$('body').append(html);
 		var left=$('#leftside').css('display', 'none').html();
 		var right=$('#rightside').css('display', 'none').html();
+		var zoomimg=$('#zoomimagediv').css('display', 'none').html(); //zoomimagediv in somemore.php
 		if($.trim(left)=='')
 		{
 			if($('.nomore').html()==undefined)
@@ -242,14 +244,17 @@ if($(document).height()==$(window).scrollTop()+$(window).height()){
 			$('.page-content-wrapper > .page-content > .loader').remove();
 			$('#leftside').remove();
 			$('#rightside').remove();
+			$('#zoomimagediv').remove();
 		}
 		else
 		{	
 			$('.page-content-wrapper > .page-content > .loader').remove();
 			$('#leftside').remove();
 			$('#rightside').remove();
+			$('#zoomimagediv').remove();
 			$('.page-content-wrapper > .page-content > .container > .row > .col-md-6:first-child').append(left);
-			$('.page-content-wrapper > .page-content > .container > .row > .col-md-6:last-child').append(right);		
+			$('.page-content-wrapper > .page-content > .container > .row > .col-md-6:last-child').append(right);
+			$('#share-pic').append(zoomimg);
 			/*  $('.bxslider').bxSlider({
 				slideWidth: 400,
 				minSlides: 5,
@@ -326,33 +331,6 @@ $(document).on('click', '.like', function(){
 	}
 	return false;
 });
-
-/* ** This is for site Login by EmailId
-** Yii CActiveForm is used to show site Login Modal box
-** /views/site/login.php
-*/
-function signInByEmail()
-{
-	var data=$("#login-form").serialize();
-	$.ajax({
-		type: 'POST',  
-		url: '<?php echo $this->createUrl("/site/login"); ?>',
-		data:data,
-		success:function(data){
-			data = jQuery.parseJSON(data);
-			if(data.status=="success"){
-				window.location=data.returnUrl;				
-			}
-			else{				
-				$("#lerrormsg").show();
-				$("#lerrormsg").html(data.msg);
-			}       
-		},
-		error: function(data) { // if error occured
-
-		}
-	});
-}
  
 </script> 
 

@@ -498,29 +498,26 @@ $(window).bind('scroll', function(){ //when the user is scrolling...
         /* set variables locally for increased performance */
         jQuery('.footer').on('click', '.go-top', function (e) {
             App.scrollTo();
-            e.preventDefault();
+            e.preventDefault(); //event.preventDefault() method stops the default action of an element from happening.
         });
     }
 
     // Handles portlet tools & actions
     var handlePortletTools = function () {
-      
-//ny
-
-        jQuery('body').on('click', '.CMc > .main-commnet > .tools > .collapseed, .CMc .main-commnet > .tools > .expand', function (e) {
+	jQuery('body').on('click', '.CMc > .main-commnet > .tools > .collapseed, .CMc .main-commnet > .tools > .expand', function (e) {      
             e.preventDefault();
-            var el = $(this).closest(".CMc").children(".main-comment");
-            if ($(this).hasClass("expand")) {
+			var totcomment = 0;
+            var el = $(this).closest(".CMc").children(".main-comment");				
+            if($(this).hasClass("expand")) {
                 $(this).removeClass("expand").addClass("collapseed");
 				totcomment = $(this).attr('data-src');
 				$(this).text(totcomment+" comments");
-                el.slideUp(200);
+                el.slideUp(400);
             } else {
                 $(this).removeClass("collapseed").addClass("expand");
 				$(this).text("Hide comments");
-                el.slideDown(200);
-            }
-		
+                el.slideDown(400);
+            }			
         });
     }
 
