@@ -248,7 +248,7 @@
 					<!--coder use JS detect height of text to fix size when input like FB--> 		
 				</div>
 			<?php } ?>
-			</div>
+			</div>			
 		</div>		
 		<?php 
 		$firstphoto = false;
@@ -256,86 +256,10 @@
 		?>
 		</div>
 		</div>
-
 	
-		<!--Also like This-->
-		<div class="row">
-		<div class="col-md-12 more-loked">
-		<h3> People who liked this also liked:</h3>
-		</div>
-		
-		<div class="col-md-6 col-sm-6">
-			<!--<div class="portlet box blue">
-			<div class="portlet-title">
-			<div class="caption"> <img src="assets/img/avatar1_small.jpg" alt="" class="avatar-user-l img-responsive">
-			<div class="cap1"> <a class="username" href="#">Sugargirl</a><span class="user-locaion">Germany, Berlin</span> </div>
-			</div>
-			<div class="rank">
-			<h2> #1 Rank </h2>
-			<span class="arrow"> </span> </div>
-			</div>
-			<div class="portlet-body loked">
-			<div class="main-img-user">
-			<div id="myCarousel" class="carousel image-carousel slide view-first">
-			<div class="carousel-inner ">
-			<div class="active item loked"><a  href="#" > <img src="assets/img/gallery/album2/b1.jpg" class="img-responsive" alt=""></a> </div>
-			</div>
-			<!-- Carousel nav --> 
-
-			<!--</div>
-			</div>
-			<form>
-			<div class="main-tag loked">
-			<div class="tagcloud"> <a href="#">Gucci</a> <a href="#">Louis Vuitton</a> <a href="#l">Love</a> <a href="#">MC</a> <a href="#">Prada  Maksita</a> <a href="#">D&amp;G</a></div>
-			</div>
-			<div class="main-name"> <i class="icon-heart"></i> <a href="#">Kamasumi Benzo</a> <span>& 95 others like this</span> </div>
-			<div class="comment-form"> <img src="assets/img/avatar1.jpg" alt="" class="avatar img-responsive">
-			<div class="input-cont">
-			<textarea data-reactid="" value="Write a comment..." placeholder="Write a comment..." title="Write a comment..."  name="add_comment_text_text" id="js_17" aria-owns="js_23" aria-haspopup="true" aria-expanded="false" aria-label="Write a comment..." style="height: 40px;"></textarea>
-			<!--coder use JS detect height of text to fix size when input like FB--> 
-
-			<!--</div>
-			</div>
-			</form>
-			</div>
-			</div> -->
-		</div>
-		<div class="col-md-6 col-sm-6">
-			<!--<div class="portlet box blue">
-			<div class="portlet-title">
-			<div class="caption"> <img src="assets/img/avatar1_small.jpg" alt="" class="avatar-user-l img-responsive">
-			<div class="cap1"> <a class="username" href="#">Sugargirl</a><span class="user-locaion">Germany, Berlin</span> </div>
-			</div>
-			<div class="rank">
-			<h2> #1 Rank </h2>
-			<span class="arrow"> </span> </div>
-			</div>
-			<div class="portlet-body loked">
-			<div class="main-img-user">
-			<div id="myCarousel" class="carousel image-carousel slide view-first">
-			<div class="carousel-inner ">
-			<div class="active item loked"><a href="#"> <img src="assets/img/gallery/avanta.jpg" class="img-responsive" alt=""></a> </div>
-			</div>
-			<!-- Carousel nav --> 
-
-			<!--</div>
-			</div>
-			<form>
-			<div class="main-tag loked">
-			<div class="tagcloud"> <a href="#">Gucci</a> <a href="#">Louis Vuitton</a> <a href="#l">Love</a> <a href="#">MC</a> <a href="#">Prada  Maksita</a> <a href="#">D&amp;G</a></div>
-			</div>
-			<div class="main-name"> <i class="icon-heart"></i> <a href="#">Kamasumi Benzo</a> <span>& 95 others like this</span> </div>
-			<div class="comment-form"> <img src="assets/img/avatar1.jpg" alt="" class="avatar img-responsive">
-			<div class="input-cont">
-			<textarea data-reactid="" value="Write a comment..." placeholder="Write a comment..." title="Write a comment..."  name="add_comment_text_text" id="js_17" aria-owns="js_23" aria-haspopup="true" aria-expanded="false" aria-label="Write a comment..." style="height: 40px;"></textarea>
-			<!--coder use JS detect height of text to fix size when input like FB--> 
-
-			<!--</div>
-			</div>
-			</form>
-			</div>
-			</div> -->
-		</div>
+		<!--People Who Like This, Also like This-->		
+		<div class="row" data-src="<?php echo Yii::app()->createUrl('/photo/wholiked'); ?>">
+			
 		</div><!-- row ENDS -->
 		
 	</div> <!-- modal-body ENDS -->

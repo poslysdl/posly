@@ -30,7 +30,7 @@ $(function () {
 jQuery(document).ready(function() {   
  App.init(); // initlayout and core plugins
  App.initOWL();
- QuickSidebar.init()
+ QuickSidebar.init(); 
  
 });
 
@@ -52,11 +52,13 @@ $(document).on('click', '.img-zoom', function(){
 	$('#zoomimage'+cartuserid).show();
 
 	//unhide comments,like for this Zoom image,
-	activephotoid = $('#zoomimage'+cartuserid+' .active > .article-image').attr('dphoto_id');	
+	activephotoid = $('#zoomimage'+cartuserid+' .active > .article-image').attr('dphoto_id'); 
+	setTimeout('', 100); //timer to delay the execution for 100milisec, to aviod any ambiguity
 	$('#zoomimage'+cartuserid+' .tagcloud').hide(); //first hide all tags for this Cart
 	$('#zoomimage'+cartuserid+' .zoomdivcomments').hide(); //first hide all comments for this Cart
 	$('#zoomcart-data'+activephotoid).show(); //show only tags of active image
 	$('#zoomtag'+activephotoid).show();
+	setTimeout(showWhoAlsoLike(pid), 100);	
 });
 
 /* Hide/Unhide comments,tags in Zoom Image
@@ -69,6 +71,7 @@ function showZoomcartComments(elmn){
 	$('#share-pic .tagcloud').hide();	
 	$('#zoomcart-data'+activephotoid).show();	
 	$('#zoomtag'+activephotoid).show();
+	setTimeout(showWhoAlsoLike(activephotoid), 100);
 }
 
 /* Add Comments Box
@@ -188,6 +191,43 @@ function poslyAjaxLikecalls(ajaxurl,id,sdata)
 
 		}
 	});	
+}
+
+/* When at app.js line 506, handlePortletTools,
+.main-commnet event get called to Hide Unhide comments at cart
+There is a Much Gap between <ul> .CMn and div .scrollercm, to reduce this gap
+resetCommentboxHeight comes into picture
+*/
+function resetCommentboxHeight(elmn){
+	var datacnt = $(elmn).attr('data-src'); //elmn is the hyper-Link
+	var ulId = $(elmn).parents('.main-commnet').parents('.divcomments').children('.CMc').children('.display-hide').children('.slimScrollDiv').children('.scrollercm').children('ul').attr('id');
+	var ulheight = $('#'+ulId).height();
+	var parentDiv = $('#'+ulId).parents('div').height();
+	var parentDiv1 = $('#'+ulId).parents('div').parents('.slimScrollDiv').height();
+	var heightdiff = parentDiv1 - ulheight;
+	
+	if(ulheight<160 && heightdiff>30){
+		//Reduce the height
+		//console.log(ulheight+' '+parentDiv1+' '+heightdiff);
+		var scaleheight = parentDiv1 - (heightdiff - 20);
+		$('#'+ulId).parents('div').parents('.slimScrollDiv').css("height", scaleheight);
+		$('#'+ulId).parents('.scrollercm').css("height", scaleheight);
+	}	
+}
+
+/* In Zoom image, " Person Who Like This Also Like " 
+list of carts liked by same person who like this cart.
+Controller - PhotoController, actionWholiked
+TemplateFile - /views/photo/wholikes.php
+*/
+function showWhoAlsoLike(pid){
+	var photoid = pid;
+	var url = $('#zoomcart-data'+photoid).parents('.portlet').next('.row').attr('data-src');
+	url = url+"?id="+photoid; 
+	//console.log(url);
+	$.get(url, function(data) {		
+		$('#zoomcart-data'+photoid).parents('.portlet').next('.row').html(data);
+	});
 }
 
 function reload_js() {

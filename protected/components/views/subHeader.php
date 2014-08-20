@@ -9,25 +9,15 @@
 	<div class="sub-menu-head">
 		<div class="list-sub">
 		<span tabindex="0" class="ma-den hidden-480 hidden-320 hidden-600 hidden-620 active" role="button">Top Member</span> 
-		<span tabindex="0" class="ma-den dropdown hidden-md hidden-lg hidden-sm active" role="button">	
-		<?php 
-		echo CHtml::link('Top Member<i class="icon-caret-down"></i>',array('site/index'), array('class'=>'dropdown-toggle', 'data-toggle'=>'dropdown','data-close-others'=>'true')); 
-		?>
-		<!--<a href="#" class="dropdown-toggle" data-toggle="dropdown"  data-close-others="true">Top Member<i class="icon-caret-down"></i>
-		</a> -->		
+		<span tabindex="0" class="ma-den dropdown hidden-md hidden-lg hidden-sm active" role="button">		
+		<a href="<?php echo Yii::app()->createUrl("/site/index/topmembers"); ?>" class="dropdown-toggle" data-toggle="dropdown"  data-close-others="true">Top Member<i class="icon-caret-down"></i>
+		</a>		
 		<ul class="dropdown-menu more-menu">		
-			<li>
-			<?php 
-			echo CHtml::link('Going Viral',array('site/index'), array('class'=>'gren first')); 
-			?>
-			<!--<a class="gren first" href="#">Going Viral</a>-->
+			<li>			
+			<a class="gren first" href="<?php echo Yii::app()->createUrl("/site/index"); ?>">Going Viral</a>
 			</li>		
-			<li>
-			<?php 
-			echo CHtml::link('New Member',array('site/newmembers'), array('class'=>'gren last')); 
-			?>
-			<!--<a class="gren last" href="#">New Member</a> -->
-			
+			<li>			
+			<a class="gren last" href="<?php echo Yii::app()->createUrl("/site/newmembers"); ?>">New Member</a>			
 			</li>
 		</ul>
 		</span>		

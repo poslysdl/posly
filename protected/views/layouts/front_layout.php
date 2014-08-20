@@ -331,7 +331,7 @@ $(document).on('click', '.like', function(){
 	}
 	return false;
 });
- 
+
 </script> 
 
 <!-- END JAVASCRIPTS -->

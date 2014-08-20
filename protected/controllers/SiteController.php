@@ -60,14 +60,14 @@ class SiteController extends Controller
 			}
 			elseif($_GET['act']=='topmembers')
 			{
-						$criteria = new CDbCriteria();
-						$criteria->group = 't.user_id';
-						$criteria->condition = 'exists(select * from photos where user_id=t.user_id)';
-						$criteria->order = 'userDetails.user_rank_worldwide ASC';
-						$criteria->limit=$_GET['l'];
-						$criteria->offset=$_GET['l']-2;
-						$allusersphotos=Users::model()->with('photos', 'userDetails')->findAll($criteria);  
-						$this->render('somemorenewmembers', array('photos'=>$allusersphotos));
+				$criteria = new CDbCriteria();
+				$criteria->group = 't.user_id';
+				$criteria->condition = 'exists(select * from photos where user_id=t.user_id)';
+				$criteria->order = 'userDetails.user_rank_worldwide ASC';
+				$criteria->limit=$_GET['l'];
+				$criteria->offset=$_GET['l']-2;
+				$allusersphotos=Users::model()->with('photos', 'userDetails')->findAll($criteria);  
+				$this->render('somemorenewmembers', array('photos'=>$allusersphotos));
 			}
 			elseif($_GET['act']=='males')
 			{

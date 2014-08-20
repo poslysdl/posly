@@ -517,6 +517,7 @@ $(window).bind('scroll', function(){ //when the user is scrolling...
                 $(this).removeClass("collapseed").addClass("expand");
 				$(this).text("Hide comments");
                 el.slideDown(400);
+				resetCommentboxHeight(this); //mentioned at poslyfunctions.js
             }			
         });
     }
