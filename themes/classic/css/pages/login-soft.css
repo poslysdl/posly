@@ -1,0 +1,387 @@
+/***
+Login page
+***/
+
+/* logo page */
+.subsc {
+  background-color: #666 !important;
+  
+  
+  
+  
+}
+
+
+ 
+
+.subsc .content .logo58 {margin: 0 auto;   
+  margin-top:-120px;
+  text-align: center;
+  color:#fff;  
+  font-size:24em; 
+  margin-bottom: -170px; }
+
+.content {top:23%;
+position:absolute;
+z-index:10;
+  left:40%;}
+  
+  .input-icon input {
+    padding-left: 37px !important;
+}
+
+.subsc .content {
+	
+  
+  width: 360px; 
+  margin-bottom: 0px;
+  padding: 15px;  
+  padding-top: 20px;  
+  padding-bottom: 15px;  
+}
+
+.subsc .content h3 {
+  color: #eee;
+  text-align:center
+}
+.subsc .content h4  {
+  color: #eee;
+}
+
+.subsc .content p,
+.subsc .content label {
+  color: #fff;
+}
+
+.subsc .content .subsc-form,
+.subsc .content .forget-form {
+    padding: 0px;
+    margin: 0px;
+}
+
+.subsc .content .form-control {
+  background-color: #fff;
+  color:#767474 !important;
+}
+
+.input-icon i {color: #a7cf5f;
+    display: block;
+    font-size: 18px;
+    height: 16px;
+    margin: 11px 2px 4px 10px;
+    position: absolute;
+    text-align: center;
+    width: 16px;}
+
+.subsc .content .forget-form {
+  display: none;
+}
+
+.subsc .content .register-form {
+  display: none;
+}
+
+.subsc .content .form-title {
+  font-weight: 300;
+  margin-bottom: 30px;
+  margin-top:0;
+  text-align:center;
+}
+
+.subsc .content .form-actions {
+  background-color: transparent;
+  clear: both;
+  border: 0px;
+  padding: 0px 30px 25px 30px;
+  margin-left: -30px;
+  margin-right: -30px;
+  text-align:center;
+  margin-top:38px;
+}
+
+.subsc .content .form-actions .checkbox {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.subsc .content .forget-form .form-actions {
+  border: 0;
+  margin-bottom: 0;
+  padding-bottom: 20px;
+}  
+
+.subsc .content .register-form .form-actions {
+  border: 0;
+  margin-bottom: 0;
+  padding-bottom: 0px;
+}
+
+.subsc .content .form-actions .checkbox {
+  margin-top: 8px;
+  display: inline-block;
+}
+
+.subsc .content .form-actions .btn {
+  margin-top: 1px;
+}
+
+.subsc .content .forget-password {
+  margin-top: 25px;
+}
+
+.subsc .content .create-account {
+  border-top: 1px dotted #eee;
+  padding-top: 10px;
+  margin-top: 15px;
+}
+
+.subsc .content .create-account a {
+  display: inline-block;
+  margin-top: 5px;
+}
+
+/* select2 dropdowns */
+.subsc .content .select2-container i {
+  display: inline-block;
+  position: relative;
+  color: #ccc;
+  z-index: 1;
+  top:1px;
+  margin: 4px 4px 0px 3px; 
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+  text-align: center; 
+}
+
+.subsc .content .has-error .select2-container i {
+  color: #b94a48;
+}
+
+.subsc .content .select2-container a span {
+  font-size: 13px;
+}
+
+.subsc .content .select2-container a span img {
+  margin-left: 4px;
+}
+
+/* footer copyright */
+.subsc .copyright {
+  text-align: center;
+  margin: 0 auto; 
+  padding: 10px;
+  color: #eee;
+  font-size: 12px;
+}
+
+@media (max-width: 480px) {
+  /***
+  Login page
+  ***/
+  .subsc .content .logo58 {margin: 0 auto;   
+  margin-top:-120px;
+  text-align: center;
+  color:#fff;  
+  font-size:16em; 
+  margin-bottom: -130px; }
+
+
+.content {top:5%;
+position:absolute;
+z-index:10;
+  left:15%;}
+  
+  
+  .subsc .content {
+    padding: 30px; 
+    width: 330px;
+  }
+
+  .subsc .content h3 {
+    font-size: 18px;
+  }
+
+  .subsc .checkbox {
+    font-size: 13px;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+	
+	.subsc .content .logo58 {margin: 0 auto;   
+  margin-top:-120px;
+  text-align: center;
+  color:#fff;  
+  font-size:20em; 
+  margin-bottom: -150px; }
+
+
+.content {top:15%;
+position:absolute;
+z-index:10;
+  left:5%;}
+  
+  
+  .subsc .content {
+    padding: 30px; 
+    width: 280px;
+  }
+
+  .subsc .content h3 {
+    font-size: 22px;
+  }
+
+  .subsc .checkbox {
+    font-size: 13px;
+  }
+	
+	}
+	
+@media (min-width: 489px) and (max-width: 766px)  { 
+
+.subsc .content .logo58 {margin: 0 auto;   
+  margin-top:-120px;
+  text-align: center;
+  color:#fff;  
+  font-size:20em; 
+  margin-bottom: -150px; }
+
+
+.content {top:12%;
+position:absolute;
+z-index:10;
+  left:20%;}
+  
+  
+  .subsc .content {
+    padding: 30px; 
+    width: 320px;
+  }
+
+  .subsc .content h3 {
+    font-size: 22px;
+  }
+
+  .subsc .checkbox {
+    font-size: 13px;
+  }
+
+}	
+	
+@media (min-width: 767px) { 
+
+.subsc .content .logo58 {margin: 0 auto;   
+  margin-top:-120px;
+  text-align: center;
+  color:#fff;  
+  font-size:20em; 
+  margin-bottom: -150px; }
+
+
+.content {top:12%;
+position:absolute;
+z-index:10;
+  left:20%;}
+  
+  
+  .subsc .content {
+    padding: 30px; 
+    width: 320px;
+  }
+
+  .subsc .content h3 {
+    font-size: 22px;
+  }
+
+  .subsc .checkbox {
+    font-size: 13px;
+  }
+
+}	
+
+@media (min-width: 768px) and (max-width: 991px) { 
+
+.subsc .content .logo58 {margin: 0 auto;   
+  margin-top:-120px;
+  text-align: center;
+  color:#fff;  
+  font-size:20em; 
+  margin-bottom: -150px; }
+
+
+.content {top:20%;
+position:absolute;
+z-index:10;
+  left:27%;}
+  
+  
+  .subsc .content {
+    padding: 30px; 
+    width: 320px;
+  }
+
+  .subsc .content h3 {
+    font-size: 22px;
+  }
+
+  .subsc .checkbox {
+    font-size: 13px;
+  }
+}
+
+
+
+
+
+@media (min-width: 992px) { .subsc .content .logo58 {margin: 0 auto;   
+  margin-top:-120px;
+  text-align: center;
+  color:#fff;  
+  font-size:24em; 
+  margin-bottom: -170px; }
+
+.content {top:23%;
+position:absolute;
+z-index:10;
+  left:36%;}
+  
+  .input-icon input {
+    padding-left: 37px !important;
+}
+
+.subsc .content {
+	
+  
+  width: 360px; 
+  margin-bottom: 0px;
+  padding: 15px;  
+  padding-top: 20px;  
+  padding-bottom: 15px;  
+}}
+
+@media (min-width: 1200px) { .subsc .content .logo58 {margin: 0 auto;   
+  margin-top:-120px;
+  text-align: center;
+  color:#fff;  
+  font-size:24em; 
+  margin-bottom: -170px; }
+
+.content {top:23%;
+position:absolute;
+z-index:10;
+  left:38%;}
+  
+  .input-icon input {
+    padding-left: 37px !important;
+}
+
+.subsc .content {
+	
+  
+  width: 360px; 
+  margin-bottom: 0px;
+  padding: 15px;  
+  padding-top: 20px;  
+  padding-bottom: 15px;  
+}}
