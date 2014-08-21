@@ -1,29 +1,24 @@
 
 <!--SUB HEADER-->
-
+<?php	
+$headarray = $this->subheader;
+$menulink = isset($headarray['data']['menulink']) ? $headarray['data']['menulink'] : 'viral'; 
+$topmem_class = ($menulink=='topmember')?'active':'';
+$viral_class = ($menulink=='viral')?'active':'';
+$newmem_class = ($menulink=='newmember')?'active':'';
+?>
 <div id="top-shadow" class="headersub navbar navbar-inverse navbar-fixed-topsub"> 
 <!-- BEGIN TOP NAVIGATION BAR -->
 	<div class="header-inner">
 	<div class="row">
 	<div class="kv">
 	<div class="sub-menu-head">
-		<div class="list-sub">
-		<span tabindex="0" class="ma-den hidden-480 hidden-320 hidden-600 hidden-620 active" role="button">Top Member</span> 
-		<span tabindex="0" class="ma-den dropdown hidden-md hidden-lg hidden-sm active" role="button">		
-		<a href="<?php echo Yii::app()->createUrl("/site/index/topmembers"); ?>" class="dropdown-toggle" data-toggle="dropdown"  data-close-others="true">Top Member<i class="icon-caret-down"></i>
-		</a>		
-		<ul class="dropdown-menu more-menu">		
-			<li>			
-			<a class="gren first" href="<?php echo Yii::app()->createUrl("/site/index"); ?>">Going Viral</a>
-			</li>		
-			<li>			
-			<a class="gren last" href="<?php echo Yii::app()->createUrl("/site/newmembers"); ?>">New Member</a>			
-			</li>
-		</ul>
-		</span>		
-		<span tabindex="0" class="ma-den hidden-480 hidden-320 hidden-600 hidden-620" role="button">Going Viral</span>		
-		<span tabindex="0" class="ma-den hidden-480 hidden-320 hidden-600 hidden-620" role="button">New Member</span>
-		<div class="ma-den dropdown"> 
+		<!--hidden-xs hidden-small --to hide the div at Mobile Resolution -->
+		<div class="list-sub hidden-xs hidden-small">		
+		<a href="<?php echo Yii::app()->createUrl("/topmembers"); ?>" class="ma-den hidden-480 hidden-320 hidden-600 hidden-620 <?php echo $topmem_class;?>">Top Member</a>
+		<a href="<?php echo Yii::app()->createUrl("/site/index"); ?>" class="ma-den hidden-480 hidden-320 hidden-600 hidden-620 <?php echo $viral_class;?>">Going Viral</a>
+		<a href="<?php echo Yii::app()->createUrl("/newmembers"); ?>" class="ma-den hidden-480 hidden-320 hidden-600 hidden-620 <?php echo $newmem_class;?>">New Member</a>			
+		<div class="ma-den dropdown"> 		
 		<!-- CAPTION LOCATION --> 
 		<a class="dropdown-toggle caption" data-close-others="true"  data-toggle="dropdown" href="#">Monaco<i class="icon-map-marker"></i></a>
 		<ul data-delay="1000" class="dropdown-menu extended loc">
@@ -89,7 +84,7 @@
 		</ul>
 		<!-- END LOCATION -->
 		</div>
-		</div>
+		</div> <!-- End list-sub -->
 	</div>
 	</div>
 	</div>

@@ -1,3 +1,7 @@
+<?php
+if(!isset($menulink))
+	$menulink = 'viral';
+?>
 
 <!-- BEGIN TOP NAVIGATION MENU -->
 	<?php $this->widget('application.components.TopNavigationMenu', array(
@@ -10,7 +14,8 @@
 
 <!--SUB HEADER-->
 <?php $this->widget('application.components.SubHeader', array(
-'subheader' => array('data'=>'data_tobe_render_in_subHeaders'))); ?>
+'subheader' => array('data'=>array('menulink'=>$menulink)))); 
+?>
 <!--END SUB HEADER-->
 
 <div class="clearfix"></div>

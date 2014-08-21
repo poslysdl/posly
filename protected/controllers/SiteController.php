@@ -48,44 +48,66 @@ class SiteController extends Controller
 				$this->renderPartial('somemore', array('photos'=>$allusersphotos));
 			}
 			elseif($_GET['act']=='newmembers')
-			{
-				$criteria = new CDbCriteria();
-				$criteria->group = 't.user_id';
-				$criteria->condition = 'exists(select * from photos where user_id=t.user_id)';
-				$criteria->order = 'userDetails.user_details_created_date DESC';
-				$criteria->limit=$_GET['l'];
-				$criteria->offset=$_GET['l']-2;
-				$allusersphotos=Users::model()->with('photos', 'userDetails')->findAll($criteria);  
-				$this->render('somemorenewmembers', array('photos'=>$allusersphotos));
+			{				
+				$criteria = new CDbCriteria();				
+				$criteria->group = 'userDetails.user_id';
+				$criteria->order = 'userDetails.user_details_created_date DESC';				
+				if($_GET['l']<6){
+					$criteria->limit=$_GET['l']; //Total No of Records
+					$criteria->offset=$_GET['l']-2; //Starts from..
+				} else{
+					$criteria->limit = $_GET['l']-2;
+					$criteria->offset = $_GET['l'];
+				}				
+				$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);		
+				$this->renderPartial('somemore', array('photos'=>$allusersphotos));				
 			}
 			elseif($_GET['act']=='topmembers')
-			{
-				$criteria = new CDbCriteria();
-				$criteria->group = 't.user_id';
-				$criteria->condition = 'exists(select * from photos where user_id=t.user_id)';
-				$criteria->order = 'userDetails.user_rank_worldwide ASC';
-				$criteria->limit=$_GET['l'];
-				$criteria->offset=$_GET['l']-2;
-				$allusersphotos=Users::model()->with('photos', 'userDetails')->findAll($criteria);  
-				$this->render('somemorenewmembers', array('photos'=>$allusersphotos));
+			{							
+				$criteria = new CDbCriteria();				
+				$criteria->group = 'userDetails.user_id';
+				$criteria->order = 'userDetails.user_rank_worldwide ASC';				
+				if($_GET['l']<6){
+					$criteria->limit=$_GET['l']; //Total No of Records
+					$criteria->offset=$_GET['l']-2; //Starts from..
+				} else{
+					$criteria->limit = $_GET['l']-2;
+					$criteria->offset = $_GET['l'];
+				}				
+				$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);		
+				$this->renderPartial('somemore', array('photos'=>$allusersphotos));			
 			}
 			elseif($_GET['act']=='males')
 			{
-				$criteria = new CDbCriteria();
-				$criteria->condition = 'exists(select * from photos where user_id=t.user_id) and userDetails.user_details_gender=1';
-				$criteria->limit=$_GET['l'];
-				$criteria->offset=$_GET['l']-2;
-				$allusersphotos=Users::model()->with('photos','userDetails')->findAll($criteria);  
-				$this->render('somemorenewmembers', array('photos'=>$allusersphotos));
+				$criteria = new CDbCriteria();	
+				$criteria->condition = 'userDetails.user_details_gender = "1"';
+				$criteria->group = 'userDetails.user_id';
+				$criteria->order = 'userDetails.user_rank_worldwide ASC';				
+				if($_GET['l']<6){
+					$criteria->limit=$_GET['l']; //Total No of Records
+					$criteria->offset=$_GET['l']-2; //Starts from..
+				} else{
+					$criteria->limit = $_GET['l']-2;
+					$criteria->offset = $_GET['l'];
+				}				
+				$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);		
+				$this->renderPartial('somemore', array('photos'=>$allusersphotos));
 			}
-			elseif($_GET['act']=='females')
+			elseif($_GET['act']=='females') 
 			{
-				$criteria = new CDbCriteria();
-				$criteria->condition = 'exists(select * from photos where user_id=t.user_id) and userDetails.user_details_gender=2';
-				$criteria->limit=$_GET['l'];
-				$criteria->offset=$_GET['l']-2;
-				$allusersphotos=Users::model()->with('photos','userDetails')->findAll($criteria);  
-				$this->render('somemorenewmembers', array('photos'=>$allusersphotos));
+				$criteria = new CDbCriteria();	
+				$criteria->condition = 'userDetails.user_details_gender = "0"';
+				$criteria->group = 'userDetails.user_id';
+				$criteria->order = 'userDetails.user_rank_worldwide ASC';				
+				if($_GET['l']<6){
+					$criteria->limit=$_GET['l']; //Total No of Records
+					$criteria->offset=$_GET['l']-2; //Starts from..
+				} else{
+					$criteria->limit = $_GET['l']-2;
+					$criteria->offset = $_GET['l'];
+				}				
+				$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);		
+				$this->renderPartial('somemore', array('photos'=>$allusersphotos));
 			}
 			elseif($_GET['act']=='country')
 			{
@@ -166,43 +188,48 @@ class SiteController extends Controller
 	}
 
 	public function actionNewmembers()
-	{
+	{		
 		$this->layout='front_layout';
 		Yii::app()->clientScript->registerCoreScript('jquery'); 
-		$criteria = new CDbCriteria();
-		$criteria->group = 't.user_id';
+		$criteria = new CDbCriteria();		
+		$criteria->group = 'user.user_id';
 		$criteria->condition = 'exists(select * from photos where user_id=t.user_id)';
 		$criteria->order = 'userDetails.user_details_created_date DESC';
-		$criteria->limit=2;
-		$allusersphotos=Users::model()->with('userDetails', 'photos')->findAll($criteria);  
-		$this->render('newmembers', array('photos'=>$allusersphotos));
+		$criteria->limit=2;		
+		$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);		
+		unset($criteria);				
+		$hash_tags = $this->actionHashtaglist(); //Get Hash Tags Listings for sidebar		
+		$this->render('index', array('photos'=>$allusersphotos,'hash_tags'=>$hash_tags,'menulink'=>'newmember'));
+		
 	}
 	
 	public function actionTopmembers()
-	{
+	{		
 		$this->layout='front_layout';
 		Yii::app()->clientScript->registerCoreScript('jquery'); 
-		$criteria = new CDbCriteria();
-		$criteria->group = 't.user_id';
+		$criteria = new CDbCriteria();		
+		$criteria->group = 'user.user_id';
 		$criteria->condition = 'exists(select * from photos where user_id=t.user_id)';
 		$criteria->order = 'userDetails.user_rank_worldwide ASC';
-		$criteria->limit=2;
-		$allusersphotos=Users::model()->with('userDetails', 'photos')->findAll($criteria);  
-		$this->render('topmembers', array('photos'=>$allusersphotos));
+		$criteria->limit=2;		
+		$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);		
+		unset($criteria);				
+		$hash_tags = $this->actionHashtaglist(); //Get Hash Tags Listings for sidebar		
+		$this->render('index', array('photos'=>$allusersphotos,'hash_tags'=>$hash_tags,'menulink'=>'topmember'));		
 	}
 	
 	public function actionFollowing()
 	{
 		if(!Yii::app()->user->isGuest)
 		{
-				$this->layout='front_layout';
-				Yii::app()->clientScript->registerCoreScript('jquery'); 
-				$id=Yii::app()->user->id;
-				$criteria = new CDbCriteria();
-				$criteria->condition = "t.user_id=$id and exists(select * from photos where user_id=t.follow_id)";
-				$criteria->limit=2;
-				$allusersphotos=UsersFollow::model()->with('follow', 'follow.userDetails', 'follow.photos')->findAll($criteria);  
-				$this->render('following', array('photos'=>$allusersphotos));
+			$this->layout='front_layout';
+			Yii::app()->clientScript->registerCoreScript('jquery'); 
+			$id=Yii::app()->user->id;
+			$criteria = new CDbCriteria();
+			$criteria->condition = "t.user_id=$id and exists(select * from photos where user_id=t.follow_id)";
+			$criteria->limit=2;
+			$allusersphotos=UsersFollow::model()->with('follow', 'follow.userDetails', 'follow.photos')->findAll($criteria);  
+			$this->render('following', array('photos'=>$allusersphotos));
 		}
 		else
 		Yii::app()->end();
@@ -213,22 +240,30 @@ class SiteController extends Controller
 	{
 		$this->layout='front_layout';
 		Yii::app()->clientScript->registerCoreScript('jquery'); 
-		$criteria = new CDbCriteria();
-		$criteria->condition = 'exists(select * from photos where user_id=t.user_id) and userDetails.user_details_gender=1';
-		$criteria->limit=2;
-		$allusersphotos=Users::model()->with('photos','userDetails')->findAll($criteria);  
-		$this->render('males', array('photos'=>$allusersphotos));
+		$criteria = new CDbCriteria();		
+		$criteria->group = 'user.user_id';
+		$criteria->condition = 'exists(select * from photos where user_id=t.user_id) AND userDetails.user_details_gender = "1"';
+		$criteria->order = 'userDetails.user_rank_worldwide ASC';
+		$criteria->limit=2;		
+		$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);		
+		unset($criteria);				
+		$hash_tags = $this->actionHashtaglist(); //Get Hash Tags Listings for sidebar		
+		$this->render('index', array('photos'=>$allusersphotos,'hash_tags'=>$hash_tags));
 	}
 	
 	public function actionFemales()
-	{
+	{		
 		$this->layout='front_layout';
 		Yii::app()->clientScript->registerCoreScript('jquery'); 
-		$criteria = new CDbCriteria();
-		$criteria->condition = 'exists(select * from photos where user_id=t.user_id) and userDetails.user_details_gender=2';
-		$criteria->limit=2;
-		$allusersphotos=Users::model()->with('photos','userDetails')->findAll($criteria);  
-		$this->render('males', array('photos'=>$allusersphotos));
+		$criteria = new CDbCriteria();		
+		$criteria->group = 'user.user_id';
+		$criteria->condition = 'exists(select * from photos where user_id=t.user_id) AND userDetails.user_details_gender = "0"';
+		$criteria->order = 'userDetails.user_rank_worldwide ASC';
+		$criteria->limit=2;		
+		$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);		
+		unset($criteria);				
+		$hash_tags = $this->actionHashtaglist(); //Get Hash Tags Listings for sidebar		
+		$this->render('index', array('photos'=>$allusersphotos,'hash_tags'=>$hash_tags));		
 	}
 	
 	public function actionCountry($c)
