@@ -80,11 +80,7 @@ class LikesController extends Controller
 		$photoid= $_POST['pid'];
 		$totallike_count = $_POST['pdata'];		
 		$html = LogPhotosHearts::model()->createLikeCountHtml($photoid,$totallike_count);
-		echo $html;
-		 /*echo CJSON::encode(array(
-			  'status'=>'success',
-			  'values'=>$html
-		));*/
+		echo $html;		
 		Yii::app()->end();		
 	}
 	

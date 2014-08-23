@@ -272,9 +272,7 @@ if($(document).height()==$(window).scrollTop()+$(window).height()){
 			QuickSidebar.init();
 			
 		}
-	});
-	
-	
+	});	
 }
 else
 {
@@ -332,6 +330,17 @@ $(document).on('click', '.like', function(){
 	return false;
 });
 
+/* showUsersActivities function
+	will add users activity, at sideBar through ajax call
+*/
+function showUsersActivities(){
+	var url = '<?php echo $this->createUrl("/site/showusersactivities"); ?>';
+	$.get(url,function(data,status){
+		$('.notifi-panel').html(data);	
+	});
+}
+
+showUsersActivities();
 </script> 
 
 <!-- END JAVASCRIPTS -->

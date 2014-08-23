@@ -7,7 +7,7 @@ $(function () {
     // Change this to the location of your server-side upload handler:
     var url = window.location.hostname === 'blueimp.github.io' ?
                 '//jquery-file-upload.appspot.com/' : 'server/php/';
-    $('#fileupload').fileupload({
+   /* $('#fileupload').fileupload({
         url: url,
         dataType: 'json',
         done: function (e, data) {
@@ -24,6 +24,7 @@ $(function () {
         }
     }).prop('disabled', !$.support.fileInput)
         .parent().addClass($.support.fileInput ? undefined : 'disabled');
+	*/
 });
 
 

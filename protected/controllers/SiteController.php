@@ -439,6 +439,121 @@ class SiteController extends Controller
 		$this->redirect(Yii::app()->homeUrl);
 	}
 	
+	/**
+		This user define Ajax function is used to return the html for rendering of
+		user's Activities List at Sidebar.		
+	*/
+	public function actionShowusersactivities()
+	{	
+		$criteria = new CDbCriteria();
+		$criteria->limit=2;	
+		$uid = Yii::app()->user->id; //logged in userId
+		$activityArray = array(); //contains, all activities, Like,Dislikes,Become friends etc
+		$str='';
+		$limit = 10;
+		if(!empty($uid))
+		{
+			// ** User Logged IN ***
+			//Show Photo Likes activities of Me & friends of Me			
+			$photolikes=LogPhotosHearts::model()->getActivityWhoLikes($limit,$uid);	
+			if(count($photolikes)>0)
+			{
+				foreach($photolikes as $k=>$v)
+				{	
+					$uname = ($uid==$v['userid'])?'You':$v['username'];
+					$owner_name = $v['ownername'];					
+					$msg = ' Likes '.$owner_name.'&#39;s photo:';					
+					$activityArray[$v['hdate']] = array('avatar'=>$v['useravatar'],'name'=>$uname,'message'=>$msg);
+				}
+			}
+			unset($photolikes);
+			//Now get List of Friends..ie who had recently become your friend		
+			$criteria->condition = "t.user_id='".$uid."' AND t.status=1";			
+			$friends=UsersFriends::model()->with('friend','user')->findAll($criteria);	
+			if(count($friends)>0)
+			{		
+				foreach($friends as $k=>$v)
+				{					
+					$date1 = $v['user_friend_created_date'];
+					$msg = ' and '.$v['friend']['user_details_firstname'].' '.$v['friend']['user_details_lastname'].' are now friends';
+					$activityArray[$date1] = array('avatar'=>$v['friend']['user_details_avatar'],'name'=>'you','message'=>$msg);
+				}
+			}			
+			unset($friends);
+			//Now get List of Friend's friends..ie your friend who had add another friend			
+			$friends=UsersFriends::model()->getActivityFriends($limit,$uid);	
+			if(count($friends)>0)
+			{		
+				foreach($friends as $k=>$v)
+				{	//where $[name] is your(loggedIn User) frnd , who also become frnd with $v['ffname']
+					$date1 = $v['date']; 
+					$msg = ' and '.$v['ffname'].' are now friends';
+					$activityArray[$date1] = array('avatar'=>$v['avatar'],'name'=>$v['name'],'message'=>$msg);
+				}
+			}			
+			unset($friends);
+		}
+		else
+		{
+			// ** User NOT Logged IN ***
+			//Show general user Photo Likes activities , as no body has loggedIn					
+			$photolikes=LogPhotosHearts::model()->getActivityWhoLikes($limit); 							
+			if(count($photolikes)>0)
+			{
+				foreach($photolikes as $k=>$v){					
+					$msg = ' Likes '.$v['ownername'].'&#39;s photo:';
+					$activityArray[$v['hdate']] = array('avatar'=>$v['useravatar'],'name'=>$v['username'],'message'=>$msg);
+				}
+			}
+			unset($photolikes);
+			//Now get List of any user who had recently become friends
+			$criteria->condition = "status=1";
+			$friends=UsersFriends::model()->with('friend','user')->findAll($criteria);
+			if(count($friends)>0)
+			{		
+				foreach($friends as $k=>$v)
+				{	
+					$user = $v['user']['user_details_firstname'].' '.$v['user']['user_details_lastname'];
+					$date1 = $v['user_friend_created_date'];
+					$msg = ' and '.$v['friend']['user_details_firstname'].' '.$v['friend']['user_details_lastname'].' are now friends';
+					$activityArray[$date1] = array('avatar'=>$v['user']['user_details_avatar'],'name'=>$user,'message'=>$msg);
+				}
+			}			
+			unset($friends);
+		}		
+		
+		//Now Create the display Activity HTML		
+		if(count($activityArray)>0)
+		{
+			arsort($activityArray);
+			foreach($activityArray as $keys=>$values)
+			{			
+				$fromurl=strstr($values['avatar'], '://', true);
+				if($fromurl=='http' || $fromurl=='https')
+					$avatar = $values['avatar']; 
+				else
+				$avatar = Yii::app()->baseUrl.'/profiles/'.$values['avatar'];
+				$str.='
+				<li class="noti-area"> <img class="avatar img-responsive" alt="" src="'.$avatar.'" />
+				<div class="message"> <span class="name">'.$values['name'].'</span> '.$values['message'].' </div>
+				</li>					
+				';
+			}
+		}
+		unset($activityArray);
+		if(empty($str)){
+			//a Default Dummy status.
+			$str='<li class="noti-area"> <img class="avatar img-responsive" alt="" src="'.Yii::app()->theme->baseUrl.'/img/avatar2.jpg" />
+			<div class="message"> <span class="name">Chanh Ny</span> likes Chi Minh Anh photo. </div>
+			</li>';
+		}
+		echo $str;
+		/*echo CJSON::encode(array(
+			  'status'=>'success',
+			  'values'=>$html
+		));*/
+		Yii::app()->end();	
+	}
 }
 
 ?>
