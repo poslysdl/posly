@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
 <!--[if !IE]><!-->
@@ -87,70 +86,85 @@
 <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/customie.css" rel="stylesheet" type="text/css"/>
 <![endif]--> 
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/jquery-1.11.0.min.js" type="text/javascript"></script> 
-<script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script> 
+<!--<script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script> -->
 <!-- IMPORTANT! Load jquery-ui-1.10.3.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip --> 
 
-<script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script> 
+<!--<script src="<?php //echo Yii::app()->theme->baseUrl; ?>/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script> -->
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script> 
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript" ></script> 
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script> 
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/jquery.blockui.min.js" type="text/javascript"></script> 
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/jquery.cookie.min.js" type="text/javascript"></script> 
-<script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/uniform/jquery.uniform.min.js" type="text/javascript" ></script> 
+<!--<script src="<?php //echo Yii::app()->theme->baseUrl; ?>/plugins/uniform/jquery.uniform.min.js" type="text/javascript" ></script> -->
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script> 
 <!-- END CORE PLUGINS --> 
 
 <!-- BEGIN PAGE LEVEL PLUGINS --> 
-<script type="text/javascript" src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/jquery-validation/dist/jquery.validate.min.js"></script> 
-<script type="text/javascript" src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/jquery-validation/dist/additional-methods.min.js"></script> 
-<script type="text/javascript" src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/select2/select2.min.js"></script> 
-<script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/bootstrap-switch/static/js/bootstrap-switch.min.js" type="text/javascript" ></script> 
+<!--<script type="text/javascript" src="<?php //echo Yii::app()->theme->baseUrl; ?>/plugins/jquery-validation/dist/jquery.validate.min.js"></script> 
+<script type="text/javascript" src="<?php //echo Yii::app()->theme->baseUrl; ?>/plugins/jquery-validation/dist/additional-methods.min.js"></script> 
+<script type="text/javascript" src="<?php //echo Yii::app()->theme->baseUrl; ?>/plugins/select2/select2.min.js"></script> 
+<script src="<?php//echo Yii::app()->theme->baseUrl; ?>/plugins/bootstrap-switch/static/js/bootstrap-switch.min.js" type="text/javascript" ></script> 
+-->
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/bootstrap-modal/js/bootstrap-modalmanager.js" type="text/javascript" ></script> 
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/bootstrap-modal/js/bootstrap-modal.js" type="text/javascript" ></script> 
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/scripts/ui-extended-modals.js"></script> 
-
 <!-- END PAGE LEVEL PLUGINS --> 
-<script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/flot/jquery.flot.min.js" type="text/javascript"></script> 
-<script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/flot/jquery.flot.resize.min.js" type="text/javascript"></script> 
-<script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/flot/jquery.flot.categories.min.js" type="text/javascript"></script> 
+
+<!--it makes chart-->
+<!--<script src="<?php //echo Yii::app()->theme->baseUrl; ?>/plugins/flot/jquery.flot.min.js" type="text/javascript"></script> 
+<script src="<?php //echo Yii::app()->theme->baseUrl; ?>/plugins/flot/jquery.flot.resize.min.js" type="text/javascript"></script> 
+<script src="<?php //echo Yii::app()->theme->baseUrl; ?>/plugins/flot/jquery.flot.categories.min.js" type="text/javascript"></script>--> 
+
 <!-- BEGIN PAGE LEVEL SCRIPTS --> 
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/scripts/app.js" type="text/javascript"></script>
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/scripts/quick-sidebar.js" type="text/javascript"></script>  
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/scripts/chart.js" type="text/javascript"></script> 
-<script src="<?php echo Yii::app()->theme->baseUrl; ?>/scripts/form-validation.js"></script> 
-
+<!--<script src="<?php //echo Yii::app()->theme->baseUrl; ?>/scripts/form-validation.js"></script>-->
 <!-- END PAGE LEVEL SCRIPTS --> 
-<script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script> 
-<script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/holder.js" type="text/javascript"></script>
-<!-- The Templates plugin is included to render the upload/download listings --> 
 
-<script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/jquery-file-upload/js/jquery.iframe-transport.js"></script> 
+<!--<script src="<?php //echo Yii::app()->theme->baseUrl; ?>/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script> 
+<script src="<?php //echo Yii::app()->theme->baseUrl; ?>/plugins/holder.js" type="text/javascript"></script> -->
+
+<!-- Display image in Catwalk, Stats Page as in masonry effect -->
+<!--<script src="<?php //echo Yii::app()->theme->baseUrl; ?>/scripts/masonry.pkgd.js"></script>
+<script src="<?php //echo Yii::app()->theme->baseUrl; ?>/scripts/imagesloaded.js"></script> 
+<script src="<?php //echo Yii::app()->theme->baseUrl; ?>/scripts/classie.js"></script> 
+<script src="<?php //echo Yii::app()->theme->baseUrl; ?>/scripts/AnimOnScroll.js"></script> -->
+<!-- END masonry effect -->
+
 <!-- The basic File Upload plugin --> 
-<script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/jquery-file-upload/js/jquery.fileupload.js"></script> 
-<script src="<?php echo Yii::app()->theme->baseUrl; ?>/scripts/masonry.pkgd.js"></script> 
+<!--<script src="<?php //echo Yii::app()->theme->baseUrl; ?>/plugins/jquery-file-upload/js/jquery.iframe-transport.js"></script>
+<script src="<?php //echo Yii::app()->theme->baseUrl; ?>/plugins/jquery-file-upload/js/jquery.fileupload.js"></script> -->
+<!-- END basic File Upload plugin -->
+
+<!-- Display image in Catwalk, Stats,Followers, Following, Hearts Page as in masonry effect ** Important -->
+<script src="<?php echo Yii::app()->theme->baseUrl; ?>/scripts/masonry.pkgd.js"></script>
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/scripts/imagesloaded.js"></script> 
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/scripts/classie.js"></script> 
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/scripts/AnimOnScroll.js"></script> 
+<!-- END masonry effect -->
 
-<script>			
-new AnimOnScroll( document.getElementById( 'grid' ), {
-	minDuration : 0.4,
-	maxDuration : 0.7,
-	viewportFactor : 0.2
-} );
-new AnimOnScroll( document.getElementById( 'grid-stats' ), {
-	minDuration : 0.4,
-	maxDuration : 0.7,
-	viewportFactor : 0.2
-} );
+<script>
+function initAnimscroll() {		
+	new AnimOnScroll( document.getElementById( 'grid' ), {
+		minDuration : 0.4,
+		maxDuration : 0.7,
+		viewportFactor : 0.2
+	});
+	new AnimOnScroll( document.getElementById( 'grid-stats' ), {
+		minDuration : 0.4,
+		maxDuration : 0.7,
+		viewportFactor : 0.2
+	});
 
-new AnimOnScroll( document.getElementById( 'grid-heart' ), {
-	minDuration : 0.4,
-	maxDuration : 0.7,
-	viewportFactor : 0.2
-} );		
-			
-function show1(){
+	new AnimOnScroll( document.getElementById( 'grid-heart' ), {
+		minDuration : 0.4,
+		maxDuration : 0.7,
+		viewportFactor : 0.2
+	});		
+}
+	
+/*function show1(){
 	
 	document.getElementById( 'tab_2_2' ).style.display='block';
 	document.getElementById( 'tab_2_2' ).style.overflow='hidden';
@@ -280,42 +294,41 @@ function show4(){
 
 	
 }
-		
-</script> 
-<!--animation --> 
+*/
 
-<script>
-/*jslint unparam: true */
-/*global window, $ */
-$(function () {
-    'use strict';
-    // Change this to the location of your server-side upload handler:
-    var url = window.location.hostname === 'blueimp.github.io' ?
-                '//jquery-file-upload.appspot.com/' : 'server/php/';
-    $('#fileupload').fileupload({
-        url: url,
-        dataType: 'json',
-        done: function (e, data) {
-            $.each(data.result.files, function (index, file) {
-                $('<p/>').text(file.name).appendTo('#files');
-            });
-        },
-        progressall: function (e, data) {
-            var progress = parseInt(data.loaded / data.total * 100, 10);
-            $('#progress .progress-bar').css(
-                'width',
-                progress + '%'
-            );
-        }
-    }).prop('disabled', !$.support.fileInput)
-        .parent().addClass($.support.fileInput ? undefined : 'disabled');
-});
+/*
+* This function is used to hide, unhide & render data in
+* user profile index page - Status,Catwalk,aboutus, followers etc options
+*/
+function showprofile(divid,methodname){
+	$('.tab-content > .tab-pane').hide(); 
+	$('.tab-content > .tab-pane').height('0');
+	$('.tab-content > .tab-pane').removeClass('active in');
+	$('.tab-content > .tab-pane').css('overflow', 'hidden');
+	var url = $('.tab-content').attr('data-url');
+	url = url+'/'+methodname; //methodname are the controller action name
+	$.get(url,function(data,status){
+		$('#tab_2_'+divid).html(data);	
+	});
+	document.getElementById('tab_2_'+divid).style.display='block';
+	document.getElementById('tab_2_'+divid).style.overflow='';
+	document.getElementById('tab_2_'+divid).style.height='';
+	$('#tab_2_'+divid).addClass('active in');
+	
+	//if(divid!='1')
+	setTimeout(initAnimscroll, 500);
+}
+
+showprofile('1','about');	
 </script> 
+
+<!--<script src="<?php //echo Yii::app()->theme->baseUrl; ?>/scripts/poslyfunctions.js"></script> -->
+<!---Important JS Functions mainly for PHP developers --->
 <script>
-  jQuery(document).ready(function() {    
-	 App.init(); // initlayout and core plugins
-	 Chart.initCharts(); 
-	  QuickSidebar.init()
+ jQuery(document).ready(function() {    
+	App.init(); // initlayout and core plugins
+	Chart.initCharts(); 
+	QuickSidebar.init()
   });
 </script> 
 

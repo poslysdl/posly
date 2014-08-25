@@ -5,16 +5,25 @@
 <!--end--> 
 <!--image new-->
 <div class="col-md-12 col-sm-12 image-single">
-<ul class="grid effect-6" id="grid-heart">
-
+<ul class="grid effect-6" id="grid">
+<li  style="z-index:999" class="shown">
+<div class="white-bg-album-img box blue boxshadown">
+<div class="portlet-body no-image-single">
+<div class="row no-icon"> <i class="icon-plus-sign"></i> </div>
+<div class="row headtext">
+<button class="btn white green" type="button" href="#add-image"  data-toggle="modal">Add Media</button>
+</div>
+</div>
+</div>
+</li>
 <li  style="z-index:998" class="shown">
 <div class="white-bg-album box blue boxshadown">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
+<div class="col-lg-6 mask-topa"> <a class="grey" href="#">2</a> </div>
+<div class="col-lg-6 mask-topb"> <a  data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
 
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/album2/b2.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -31,10 +40,10 @@
 <div class="white-bg-album box blue boxshadown  ">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
+<div class="col-lg-6 mask-topa"> <a class="grey" href="#">1</a> </div>
+<div class="col-lg-6 mask-topb"> <a  data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
 
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/76719.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -51,10 +60,10 @@
 <div class="white-bg-album box blue boxshadown">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
+<div class="col-lg-6 mask-topa"> <a class="grey" href="#">3</a> </div>
+<div class="col-lg-6 mask-topb"> <a  data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
 
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/album3/ayse3.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -71,10 +80,10 @@
 <div class="white-bg-album box blue boxshadown">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
 
+<div class="col-lg-6 mask-topb"> <a data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
+
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/album2/b3.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -91,10 +100,10 @@
 <div class="white-bg-album box blue boxshadown  ">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
 
+<div class="col-lg-6 mask-topb"> <a data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
+
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/image5.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -111,10 +120,10 @@
 <div class="white-bg-album box blue boxshadown  ">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
 
+<div class="col-lg-6 mask-topb"> <a data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
+
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/album2/b3.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -131,10 +140,10 @@
 <div class="white-bg-album box blue boxshadown  ">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
 
+<div class="col-lg-6 mask-topb"> <a data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
+
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/image9.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -151,10 +160,10 @@
 <div class="white-bg-album box blue boxshadown  ">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
 
+<div class="col-lg-6 mask-topb"> <a data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
+
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/love_life-resized-600.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -171,10 +180,10 @@
 <div class="white-bg-album box blue boxshadown  ">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
 
+<div class="col-lg-6 mask-topb"> <a data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
+
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/album2/b1.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -191,10 +200,10 @@
 <div class="white-bg-album box blue boxshadown  ">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
 
+<div class="col-lg-6 mask-topb"> <a data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
+
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/item_img10.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -211,10 +220,10 @@
 <div class="white-bg-album box blue boxshadown  ">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
 
+<div class="col-lg-6 mask-topb"> <a data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
+
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/man.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -231,10 +240,10 @@
 <div class="white-bg-album box blue boxshadown  ">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
 
+<div class="col-lg-6 mask-topb"> <a data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
+
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/aoki.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -251,10 +260,10 @@
 <div class="white-bg-album box blue boxshadown  ">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
 
+<div class="col-lg-6 mask-topb"> <a data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
+
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/album2/b3.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -271,10 +280,10 @@
 <div class="white-bg-album box blue boxshadown  ">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
 
+<div class="col-lg-6 mask-topb"> <a data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
+
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/050037.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -291,10 +300,10 @@
 <div class="white-bg-album box blue boxshadown  ">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
 
+<div class="col-lg-6 mask-topb"> <a data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
+
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/bearb.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -311,10 +320,10 @@
 <div class="white-bg-album box blue boxshadown  ">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
 
+<div class="col-lg-6 mask-topb"> <a data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
+
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/image7.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -331,10 +340,10 @@
 <div class="white-bg-album box blue boxshadown">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
 
+<div class="col-lg-6 mask-topb"> <a data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
+
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/album2/b2.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -351,10 +360,10 @@
 <div class="white-bg-album box blue boxshadown  ">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
 
+<div class="col-lg-6 mask-topb"> <a data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
+
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/76719.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -371,10 +380,10 @@
 <div class="white-bg-album box blue boxshadown  ">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
 
+<div class="col-lg-6 mask-topb"> <a data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
+
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/album3/ayse3.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -391,10 +400,10 @@
 <div class="white-bg-album box blue boxshadown  ">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
 
+<div class="col-lg-6 mask-topb"> <a data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
+
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/album1/g_3.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -411,10 +420,10 @@
 <div class="white-bg-album box blue boxshadown  ">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
 
+<div class="col-lg-6 mask-topb"> <a data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
+
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/image5.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -431,10 +440,10 @@
 <div class="white-bg-album box blue boxshadown  ">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
 
+<div class="col-lg-6 mask-topb"> <a data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
+
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/album2/b3.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -451,10 +460,10 @@
 <div class="white-bg-album box blue boxshadown  ">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
 
+<div class="col-lg-6 mask-topb"> <a data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
+
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/image9.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -471,10 +480,10 @@
 <div class="white-bg-album box blue boxshadown  ">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
 
+<div class="col-lg-6 mask-topb"> <a data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
+
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/love_life-resized-600.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -491,10 +500,10 @@
 <div class="white-bg-album box blue boxshadown  ">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
 
+<div class="col-lg-6 mask-topb"> <a data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
+
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/album2/b1.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -511,10 +520,10 @@
 <div class="white-bg-album box blue boxshadown  ">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
 
+<div class="col-lg-6 mask-topb"> <a data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
+
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/item_img10.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -531,10 +540,10 @@
 <div class="white-bg-album box blue boxshadown  ">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
 
+<div class="col-lg-6 mask-topb"> <a data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
+
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/man.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -551,10 +560,10 @@
 <div class="white-bg-album box blue boxshadown  ">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
 
+<div class="col-lg-6 mask-topb"> <a data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
+
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/aoki.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -571,10 +580,10 @@
 <div class="white-bg-album box blue boxshadown  ">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
 
+<div class="col-lg-6 mask-topb"> <a data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
+
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/album2/b3.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -591,10 +600,10 @@
 <div class="white-bg-album box blue boxshadown  ">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
 
+<div class="col-lg-6 mask-topb"> <a data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
+
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/050037.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -611,10 +620,10 @@
 <div class="white-bg-album box blue boxshadown  ">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
 
+<div class="col-lg-6 mask-topb"> <a data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
+
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/bearb.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -631,10 +640,10 @@
 <div class="white-bg-album box blue boxshadown  ">
 <div class="portlet-body si-img view-first">
 <div class="mask-top">
-<div class="col-lg-12 mask-topa heart">
-<i class="icon-heart"></i><span>India Beauty</span>
-</div>
 
+<div class="col-lg-6 mask-topb"> <a data-toggle="modal" href="#edit-image"><i class="icon-pencil"></i></a>
+
+</div>
 </div>
 <div class="main-img-user "> <a class="hover-zomm" data-toggle="modal" href="#block-user"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/image7.jpg"></a>
 <div class="mask"> <a href="#long" data-toggle="modal" class="like"><i class="icon-heart-empty"></i></a> </div>
@@ -650,7 +659,6 @@
 </ul>
 </div>
 <!--end--> 
-
 </div>
 </div>
 </div>

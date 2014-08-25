@@ -9,7 +9,7 @@ class ProfileController extends Controller
 	public function accessRules() {
         return array(
             array('allow',
-            	'actions'=>array('index', 'addhearts', 'following', 'followers', 'about', 'albums', 'hearts', 'ranks'),
+            	'actions'=>array('index', 'addhearts', 'following', 'followers', 'about', 'albums', 'hearts', 'ranks','catwalk','friends'),
                 'users'=>array('*'),
             ),
             array('deny'),
@@ -113,34 +113,26 @@ class ProfileController extends Controller
 		}		 
 	}
 	
-	public function actionAbout() {
-		   
-			$url = Yii::app()->session['url'];
-			 
-			if (isset($url)) {
-				 
-				$user = Yii::app()->session['user_id'];
-				  
-				$mag_tags = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->findAll("hashtagsCategory.hashtags_category_name='Magzine' and t.user_id=$user");
-				
-				$design_tags = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->findAll("hashtagsCategory.hashtags_category_name='Design' and t.user_id=$user");
-				$shops_tags = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->findAll("hashtagsCategory.hashtags_category_name='Shops' and t.user_id=$user");
-				$styles_tags = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->findAll("hashtagsCategory.hashtags_category_name='StyleIcons' and t.user_id=$user");
-				$mtstyle_tags = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->findAll("hashtagsCategory.hashtags_category_name='MyStyle' and t.user_id=$user");
-				
-			$this->renderPartial('about', array('mag_tags'=>$mag_tags, 'design_tags'=>$design_tags,
-			'shops_tags'=>$shops_tags, 'styles_tags'=>$styles_tags, 'mtstyle_tags'=>$mtstyle_tags));	 
-				
-			} else{
-				 
-				 echo CJSON::encode(array('status'=>'failure','redirect'=>Yii::app()->homeUrl));
-                        // Yii::app()->end();
-				//$this->redirect(Yii::app()->homeUrl);	
-			}
+	public function actionAbout() 
+	{		   
+		/*$url = Yii::app()->session['url'];		 
+		if(isset($url)) {			 
+		$user = Yii::app()->session['user_id'];		  
+		$mag_tags = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->findAll("hashtagsCategory.hashtags_category_name='Magzine' and t.user_id=$user");		
+		$design_tags = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->findAll("hashtagsCategory.hashtags_category_name='Design' and t.user_id=$user");
+		$shops_tags = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->findAll("hashtagsCategory.hashtags_category_name='Shops' and t.user_id=$user");
+		$styles_tags = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->findAll("hashtagsCategory.hashtags_category_name='StyleIcons' and t.user_id=$user");
+		$mtstyle_tags = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->findAll("hashtagsCategory.hashtags_category_name='MyStyle' and t.user_id=$user");			
+		$this->renderPartial('about', array('mag_tags'=>$mag_tags, 'design_tags'=>$design_tags,
+		'shops_tags'=>$shops_tags, 'styles_tags'=>$styles_tags, 'mtstyle_tags'=>$mtstyle_tags));			
+		} else{			 
+			 echo CJSON::encode(array('status'=>'failure','redirect'=>Yii::app()->homeUrl));
+					// Yii::app()->end();
+			//$this->redirect(Yii::app()->homeUrl);	
+		} */		
+		$this->renderPartial('about');
 			
-			
-			
-		}	  
+	}	  
 	
 	public function actionError() {
 		$this->render('error');
@@ -150,69 +142,45 @@ class ProfileController extends Controller
 		$this->renderPartial('albums');
 	}
 	
-	public function actionRanks() {
-		  $url = Yii::app()->session['url'];
-			 
-			if (isset($url)) {
-				$access_user_id = Yii::app()->session['user_id'];
-				 
-				$criteria = new CDbCriteria();
-				 
-				$criteria->condition = 't.user_id = '.$access_user_id;
-				 
-				$hearts = Photos::model()->with('logPhotosCount')->findAll($criteria);
-				$ranks = UsersDetails::model()->find("user_id=$access_user_id");				
-				
-				 
-   				$this->renderPartial('rankings',array('model'=>$hearts, 'ranks'=>$ranks));
- 			 
- 			 
- 			 
-			} else {
-				//$this->redirect(Yii::app()->homeUrl);
-				echo CJSON::encode(array('status'=>'failure','redirect'=>Yii::app()->homeUrl));
-			}
-			
-			
+	public function actionRanks() 
+	{
+	  /*$url = Yii::app()->session['url'];			 
+		if (isset($url)) {
+			$access_user_id = Yii::app()->session['user_id'];			 
+			$criteria = new CDbCriteria();				 
+			$criteria->condition = 't.user_id = '.$access_user_id;				 
+			$hearts = Photos::model()->with('logPhotosCount')->findAll($criteria);
+			$ranks = UsersDetails::model()->find("user_id=$access_user_id");				 
+			$this->renderPartial('rankings',array('model'=>$hearts, 'ranks'=>$ranks)); 			 
+		} else {
+			//$this->redirect(Yii::app()->homeUrl);
+			echo CJSON::encode(array('status'=>'failure','redirect'=>Yii::app()->homeUrl));
+		} */		
+		$this->renderPartial('rankings');	
 		  
 	}
 	
 	 
-	public function actionHearts(){
-		 
-			$url = Yii::app()->session['url'];
-			 
-			if (isset($url)) {
-				
-				 
-				$access_user_id = Yii::app()->session['user_id'];		
-					 
-				 
-				$criteria = new CDbCriteria();
-				$criteria->offset = 0;
-				$criteria->limit = 2;
-				$criteria->condition = 't.user_id ='.$access_user_id;
-				 
-				$hearts = LogPhotosHearts::model()->with('user.userDetails','photos', 'photos.logPhotosComments', 'photos.logPhotosCount')->findAll($criteria);
-					
-					
-							
-				if (isset($hearts) && !empty($hearts)){
-					$this->renderPartial('hearts',array('model'=>$hearts));
-				}
-				else {
-					 echo CJSON::encode(array('status'=>'failure','redirect'=>Yii::app()->createUrl('profile/error')));
-				} 
-				
- 			 
-			} else {
-				echo CJSON::encode(array('status'=>'failure','redirect'=>Yii::app()->homeUrl));
+	public function actionHearts()
+	{		 
+		/*$url = Yii::app()->session['url'];		 
+		if (isset($url)) {			 
+			$access_user_id = Yii::app()->session['user_id'];			 
+			$criteria = new CDbCriteria();
+			$criteria->offset = 0;
+			$criteria->limit = 2;
+			$criteria->condition = 't.user_id ='.$access_user_id;			 
+			$hearts = LogPhotosHearts::model()->with('user.userDetails','photos', 'photos.logPhotosComments', 'photos.logPhotosCount')->findAll($criteria);	
+			if(isset($hearts) && !empty($hearts)){
+				$this->renderPartial('hearts',array('model'=>$hearts));
 			}
-			
-			
-		 
-		
-		
+			else {
+				 echo CJSON::encode(array('status'=>'failure','redirect'=>Yii::app()->createUrl('profile/error')));
+			}		 
+		} else {
+			echo CJSON::encode(array('status'=>'failure','redirect'=>Yii::app()->homeUrl));
+		}*/
+		$this->renderPartial('hearts');		
 	}
 
 	public function actionFollowing(){
@@ -223,6 +191,13 @@ class ProfileController extends Controller
 		$this->renderPartial('followers');
 	}
 
+	public function actionCatwalk(){
+		$this->renderPartial('catwalk');
+	}
+	
+	public function actionFriends(){
+		$this->renderPartial('friends');
+	}
 
 	public function actionAddHearts() {
 		

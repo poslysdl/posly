@@ -28,7 +28,7 @@ $(function () {
 });
 
 
-jQuery(document).ready(function() {   
+jQuery(document).ready(function() {  
  App.init(); // initlayout and core plugins
  App.initOWL();
  QuickSidebar.init(); 
