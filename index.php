@@ -1,4 +1,5 @@
 <?php
+ini_set('display_errors',0); //Comment This Line to see the PHP errors
 // change the following paths if necessary
 $yii=dirname(__FILE__).'/../framework/yii.php';
 $config=dirname(__FILE__).'/protected/config/main.php';

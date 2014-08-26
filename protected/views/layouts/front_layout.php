@@ -78,73 +78,7 @@
 <!-- END FOOTER --> 
 
 <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
-<?php if(!Yii::app()->user->isGuest)
-{
-?>	
 
-<script src='http://connect.facebook.net/en_US/all.js' type="text/javascript"></script>
- 
-<script type="text/javascript"> 
-      FB.init({appId: "<?php echo Yii::app()->params['fbid']; ?>", status: true, cookie: true});
-function readCookie(name) {
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
-    for(var i=0;i < ca.length;i++) {
-        var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1,c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-    }
-    return null;
-}
-      function postToFeed(url) {
-      	var auth="<?php if(Yii::app()->user->isGuest) echo '0'; else echo '1'; ?>";
-      	if(parseInt(auth)==1)
-      	{
-		var u=readCookie('purl');
-	 	$("body").find('.close').click();
-        // calling the API ...
-        var obj = {
-          method: 'feed',
-         // redirect_uri: 'YOUR URL HERE',
-          link: 'https://api.facebook.com/me/photos',
-          picture: u,
-          name: 'Posly.com',
-          //caption: '',
-          description: 'Posly is the largest social network.'
-        };
-
-        function callback(response) {
-    if (response && response['post_id']) {
-    	var id=readCookie('pid');
-    	var shareid=response['post_id'];
-    			$.ajax({
-					type: "POST",
-					url: "<?php echo Yii::app()->createUrl('/photo/sharecount'); ?>",
-					data: { id: id, shareid: shareid}
-					})
-					.done(function( msg ) {
-						if(msg=='ok')
-						 alert('Photo was shared successfully.');
-					});
-     
-    } else {
-      alert('Photo was not shared.');
-    }
-        }
-
-        FB.ui(obj, callback);
-        }
-        else
-        {
-			$('#share-pic').modal('hide');
-			$('#loginModal').modal('show');
-		}
-
-      }
-
-</script>
-
-<?php } ?>
 
 <!-- The template to display files available for download --> 
 

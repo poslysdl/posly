@@ -41,7 +41,7 @@ else
 	<ul class="dropdown-menu extended inbox">
 	<li>
 	<ul class="dropdown-menu-list scroller" style="height: 205px;">
-	<li> <a href="inbox.html?a=view"> <span class="photo"><img class="avatar-user-l img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar2.jpg" alt=""/></span> <span class="subject"> <span class="from">Lisa Wong</span> <span class="time">Just Now</span> </span> <span class="message"> Vivamus sed auctor nibh nibh auctor nibh congue </span> </a> </li>
+	<li> <a href="inbox.html?a=view"> <span class="photo"><img class="avatar-user-l img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar2.jpg" alt=""/></span> <span class="subject"> <span class="from">Lisa Wong</span> <span class="time">Just Now</span> </span> <span class="message"> Coming from TopNavigation widget </span> </a> </li>
 	<li> <a href="inbox.html?a=view"> <span class="photo"><img class="avatar-user-l img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar3.jpg" alt=""/></span> <span class="subject"> <span class="from">Richard Doe</span> <span class="time">16 mins</span> </span> <span class="message"> Vivamus sed congue nibh auctor nibh congue nibh. auctor nibh
 	auctor nibh... </span> </a> </li>
 	<li> <a href="inbox.html?a=view"> <span class="photo"><img class="avatar-user-l img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1.jpg" alt=""/></span> <span class="subject"> <span class="from">NY Nilson</span> <span class="time">2 hrs</span> </span> <span class="message"> Vivamus sed nibh auctor nibh congue nibh. auctor nibh
@@ -129,3 +129,73 @@ else
 </ul>
 
 <!-- END TOP NAVIGATION MENU --> 
+
+
+<?php if(!Yii::app()->user->isGuest)
+{
+//Yii::app()->params is in /protected/config/main.php, secret key is in application components in main.php
+?>	
+
+<script src='http://connect.facebook.net/en_US/all.js' type="text/javascript"></script>
+ 
+<script type="text/javascript"> 
+      FB.init({appId: "<?php echo Yii::app()->params['fbid']; ?>", status: true, cookie: true});
+function readCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+      function postToFeed(url) {
+      	var auth="<?php if(Yii::app()->user->isGuest) echo '0'; else echo '1'; ?>";
+      	if(parseInt(auth)==1)
+      	{
+		var u=readCookie('purl');
+	 	$("body").find('.close').click();
+        // calling the API ...
+        var obj = {
+          method: 'feed',
+         // redirect_uri: 'YOUR URL HERE',
+          link: 'https://api.facebook.com/me/photos',
+          picture: u,
+          name: 'Posly.com',
+          //caption: '',
+          description: 'Posly is the largest social network.'
+        };
+
+        function callback(response) {
+    if (response && response['post_id']) {
+    	var id=readCookie('pid');
+    	var shareid=response['post_id'];
+    			$.ajax({
+					type: "POST",
+					url: "<?php echo Yii::app()->createUrl('/photo/sharecount'); ?>",
+					data: { id: id, shareid: shareid}
+					})
+					.done(function( msg ) {
+						if(msg=='ok')
+						 alert('Photo was shared successfully.');
+					});
+     
+    } else {
+      alert('Photo was not shared.');
+    }
+        }
+
+        FB.ui(obj, callback);
+        }
+        else
+        {
+			$('#share-pic').modal('hide');
+			$('#loginModal').modal('show');
+		}
+
+      }
+
+</script>
+
+<?php } ?>

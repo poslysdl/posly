@@ -21,8 +21,8 @@ class CHybridAuth extends CApplicationComponent {
     
     public $config;
     public $showError=false;
-    public $enabled=true;
-    
+    public $enabled=true;   
+	
     private $_hybridAuth;
     private $_adapter;
     
@@ -154,8 +154,8 @@ class CHybridAuth extends CApplicationComponent {
         try{
             return $this->getAdapter($provider)->isUserConnected();
         }catch(Exception $e){
-            $this->_errorMessage($e);
-        }
+           $this->_errorMessage($e);		   
+        }		
     }
     
     public function logoutAdapter($provider){
@@ -178,7 +178,7 @@ class CHybridAuth extends CApplicationComponent {
         try{
             return $this->getAdapter($provider)->getUserProfile();
         }catch(Exception $e){
-            $this->_errorMessage($e);
+            $this->_errorMessage($e);			
         }
     }
     
@@ -220,7 +220,8 @@ class CHybridAuth extends CApplicationComponent {
         }
     }
     
-    private function _errorMessage($e){
+    private function _errorMessage($e)
+	{
         switch($e->getCode()){ 
             case 0 : $error = "Unspecified error."; break;
             case 1 : $error = "Hybriauth configuration error."; break;
@@ -233,15 +234,29 @@ class CHybridAuth extends CApplicationComponent {
             case 8 : $error = "Provider does not support this feature."; break;
         }
         if($this->showError){
-            $error .= "<br /><br /><b>Original error message:</b> " . $e->getMessage(); 
-            $error .= "<hr /><pre>Trace:<br />" . $e->getTraceAsString() . "</pre>"; 
-            echo $error;
+			$error .= "<br /><br /><b>Original error message:</b> " . $e->getMessage(); 
+			//$error .= "<hr /><pre>Trace:<br />" . $e->getTraceAsString() . "</pre>";  //It will display, filePath of the project
+			echo $error; //commented by SDL developers
+			$this->showErrorMsg();
         }
         $this->_errors=$error;
     }
     
     public function getErrors(){
         return $this->_errors;
+    }
+	
+	/*
+	Add By SDL developers, so that after Display of error
+	Automatically site redirects to Index page
+	*/
+	public function showErrorMsg(){       
+		sleep(8);		
+		$url = Yii::app()->homeUrl;
+		$str='<script type="text/javascript">
+		window.location="'.$url.'";
+		</script>';
+		echo $str;
     }
     
 }

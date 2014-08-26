@@ -60,12 +60,337 @@ class RegistrationController extends Controller
 		}
 		echo $socialUser;
 		Yii::app()->end();	
+	}	
+	
+	public function actionGetUrlName() 
+	{		
+		if(isset($_POST['value'])) 
+		{
+			$id = Yii::app()->user->id;
+			$val = $_POST['value'];
+			//$user = UsersDetails::model()->findAll('user_unique_url LIKE :match and user_id=:id', array(':match' => "%$val%", ":id"=>$id));			
+			//$user = UsersDetails::model()->find('user_unique_url LIKE :match', array(':match' => "%$val%"));
+			$user = UsersDetails::model()->find("user_unique_url = '$val'");			 
+		 	if (isset($user) && !empty($user)) {
+				if($user->user_id==$id)
+					echo false;
+				else	
+					echo true;
+			} else {
+				echo false;
+			} 			
+		}		 
+	}	
+	
+	public function actionIndex()
+	{
+		$this->layout='front_layout';
+		Yii::app()->clientScript->registerCoreScript('jquery'); 
+		$time=new CTimestamp;
+		$value=$time->getDate();
+		$end= $value[0];
+		$start= $end-86400000;
+		$criteria = new CDbCriteria();
+		$criteria->select = 't.* , (SELECT COUNT( * )*(0.3) FROM log_photos_comment a WHERE a.owner_id = t.user_id AND a.log_photos_comment_date BETWEEN '.$start.' AND '.$end.' ) + (SELECT COUNT( * )*(1) FROM log_photos_hearts b WHERE b.owner_id = t.user_id AND b.log_photos_hearts_date BETWEEN '.$start.' AND '.$end.' ) + (SELECT COUNT( * )*(1.1) FROM log_photos_share c WHERE c.owner_id = t.user_id AND c.log_photos_share_date BETWEEN '.$start.' AND '.$end.' ) AS totalcount';
+		$criteria->group = 't.user_id';
+		$criteria->order = 'totalcount DESC';
+		$criteria->limit=2;
+		$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);  
+		$this->render('firsttime', array('photos'=>$allusersphotos));	
 	}
 	
-    
+	/* This called when User First (1-st Step) Gets Registered (3-Step Process)
+		Through Email or FB
+		LastModifed : 26-Aug-14
+	*/
+	public function actionSettings() 
+	{
+		if(!Yii::app()->user->isGuest)
+		{
+			$this->layout='account_settings_layout';
+			$success = array();
+			$id = Yii::app()->user->id;
+			$users = Users::model()->find("user_id=$id");
+			$country = Countries::model()->findAll();
+			$model = Users::model()->with('userDetails', 'userNotification', 'userSocialPrivacy', 'userSecurity', 'userLanguage', 'userLocation', 'userEthnicity')->findByPk($id);
+			
+			if(isset($_POST['firstname'], $_POST['city'],$_POST['ethinicity'],$_POST['url'], $_POST['search'], $_POST['email'],$_POST['gender'],$_POST['dob'],$_POST['language'], $_POST['country'], $_POST['region'], $_POST['state'] )) 
+			{
+				/* UsersDetails model values */
+				$fn = trim($_POST['firstname']);
+				$ln = trim($_POST['lastname']);
+				$email = trim($_POST['email']);
+				$gender = $_POST['gender'];
+				$dob = trim($_POST['dob']);
+				$search = $_POST['search'];
+				$url = trim($_POST['url']);
+				/* UsersLanguage model values */
+				$language = trim($_POST['language']);
+				/* UsersLocation model values */
+				$country = trim($_POST['country']);
+				$region = trim($_POST['region']);
+				$state = trim($_POST['state']);
+				$city = trim($_POST['city']);
+				/* UsersEthinicity model values */
+				$ethinicity = trim($_POST['ethinicity']);
+				/* UsersSecurity model values */
+				$privacy = $_POST['privacy'];
+				/* UsersNotification model values */
+				$email_notify = $_POST['email_notify'];
+				$like_pic = $_POST['like_pic'];
+				$follow = $_POST['follow'];
+				$comment_pic = $_POST['comment_pic'];
+				$sent_msg = $_POST['sent_msg'];
+				$week_newsletter = $_POST['week_newsletter'];
+				$feature_announce = $_POST['feature_announce'];
+				$week_inspiration = $_POST['week_inspiration'];
+				$invi_feed = $_POST['invi_feed'];
+				$pic_of_week = $_POST['pic_of_week'];
+				$someone_fb = $_POST['someone_fb'];
+				/* UsersSocialPrivacy model values */
+				$fb_like = $_POST['fb_like'];
+				$fb_upload = $_POST['fb_upload'];
+				$fb_comment = $_POST['fb_comment'];
+				$fb_favour = $_POST['fb_favour'];
+				//userdetails saved in table : users_details
+				// if row is already there update the row with the values
+				if(isset($model->userDetails)) 
+				{
+					$row = UsersDetails::model()->updateByPk($model->userDetails->user_details_id, array(
+					"user_details_firstname"=>$fn, "user_details_lastname"=>$ln, "user_details_email"=>$email, "user_details_dob"=>$dob, "user_details_gender"=>$gender, "searchprivacy"=>$search, "user_unique_url"=>$url));
+					if($row) 
+						$success[] = true; 
+					else 
+						$success[] = false;
+
+				} 
+				else { 
+					//if the row is not there add a new row in the table
+					$userDetials = new UsersDetails;
+					$userDetials->user_details_firstname = $fn;
+					$userDetials->user_details_lastname = $ln;
+					$userDetials->user_details_email = $email;
+					$userDetials->user_details_dob = $dob;
+					$userDetials->user_details_gender = $gender;
+					$userDetials->searchprivacy = $search;
+					$userDetials->user_unique_url = $url;
+					if ($userDetials->save()) {
+					$users->user_details_id = $userDetials->user_details_id;
+					$users->save();
+					$success[] = true;
+					} else {
+					$success[] = false;
+					}
+				}
+				//whocansee is saved in table : users_security
+				if(isset($model->userSecurity)) {
+					$row = UsersSecurity::model()->updateByPk($model->userSecurity->users_security_id, array(
+					"whocansee"=>$privacy));
+					if($row) {
+						$success[] = true;	
+					} else {
+						$success[] = false;	
+					}
+				} 
+				else 
+				{
+					$usersSecurity = new UsersSecurity;
+					$usersSecurity->user_id = $id;	
+					$usersSecurity->whocansee = $privacy;
+					if ($usersSecurity->save()) {
+					$users->user_security_id = $usersSecurity->users_security_id;
+					$users->save();
+					$success[] = true;
+					} else {
+					$success[] = false;
+					}
+				}
+				
+				//EMAIL NOTIFICATIONS is saved in table : users_notification
+				if(isset($model->userNotification)) 
+				{
+					$row = UsersNotification::model()->updateByPk($model->userNotification->user_notification_id, array(
+					"user_notification_on"=>$email_notify, "user_like_pic"=>$like_pic, "user_follow_pic"=>$follow, "user_comment_pic"=>$comment_pic, "user_sent_msg"=>$sent_msg, "user_week_newsletter"=>$week_newsletter, "user_week_inspiration"=>$week_inspiration, "user_feature_announce"=>$feature_announce, "user_weekly_pic"=>$pic_of_week, "user_someone_fb"=>$someone_fb, "user_invitation_fb"=>$invi_feed));
+					if($row) {
+					$success[] = true;
+					} else {
+					$success[] = false;
+					}
+				} 
+				else 
+				{
+					$userNotify = new UsersNotification;
+					$userNotify->user_notification_on = $email_notify;
+					$userNotify->user_like_pic = $like_pic;
+					$userNotify->user_follow_pic = $follow;
+					$userNotify->user_comment_pic = $comment_pic;
+					$userNotify->user_sent_msg = $sent_msg;
+					$userNotify->user_week_newsletter = $week_newsletter;
+					$userNotify->user_week_inspiration = $week_inspiration;
+					$userNotify->user_feature_announce = $feature_announce;
+					$userNotify->user_weekly_pic = $pic_of_week;
+					$userNotify->user_someone_fb = $someone_fb;
+					$userNotify->user_invitation_fb = $invi_feed;
+					if ($userNotify->save(false)) {
+					$users->user_notification_id = $userNotify->user_notification_id;
+					$users->save();
+					$success[] = true;
+					} else {
+					$success[] = false;	
+					}
+				}
+
+				// SOCIAL SHARING details is saved in table : user_social_privacy	
+				if(isset($model->userSocialPrivacy)) 
+				{
+
+					$row = UserSocialPrivacy::model()->updateByPk($model->userSocialPrivacy->id, array(
+					"type"=>"Facebook", "user_i_like"=>$fb_like, "user_i_upload"=>$fb_upload, "user_comment"=>$fb_comment, "user_albums_fav"=>$fb_favour));
+					if($row) {
+					$success[] = true;
+					} else {
+					$success[] = false;
+					}
+				} 
+				else 
+				{
+					$usersSocialPrivacy = new UserSocialPrivacy;
+					$usersSocialPrivacy->user_id = $id;
+					$usersSocialPrivacy->type = 'Facebook';
+					$usersSocialPrivacy->user_i_like = $fb_like;
+					$usersSocialPrivacy->user_i_upload = $fb_upload;
+					$usersSocialPrivacy->user_comment = $fb_comment;
+					$usersSocialPrivacy->user_albums_fav = $fb_favour;
+					if ($usersSocialPrivacy->save()) {
+					$users->user_social_privacy_id = $usersSocialPrivacy->id;
+					$users->save();
+					$success[] = true;
+					} else {
+					$success[] = false;
+					}
+				}
+
+				//user language in saved in table : users_language
+				if (isset($model->userLanguage)) 
+				{
+					$row = UsersLanguage::model()->updateByPk($model->userLanguage->users_language_id, array(
+					"users_language_name"=>$language));
+					if ($row) {
+					$success[] = true;
+					} else {
+					$success[] = false;	
+					}
+				} 
+				else 
+				{
+					$userLanguage = new UsersLanguage;
+					$userLanguage->users_language_name = $language;
+					if ($userLanguage->save()) {
+					$users->user_language_id = $userLanguage->users_language_id;
+					if ($users->save()) {
+					$success[] = true;
+					} else {
+					$success[] = false;	
+					}
+					$success[] = true;
+					} else {
+					$success[] = false;	 
+					}
+				}
+				
+				//user location details are saved in table : users_location
+				if(isset($model->userLocation)) 
+				{
+					$row = UsersLocation::model()->updateByPk($model->userLocation->user_location_id, array(
+					"user_location_city"=>$city, "user_location_state"=>$state, "user_location_region"=>$region, "user_location_country"=>$country));
+					if ($row) {
+					$success[] = true;	 
+					} else {
+					$success[] = false;	 
+					}
+				} 
+				else
+				{
+					$usersLocation = new UsersLocation;
+					$usersLocation->user_location_city = $city;
+					$usersLocation->user_location_state = $state;
+					$usersLocation->user_location_region = $region;
+					$usersLocation->user_location_country = $country;
+					if ($usersLocation->save()) {
+					$users->user_location_id = $usersLocation->user_location_id;
+					if ($users->save()) {
+					$success[] = true;
+					} else{
+					$success[] = false;
+					}
+					$success[] = true;
+					} else {
+					$success[] = false;	 
+					}
+				}
+				
+				//user ethinicity is saved in the table : users_ethnicity 
+				if (isset($model->userEthnicity)) 
+				{
+					$row = UsersEthnicity::model()->updateByPk($model->userEthnicity->users_ethnicity_id, array("users_ethnicity_name"=>$ethinicity));
+					if ($row) {
+					$success[] = true;
+					} else {
+					$success[] = false;	
+					}
+				} 
+				else 
+				{
+					$usersEthinicity = new UsersEthnicity;
+					$usersEthinicity->users_ethnicity_name = $ethinicity;
+					if ($usersEthinicity->save()) {
+					$users->user_ethnicity_id = $usersEthinicity->users_ethnicity_id;
+					if ($users->save()) {
+					$success[] = true;
+					} else {
+					$success[] = false;	
+					}
+					$success[] = true;
+					} else {
+					$success[] =false;	
+					}
+				} 
+
+				if (in_array(false, $success)) {
+					echo false; 
+				} else {
+					echo true;	
+				}
+				//print_r($success);
+				Yii::app()->end();
+				return true;
+			}
+			$this->render('account-settings', array('model'=>$model, 'country'=>$country));
+		} 
+		else {
+			$this->redirect(Yii::app()->homeUrl);		
+		}
+	}
+	
+	/* This is (2nd Step) getting Started, 
+		After User First time Gets Registered (3-Step Process) Through Email or FB		
+		LastModifed : 26-Aug-14
+	*/
+	public function actionSecondstep()
+	{
+		$this->layout='account_settings_layout'; //secondstep_layout
+		$id=Yii::app()->user->id;
+		$user= Users::model()->with('userDetails')->findByPk($id);
+		$this->render('secondstep', array('user'=>$user));
+	}
+	
+	/* This is (3rd Step) getting Started, 
+		After User First time Gets Registered (3-Step Process) Through Email or FB		
+		LastModifed : 26-Aug-14
+	*/
 	public function actionThirdstep()
 	{
-		$this->layout='steps_layout';
+		$this->layout='account_settings_layout'; //steps_layout
 		$id=Yii::app()->user->id;
 		$c=Yii::app()->hybridAuth->getConnectedProviders();
 		if(!empty($c))
@@ -84,390 +409,17 @@ class RegistrationController extends Controller
 
 	}
 	
-	public function actionSecondstep()
-	{
-		$this->layout='secondstep_layout';
-		$id=Yii::app()->user->id;
-		$user= Users::model()->with('userDetails')->findByPk($id);
-		$this->render('secondstep', array('user'=>$user));
-	}
-	
-	
-	public function actionGetUrlName() {
-		
-		if (isset($_POST['value'])) {
-			$id = Yii::app()->user->id;
-			$val = $_POST['value'];
-			//$user = UsersDetails::model()->findAll('user_unique_url LIKE :match and user_id=:id', array(':match' => "%$val%", ":id"=>$id));
-			
-			//$user = UsersDetails::model()->find('user_unique_url LIKE :match', array(':match' => "%$val%"));
-			$user = UsersDetails::model()->find("user_unique_url = '$val'");
-			 
-		 	if (isset($user) && !empty($user)) {
-				if($user->user_id==$id)
-					echo false;
-				else	
-					echo true;
-			} else {
-				echo false;
-			}
- 			
-		}
-		 
-	}
-	
-	
-	
-	
-	
-		public function actionSettings() {
-		if (!Yii::app()->user->isGuest) {
-			
-			$this->layout='account_settings_layout';
-			$success = array();
-			
-			
-			$id = Yii::app()->user->id;
-			$users = Users::model()->find("user_id=$id");
-			$country = Countries::model()->findAll();
-			$model = Users::model()->with('userDetails', 'userNotification', 'userSocialPrivacy', 'userSecurity', 'userLanguage', 'userLocation', 'userEthnicity')->findByPk($id);
-		
-		
-		
-		 
-		// print_r($model); die();
-		 
-			
-		if(isset($_POST['firstname'], $_POST['city'],$_POST['ethinicity'],$_POST['url'], $_POST['search'], $_POST['email'],$_POST['gender'],$_POST['dob'],$_POST['language'], $_POST['country'], $_POST['region'], $_POST['state'] )) {
-		 
-			/* UsersDetails model values */
-			$fn = trim($_POST['firstname']);
-			$ln = trim($_POST['lastname']);
-			$email = trim($_POST['email']);
-			$gender = $_POST['gender'];
-			$dob = trim($_POST['dob']);
-			$search = $_POST['search'];
-			$url = trim($_POST['url']);
-			
-			/* UsersLanguage model values */
-			$language = trim($_POST['language']);
-			
-			
-			/* UsersLocation model values */
-			$country = trim($_POST['country']);
-			$region = trim($_POST['region']);
-			$state = trim($_POST['state']);
-			$city = trim($_POST['city']);
-			
-			/* UsersEthinicity model values */
-			$ethinicity = trim($_POST['ethinicity']);
-			
-			/* UsersSecurity model values */
-			$privacy = $_POST['privacy'];
-			
-			
-			/* UsersNotification model values */
-			$email_notify = $_POST['email_notify'];
-			$like_pic = $_POST['like_pic'];
-			$follow = $_POST['follow'];
-			$comment_pic = $_POST['comment_pic'];
-			$sent_msg = $_POST['sent_msg'];
-			$week_newsletter = $_POST['week_newsletter'];
-			$feature_announce = $_POST['feature_announce'];
-			$week_inspiration = $_POST['week_inspiration'];
-			$invi_feed = $_POST['invi_feed'];
-			$pic_of_week = $_POST['pic_of_week'];
-			$someone_fb = $_POST['someone_fb'];
-			
-			/* UsersSocialPrivacy model values */
-			$fb_like = $_POST['fb_like'];
-			$fb_upload = $_POST['fb_upload'];
-			$fb_comment = $_POST['fb_comment'];
-			$fb_favour = $_POST['fb_favour'];
-			
-			
-			 
-			
-		 
-		 	 
-			//userdetails saved in table : users_details
-			// if row is already there update the row with the values
-			if (isset($model->userDetails)) {
-				
-				$row = UsersDetails::model()->updateByPk($model->userDetails->user_details_id, array(
-				"user_details_firstname"=>$fn, "user_details_lastname"=>$ln, "user_details_email"=>$email, "user_details_dob"=>$dob, "user_details_gender"=>$gender, "searchprivacy"=>$search, "user_unique_url"=>$url));
-				if ($row) $success[] = true; else $success[] = false;
-
-			} else { //if the row is not there add a new row in the table
-				$userDetials = new UsersDetails;
-				$userDetials->user_details_firstname = $fn;
-				$userDetials->user_details_lastname = $ln;
-				$userDetials->user_details_email = $email;
-				$userDetials->user_details_dob = $dob;
-				$userDetials->user_details_gender = $gender;
-				$userDetials->searchprivacy = $search;
-				$userDetials->user_unique_url = $url;
-				if ($userDetials->save()) {
-					$users->user_details_id = $userDetials->user_details_id;
-					$users->save();
-					$success[] = true;
-				} else {
-					$success[] = false;
-				}
-			}
-			
-			
-			
-			
-			
-			 
-			
-			
-			
-			//whocansee is saved in table : users_security
-			if(isset($model->userSecurity)) {
-				
-				$row = UsersSecurity::model()->updateByPk($model->userSecurity->users_security_id, array(
-				"whocansee"=>$privacy));
-				 
-				if ($row) {
-					$success[] = true;	
-				} else {
-					$success[] = false;	
-				
-				}
-				
-			} else {
-				$usersSecurity = new UsersSecurity;
-				$usersSecurity->user_id = $id;	
-				$usersSecurity->whocansee = $privacy;
-				if ($usersSecurity->save()) {
-					$users->user_security_id = $usersSecurity->users_security_id;
-					$users->save();
-					$success[] = true;
-				} else {
-					$success[] = false;
-				}
-			}
-			 
-			 
-			
-			 
-			//EMAIL NOTIFICATIONS is saved in table : users_notification
-			if(isset($model->userNotification)) {
-				
-$row = UsersNotification::model()->updateByPk($model->userNotification->user_notification_id, array(
-				"user_notification_on"=>$email_notify, "user_like_pic"=>$like_pic, "user_follow_pic"=>$follow, "user_comment_pic"=>$comment_pic, "user_sent_msg"=>$sent_msg, "user_week_newsletter"=>$week_newsletter, "user_week_inspiration"=>$week_inspiration, "user_feature_announce"=>$feature_announce, "user_weekly_pic"=>$pic_of_week, "user_someone_fb"=>$someone_fb, "user_invitation_fb"=>$invi_feed));				
-				
-				 
-				if ($row) {
-					$success[] = true;
-				} else {
-					$success[] = false;
-				}
-				 
-			} else {
-				$userNotify = new UsersNotification;
-				$userNotify->user_notification_on = $email_notify;
-				$userNotify->user_like_pic = $like_pic;
-				$userNotify->user_follow_pic = $follow;
-				$userNotify->user_comment_pic = $comment_pic;
-				$userNotify->user_sent_msg = $sent_msg;
-				$userNotify->user_week_newsletter = $week_newsletter;
-				$userNotify->user_week_inspiration = $week_inspiration;
-				$userNotify->user_feature_announce = $feature_announce;
-				$userNotify->user_weekly_pic = $pic_of_week;
-				$userNotify->user_someone_fb = $someone_fb;
-				$userNotify->user_invitation_fb = $invi_feed;
-				if ($userNotify->save(false)) {
-					$users->user_notification_id = $userNotify->user_notification_id;
-					$users->save();
-					$success[] = true;
-				} else {
-					$success[] = false;	
-				}
-			}
-			
-			
-			 
-			
-			// SOCIAL SHARING details is saved in table : user_social_privacy	
-			if (isset($model->userSocialPrivacy)) {
-				
-	$row = UserSocialPrivacy::model()->updateByPk($model->userSocialPrivacy->id, array(
-				"type"=>"Facebook", "user_i_like"=>$fb_like, "user_i_upload"=>$fb_upload, "user_comment"=>$fb_comment, "user_albums_fav"=>$fb_favour));					
-				
-				 
-				if ($row) {
-					$success[] = true;
-				} else {
-					$success[] = false;
-					}
-				
-			} else {
-				$usersSocialPrivacy = new UserSocialPrivacy;
-				$usersSocialPrivacy->user_id = $id;
-				$usersSocialPrivacy->type = 'Facebook';
-				$usersSocialPrivacy->user_i_like = $fb_like;
-				$usersSocialPrivacy->user_i_upload = $fb_upload;
-				$usersSocialPrivacy->user_comment = $fb_comment;
-				$usersSocialPrivacy->user_albums_fav = $fb_favour;
-				if ($usersSocialPrivacy->save()) {
-					$users->user_social_privacy_id = $usersSocialPrivacy->id;
-					$users->save();
-					$success[] = true;
-				} else {
-					$success[] = false;
-				}
-				
-			}
-			
-			
-			
-			
-			//user language in saved in table : users_language
-			if (isset($model->userLanguage)) {
-				
-	$row = UsersLanguage::model()->updateByPk($model->userLanguage->users_language_id, array(
-				"users_language_name"=>$language));			
-				 
-				if ($row) {
-					$success[] = true;
-				} else {
-					$success[] = false;	
-				}
-			} else {
-				 $userLanguage = new UsersLanguage;
-				 $userLanguage->users_language_name = $language;
-				 if ($userLanguage->save()) {
-				 	$users->user_language_id = $userLanguage->users_language_id;
-					if ($users->save()) {
-						$success[] = true;
-					} else {
-						$success[] = false;	
-					}
-					$success[] = true;
-				 } else {
-					$success[] = false;	 
-				 }
-			}
-			 
-			//user location details are saved in table : users_location
-			if (isset($model->userLocation)) {
-	$row = UsersLocation::model()->updateByPk($model->userLocation->user_location_id, array(
-				"user_location_city"=>$city, "user_location_state"=>$state, "user_location_region"=>$region, "user_location_country"=>$country));					
-				
-				 
-				 if ($row) {
-					$success[] = true;	 
-				 } else {
-					$success[] = false;	 
-				 }
-				   
-			} else {
-				 $usersLocation = new UsersLocation;
-				 $usersLocation->user_location_city = $city;
-				 $usersLocation->user_location_state = $state;
-				 $usersLocation->user_location_region = $region;
-				 $usersLocation->user_location_country = $country;
-				 if ($usersLocation->save()) {
-				 	$users->user_location_id = $usersLocation->user_location_id;
-					if ($users->save()) {
-												$success[] = true;
-					} else{
-												$success[] = false;
-					}
-											$success[] = true;
-				 } else {
-											$success[] = false;	 
-				 }
-			}
-			 
-			 
-			 
-			 
-			//user ethinicity is saved in the table : users_ethnicity 
-			if (isset($model->userEthnicity)) {
-				
-				$row = UsersEthnicity::model()->updateByPk($model->userEthnicity->users_ethnicity_id, array("users_ethnicity_name"=>$ethinicity));
-				
-				 
- 				if ($row) {
-				 							$success[] = true;
-				} else {
-											$success[] = false;	
-				}
-			} else {
-				$usersEthinicity = new UsersEthnicity;
-				 
-				$usersEthinicity->users_ethnicity_name = $ethinicity;
-				if ($usersEthinicity->save()) {
-					$users->user_ethnicity_id = $usersEthinicity->users_ethnicity_id;
-					if ($users->save()) {
-												$success[] = true;
-					} else {
-												$success[] = false;	
-					}
-											$success[] = true;
-				} else {
-											$success[] =false;	
-				}
-				 
-			} 
-			 
-			 if (in_array(false, $success)) {
-					echo false; 
-				} else {
-				echo true;	
-				}
-			 //print_r($success);
-			
-			Yii::app()->end();
-			
-			
-			
-			return true;
-			
-		}  
-					 
-		 
-			 
-			$this->render('account-settings', array('model'=>$model, 'country'=>$country));
-		
-		} else {
-			$this->redirect(Yii::app()->homeUrl);		
-		}
-	}
-	
-	
-	
-	
-	
-	
+	/* This is (4th Step) getting Started, 
+		After User First time Gets Registered (3-Step Process) Through Email or FB		
+		LastModifed : 26-Aug-14
+	*/
 	public function actionFourthstep()
 	{
-		$this->layout='steps_layout';
+		$this->layout='account_settings_layout'; //steps_layout
 		$id=Yii::app()->user->id;
 		$user= Users::model()->with('userDetails')->findByPk($id);
 		$this->render('thirdstep', array('user'=>$user));
-	}
-	
-	public function actionIndex()
-	{
-		$this->layout='front_layout';
-		Yii::app()->clientScript->registerCoreScript('jquery'); 
-		$time=new CTimestamp;
-		$value=$time->getDate();
-		$end= $value[0];
-		$start= $end-86400000;
-		$criteria = new CDbCriteria();
-		$criteria->select = 't.* , (SELECT COUNT( * )*(0.3) FROM log_photos_comment a WHERE a.owner_id = t.user_id AND a.log_photos_comment_date BETWEEN '.$start.' AND '.$end.' ) + (SELECT COUNT( * )*(1) FROM log_photos_hearts b WHERE b.owner_id = t.user_id AND b.log_photos_hearts_date BETWEEN '.$start.' AND '.$end.' ) + (SELECT COUNT( * )*(1.1) FROM log_photos_share c WHERE c.owner_id = t.user_id AND c.log_photos_share_date BETWEEN '.$start.' AND '.$end.' ) AS totalcount';
-		$criteria->group = 't.user_id';
-		$criteria->order = 'totalcount DESC';
-		$criteria->limit=2;
-		$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);  
-		$this->render('firsttime', array('photos'=>$allusersphotos));	
-	}
+	}	
 	
 	public function actionSlogan()
 	{
@@ -503,20 +455,7 @@ $row = UsersNotification::model()->updateByPk($model->userNotification->user_not
 		
 		$this->render('slogan', array('model'=>$model));
 		
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	}	
 	
 	
 	public function actionAddmagazines()
@@ -580,22 +519,7 @@ $row = UsersNotification::model()->updateByPk($model->userNotification->user_not
 			echo CJavaScript::jsonEncode(array('status'=>'false'));
 		}
 		Yii::app()->end();
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	}	
 	
 	public function actionDeletemagazines()
 	{
@@ -619,18 +543,7 @@ $row = UsersNotification::model()->updateByPk($model->userNotification->user_not
 			 
 		}
 		Yii::app()->end();
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	}	
 	
 	public function actionAdddesigners()
 	{
@@ -693,7 +606,6 @@ $row = UsersNotification::model()->updateByPk($model->userNotification->user_not
 	}
 	
 	
-	
 	public function actionDeletedesigners()
 	{
 		
@@ -716,9 +628,6 @@ $row = UsersNotification::model()->updateByPk($model->userNotification->user_not
 		} 
 		Yii::app()->end();
 	}
-	
-	
-	
 	
 	public function actionAddshops()
 	{
@@ -778,11 +687,7 @@ $row = UsersNotification::model()->updateByPk($model->userNotification->user_not
 			echo CJavaScript::jsonEncode(array('status'=>'false'));
 		}
 		Yii::app()->end();
-	}
-	
-	
-	
-	
+	}	
 	
 	public function actionDeleteshops()
 	{
@@ -813,19 +718,7 @@ $row = UsersNotification::model()->updateByPk($model->userNotification->user_not
 			
 		}
 		Yii::app()->end();
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	}	
 	
 	public function actionAddstyles()
 	{
@@ -918,14 +811,9 @@ $row = UsersNotification::model()->updateByPk($model->userNotification->user_not
 			
 		}
 		Yii::app()->end();
-	}
+	}	
 	
-	
-	
-	
-	
-	
-		public function actionAddmystyles()
+	public function actionAddmystyles()
 	{
 		if(isset($_POST['name']) && $_POST['name']!='' && $_POST['name']!=NULL)
 		{
@@ -943,15 +831,12 @@ $row = UsersNotification::model()->updateByPk($model->userNotification->user_not
 				$category_name = new HashtagsCategory;
 				$category_name->hashtags_category_name = 'MyStyle';	
 				$category_name->save(false);
-			}
-			
+			}			
 			 
 			$userId = Yii::app()->user->id; 
 			$catname = $category_name->hashtags_category_name;
 			
-			$tagfind = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->find("hashtags.hashtags_name='$name' and hashtags.hashtags_category_id='$category_name->hashtags_category_id' and t.user_id=$userId");
-			
-			 
+			$tagfind = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->find("hashtags.hashtags_name='$name' and hashtags.hashtags_category_id='$category_name->hashtags_category_id' and t.user_id=$userId");			 
 			 
 			if (!isset($tagfind)) {
 				$hastag = Hashtags::model()->with('hashtagsCategory')->find("t.hashtags_name='$name' and hashtagsCategory.hashtags_category_id='$category_name->hashtags_category_id'");

@@ -5,6 +5,23 @@
 
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
+
+$_SERVER['SERVER_ADDR']; //127.0.0.1
+if($_SERVER['SERVER_ADDR']=='127.0.0.1'){
+	$FB_APPId = '277829039091254';
+	$FB_SECRETKey = "7291db28e16d2ecddb40a9e8e00e17e4";
+	$DB_USERNAME = 'root';
+	$DB_PASSWORD = '';
+	$Base_URL = 'http://localhost/projects/posly_v2/posly/index.php/user/hybridauth/endpoint';
+} else{
+	$FB_APPId = '508534549216916';
+	$FB_SECRETKey = "b3400b3da3b05ad469ee5ba2cc2d289e";
+	$DB_USERNAME = 'root';
+	$DB_PASSWORD = '';
+	$Base_URL = 'http://localhost/posly/index.php/user/hybridauth/endpoint';
+}
+//** Above code added, to change credentials according to live & developement server
+
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'posly.com',
@@ -39,7 +56,7 @@ return array(
             'class'=>'ext.widgets.hybridAuth.CHybridAuth',
             'enabled'=>true, // enable or disable this component
             'config'=>array(
-                 "base_url" => "http://localhost/projects/posly_v2/posly/index.php/user/hybridauth/endpoint", 
+                 "base_url" => $Base_URL, 
                  "providers" => array(
                        "Google" => array(
                             "enabled" => false,
@@ -47,7 +64,7 @@ return array(
                         ),
                        "Facebook" => array(
                             "enabled" => true,
-                            "keys" => array("id" => "508534549216916", "secret" => "b3400b3da3b05ad469ee5ba2cc2d289e"),
+                            "keys" => array("id" => $FB_APPId, "secret" => $FB_SECRETKey),
                         ),
                        "Twitter" => array(
                             "enabled" => false,
@@ -90,10 +107,10 @@ return array(
 		'db'=>array(
 			'connectionString' => 'mysql:host=localhost;dbname=newposly',
 			'emulatePrepare' => true,
-			'username' => 'root',
+			'username' => $DB_USERNAME,
 			// uncomment enableParamLogging to Debug query
 			//'enableParamLogging' => true,
-			'password' => '',
+			'password' => $DB_PASSWORD,
 			'charset' => 'utf8',
 		),
 		
