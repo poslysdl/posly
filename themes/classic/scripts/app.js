@@ -868,9 +868,9 @@ $(window).bind('scroll', function(){ //when the user is scrolling...
         },
 
 
-//halde carousel mod
+		//halde carousel mod
 
- initOWL: function () {
+		initOWL: function () {
             $(".owl-carousel6-brands").owlCarousel({
                 pagination: false,
                 navigation: true,
@@ -908,20 +908,12 @@ $(window).bind('scroll', function(){ //when the user is scrolling...
 				dotData:true,
 				autoHeight:true,
 				lazyLoad:true,
-            });
-
-          
+            });         
 
             
         },
 
-        
-
-
-
-//Handle notification function like fb.
-
-
+		//Handle notification function like fb.
         // wrapper function to scroll(focus) to an element
         scrollTo: function (el, offeset) {
             pos = (el && el.size() > 0) ? el.offset().top : 0;
@@ -929,7 +921,6 @@ $(window).bind('scroll', function(){ //when the user is scrolling...
                 scrollTop: pos + (offeset ? offeset : 0)
             }, 'slow');
         },
-
 
         // function to scroll to the top
         scrollTop: function () {

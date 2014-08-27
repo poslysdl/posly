@@ -377,56 +377,67 @@ class SiteController extends Controller
 	}
 
 	/**
-	 * Displays the register page
-	 */
+	* Displays the Register Modal window - SignUp
+	* Last Modified:27-Aug-14
+	*/
 	public function actionRegister()
 	{
 		$model=new RegisterForm;
-
 		// collect user input data
 		if(isset($_POST['RegisterForm']))
 		{
-				 $model->attributes=$_POST['RegisterForm'];
-                    $valid=$model->validate();            
-                    if($valid){
-                    	$u=new Users;
-                    	$ud=new UsersDetails;
-                    	$ud->user_details_firstname=$model->firstname;
-                    	$ud->user_details_lastname=$model->lastname;
-                    	$ud->user_details_email=$model->email;
-                    	$ud->user_details_password=md5($model->password);
-                    	if($ud->save())
-                    	{
-							$u->user_details_id=$ud->user_details_id;
-							if($u->save())
-							{
-								$updateud=UsersDetails::model()->findByPk($ud->user_details_id);
-								$updateud->user_id=$u->user_id;
-								$updateud->save();
-								$model->login();						
-		                       //do anything here
-		                        $path=$this->createAbsoluteUrl('/registration/settings');
-		                         echo CJSON::encode(array(
-		                              'status'=>'success',
-		                              'returnUrl'=>$path,
-		                         ));
-		                     
-							}
-							
-						}
-                    	   Yii::app()->end();
-                        }
-                        else{
-                            $error = CActiveForm::validate($model);
-                            if($error!='[]')
-                                echo $error;
-                            Yii::app()->end();
-                        }
+			$model->attributes=$_POST['RegisterForm'];
+			$valid=$model->validate();            
+			if($valid)
+			{
+				$u=new Users;
+				$ud=new UsersDetails;
+				$ud->user_details_firstname=$model->firstname;
+				$ud->user_details_lastname=$model->lastname;
+				$ud->user_details_email=$model->email;
+				$ud->user_details_password=md5($model->password);
+				
+				if($ud->save())
+				{
+					$u->user_details_id=$ud->user_details_id;
+					if($u->save())
+					{
+						$updateud=UsersDetails::model()->findByPk($ud->user_details_id);
+						$updateud->user_id=$u->user_id;
+						$updateud->save();
+						$model->login();						
+					   //do anything here
+						$path=$this->createAbsoluteUrl('/registration/settings');
+						echo CJSON::encode(array(
+							  'status'=>'success',
+							  'returnUrl'=>$path,
+						));					 
+					}					
+				}
+				Yii::app()->end();
+			}
+			else{
+				$error = CActiveForm::validate($model);
+				if($error!='[]')
+					echo $error;
+				Yii::app()->end();
+			}
 		}
 		// display the login form
 		$this->render('register',array('model'=>$model));
 	}
 
+	/**
+	 * Terms of service Page
+	 * Last Modified: 27-Aug-14
+	 */
+	public function actionTermsofservice()
+	{
+		$this->layout='front_layout';
+		$hash_tags = $this->actionHashtaglist(); //Get Hash Tags Listings for sidebar		
+		$this->render('termsofservice', array('hash_tags'=>$hash_tags));
+	}
+	
 	/**
 	 * Logs out the current user and redirect to homepage.
 	 */

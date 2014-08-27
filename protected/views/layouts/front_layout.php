@@ -278,7 +278,7 @@ if(Yii::app()->user->isGuest)
 	$model=new LoginForm;
 $this->renderPartial('//site/login', array('model'=>$model)); //to display SignIn Email Modal window
 	$model=new RegisterForm;
-$this->renderPartial('//site/register', array('model'=>$model));
+$this->renderPartial('//site/register', array('model'=>$model)); //to display SignUp By Email Modal window
 }
 
 ?>

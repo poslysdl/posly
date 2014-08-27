@@ -87,71 +87,14 @@ if(!isset($menulink))
 	}
 	?>
 	</div>
-    <!--Modal Box img-zoom END --> 
-	
-    <!--modal sign up-->
-		<div class="modal fade modal-dialog modal-sign-up" id="sign-up" tabindex="-1" data-focus-on="input:first" aria-hidden="true">
-		<div class="modal-content">
-		<div class="modal-body"> 
-		<!-- BEGIN LOGIN FORM -->
-		<form class="reg-form" action="#" method="post">
-		<h3 class="form-title">SIGN UP WITH EMAIL</h3>
-		<div class="form-group">
-		<label class="control-label visible-ie8 visible-ie9">Your Name</label>
-		<div class="input-icon"> <i class="icon-user"></i>
-		<input class="form-control placeholder-no-fix" type="text" data-tabindex="1" placeholder="Your Name" name="fullname"/>
-		</div>
-		</div>
-		<div class="form-group">
-		<label class="control-label visible-ie8 visible-ie9">Please choose a Username</label>
-		<div class="input-icon"> <i class="icon-user"></i>
-		<input class="form-control placeholder-no-fix" type="text" data-tabindex="2" placeholder="Your Name" name="fullname"/>
-		</div>
-		</div>
-		<div class="form-group">
-		<label class="control-label visible-ie8 visible-ie9">Email</label>
-		<div class="input-icon"> <i class="icon-envelope"></i>
-		<input class="form-control placeholder-no-fix" type="text" placeholder="Email " name="Email"/>
-		</div>
-		</div>
-		<div class="form-group endform"> 
-		<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-		<label class="control-label visible-ie8 visible-ie9">Password</label>
-		<div class="input-icon"> <i class="icon-key"></i>
-		<input class="form-control placeholder-no-fix" type="text" placeholder="Password" name="password"/>
-		</div>
-		</div>
-		</form>
-		<!-- END LOGIN FORM --> 
-		</div>
-		<div class="modal-div">
-		<div class="divider"></div>
-		</div>
-		<div class="modal-footer">
-		<label> By creating an account, 
-		you confirm that you have read and 
-		agree with the <a href="#"> Terms of Service </a> </label>
-		<button type="button" class="btn blue"  data-dismiss="modal">Sign Up</button>
-		</div>
-		</div>
-		<!-- /.modal-content --> 
-		<!-- /.modal-dialog --> 
-		</div>
-    <!--end modal sign up-->
+    <!--Modal Box img-zoom END -->    
       
 	<div id="country-list" class="modal fade modal-dialog country-list" tabindex="-1" aria-hidden="true">
 		<?php $this->widget('application.components.AllCountries', array(
 		'allcountries' => array('data'=>''))); ?> <!--Browse All Countries Modal POPUP Window -->
-	</div>
-      
-    <!-- /.modal share big images --> 
-      
-	<!-- Modal Box img-zoom -->
-	 
-    <!--end- Modal Box img-zoom --> 
-      
-   </div>
-  </div>
+	</div>         
+</div>
+</div>
   
   
 	<!-- BEGIN QUICK SIDEBAR MENU MOBILE -->
