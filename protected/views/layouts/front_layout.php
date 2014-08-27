@@ -78,68 +78,43 @@
 <!-- END FOOTER --> 
 
 <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
-
-
-<!-- The template to display files available for download --> 
-
-<!-- effect item --> 
-
 <!-- BEGIN CORE PLUGINS --> 
+<!--[if lt IE 9]>
+<script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/respond.min.js"></script>
+<script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/excanvas.min.js"></script>
+   
+<![endif]--> 
 
+<!--[if IE]>
+   <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/customie.css" rel="stylesheet" type="text/css"/>
+   <![endif]--> 
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/jquery-1.11.0.min.js" type="text/javascript"></script> 
-
-<!--<script src="<?php //echo Yii::app()->theme->baseUrl; ?>/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script> -->
-
+<script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script> 
 <!-- IMPORTANT! Load jquery-ui-1.10.3.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip --> 
-
-<!--animation --> 
-
-<!--<script src="<?php //echo Yii::app()->theme->baseUrl; ?>/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script> -->
-
+<!--animation -->
+<script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script> 
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script> 
-<script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript" ></script>
-<script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-<!-- slimScroll is a small jQuery plugin that transforms any div into a scrollable area with a nice scrollbar - similar to the one Facebook and Google -->
-
-<!--<script src="<?php //echo Yii::app()->theme->baseUrl; ?>/plugins/jquery.blockui.min.js" type="text/javascript"></script> -->
-
+<script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript" ></script> 
+<script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script> 
+<script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/jquery.blockui.min.js" type="text/javascript"></script> 
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/jquery.cookie.min.js" type="text/javascript"></script> 
-
-<!--<script src="<?php //echo Yii::app()->theme->baseUrl; ?>/plugins/uniform/jquery.uniform.min.js" type="text/javascript" ></script>-->
-<!--<script src="<?php //echo Yii::app()->theme->baseUrl; ?>/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script> -->
-
+<script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/uniform/jquery.uniform.min.js" type="text/javascript" ></script> 
+<script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script> 
 <!-- END CORE PLUGINS --> 
 <!-- BEGIN PAGE LEVEL PLUGINS --> 
-
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/owl-carousel/owl.carousel.min.js" type="text/javascript"></script> 
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/bootstrap-modal/js/bootstrap-modalmanager.js" type="text/javascript" ></script> 
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/bootstrap-modal/js/bootstrap-modal.js" type="text/javascript" ></script> 
 <!-- END PAGE LEVEL PLUGINS --> 
-
 <!-- END PAGE LEVEL PLUGINS --> 
 <!-- BEGIN PAGE LEVEL SCRIPTS --> 
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/scripts/app.js" type="text/javascript"></script> 
-<script src="<?php echo Yii::app()->theme->baseUrl; ?>/scripts/quick-sidebar.js" type="text/javascript"></script>
-<script src="<?php echo Yii::app()->theme->baseUrl; ?>/scripts/ui-extended-modals.js"></script> 
-
+<script src="<?php echo Yii::app()->theme->baseUrl; ?>/scripts/quick-sidebar.js" type="text/javascript"></script> 
+<script src="<?php echo Yii::app()->theme->baseUrl; ?>/scripts/ui-extended-modals.js"></script>
 <!-- END PAGE LEVEL SCRIPTS --> 
-
-<!--FILE Upload--> 
-<!-- END PAGE LEVEL PLUGINS--> 
-<!-- BEGIN:File Upload Plugin JS files--> 
-<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
-<!--<script src="<?php //echo Yii::app()->theme->baseUrl; ?>/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>-->
-<!-- The Templates plugin is included to render the upload/download listings --> 
-<!--<script src="<?php //echo Yii::app()->theme->baseUrl; ?>/plugins/jquery-file-upload/js/jquery.iframe-transport.js"></script> -->
-<!-- The basic File Upload plugin --> 
-<!--<script src="<?php //echo Yii::app()->theme->baseUrl; ?>/plugins/jquery-file-upload/js/jquery.fileupload.js"></script> -->
-<!-- The File Upload processing plugin --> 
-<!--END FILE Upload -->
-
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/scripts/poslyfunctions.js"></script> <!---Important JS Functions mainly for PHP developers --->
 
 <script>
-
 var posWas; 
 $(window).bind('scroll', function(){ //when the user is scrolling...
 	var pos = $(window).scrollTop(); //position of the scrollbar	
@@ -269,6 +244,14 @@ function showUsersActivities(){
 }
 
 showUsersActivities();
+
+//** Very Important To Initialize Plugins
+jQuery(document).ready(function() {  
+ App.init(); // initlayout and core plugins
+ App.initOWL();
+ QuickSidebar.init(); 
+ 
+});
 </script> 
 
 <!-- END JAVASCRIPTS -->

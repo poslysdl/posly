@@ -395,8 +395,7 @@ class SiteController extends Controller
 				$ud->user_details_firstname=$model->firstname;
 				$ud->user_details_lastname=$model->lastname;
 				$ud->user_details_email=$model->email;
-				$ud->user_details_password=md5($model->password);
-				
+				$ud->user_details_password=md5($model->password);				
 				if($ud->save())
 				{
 					$u->user_details_id=$ud->user_details_id;
@@ -415,12 +414,16 @@ class SiteController extends Controller
 					}					
 				}
 				Yii::app()->end();
-			}
+			}			
 			else{
 				$error = CActiveForm::validate($model);
 				if($error!='[]')
 					echo $error;
-				Yii::app()->end();
+				echo CJSON::encode(array(
+					'status'=>'success',
+					'returnUrl'=>$path,
+				));	
+				Yii::app()->end();	
 			}
 		}
 		// display the login form
@@ -439,6 +442,21 @@ class SiteController extends Controller
 	}
 	
 	/**
+	 * This user define Ajax function to check Email exits in DB or Not
+	 * Last Modified: 27-Aug-14
+	 */
+	public function actionEmailunique()
+	{
+		$email = $_GET['email'];
+		$isexits = false;
+		$check=UsersDetails::model()->find("user_details_email='$email'");
+		if(isset($check))				
+			$isexits = true; //This email already used.
+		echo $isexits;
+		Yii::app()->end();
+	}
+	
+	/**
 	 * Logs out the current user and redirect to homepage.
 	 */
 	public function actionLogout()
@@ -452,7 +470,8 @@ class SiteController extends Controller
 	
 	/**
 		This user define Ajax function is used to return the html for rendering of
-		user's Activities List at Sidebar.		
+		user's Activities List at Sidebar.
+		Last Modified:20-Aug-14
 	*/
 	public function actionShowusersactivities()
 	{	

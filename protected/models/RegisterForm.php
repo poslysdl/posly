@@ -27,7 +27,7 @@ class RegisterForm extends CFormModel
 			array('firstname, lastname, email, password, re_password', 'required'),
 			array('email', 'email'),
 			array('email', 'checkunique'),
-            array('password, re_password', 'length', 'min'=>6, 'max'=>40),
+            array('password, re_password', 'length', 'min'=>6, 'max'=>15),
             array('re_password', 'compare', 'compareAttribute'=>'password'),
 		);
 	}

@@ -27,14 +27,6 @@ $(function () {
 	*/
 });
 
-
-jQuery(document).ready(function() {  
- App.init(); // initlayout and core plugins
- App.initOWL();
- QuickSidebar.init(); 
- 
-});
-
 // on click of image in carousel in Cart, show related comments & likes
 function showcartComments(elmn){
 	photoid = $(elmn).attr('photo_id');
@@ -235,4 +227,69 @@ function reload_js() {
 	var src = '/plugins/owl-carousel/owl.carousel.min.js';
     $('script[src="' + src + '"]').remove();
     $('<script>').attr('src', src).appendTo('head');
+}
+
+/* Used to check Uniqueness of EmailId and others at SignUp
+Controller - SiteController, actionRegister
+TemplateFile - /views/site/register.php
+*/
+function checkSignUp(formid,elm)
+{	
+	var pass='1';
+	var haserror='0';
+	$('.errorMessage').html('');
+	$('.errorMessage').show();	
+	if($('#RegisterForm_firstname').val()==''){
+		$('#RegisterForm_firstname_em').html('First Name cannot be blank.');
+		haserror='1';
+	}
+	if($('#RegisterForm_lastname').val()==''){
+		$('#RegisterForm_lastname_em').html('Last Name cannot be blank.');
+		haserror='1';
+	}
+	if($('#RegisterForm_email').val()==''){
+		$('#RegisterForm_email_em').html('Email cannot be blank.');
+		haserror='1';
+	}
+	if($('#RegisterForm_password').val()==''){
+		$('#RegisterForm_password_em').html('Password cannot be blank.');
+		pass='0';
+		haserror='1';
+	}
+	if($('#RegisterForm_re_password').val()==''){
+		$('#RegisterForm_re_password_em').html('Confirm Password cannot be blank.');
+		pass='0';
+		haserror='1';
+	}
+	if(pass=='1'){
+		if($('#RegisterForm_password').val()!=$('#RegisterForm_re_password').val()){
+			$('#RegisterForm_re_password_em').html('Confirm Password must be repeated exactly.');			
+			return false;
+		}
+	}
+	//to check Email
+	if($('#RegisterForm_email').val()!='')
+	{	var email = $('#RegisterForm_email').val();
+		if(validateEmail(email))
+		{	//check Email uniqueness
+			var url = $(elm).attr('data-url');
+			var url=url+'?email='+email;
+			$.get(url,function(data){
+				if(data){
+				$('#RegisterForm_email_em').html('This email already used');
+				haserror='1';
+				}
+			});
+		} else{
+			$('#RegisterForm_email_em').html('Enter Valid Email Id');
+			haserror='1';
+		}
+	}
+	if(haserror=='1')
+	return false;
+}
+
+function validateEmail(email) {
+var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+return re.test(email);
 }
