@@ -30,15 +30,17 @@ class SiteController extends Controller
 		if(isset($_GET['act']))
 		{
 			if($_GET['act']=='index')
-			{
+			{	
 				$time=new CTimestamp;
 				$value=$time->getDate();
 				$end= $value[0];
 				$start= $end-86400000;
 				$criteria = new CDbCriteria();
-				$criteria->select = 't.* , (SELECT COUNT( * )*(0.3) FROM log_photos_comment a WHERE a.owner_id = t.user_id AND a.log_photos_comment_date BETWEEN '.$start.' AND '.$end.' ) + (SELECT COUNT( * )*(1) FROM log_photos_hearts b WHERE b.owner_id = t.user_id AND b.log_photos_hearts_date BETWEEN '.$start.' AND '.$end.' ) + (SELECT COUNT( * )*(1.1) FROM log_photos_share c WHERE c.owner_id = t.user_id AND c.log_photos_share_date BETWEEN '.$start.' AND '.$end.' ) AS totalcount';
-				if(Yii::app()->user->isGuest)
+				$criteria->select = 't.* , (SELECT COUNT( * )*(0.3) FROM log_photos_comment a WHERE a.owner_id = t.user_id AND a.log_photos_comment_date BETWEEN '.$start.' AND '.$end.' ) + (SELECT COUNT( * )*(1) FROM log_photos_hearts b WHERE b.owner_id = t.user_id AND b.log_photos_hearts_date BETWEEN '.$start.' AND '.$end.' ) + (SELECT COUNT( * )*(1.1) FROM log_photos_share c WHERE c.owner_id = t.user_id AND c.log_photos_share_date BETWEEN '.$start.' AND '.$end.' ) AS totalcount';			
+				if(Yii::app()->user->isGuest){
+					if(isset($_GET['pg']) && $_GET['pg']=="newsfeed")
 					$criteria->condition = 'userDetails.user_unique_url = "poslyadmin"';
+				}
 				$criteria->group = 't.user_id';
 				$criteria->order = 'totalcount DESC';
 				
@@ -48,8 +50,7 @@ class SiteController extends Controller
 				} else{
 					$criteria->limit = $_GET['l']-2;
 					$criteria->offset = $_GET['l'];
-				}
-				
+				}				
 				$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);		
 				$this->renderPartial('somemore', array('photos'=>$allusersphotos));
 			}

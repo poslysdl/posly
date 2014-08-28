@@ -4,7 +4,7 @@ class NewsFeedController extends Controller
 {
 	public function actionIndex()
 	{
-		$this->layout='front_layout';
+		$this->layout='newsfeed_layout';
 		Yii::app()->clientScript->registerCoreScript('jquery'); 
 		$time=new CTimestamp;
 		$value=$time->getDate();
