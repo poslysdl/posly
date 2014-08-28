@@ -16,7 +16,7 @@ $newmem_class = ($menulink=='newmember')?'active':'';
 		<!--hidden-xs hidden-small --to hide the div at Mobile Resolution -->
 		<div class="list-sub hidden-xs hidden-small">		
 		<a href="<?php echo Yii::app()->createUrl("/topmembers"); ?>" class="ma-den hidden-480 hidden-320 hidden-600 hidden-620 <?php echo $topmem_class;?>">Top Member</a>
-		<a href="<?php echo Yii::app()->createUrl("/site/index"); ?>" class="ma-den hidden-480 hidden-320 hidden-600 hidden-620 <?php echo $viral_class;?>">Going Viral</a>
+		<a href="<?php echo Yii::app()->createUrl("/viral"); ?>" class="ma-den hidden-480 hidden-320 hidden-600 hidden-620 <?php echo $viral_class;?>">Going Viral</a>
 		<a href="<?php echo Yii::app()->createUrl("/newmembers"); ?>" class="ma-den hidden-480 hidden-320 hidden-600 hidden-620 <?php echo $newmem_class;?>">New Member</a>			
 		<div class="ma-den dropdown"> 		
 		<!-- CAPTION LOCATION --> 

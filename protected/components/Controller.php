@@ -22,6 +22,21 @@ class Controller extends CController
 	public $breadcrumbs=array();
 	
 	
+	/**
+	 * Name: actionHashtaglist
+	 * Is a User_Define function to show Hash Tag Listings, which are Viral
+	 * added By Posly Developers, to use hashtag in other controllers
+	*/
+	public function actionHashtaglist($limit)
+	{
+		$hash_tags = array();
+		$trend=LogHashtags::model()->getmyhashtags($limit);		
+		if(isset($trend)){		
+			foreach($trend as $tagg1=>$tagg)				
+			$hash_tags[] = CHtml::link($tagg['hashtags_name'], array('site/hashtags', 'hid'=>$tagg['hashtags_id']));			
+        }  
+		return $hash_tags;
+	}
 	
 	/* added on 22-Aug-14 -- By Posly Developers
 		get_time_ago() & get_time_ago_string() are user define function 

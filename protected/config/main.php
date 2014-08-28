@@ -91,6 +91,7 @@ return array(
 				'topmembers'=>'site/topmembers',
 				'newmembers'=>'site/newmembers',
 				'following'=>'site/following',
+				'viral'=>'site/viral',
 				'tags/<hid:\d+>'=>'site/hashtags',
 				'<url>'=>'profile/index',
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',

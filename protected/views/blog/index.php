@@ -1,10 +1,6 @@
 <?php
-if(!isset($menulink)){
+if(!isset($menulink))
 	$menulink = 'viral';
-	if(Yii::app()->user->isGuest)
-		$menulink = 'topmember';
-}
-
 ?>
 
 <!-- BEGIN TOP NAVIGATION MENU -->
@@ -34,70 +30,30 @@ if(!isset($menulink)){
 	<!-- END SIDEBAR --> 
 	<!-- BEGIN PAGE -->
 	<div class="page-content-wrapper">
-	<div class="page-content">
-	<div class="container sp">
-	<div class="row ">
-	<div class="col-md-6 col-sm-6">
-	<?php
-	if(isset($photos)) 
-	{	
-		$i=1;
-		foreach($photos as $p)
-		{
-			if($i%2!=0)
-			{
-				$this->widget('application.components.Cart', array('cartinfo' => array('data'=>$p,'i'=>$i))); //Main Image CART Display Here
-			}
-			$i++;
-		}
-	}
-	?>
+	<div class="page-content11111">
+		<div class="container sp">
+		
+		<div style="text-align:center;margin-top:20px;font-weight:bold;color:blue;">Page Under Construction</div>
+		
+		<div class="row ">
+		<div class="col-md-6 col-sm-6">		
+		</div>
+		<div class="col-md-6 col-sm-6">		
+		</div>
+		</div>
+		</div>
+		<div class="clearfix"></div>		  
+		<!--*-->       
+		<!-- Modals-->		
+		<!-- Modal Box img-zoom ZOOM IMAGE ------->
+		<div id="share-pic" class="modal  modal-scroll share-image" tabindex="-1" data-replace="true">		
+		</div>
+		<!--Modal Box img-zoom END --> 		  
+		<div id="country-list" class="modal fade modal-dialog country-list" tabindex="-1" aria-hidden="true">
+			<?php $this->widget('application.components.AllCountries', array(
+			'allcountries' => array('data'=>''))); ?> <!--Browse All Countries Modal POPUP Window -->
+		</div>         
 	</div>
-	<div class="col-md-6 col-sm-6"> 
-	<?php
-	if(isset($photos)) 
-	{	
-		$i=1;
-		foreach($photos as $p)
-		{
-			if($i%2==0)
-			{
-				$this->widget('application.components.Cart', array('cartinfo' => array('data'=>$p,'i'=>$i))); //Main Image CART Display Here
-			}
-			$i++;
-		}
-	}
-	?>
-	</div>
-	</div>
-	</div>
-	<div class="clearfix"></div>
-      
-    <!--*-->       
-    <!-- Modals--> 
-	
-    <!-- Modal Box img-zoom ZOOM IMAGE ------->
-    <div id="share-pic" class="modal  modal-scroll share-image" tabindex="-1" data-replace="true">
-	<?php
-	if(isset($photos)) 
-	{	
-		$i=1;
-		foreach($photos as $p)
-		{
-			
-			$this->widget('application.components.CartZoom', array('cartinfo' => array('data'=>$p,'i'=>$i))); //ZOOM Image Cart			
-			$i++;
-		}
-	}
-	?>
-	</div>
-    <!--Modal Box img-zoom END -->    
-      
-	<div id="country-list" class="modal fade modal-dialog country-list" tabindex="-1" aria-hidden="true">
-		<?php $this->widget('application.components.AllCountries', array(
-		'allcountries' => array('data'=>''))); ?> <!--Browse All Countries Modal POPUP Window -->
-	</div>         
-</div>
 </div>
   
   

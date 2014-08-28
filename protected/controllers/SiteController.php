@@ -3,8 +3,8 @@
 class SiteController extends Controller
 {
 	/**
-	 * Declares class-based actions.
-	 */
+	* Declares class-based actions.
+	*/
 	public function actions()
 	{
 		return array(
@@ -21,11 +21,39 @@ class SiteController extends Controller
 		);
 	}
 	
+	/**
+	* Called from Ajax, multiple actions
+	* Last Modified: 27-Aug-14
+	*/
 	public function actionSomemore()
 	{
 		if(isset($_GET['act']))
 		{
 			if($_GET['act']=='index')
+			{
+				$time=new CTimestamp;
+				$value=$time->getDate();
+				$end= $value[0];
+				$start= $end-86400000;
+				$criteria = new CDbCriteria();
+				$criteria->select = 't.* , (SELECT COUNT( * )*(0.3) FROM log_photos_comment a WHERE a.owner_id = t.user_id AND a.log_photos_comment_date BETWEEN '.$start.' AND '.$end.' ) + (SELECT COUNT( * )*(1) FROM log_photos_hearts b WHERE b.owner_id = t.user_id AND b.log_photos_hearts_date BETWEEN '.$start.' AND '.$end.' ) + (SELECT COUNT( * )*(1.1) FROM log_photos_share c WHERE c.owner_id = t.user_id AND c.log_photos_share_date BETWEEN '.$start.' AND '.$end.' ) AS totalcount';
+				if(Yii::app()->user->isGuest)
+					$criteria->condition = 'userDetails.user_unique_url = "poslyadmin"';
+				$criteria->group = 't.user_id';
+				$criteria->order = 'totalcount DESC';
+				
+				if($_GET['l']<6){
+					$criteria->limit=$_GET['l']; //Total No of Records
+					$criteria->offset=$_GET['l']-2; //Starts from..
+				} else{
+					$criteria->limit = $_GET['l']-2;
+					$criteria->offset = $_GET['l'];
+				}
+				
+				$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);		
+				$this->renderPartial('somemore', array('photos'=>$allusersphotos));
+			}
+			if($_GET['act']=='viral')
 			{
 				$time=new CTimestamp;
 				$value=$time->getDate();
@@ -147,8 +175,8 @@ class SiteController extends Controller
 	}
 
 	/**
-	 * This is the default 'index' action that is invoked
-	 * when an action is not explicitly requested by users.
+	* This is the default 'index' action that is invoked
+	* when an action is not explicitly requested by users.
 	*/
 	public function actionIndex()
 	{
@@ -164,29 +192,19 @@ class SiteController extends Controller
 		$criteria->order = 'totalcount DESC';
 		$criteria->limit=2;
 		$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);
-		unset($criteria);				
-		$hash_tags = $this->actionHashtaglist(); //Get Hash Tags Listings for sidebar	
-		
+		unset($criteria);
+		//Get Hash Tags Listings for sidebar, this action define in Controller class
+		$limit = (Yii::app()->user->isGuest)?9:6;		
+		$hash_tags = $this->actionHashtaglist($limit);		
 		//Inside views/site/index.php ** widget are there to Include SubHeader, TopMenu & SideBar..
 		$this->render('index', array('photos'=>$allusersphotos,'hash_tags'=>$hash_tags));		
 	}	
 	
 	/**
-	 * Name: actionHashtaglist
-	 * Is a User_Define function to show Hash Tag Listings, which are Viral
+	* New join members
+	* Change urlManager array in Main.php for proper redirect
+	* Last Modified: 10-Aug-14
 	*/
-	public function actionHashtaglist()
-	{
-		$hash_tags = array();
-		$limit = 6;
-		$trend=LogHashtags::model()->getmyhashtags($limit);		
-		if(isset($trend)){		
-			foreach($trend as $tagg1=>$tagg)				
-			$hash_tags[] = CHtml::link($tagg['hashtags_name'], array('site/hashtags', 'hid'=>$tagg['hashtags_id']));			
-        }  
-		return $hash_tags;
-	}
-
 	public function actionNewmembers()
 	{		
 		$this->layout='front_layout';
@@ -198,11 +216,18 @@ class SiteController extends Controller
 		$criteria->limit=2;		
 		$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);		
 		unset($criteria);				
-		$hash_tags = $this->actionHashtaglist(); //Get Hash Tags Listings for sidebar		
+		//Get Hash Tags Listings for sidebar, this action define in Controller class
+		$limit = (Yii::app()->user->isGuest)?9:6;		
+		$hash_tags = $this->actionHashtaglist($limit);		
 		$this->render('index', array('photos'=>$allusersphotos,'hash_tags'=>$hash_tags,'menulink'=>'newmember'));
 		
 	}
 	
+	/**
+	* Top members
+	* Change urlManager array in Main.php for proper redirect
+	* Last Modified: 01-Aug-14
+	*/
 	public function actionTopmembers()
 	{		
 		$this->layout='front_layout';
@@ -214,10 +239,43 @@ class SiteController extends Controller
 		$criteria->limit=2;		
 		$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);		
 		unset($criteria);				
-		$hash_tags = $this->actionHashtaglist(); //Get Hash Tags Listings for sidebar		
+		//Get Hash Tags Listings for sidebar, this action define in Controller class
+		$limit = (Yii::app()->user->isGuest)?9:6;		
+		$hash_tags = $this->actionHashtaglist($limit);
 		$this->render('index', array('photos'=>$allusersphotos,'hash_tags'=>$hash_tags,'menulink'=>'topmember'));		
 	}
 	
+	/**
+	* Same as That of Index, 
+	* just to Link display purpose
+	* Change urlManager array in Main.php for proper redirect
+	* Last Modified: 28-Aug-14
+	*/
+	public function actionViral()
+	{		
+		$this->layout='front_layout';
+		Yii::app()->clientScript->registerCoreScript('jquery'); 
+		$time=new CTimestamp;
+		$value=$time->getDate();
+		$end= $value[0];
+		$start= $end-86400000;
+		$criteria = new CDbCriteria();
+		$criteria->select = 't.* , (SELECT COUNT( * )*(0.3) FROM log_photos_comment a WHERE a.owner_id = t.user_id AND a.log_photos_comment_date BETWEEN '.$start.' AND '.$end.' ) + (SELECT COUNT( * )*(1) FROM log_photos_hearts b WHERE b.owner_id = t.user_id AND b.log_photos_hearts_date BETWEEN '.$start.' AND '.$end.' ) + (SELECT COUNT( * )*(1.1) FROM log_photos_share c WHERE c.owner_id = t.user_id AND c.log_photos_share_date BETWEEN '.$start.' AND '.$end.' ) AS totalcount';
+		$criteria->group = 't.user_id';
+		$criteria->order = 'totalcount DESC';
+		$criteria->limit=2;
+		$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);
+		unset($criteria);
+		//Get Hash Tags Listings for sidebar, this action define in Controller class
+		$limit = (Yii::app()->user->isGuest)?9:6;		
+		$hash_tags = $this->actionHashtaglist($limit);		
+		$this->render('index', array('photos'=>$allusersphotos,'hash_tags'=>$hash_tags,'menulink'=>'viral'));	
+	}
+	
+	/**
+	* to show list of following
+	* Last Modified: 27-July-14
+	*/
 	public function actionFollowing()
 	{
 		if(!Yii::app()->user->isGuest)
@@ -233,9 +291,12 @@ class SiteController extends Controller
 		}
 		else
 		Yii::app()->end();
-
 	}
 	
+	/**
+	* card with users as males
+	* Last Modified: 27-July-14
+	*/
 	public function actionMales()
 	{
 		$this->layout='front_layout';
@@ -247,10 +308,16 @@ class SiteController extends Controller
 		$criteria->limit=2;		
 		$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);		
 		unset($criteria);				
-		$hash_tags = $this->actionHashtaglist(); //Get Hash Tags Listings for sidebar		
+		//Get Hash Tags Listings for sidebar, this action define in Controller class
+		$limit = (Yii::app()->user->isGuest)?9:6;		
+		$hash_tags = $this->actionHashtaglist($limit);		
 		$this->render('index', array('photos'=>$allusersphotos,'hash_tags'=>$hash_tags));
 	}
 	
+	/**
+	* card with users as Females
+	* Last Modified: 27-July-14
+	*/
 	public function actionFemales()
 	{		
 		$this->layout='front_layout';
@@ -262,10 +329,16 @@ class SiteController extends Controller
 		$criteria->limit=2;		
 		$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);		
 		unset($criteria);				
-		$hash_tags = $this->actionHashtaglist(); //Get Hash Tags Listings for sidebar		
+		//Get Hash Tags Listings for sidebar, this action define in Controller class
+		$limit = (Yii::app()->user->isGuest)?9:6;		
+		$hash_tags = $this->actionHashtaglist($limit);		
 		$this->render('index', array('photos'=>$allusersphotos,'hash_tags'=>$hash_tags));		
 	}
 	
+	/**
+	* List of country
+	* Last Modified: 27-July-14
+	*/
 	public function actionCountry($c)
 	{
 		if($c=='US')
@@ -280,6 +353,10 @@ class SiteController extends Controller
 		$this->render('country', array('photos'=>$allusersphotos));
 	}
 	
+	/**
+	* Display details of Hash tags
+	* Last Modified: 27-July-14
+	*/
 	public function actionHashtags($hid)
 	{
 		$this->layout='front_layout';
@@ -293,8 +370,8 @@ class SiteController extends Controller
 		$this->render('hashtags', array('photos'=>$allusersphotos));
 	}
 	/**
-	 * This is the action to handle external exceptions.
-	 */
+	* This is the action to handle external exceptions.
+	*/
 	public function actionError()
 	{
 		if($error=Yii::app()->errorHandler->error)
@@ -307,8 +384,8 @@ class SiteController extends Controller
 	}
 
 	/**
-	 * Displays the contact page
-	 */
+	* Displays the contact page
+	*/
 	public function actionContact()
 	{
 		$model=new ContactForm;
@@ -333,8 +410,8 @@ class SiteController extends Controller
 	}
 
 	/**
-	 * Displays the login page
-	 */
+	* Displays the login page
+	*/
 	public function actionLogin()
 	{
 		$model=new LoginForm;
@@ -431,20 +508,22 @@ class SiteController extends Controller
 	}
 
 	/**
-	 * Terms of service Page
-	 * Last Modified: 27-Aug-14
-	 */
+	* Terms of service Page
+	* Last Modified: 27-Aug-14
+	*/
 	public function actionTermsofservice()
 	{
 		$this->layout='front_layout';
-		$hash_tags = $this->actionHashtaglist(); //Get Hash Tags Listings for sidebar		
+		//Get Hash Tags Listings for sidebar, this action define in Controller class
+		$limit = (Yii::app()->user->isGuest)?9:6;		
+		$hash_tags = $this->actionHashtaglist($limit);		
 		$this->render('termsofservice', array('hash_tags'=>$hash_tags));
 	}
 	
 	/**
 	 * This user define Ajax function to check Email exits in DB or Not
 	 * Last Modified: 27-Aug-14
-	 */
+	*/
 	public function actionEmailunique()
 	{
 		$email = $_GET['email'];
@@ -457,8 +536,8 @@ class SiteController extends Controller
 	}
 	
 	/**
-	 * Logs out the current user and redirect to homepage.
-	 */
+	* Logs out the current user and redirect to homepage.
+	*/
 	public function actionLogout()
 	{
 		 if(Yii::app()->hybridAuth->getConnectedProviders()){
@@ -469,9 +548,9 @@ class SiteController extends Controller
 	}
 	
 	/**
-		This user define Ajax function is used to return the html for rendering of
-		user's Activities List at Sidebar.
-		Last Modified:20-Aug-14
+	This user define Ajax function is used to return the html for rendering of
+	user's Activities List at Sidebar.
+	Last Modified:20-Aug-14
 	*/
 	public function actionShowusersactivities()
 	{	

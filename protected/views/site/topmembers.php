@@ -1,5 +1,5 @@
 <?php
-/* @var $this SiteController */    //NOT IN USE FROM - 21Aug2014
+/* @var $this SiteController */    //NOT IN USE FROM - 21Aug2014 SDL developers
 
 $this->pageTitle=Yii::app()->name;
 ?>

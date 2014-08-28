@@ -11,26 +11,42 @@
 <?php
 if(Yii::app()->user->isGuest)
 { ?>
-		<!-- BEGIN SIGNIN DROPDOWN -->
-		<li class="dropdown" > <a href="#" class="dropdown-toggle sign-inhead" data-toggle="dropdown" data-hover="dropdown"
-		data-close-others="true"> Sign in</a>
-		<ul class="dropdown-menu signup">
-		<li><span>Sign in with</span></li>
-		<li>
-		<?php echo CHtml::link('Facebook',array('user/hybridauth/authenticate','provider'=>'Facebook'), array('class'=>'btn faceS')); ?>
-		</li>
-		<li>
-		<button type="button" class="btn meoS checkmsg" data-toggle="modal" href="#loginModal">Email</button>
-		</li>
-		</ul>
-		</li>
-		<!-- END SIGNIN DROPDOWN --> 
-		<!-- BEGIN SIGN UP DROPDOWN -->
-		<li class="dropdown user"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-		<button type="button" class="btn meoS" data-toggle="modal" href="#sign-up">Sign Up</button>
-		</a>
-		</li>
-		<!-- END SIGN UP DROPDOWN --> 
+	<!-- BEGIN SIGNIN DROPDOWN -->
+	<li class="dropdown" > <a href="#" class="dropdown-toggle sign-inhead" data-toggle="dropdown" data-hover="dropdown"
+	data-close-others="true"> Sign in</a>
+	<ul class="dropdown-menu signup">
+	<li><span>Sign in with</span></li>
+	<li>
+	<?php echo CHtml::link('Facebook',array('user/hybridauth/authenticate','provider'=>'Facebook'), array('class'=>'btn faceS')); ?>
+	</li>
+	<li>
+	<?php echo CHtml::link('Instagram',array('#','provider'=>'Instagram'), array('class'=>'btn insta')); ?>
+	</li>
+	<li>
+	<button type="button" class="btn meoS checkmsg" data-toggle="modal" href="#loginModal">Email</button>
+	</li>
+	</ul>
+	</li>
+	<!-- END SIGNIN DROPDOWN --> 
+	<!-- BEGIN SIGN UP DROPDOWN -->
+	<li class="dropdown user"> 
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+	<button type="button" class="btn meoS" data-toggle="modal" href="#sign-up">Sign Up</button>		
+	</a>
+	<ul class="dropdown-menu signup">
+	<li><span>Sign Up with</span></li>
+	<li>
+	<?php echo CHtml::link('Facebook',array('user/hybridauth/authenticate','provider'=>'Facebook'), array('class'=>'btn faceS')); ?>
+	</li>
+	<li>
+	<?php echo CHtml::link('Instagram',array('#','provider'=>'Instagram'), array('class'=>'btn insta')); ?>
+	</li>
+	<li>
+	<button type="button" class="btn meoS checkmsg" data-toggle="modal" href="#sign-up">Email</button>
+	</li>
+	</ul>		
+	</li>
+	<!-- END SIGN UP DROPDOWN --> 
 <?php 
 }
 else 

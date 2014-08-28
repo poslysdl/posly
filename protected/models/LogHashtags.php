@@ -104,12 +104,12 @@ class LogHashtags extends CActiveRecord
 	 * @param numeric $limit record limit.
 	 * @return Array of Latest hash	 
 	 */
-	public function getmyhashtags($limit = 7)
+	public function getmyhashtags($limit)
 	{
 		$query = "SELECT t.hashtags_id as hashtags_id,
 		t.hashtags_name as hashtags_name,t.hashtags_category_id as hashtags_category_id
 		FROM hashtags t JOIN log_hashtags l ON t.hashtags_id = l.hashtags_id WHERE
-		t.hashtags_category_id is null ORDER BY l.log_hashtags_date DESC LIMIT 0,:limit ";		
+		t.hashtags_category_id is null GROUP BY t.hashtags_id ORDER BY l.log_hashtags_date DESC LIMIT 0,:limit ";	
 		$command= Yii::app()->db->createCommand($query);
 		$command->bindValue(':limit', $limit);		
 		$rawData = $command->queryAll();
