@@ -253,7 +253,47 @@ jQuery(document).ready(function() {
  QuickSidebar.init(); 
  
 });
-</script> 
+</script>
+
+<script>
+$(document).ready(function(){
+    var documentWidth = $(document).width();
+    $(window).scroll(function(){
+    var windowHeight = $(window).height();
+    var windowMiddle = windowHeight/2;
+    var documentHeight = $(document).height();
+    var scrollPosition = $(window).scrollTop();    
+    //console.log("Scroll: "+scrollPosition+ " Window: "+windowMiddle);    
+    var countScroll = $('body').scrollTop();
+    //if(($(window).scrollTop() > 0) && ($(window).height() / 2)){
+    if (scrollPosition > windowMiddle) {
+      $("#scroll_top").removeClass("hidden");
+    }
+    else {
+      $("#scroll_top").addClass("hidden");
+    }
+   });
+   $("#scroll_top").click(function(event){   
+        event.preventDefault();   
+        $("html, body").animate({
+            scrollTop:0
+        },"slow");
+   });
+   if (documentWidth < 1024) {
+     $('#scroll_top').css('right', '5px');
+   }
+    $(window).resize(function() {
+        var windowWidth = $(window).width(); 
+        if (windowWidth < 1024) {           
+          $('#scroll_top').css('right', '5px');
+        }
+        else{
+            $('#scroll_top').css('right', '280px');
+        }
+    });   
+   
+});
+</script>
 
 <!-- END JAVASCRIPTS -->
 <?php
