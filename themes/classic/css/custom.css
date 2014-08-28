@@ -20,3 +20,57 @@
 .errorMessage {
     color: red;
 }
+
+/* CSS for scroll top */
+
+#scroll_top_container {
+    bottom: 0;
+    position: fixed;
+    width: 100%;
+    z-index: 9999;
+    left: 135px;
+}
+
+#scroll_top_container_pos {
+    margin: 0 auto;
+    max-width: 962px;
+    position: relative;
+    z-index: 1000;
+}
+
+#scroll_top {
+    right: -65px;
+}
+#scroll_top {
+    position: absolute;
+}
+
+#scroll_top {
+    background-color: #000;
+    border: 8px solid rgba(34, 34, 34, 0.8);
+    border-radius: 32px;
+    bottom: 15px;
+    cursor: pointer;
+    height: 32px;
+    opacity: 0.8;
+    position: fixed;
+    right: 280px;
+    width: 32px;
+}
+
+.icon-scroll-top:before {
+    content: "▲"
+}
+#scroll_top .icon {
+    bottom: 3.5px;
+    color: #fff;
+    font-size: 10px;
+    left: 4px;
+    line-height: 0;
+    position: relative;
+}
+.icon {
+    font-style: normal;
+    font-weight: normal;
+    vertical-align: middle;
+}
