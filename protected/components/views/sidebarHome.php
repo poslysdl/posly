@@ -32,13 +32,47 @@ if(Yii::app()->user->isGuest)
 	<div class="panel-title">
 	<h3>Posly Blog</h3>
 	</div>
-	<div class="side-tag"> 
-	<img class="img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/item_img10.jpg">
+	<div class="side-tag">	
+	<!--<img class="img-responsive" alt="" src="<?php //echo Yii::app()->theme->baseUrl; ?>/img/gallery/item_img10.jpg">
 	<h5>Hike - Social Apps</h5>
-	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>-->
+		<div class="flex-container">
+		<div class="flexslider">
+			<ul class="slides">
+			<li>
+			<a href="<?php echo Yii::app()->createUrl('blog/index', array('id' => '1' )); ?>">
+			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/item_img10.jpg" />
+			</a>
+			<h5>Hike - Social Apps</h5>
+			<div class="flexcontent">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+			</li>
+			<li>
+			<a href="<?php echo Yii::app()->createUrl('blog/index', array('id' => '1' )); ?>">
+			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/image3.jpg" />
+			</a>
+			<h5>Hike - Shoes</h5>
+			<div class="flexcontent">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+			</li>
+			<li>
+			<a href="<?php echo Yii::app()->createUrl('blog/index', array('id' => '1' )); ?>">
+			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/image2.jpg" />
+			</a>
+			<h5>Max - Face Cream</h5>
+			<div class="flexcontent">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+			</li>
+			<li>
+			<a href="<?php echo Yii::app()->createUrl('blog/index', array('id' => '1' )); ?>">
+			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/masculina7.jpg" />
+			</a>
+			<h5>Jospe - Living</h5>
+			<div class="flexcontent">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+			</li>
+			</ul>
+		</div>
+		</div>	
 	</div>
 	</div>	
-	</li>
+	</li>	
 <?php } else{?>
 	<li class="panel-infor">
 		<div>
