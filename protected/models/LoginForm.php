@@ -10,7 +10,7 @@ class LoginForm extends CFormModel
 	public $email;
 	public $password;
 	public $rememberMe;
-
+	public $errmsg;
 	private $_identity;
 
 	/**
@@ -50,8 +50,10 @@ class LoginForm extends CFormModel
 		if(!$this->hasErrors())
 		{
 			$this->_identity=new UserIdentity($this->email,md5($this->password));
-			if(!$this->_identity->authenticate())
+			if(!$this->_identity->authenticate()){
 				$this->addError('password','Incorrect email or password.');
+				$this->errmsg = 'Incorrect email or password.';
+			}
 		}
 	}
 

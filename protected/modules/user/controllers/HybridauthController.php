@@ -3,7 +3,7 @@
 	*Important One for developers. Do change in code here Only
 	*will get data for FB here itself
 	*Widgets/HybridAuth No need to change any code there
-	Last Modified - 26-Aug-14
+	Last Modified - 01-Sept-14
 */
 class HybridauthController extends Controller{
  
@@ -80,14 +80,14 @@ class HybridauthController extends Controller{
 				{
                 	$identity = new UserIdentity($provider, $socialUser->identifier);                   
                     $identity->authenticate('social');
-                    switch ($identity->errorCode) {
-
-                      case UserIdentity::ERROR_NONE:
-                           Yii::app()->user->login($identity);
-                           $path=$this->createAbsoluteUrl('/registration/settings');
-                           $this->redirect($path);
-                           break;
-
+                    switch ($identity->errorCode)
+					{
+						case UserIdentity::ERROR_NONE:
+						Yii::app()->user->login($identity);
+						$redirect_url = $identity->getusereturnurl($socialUser->email);
+						$path=$this->createAbsoluteUrl($redirect_url); //'/registration/settings'
+						$this->redirect($path);
+						break;
                     }
                 }
             }

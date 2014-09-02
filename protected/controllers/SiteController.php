@@ -409,46 +409,50 @@ class SiteController extends Controller
 		}
 		$this->render('contact',array('model'=>$model));
 	}
-
+	
 	/**
-	* Displays the login page
+	* Site Login with EmailId
+	* will authenticate email Id and allow Login
+	* Last Modified: 01-Sep-14
 	*/
 	public function actionLogin()
 	{
-		$model=new LoginForm;
-
+		$model=new LoginForm; //**models/LoginForm.php
 		// collect user input data
 		if(isset($_POST['LoginForm']))
 		{
-				 $model->attributes=$_POST['LoginForm'];
-                    $valid=$model->validate();            
-                    if($valid){
-						$model->login();
-                       //do anything here
-                         echo CJSON::encode(array(
-                              'status'=>'success',
-                              'returnUrl'=>Yii::app()->user->returnUrl
-                         ));
-                        Yii::app()->end();
-                        }
-                        else{
-							$msg = 'Error';
-                            $error = CActiveForm::validate($model);
-                            if($error!='[]'){
-								$msg = CJSON::decode($error);
-                               $msg = $msg['LoginForm_password'][0];
-							}
-							echo CJSON::encode(array(
-                              'status'=>'error',
-                              'msg'=>$msg
-							));
-                            Yii::app()->end();
-                        }
+			$valid = false;
+			$model->attributes=$_POST['LoginForm'];
+			$valid=$model->validate(); //Model LoginForm.php
+			//Check for email existance in DB,			
+			$usermailid=Users::model()->findByEmailId($model->attributes['email']);			
+			if($usermailid===false)
+				$model->errmsg = 'Email Not Exists! Please SignUp';			
+			if($valid)
+			{
+				$model->login();
+			   //do anything here
+				echo CJSON::encode(array(
+					  'status'=>'success',
+					  'returnUrl'=>Yii::app()->user->returnUrl
+				));
+				Yii::app()->end();
+			}
+			else
+			{
+				$msg = $model->errmsg;
+				$error = CActiveForm::validate($model);				
+				echo CJSON::encode(array(
+				  'status'=>'error',
+				  'msg'=>$msg
+				));
+				Yii::app()->end();
+			}
 			
 			/*$model->attributes=$_POST['LoginForm'];
 			// validate user input and redirect to the previous page if valid
 			if($model->validate() && $model->login())
-				$this->redirect(Yii::app()->user->returnUrl);*/
+			$this->redirect(Yii::app()->user->returnUrl);*/
 		}
 		// display the login form
 		$this->render('login',array('model'=>$model));
@@ -459,7 +463,7 @@ class SiteController extends Controller
 	* Last Modified:27-Aug-14
 	*/
 	public function actionRegister()
-	{
+	{	
 		$model=new RegisterForm;
 		// collect user input data
 		if(isset($_POST['RegisterForm']))
@@ -495,17 +499,17 @@ class SiteController extends Controller
 			}			
 			else{
 				$error = CActiveForm::validate($model);
-				if($error!='[]')
-					echo $error;
+				//if($error!='[]')
+					//echo $error;
 				echo CJSON::encode(array(
-					'status'=>'success',
-					'returnUrl'=>$path,
+					'status'=>'error',
+					'msg'=>$error,
 				));	
 				Yii::app()->end();	
 			}
 		}
 		// display the login form
-		$this->render('register',array('model'=>$model));
+		//$this->render('register',array('model'=>$model));
 	}
 
 	/**
@@ -528,10 +532,10 @@ class SiteController extends Controller
 	public function actionEmailunique()
 	{
 		$email = $_GET['email'];
-		$isexits = false;
+		$isexits = '0';
 		$check=UsersDetails::model()->find("user_details_email='$email'");
 		if(isset($check))				
-			$isexits = true; //This email already used.
+			$isexits = '1'; //This email already used.
 		echo $isexits;
 		Yii::app()->end();
 	}

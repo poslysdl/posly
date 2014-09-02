@@ -157,7 +157,6 @@ function signInByEmail()
 			}       
 		},
 		error: function(data) { // if error occured
-
 		}
 	});
 }
@@ -275,9 +274,9 @@ function checkSignUp(formid,elm)
 			var url = $(elm).attr('data-url');
 			var url=url+'?email='+email;
 			$.get(url,function(data){
-				if(data){
-				$('#RegisterForm_email_em').html('This email already used');
-				haserror='1';
+				if(data=='1'){
+					$('#RegisterForm_email_em').html('This email already used');
+					haserror='1';
 				}
 			});
 		} else{
@@ -285,11 +284,51 @@ function checkSignUp(formid,elm)
 			haserror='1';
 		}
 	}
+	//to password
+	if($('#RegisterForm_password').val()!='')
+	{	var str = $('#RegisterForm_password').val();
+		var n = str.length;
+		if(n<6)
+		{	
+			$('#RegisterForm_password_em').html('Enter Minimum 6 char length');
+			haserror='1';
+		}
+	}
+	//console.log(haserror);
 	if(haserror=='1')
 	return false;
+	else
+	signUpEmail();	
 }
 
 function validateEmail(email) {
 var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 return re.test(email);
+}
+
+/* ** This is for site SignUp by EmailId
+** this Ajax call will save user to DB records
+** /controller/site/register.php
+*/
+function signUpEmail()
+{
+	var data=$("#register-form").serialize();
+	var url1 = $('#register-form').attr('data-url');
+	$.ajax({
+		type: 'POST',  
+		url: url1,
+		data:data,
+		success:function(data){
+			data = jQuery.parseJSON(data);
+			if(data.status=="success"){
+				window.location=data.returnUrl;				
+			}
+			else{				
+				$("#RegisterForm_re_password_em").show();
+				$("#RegisterForm_re_password_em").html(data.msg);
+			}       
+		},
+		error: function(data) { // if error occured
+		}
+	});
 }

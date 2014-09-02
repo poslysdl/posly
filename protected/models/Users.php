@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This is the model class for table "users".
  *
@@ -33,6 +32,7 @@
  * @property UsersHashtags[] $usersHashtags
  * @property UsersSecurity[] $usersSecurities
  */
+ 
 class Users extends CActiveRecord
 {
 	/**
@@ -105,9 +105,7 @@ class Users extends CActiveRecord
 			'user_security_id' => 'User Security',
 		);
 	}
-
-
-
+	
 	public function findBySocial($provider, $identifier, $email){
 	 $checkemail=$this->with('userDetails')->find("userDetails.user_details_email='$email'");
 	 $checkIdentifier=$this->with('userSocialmedia')->find("userSocialmedia.user_socialmedia_provider='$provider' and user_socialmedia_identifier=$identifier");
@@ -127,6 +125,19 @@ class Users extends CActiveRecord
       $user=$this->with('userDetails')->find("userDetails.user_details_email='$email' and userDetails.user_details_password='$pass'");
       return $user; //->password === crypt($password, $user->password)? $user:null;
    }
+   
+	/* this function is used to find weather, email exists in DB or not
+	* Last modified: 01-Sep-14
+	*/
+	public function findByEmailId($username)
+	{
+	  $email=strtolower($username);	  
+	  $user=$this->with('userDetails')->find("userDetails.user_details_email='$email'");
+	  if(is_object($user) && isset($user->user_id))
+		return true;
+	  else
+		return false;	  
+	}
 
 	/**
 	 * Returns the static model of the specified AR class.

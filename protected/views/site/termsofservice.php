@@ -33,8 +33,7 @@ if(!isset($menulink))
 	<div class="page-content">
 	<div class="container sp">
 	<div class="row ">
-	Terms Of Service Here
-	Sample TEXT
+			<div style="text-align:center;margin-top:20px;font-weight:bold;color:blue;">Page Under Construction</div>
 	</div>
 	</div>
 	<div class="clearfix"></div>

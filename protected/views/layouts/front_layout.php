@@ -294,7 +294,19 @@ $(document).ready(function(){
         else{
             $('#scroll_top').css('right', '280px');
         }
-    });   
+    }); 
+	
+	//** Login & Register Modal window JS
+	$('#LoginForm_email').val('');
+	$('#LoginForm_password').val('');
+	$('.lerrormsg').hide();	
+	$('#RegisterForm_firstname').focus(function() {
+		if($('#RegisterForm_firstname').val()==''){
+			$('#RegisterForm_email').val('');
+			$('#RegisterForm_password').val('');
+		}
+		$('.errorMessage').hide();
+	});
    
 });
 
