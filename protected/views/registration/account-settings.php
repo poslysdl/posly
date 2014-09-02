@@ -16,7 +16,7 @@
 	</div>
 </div>
 
-<form class="form-horizontal" role="form" id="form_sample_2" action="#">
+<form class="form-horizontal" role="form" id="form_sample_2" action="#" method="POST">
 <div class="page-content-wrapper">
 <div class="page-content-accs">
 	<div class="row ">
@@ -124,116 +124,109 @@
 		</div>
 
 		<div class="form-group">
-		<label  class="col-md-3 control-label">Language</label>
-		<div class="col-md-9">
-		<?php if (isset($model->userLanguage)) {$value = $model->userLanguage->users_language_name;} else $value=""; ?>
-		<select id="form_2_select22" class="form-control custom-combify" name="language">
-		<option><?php echo $value; ?></option>
-		<option>English</option>
-		<option>Chinese</option>
-		<option>Kazumi</option>
-		<option>Japan</option>
-		</select>
-		<p class="lan_error"></p>
-		</div>
-		</div>
-		<div class="form-group">
-		<label  class="col-md-3 control-label">Country</label>
-		<div class="col-md-9">
-		<?php if (isset($model->userLocation->user_location_country)) {$cnty_val = $model->userLocation->user_location_country;} else $cnty_val=""; ?>
-		<select  id="form_2_select2" name="country" class="form-control custom-combify">
-		<option><?php echo $cnty_val; ?></option>
-		<?php foreach ($country as $cnty) { ?>
-		<option value="<?php echo $cnty->country_name; ?>"> <?php echo $cnty->country_name; ?></option>
-		<?php } ?>
-		</select>
-		<p class="cnty_error"></p>
-		</div>
+			<label  class="col-md-3 control-label">Language</label>
+			<div class="col-md-9">			
+			<?php $value = (isset($model->user_language_id))?$model->user_language_id:''; ?>			
+			<select id="form_2_select22" class="form-control custom-combify" name="language">
+			<option value="">-</option>
+			<?php 
+			if(isset($languages)){
+			foreach($languages as $et){	
+				$selected = ($value==$et->users_language_id)?'selected':'';
+			?>			
+			<option value="<?php echo $et->users_language_id; ?>" <?php echo $selected;?> ><?php echo $et->users_language_name; ?></option>		
+			<?php } } ?>
+			</select>
+			<p class="lan_error"></p>
+			</div>			
 		</div>
 		<div class="form-group">
-		<label  class="col-md-3 control-label">Region</label>
-		<div class="col-md-9">
-		<?php if (isset($model->userLocation->user_location_region)) {$reg_val = $model->userLocation->user_location_region;} else $reg_val=""; ?>
-		<select id="form_2_selectregion" class="form-control custom-combify" name="region">
-		<option><?php echo $reg_val; ?></option>
-		<option value="Option 1">Kasovo</option>
-		<option value="Option 2">Mosota</option>
-		<option value="Option 3">Kazumi</option>
-		<option value="Option 4">Japan</option>
-		</select>
-		<p class="region_error"></p>
-		</div>
-		</div>
-		<div class="form-group">
-		<label  class="col-md-3 control-label">State</label>
-		<div class="col-md-9">
-		<?php if (isset($model->userLocation->user_location_state)) {$st_val = $model->userLocation->user_location_state;} else $st_val=""; ?>
-		<select id="form_2_selectstate" class="form-control custom-combify" name="state">
-		<option><?php echo $st_val; ?></option>
-		<option value="Option 1">Kasovo</option>
-		<option value="Option 2">Mosota</option>
-		<option value="Option 3">Kazumi</option>
-		<option value="Option 4">Japan</option>
-		</select>
-		<p class="state_error"></p>
-		</div>
-		</div>
-
-		<div class="form-group">
-		<label  class="col-md-3 control-label">City</label>
-		<div class="col-md-9">
-		<?php if (isset($model->userLocation->user_location_city)) {$city_val = $model->userLocation->user_location_city;} else $city_val=""; ?>
-		<select id="form_2_select222" class="form-control custom-combify" name="city">
-		<option><?php echo $city_val; ?></option>
-		<option value="Option 1">Kasovo</option>
-		<option value="Option 2">Mosota</option>
-		<option value="Option 3">Kazumi</option>
-		<option value="Option 4">Japan</option>
-		</select>
-		<p class="city_error"></p>
-		</div>
+			<label  class="col-md-3 control-label">Country</label>
+			<div class="col-md-9">			
+			<?php $cnty_val = (isset($model->userLocation->user_location_country))?$model->userLocation->user_location_country:''; ?>			
+			<select id="form_2_select2" name="country" class="form-control custom-combify">
+			<option value="">-</option>
+			<?php foreach($country as $cnty) {
+				$selected = ($cnty_val==$cnty->country_name)?'selected':'';
+			?>
+			<option value="<?php echo $cnty->country_name; ?>" data-id="<?php echo $cnty->id; ?>" <?php echo $selected;?>> <?php echo $cnty->country_name; ?></option>
+			<?php } ?>
+			</select>
+			<p class="cnty_error"></p>
+			</div>
 		</div>
 		<div class="form-group">
-		<label  class="col-md-3 control-label">Etnicity</label>
-		<div class="col-md-9">
-		<?php if (isset($model->userEthnicity->users_ethnicity_name)) {$et_val = $model->userEthnicity->users_ethnicity_name;} else $et_val=""; ?>
-		<select id="form_2_select2222" class="form-control custom-combify" name="etnicity">
-		<option><?php echo $et_val; ?></option>
-		<option value="Option 1">-</option>
-		<option value="Option 2">-</option>
-		<option value="Option 3">Kazumi</option>
-		<option value="Option 4">Japan</option>
-		</select>
-		<p class="ethi_error"></p>
-		</div>
+			<label  class="col-md-3 control-label">Region</label>
+			<div class="col-md-9">
+			<?php if (isset($model->userLocation->user_location_region)) {$reg_val = $model->userLocation->user_location_region;} else $reg_val=""; ?>
+			<select id="form_2_selectregion" class="form-control custom-combify" name="region">
+			<option value="">-</option>
+			</select>
+			<p class="region_error"></p>
+			</div>
 		</div>
 		<div class="form-group">
-		<label  class="col-md-3 control-label">Search Privacy</label>
-		<div class="col-md-9">
-		<div class="make-switch pull-left needmar" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
-		<input type="checkbox" <?php 
-
-		if (isset($model->userDetails->searchprivacy))
-		if ($model->userDetails->searchprivacy == 1) echo 'checked'; ?> id="search_privacy" name="privacy"  class="toggle" />
-		</div>
-		<p class="help-block-more">Keep search engines (e.g. Google) from showing your 2Pretty profile in search results</p>
-		</div>
+			<label  class="col-md-3 control-label">State</label>
+			<div class="col-md-9">
+			<?php if (isset($model->userLocation->user_location_state)) {$st_val = $model->userLocation->user_location_state;} else $st_val=""; ?>
+			<select id="form_2_selectstate" class="form-control custom-combify" name="state">
+			<option value="">-</option>
+			</select>
+			<p class="state_error"></p>
+			</div>
 		</div>
 		<div class="form-group">
-		<label  class="col-md-3 control-label">Unique URL</label>
-		<div class="col-md-2">
-		<span class="help-block-more">http://www.2pretty.com/</span>
+			<label  class="col-md-3 control-label">City</label>
+			<div class="col-md-9">
+			<?php if (isset($model->userLocation->user_location_city)) {$city_val = $model->userLocation->user_location_city;} else $city_val=""; ?>
+			<select id="form_2_select222" class="form-control custom-combify" name="city">
+			<option value="">-</option>
+			</select>
+			<p class="city_error"></p>
+			</div>
 		</div>
-		<div class="col-md-7">
-		<div class="input-icon right"> <i class="fa"></i>
-		<input type="text" class="form-control" id="url" value="<?php  
-		if (isset($model->userDetails->user_unique_url))
-		echo $model->userDetails->user_unique_url ?>" name="url"/>
+		<div class="form-group">
+			<label  class="col-md-3 control-label">Etnicity</label>
+			<div class="col-md-9">	
+			<?php $et_val = (isset($model->user_ethnicity_id))?$model->user_ethnicity_id:''; ?>		
+			<select id="form_2_select2222" class="form-control custom-combify" name="etnicity">
+			<option value="">-</option>
+			<?php 
+			if(isset($ethnicity)){
+			foreach($ethnicity as $et){	
+				$selected = ($et_val==$et->users_ethnicity_id)?'selected':'';
+			?>			
+			<option value="<?php echo $et->users_ethnicity_id; ?>" <?php echo $selected;?> ><?php echo $et->users_ethnicity_name; ?></option>		
+			<?php } } ?>
+			</select>		
+			<p class="ethi_error"></p>
+			</div>
 		</div>
-
-		<span class="help-block-more">e.g: <strong>SimonKing25</strong>, <strong>Rosejane25</strong>, <strong>king-25</strong></span> </div>
-		<div class="url_msg"></div>
+		<div class="form-group">
+			<label  class="col-md-3 control-label">Search Privacy</label>
+			<div class="col-md-9">
+			<div class="make-switch pull-left needmar" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
+			<input type="checkbox" <?php
+			if (isset($model->userDetails->searchprivacy))
+			if ($model->userDetails->searchprivacy == 1) echo 'checked'; ?> id="search_privacy" name="privacy"  class="toggle" />
+			</div>
+			<p class="help-block-more">Keep search engines (e.g. Google) from showing your 2Pretty profile in search results</p>
+			</div>
 		</div>
+		<div class="form-group">
+			<label  class="col-md-3 control-label">Unique URL</label>
+			<div class="col-md-2">
+			<span class="help-block-more">http://www.2pretty.com/</span>
+			</div>
+			<div class="col-md-7">
+			<div class="input-icon right"> <i class="fa"></i>
+			<input type="text" class="form-control" id="url" value="<?php  
+			if (isset($model->userDetails->user_unique_url))
+			echo $model->userDetails->user_unique_url ?>" name="url"/>
+			</div>
+			<span class="help-block-more">e.g: <strong>SimonKing25</strong>, <strong>Rosejane25</strong>, <strong>king-25</strong></span> </div>
+			<div class="url_msg"></div>
+			</div>
 		</div>
 		<!--sds--> 
 		</div>
@@ -745,7 +738,7 @@
 	<div class="btton-fix">
 	<ul class="page-sidebar-menu marktop">
 	<li>
-	<button type="submit"  class="btn cyan accset accset_save" >Save</button> 
+	<Input type="submit" value="Save" class="btn cyan accset accset_save" >
 	</li>
 	<li> <!--/registration/secondstep-->
 	<button type="button" class="btn white accset" onclick="window.location='<?php echo Yii::app()->createAbsoluteUrl('/site/logout'); ?>'" >Cancel</button>

@@ -413,33 +413,35 @@ class SiteController extends Controller
 	/**
 	* Site Login with EmailId
 	* will authenticate email Id and allow Login
-	* Last Modified: 01-Sep-14
+	* Last Modified: 02-Sep-14
 	*/
 	public function actionLogin()
 	{
 		$model=new LoginForm; //**models/LoginForm.php
+		$returnurl = Yii::app()->user->returnUrl;
 		// collect user input data
 		if(isset($_POST['LoginForm']))
 		{
-			$valid = false;
+			$valid = false; 
 			$model->attributes=$_POST['LoginForm'];
-			$valid=$model->validate(); //Model LoginForm.php
+			$valid=$model->validate(); //Model LoginForm.php			
 			//Check for email existance in DB,			
 			$usermailid=Users::model()->findByEmailId($model->attributes['email']);			
 			if($usermailid===false)
 				$model->errmsg = 'Email Not Exists! Please SignUp';			
 			if($valid)
-			{
+			{	
 				$model->login();
+				$returnurl = Yii::app()->createUrl($model->returnurl);
 			   //do anything here
 				echo CJSON::encode(array(
 					  'status'=>'success',
-					  'returnUrl'=>Yii::app()->user->returnUrl
+					  'returnUrl'=>$returnurl
 				));
 				Yii::app()->end();
 			}
 			else
-			{
+			{	
 				$msg = $model->errmsg;
 				$error = CActiveForm::validate($model);				
 				echo CJSON::encode(array(
@@ -447,15 +449,8 @@ class SiteController extends Controller
 				  'msg'=>$msg
 				));
 				Yii::app()->end();
-			}
-			
-			/*$model->attributes=$_POST['LoginForm'];
-			// validate user input and redirect to the previous page if valid
-			if($model->validate() && $model->login())
-			$this->redirect(Yii::app()->user->returnUrl);*/
-		}
-		// display the login form
-		$this->render('login',array('model'=>$model));
+			}			
+		}		
 	}
 
 	/**

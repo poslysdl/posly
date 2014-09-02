@@ -1,10 +1,11 @@
 <?php
 /* An Component for User Authentication
 * is used By FB, Email SignUp & SignIn.
-* Last Modified - 01-Sep-14
+* Last Modified - 02-Sep-14
 */
 class UserIdentity extends CUserIdentity {
 	private $_id; 
+	public $registration_steps;
 	public function authenticate($type=null) 
 	{
 		switch(strtolower($type))
@@ -25,6 +26,7 @@ class UserIdentity extends CUserIdentity {
 			$this->errorCode = self::ERROR_PASSWORD_INVALID;
 		} else {
 			$this->_id = $user->user_id;
+			$this->registration_steps = $user->user_registration_steps;
 			if(isset($user->userDetails->user_details_firstname) || isset($user->userDetails->user_details_lastname))
 			$this->setState('name', $user->userDetails->user_details_firstname." ".$user->userDetails->user_details_lastname);
 			else
@@ -49,9 +51,35 @@ class UserIdentity extends CUserIdentity {
 	* Model used: Users
 	* return string
 	*/
-	public function getusereturnurl($emailid){
-		$url = '/registration/settings';
-		$user=Users::model()->findByEmailId($emailid);
+	public function getusereturnurl($emailid)
+	{
+		$url = '/site/index';
+		if($this->registration_steps!="")
+		{
+			$step = $this->registration_steps;			
+			switch($step){
+				case 0:
+				$url = '/registration/settings';
+				break;
+				case 1:
+				$url = '/registration/settings';
+				break;
+				case 2:
+				$url = '/registration/secondstep';
+				break;
+				case 3:
+				$url = '/registration/thirdstep';
+				break;
+				case 4:
+				$url = '/registration/fourthstep';
+				break;
+				case 5:
+				$url = '/site/index';
+				break;
+				default:
+				$url = '/site/index';
+			}				
+		}
 		return $url; 
 	}
  

@@ -148,7 +148,7 @@ function signInByEmail()
 		data:data,
 		success:function(data){
 			data = jQuery.parseJSON(data);
-			if(data.status=="success"){
+			if(data.status=="success"){				
 				window.location=data.returnUrl;				
 			}
 			else{				
@@ -232,7 +232,7 @@ function reload_js() {
 Controller - SiteController, actionRegister
 TemplateFile - /views/site/register.php
 */
-function checkSignUp(formid,elm)
+function checkSignUp(elm)
 {	
 	var pass='1';
 	var haserror='0';
@@ -332,3 +332,18 @@ function signUpEmail()
 		}
 	});
 }
+
+//** click and keypress events
+$(document).on('click', '#signinmail', function(){
+	signInByEmail();
+});
+
+$(document).on('click', '#signupmail', function(){
+	checkSignUp( $(this) );
+});
+
+$(document).on('keypress', '#LoginForm_password', function(event){
+	if(event.which == 13){
+		signInByEmail();   
+	}
+});

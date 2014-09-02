@@ -36,7 +36,7 @@
 	</div>
 	<div class="modal-footer">
 		<label> Need an account? <a href="#sign-up" data-toggle="modal"> Sign Up</a> </label>
-		<input type="button" value="SUBMIT" name="yt0" data-url="<?php echo Yii::app()->createUrl('/site/login');?>" data-dismiss="model" class="btn blue" onclick="signInByEmail();">          
+		<input type="button" id="signinmail" value="SUBMIT" name="yt0" data-url="<?php echo Yii::app()->createUrl('/site/login');?>" data-dismiss="model" class="btn blue">          
 	</div>
 	</form>
 </div>

@@ -38,6 +38,8 @@
 <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/themes/default.css" rel="stylesheet" type="text/css" id="style_color"/>
 <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/style-responsive.css" rel="stylesheet" type="text/css"/>
 <!-- END THEME STYLES -->
+<!-- Flexslider is used in Sidebar for Guest Login to Show slider images -->
+<link href="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/flexislider/flexslider.css" rel="stylesheet" type="text/css" />
 
 <link rel="shortcut icon" href="favicon.ico" />
 </head>
@@ -113,6 +115,11 @@
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/scripts/ui-extended-modals.js"></script>
 <!-- END PAGE LEVEL SCRIPTS --> 
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/scripts/poslyfunctions.js"></script> <!---Important JS Functions mainly for PHP developers --->
+
+<!-- Flexslider is used in Sidebar for Guest Login to Show slider images -->
+<?php if(Yii::app()->user->isGuest){ ?>
+<script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/flexislider/jquery.flexslider.js" type="text/javascript" ></script> 
+<?php }?>
 
 <script>
 var posWas; 
@@ -242,9 +249,6 @@ function showUsersActivities(){
 		$('.notifi-panel').html(data);	
 	});
 }
-<?php if(!Yii::app()->user->isGuest){ ?>
-showUsersActivities();
-<?php } ?>
 
 //** Very Important To Initialize Plugins
 jQuery(document).ready(function() {  
@@ -293,6 +297,18 @@ $(document).ready(function(){
     });   
    
 });
+
+<?php if(!Yii::app()->user->isGuest){ ?>
+	showUsersActivities();	
+<?php } else{ //Guset Login *** ?>
+$(window).load(function() {
+	$('.flexslider').flexslider({
+	  animation: "slide",
+	  controlsContainer: ".flex-container"
+  });
+});
+<?php } ?>
+
 </script>
 
 <!-- END JAVASCRIPTS -->

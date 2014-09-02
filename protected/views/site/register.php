@@ -49,7 +49,7 @@
 	<label> By creating an account, you confirm that you have read and 
 	agree with the <a href="<?php echo Yii::app()->createUrl('site/termsofservice');?>"> Terms of Service </a> 
 	</label>
-	<input type="button" value="Sign Up" name="yt1" tabindex="6" data-dismiss="model" class="btn blue signupbuttondisable" onClick="checkSignUp('register-form',this);" data-url="<?php echo Yii::app()->createUrl('/site/emailunique');?>">
+	<input type="button" value="Sign Up" name="yt1" tabindex="6" data-dismiss="model" data-url="<?php echo Yii::app()->createUrl('/site/emailunique');?>" class="btn blue signupbuttondisable" id="signupmail">
 	</div>
 </form>	
 </div>

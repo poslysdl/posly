@@ -100,8 +100,8 @@ class RegistrationController extends Controller
 	}
 	
 	/* This called when User First (1-st Step) Gets Registered (3-Step Process)
-		Through Email or FB
-		LastModifed : 26-Aug-14
+		Through Email, FB or Instagram
+		LastModifed : 01-Sept-14
 	*/
 	public function actionSettings() 
 	{
@@ -112,10 +112,16 @@ class RegistrationController extends Controller
 			$id = Yii::app()->user->id;
 			$users = Users::model()->find("user_id=$id");
 			$country = Countries::model()->findAll();
+			$ethnicity = UsersEthnicity::model()->findAll();
+			$languages = UsersLanguage::model()->findAll();
 			$model = Users::model()->with('userDetails', 'userNotification', 'userSocialPrivacy', 'userSecurity', 'userLanguage', 'userLocation', 'userEthnicity')->findByPk($id);
+			
+			//if(isset($_POST)){
+			//echo "<pre>"; print_r($_POST); exit; }
 			
 			if(isset($_POST['firstname'], $_POST['city'],$_POST['ethinicity'],$_POST['url'], $_POST['search'], $_POST['email'],$_POST['gender'],$_POST['dob'],$_POST['language'], $_POST['country'], $_POST['region'], $_POST['state'] )) 
 			{
+				echo "<pre>"; print_r($_POST); exit;
 				/* UsersDetails model values */
 				$fn = trim($_POST['firstname']);
 				$ln = trim($_POST['lastname']);
@@ -365,7 +371,7 @@ class RegistrationController extends Controller
 				Yii::app()->end();
 				return true;
 			}
-			$this->render('account-settings', array('model'=>$model, 'country'=>$country));
+			$this->render('account-settings', array('model'=>$model, 'country'=>$country,'ethnicity'=>$ethnicity,'languages'=>$languages));
 		} 
 		else {
 			$this->redirect(Yii::app()->homeUrl);		
