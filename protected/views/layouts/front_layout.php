@@ -64,7 +64,7 @@
 <!--TOP MENU-->
 <ul class="nav navbar-nav pull-left hidden-xs hidden-small">
 <li><?php echo CHtml::link('Catwalk',array('site/index'), array('class'=>'menu')); ?></li>
-<li><?php echo CHtml::link('News Feed',array('newsfeed/index'), array('class'=>'menu')); ?></li>
+<li><?php echo CHtml::link('News Feed',array('news/index'), array('class'=>'menu')); ?></li>
 <li><?php echo CHtml::link('Blog',array('blog/index'), array('class'=>'menu')); ?></li>
 </ul>
 <!--END TOP MENU--> 
