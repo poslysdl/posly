@@ -1,6 +1,6 @@
 <?php
 
-class NewsFeedController extends Controller
+class NewsController extends Controller
 {
 	public function actionIndex()
 	{
