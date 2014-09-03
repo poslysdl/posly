@@ -11,14 +11,14 @@ if($_SERVER['SERVER_ADDR']=='127.0.0.1'){
 	$FB_APPId = '277829039091254';
 	$FB_SECRETKey = "7291db28e16d2ecddb40a9e8e00e17e4";
 	$DB_USERNAME = 'root';
-	$DB_PASSWORD = '';
+	$DB_PASSWORD = 'sdl123';
 	$Base_URL = 'http://localhost/projects/posly_v2/posly/index.php/user/hybridauth/endpoint';
 } else{
 	$FB_APPId = '508534549216916';
 	$FB_SECRETKey = "b3400b3da3b05ad469ee5ba2cc2d289e";
 	$DB_USERNAME = 'root';
 	$DB_PASSWORD = 'sdl123';
-	$Base_URL = 'http://local.posly.com//index.php/user/hybridauth/endpoint';
+	$Base_URL = 'http://localhost/projects/posly_v2/posly/user/hybridauth/endpoint';
 }
 //** Above code added, to change credentials according to live & developement server
 
