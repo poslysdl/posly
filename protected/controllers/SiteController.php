@@ -545,6 +545,22 @@ class SiteController extends Controller
         }
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
+	}	
+	
+	/**
+	 * This user define Ajax function to get nearby country in monaco
+	 * Last Modified: 02-Sep-14
+	*/
+	public function actionGetnearbycountry(){
+		
+		$latitude = $_REQUEST['latitude'];
+		$longitude = $_REQUEST['longitude'];
+		$country =  $_REQUEST['country'];	
+		$latlong = array("latitude" => $latitude, "longitude" => $longitude, "country" => $country);		
+		$countries = Countries::model()->get_nearbycountries($latlong);
+		echo $countries;
+		Yii::app()->end();
+		
 	}
 	
 	/**
