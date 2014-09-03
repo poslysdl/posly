@@ -138,6 +138,12 @@ $(document).on('keypress', '.custom-comment-box', function(e){
 */
 
 function get_current_nearby_country(url){
+    //if (navigator.geolocation) {
+    //  navigator.geolocation.getCurrentPosition(showPosition);
+    //} else { 
+    //  alert("Geolocation is not supported by this browser.");
+    //}
+	 
 	var latitude = geoip_latitude();
 	var longitude = geoip_longitude();
 	var country = geoip_country_name();
@@ -161,6 +167,16 @@ function get_current_nearby_country(url){
 		}
 	});
 }
+
+//alternate function to get latlong
+
+function showPosition(position) {
+	var poslat =  position.coords.latitude;
+	var poslong = position.coords.longitude;
+	alert(poslat);
+	alert(poslong);
+}
+
 
 
 /* ** This is for site Login by EmailId
