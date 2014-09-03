@@ -30,7 +30,7 @@ $newmem_class = ($menulink=='newmember')?'active':'';
 		</div>
 		<div class="country-lo"><span class="text">From</span><i data-toggle="modal" href="#country-list" class="icon-map-marker"></i>
 		<div class="btn-group">
-		<button class="btn btn-default" type="button">Germany</button>
+		<button class="btn btn-default" type="button" id="current_country">
 		<button data-close-others="false" data-delay="1000" data-hover="dropdown" data-toggle="dropdown" class="btn btn-defaultb dropdown-toggle part-right" type="button"><i class="icon-caret-down"></i></button>
 		<ul data-delay="1000" role="menu" class="dropdown-menu">
 		<li class="row1">
@@ -40,13 +40,13 @@ $newmem_class = ($menulink=='newmember')?'active':'';
 		</ul>
 		</div>
 		<div class="white">
-		<ul>
-			<li><?php echo CHtml::link('Belgium',array('site/country', 'c'=>'Belgium')); ?></li>
+		<ul id ="nearby_country">
+<!--			<li><?php echo CHtml::link('Belgium',array('site/country', 'c'=>'Belgium')); ?></li>
 			<li><?php echo CHtml::link('Denmark',array('site/country', 'c'=>'Denmark')); ?></li>
 			<li><?php echo CHtml::link('France',array('site/country', 'c'=>'France')); ?></li>
 			<li><?php echo CHtml::link('India',array('site/country', 'c'=>'India')); ?></li>
 			<li><?php echo CHtml::link('Netherlands',array('site/country', 'c'=>'Netherlands')); ?></li>
-			<li><?php echo CHtml::link('Switzerland',array('site/country', 'c'=>'Switzerland')); ?></li>
+			<li><?php echo CHtml::link('Switzerland',array('site/country', 'c'=>'Switzerland')); ?></li>-->
 		<li>&nbsp;</li>
 		<li><a class="green" data-toggle="modal" href="#country-list">Browse all Countries</a></li>
 		</ul>

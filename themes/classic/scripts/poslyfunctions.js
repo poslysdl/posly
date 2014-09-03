@@ -134,6 +134,35 @@ $(document).on('keypress', '.custom-comment-box', function(e){
 	}
 });
 
+/* ** This is for getting current country and near by country
+*/
+
+function get_current_nearby_country(url){
+	var latitude = geoip_latitude();
+	var longitude = geoip_longitude();
+	var country = geoip_country_name();
+	var data = "latitude="+latitude+"&longitude="+longitude+"&country="+country;
+	var nearbyCountry = '';
+	
+	$.ajax({
+		type: 'POST',  
+		url: url,
+		data:data,
+		success:function(response){			
+			$("#current_country").html(country);
+			var item = jQuery.parseJSON(response);			
+			$.each(item, function(idx, obj) {
+				nearbyCountry += '<li><a href="/projects/posly_v2/posly/index.php/country/'+obj.countryname+'">'+obj.countryname+'</a></li>';
+			});
+			$("#nearby_country").html(nearbyCountry);
+		},
+		error: function(data) { // if error occured
+
+		}
+	});
+}
+
+
 /* ** This is for site Login by EmailId
 ** Yii CActiveForm is used to show site Login Modal box
 ** /views/site/login.php

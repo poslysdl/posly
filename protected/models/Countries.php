@@ -94,4 +94,36 @@ class Countries extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	
+	/**
+	 * Name: get_nearbycountries
+	 * User_Define Function, to get Near by countries
+	 * @param  $latlong Array of latitude and longitude
+	 * @return Array of Near by countries
+	 */
+	public function get_nearbycountries($geoinfo){
+		$latitude = $geoinfo['latitude'];
+		$longitude = $geoinfo['longitude'];
+		$country = strtolower($geoinfo['country']);
+		$query = "SELECT LOWER(country) AS countryname, alpha_2_code,alpha_3_code,
+		3956 * 2 * ASIN(SQRT( POWER(SIN((".$latitude." -
+		abs( 
+		dest.latitude)) * pi()/180 / 2),2) + COS(".$latitude." * pi()/180 ) * COS( 
+		abs
+		(dest.latitude) *  pi()/180) * POWER(SIN((".$longitude." - dest.longitude) *  pi()/180 / 2), 2) ))
+		 
+		as distance FROM countries_lat_long dest having distance < 10000 ORDER BY distance limit 7";		
+		
+		$command= Yii::app()->db->createCommand($query);
+		//$command->bindValue(':limit', $limit);
+		$rawData = $command->queryAll();
+		foreach($rawData as $subKey => $subArray){
+			if($subArray['countryname'] == $country){
+				  unset($rawData[$subKey]);
+			}
+		}	
+		$jsonData = json_encode($rawData);
+		return $jsonData;
+	}	
+	
 }

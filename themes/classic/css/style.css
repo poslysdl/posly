@@ -4005,6 +4005,9 @@ Custom icon buttons
    
     cursor: pointer;
     white-space: nowrap;}
+.dropdown-menu.extended.loc .country-lo	.btn-group .dropdown-menu .row1 .white ul li a:first-letter {
+    text-transform:capitalize;
+}     
 .dropdown-menu.extended.loc .country-lo	.btn-group .dropdown-menu .row1 .white ul li a.green { color:#a7cf5f !important;}
 .dropdown-menu.extended.loc .country-lo	.btn-group .dropdown-menu .row1 .white ul li a.green:hover { color:#a7cf5f !important;}
 
