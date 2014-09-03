@@ -611,6 +611,7 @@ $(window).bind('scroll', function(){ //when the user is scrolling...
           Hold dropdown on click  
         */
         $('body').on('click', '.dropdown-menu.hold-on-click', function (e) {
+	    alert("in");
             e.stopPropagation();
         })
     }
