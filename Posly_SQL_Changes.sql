@@ -43,7 +43,7 @@ INSERT INTO `users_language` (`users_language_id`, `users_language_name`) VALUES
 CREATE TABLE IF NOT EXISTS `city` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `country_id` int(11) NOT NULL,
-  `state_id` int(11) NOT NULL,
+  `state_id` int(11) DEFAULT NULL,
   `name` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf16 AUTO_INCREMENT=5 ;
@@ -52,7 +52,8 @@ INSERT INTO `city` (`id`, `country_id`, `state_id`, `name`) VALUES
 (1, 99, 2, 'Bangalore'),
 (2, 99, 2, 'Mangalore'),
 (3, 99, 1, 'New Delhi'),
-(4, 99, 3, 'Calicut');
+(4, 99, 3, 'Calicut'),
+(5, 81, NULL, 'Berlin');
 
 --
 -- Newly Added Table Region
@@ -74,7 +75,7 @@ INSERT INTO `regions` (`id`, `country_id`, `name`) VALUES
 CREATE TABLE IF NOT EXISTS `states` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `country_id` int(11) NOT NULL,
-  `region_id` int(11) NOT NULL,
+  `region_id` int(11) DEFAULT NULL,
   `name` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf16 AUTO_INCREMENT=5 ;

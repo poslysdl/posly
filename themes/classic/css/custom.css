@@ -21,6 +21,11 @@
     color: red;
 }
 
+.myhide {
+    display:none;
+}
+
+
 /* CSS for scroll top */
 
 #scroll_top_container {

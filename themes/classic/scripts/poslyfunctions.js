@@ -362,6 +362,93 @@ function signUpEmail()
 	});
 }
 
+/* ** This is used to populate city, state, region, wrt to country
+** this Ajax call fetch data from DB, mostly used at Step-1 SignUp process
+** /controller/registration/settings
+*/
+function getcountrycity(elm,targetid)
+{	
+	var url1 = $(elm).next('p').attr('data-url');
+	var selectid = $(elm).attr('id'); 
+	var name = $(elm).attr('name');
+	var countryid = $("#formreg_country option:selected").attr('data-id');
+	if(name=='country'){
+		$("#formreg_region option").remove();
+		$("#formreg_state option").remove();
+		$("#formreg_city option").remove();
+	}
+	sdata = $("#"+selectid+" option:selected").attr('data-id'); //$( elm+" option:selected" ).text(); //for inner value
+	$.ajax({
+		type: 'POST',  
+		url: url1,
+		data:{         
+			pdata: sdata,
+			pname: name,
+			cid: countryid
+		},
+		success:function(data){
+			data = jQuery.parseJSON(data);
+			if(data.status=="success"){
+				$("#"+targetid+" option").remove();
+				$("#"+targetid).append(data.msg);			
+			}
+			else{				
+				
+			}       
+		},
+		error: function(data) { // if error occured
+		}
+	});
+}
+
+$(document).on('click', '.accset_save', function(){
+	//Registration process Step-1
+	var noerr = true;
+	var gender = $("input[name='gender']:checked").val();
+	$('.errorMessage').html('');
+	if($('#firstname').val()==""){	
+		$('#firstname').parent('.right').next('.errorMessage').html('Please Enter First Name');
+		$('#firstname').parent('.right').next('.errorMessage').show();		
+		noerr = false;
+	}
+	if($('#lastname').val()==""){	
+		$('#lastname').parent('.right').next('.errorMessage').html('Please Enter Last Name');
+		$('#lastname').parent('.right').next('.errorMessage').show();		
+		noerr = false;
+	}
+	if($('#email').val()==""){	
+		$('#email').parent('.right').next('.errorMessage').html('Please Enter Email');
+		$('#email').parent('.right').next('.errorMessage').show();		
+		noerr = false;
+	}
+	if($('#dob').val()==""){	
+		$('#dob').parent('.right').next('.errorMessage').html('Please Enter DOB');
+		$('#dob').parent('.right').next('.errorMessage').show();		
+		noerr = false;
+	}
+	if(gender==""){
+		$('#gendererr').html('Please Select Gender');
+		$('#gendererr').show();		
+		noerr = false;
+	}
+	if($('#formreg_country').val()==""){
+		$('.cnty_error').html('Please Select Country');		
+		noerr = false;
+	}
+	if($('#formreg_city').val()==""){
+		$('.city_error').html('Please Select City');		
+		noerr = false;
+	}
+	if($('#form_2_select2222').val()==""){
+		$('.ethi_error').html('Please Select Etnicity');		
+		noerr = false;
+	}
+	if(noerr)
+		$('#formregstep1').submit();
+	else
+		return false;
+});
+
 //** click and keypress events
 $(document).on('click', '#signinmail', function(){
 	signInByEmail();
@@ -376,3 +463,19 @@ $(document).on('keypress', '#LoginForm_password', function(event){
 		signInByEmail();   
 	}
 });
+
+$(document).on('change', '#formreg_country', function(){
+	getcountrycity($(this),'formreg_region');
+});
+
+$(document).on('change', '#formreg_region', function(){
+	getcountrycity($(this),'formreg_state');
+});
+
+$(document).on('change', '#formreg_state', function(){
+	getcountrycity($(this),'formreg_city');
+});
+
+
+//$('#firstname').parent('.right').parent('.col-md-9').parent('.form-group').children('.col-md-9').children('.errorMessage').html('ddd');
+//$('#firstname').parent('.right').parent('.col-md-9').parent('.form-group').children('.col-md-9').children('.errorMessage').show();

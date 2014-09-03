@@ -96,11 +96,11 @@ class Countries extends CActiveRecord
 	}
 	
 	/**
-	 * Name: get_nearbycountries
-	 * User_Define Function, to get Near by countries
-	 * @param  $latlong Array of latitude and longitude
-	 * @return Array of Near by countries
-	 */
+	* Name: get_nearbycountries
+	* User_Define Function, to get Near by countries
+	* @param  $latlong Array of latitude and longitude
+	* @return Array of Near by countries
+	*/
 	public function get_nearbycountries($geoinfo){
 		$latitude = $geoinfo['latitude'];
 		$longitude = $geoinfo['longitude'];
@@ -124,6 +124,51 @@ class Countries extends CActiveRecord
 		}	
 		$jsonData = json_encode($rawData);
 		return $jsonData;
-	}	
+	}
+
+	/**	
+	* User_Define Function, to get Regions wrt country
+	* @param  $countryid Integer
+	* @return Array of regions
+	* Last Modified: 03-Sept-14
+	*/
+	public function getregions($countryid){
+		$countryid = mysql_real_escape_string($countryid);
+		$query ="SELECT * FROM regions WHERE country_id='".$countryid."'";
+		$command= Yii::app()->db->createCommand($query);		
+		$rawData = $command->queryAll();
+		return $rawData;
+	}
+	
+	/**	
+	* User_Define Function, to get states wrt region
+	* @param  $regionid Integer
+	* @return Array of state
+	* Last Modified: 03-Sept-14
+	*/
+	public function getstates($regionid){
+		$regionid = mysql_real_escape_string($regionid);
+		$query ="SELECT * FROM states WHERE region_id='".$regionid."'";
+		$command= Yii::app()->db->createCommand($query);		
+		$rawData = $command->queryAll();
+		return $rawData;
+	}
+	
+	/**	
+	* User_Define Function, to get Cities wrt Sates
+	* @param  $stateid Integer
+	* @return Array of Cities
+	* Last Modified: 03-Sept-14
+	*/
+	public function getcities($stateid,$countryid){
+		$stateid = mysql_real_escape_string($stateid);
+		if($stateid==0 || empty($stateid))
+			$query ="SELECT * FROM city WHERE country_id='".$countryid."'";
+		else
+			$query ="SELECT * FROM city WHERE state_id='".$stateid."'";
+		$command= Yii::app()->db->createCommand($query);		
+		$rawData = $command->queryAll();
+		return $rawData;
+	}
 	
 }

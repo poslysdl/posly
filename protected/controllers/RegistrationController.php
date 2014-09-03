@@ -11,7 +11,7 @@ class RegistrationController extends Controller
     {
         return array(
             array('allow',
-            	'actions'=>array('index','geturlname', 'invite','thirdstep', 'secondstep', 'settings', 'fourthstep', 'slogan', 'addmagazines', 'deletemagazines', 'adddesigners', 'deletedesigners', 'addshops', 'deleteshops',  'addstyles', 'deletestyles',  'addmystyles', 'deletemystyles', 'changephoto'),
+            	'actions'=>array('index','geturlname', 'invite','thirdstep', 'secondstep', 'settings', 'fourthstep', 'slogan', 'addmagazines', 'deletemagazines', 'adddesigners', 'deletedesigners', 'addshops', 'deleteshops',  'addstyles', 'deletestyles',  'addmystyles', 'deletemystyles', 'changephoto','getcity'),
                 'users'=>array('@'),
             ),
             array('deny'),
@@ -101,7 +101,7 @@ class RegistrationController extends Controller
 	
 	/* This called when User First (1-st Step) Gets Registered (3-Step Process)
 		Through Email, FB or Instagram
-		LastModifed : 01-Sept-14
+		LastModifed : 03-Sept-14
 	*/
 	public function actionSettings() 
 	{
@@ -111,55 +111,64 @@ class RegistrationController extends Controller
 			$success = array();
 			$id = Yii::app()->user->id;
 			$users = Users::model()->find("user_id=$id");
-			$country = Countries::model()->findAll();
-			$ethnicity = UsersEthnicity::model()->findAll();
-			$languages = UsersLanguage::model()->findAll();
-			$model = Users::model()->with('userDetails', 'userNotification', 'userSocialPrivacy', 'userSecurity', 'userLanguage', 'userLocation', 'userEthnicity')->findByPk($id);
-			
-			//if(isset($_POST)){
-			//echo "<pre>"; print_r($_POST); exit; }
-			
-			if(isset($_POST['firstname'], $_POST['city'],$_POST['ethinicity'],$_POST['url'], $_POST['search'], $_POST['email'],$_POST['gender'],$_POST['dob'],$_POST['language'], $_POST['country'], $_POST['region'], $_POST['state'] )) 
+			$errmsg = '';
+			if($users->user_registration_steps>1)
 			{
-				echo "<pre>"; print_r($_POST); exit;
-				/* UsersDetails model values */
+				//redirect to other steps, if user had already completed this
+				$regsteps = $users->user_registration_steps;
+				if($regsteps==2 && !isset($_REQUEST['stepflag'])){				
+					$this->redirect(array('registration/secondstep'));
+					Yii::app()->end();
+				} else if($regsteps==3 && !isset($_REQUEST['stepflag'])){					
+					$this->redirect(array('registration/thirdstep'));
+					Yii::app()->end();
+				} else if($regsteps==4 && !isset($_REQUEST['stepflag'])){					
+					$this->redirect(array('registration/fourthstep'));
+					Yii::app()->end();
+				} else{
+					$this->redirect(Yii::app()->homeUrl);
+				}
+			}		
+			//Validate POST data
+			if(isset($_POST['firstname']) && !empty($_POST['firstname']) && $_POST['city']!='' && !empty($_POST['etnicity']) && !empty($_POST['email']) && !empty($_POST['gender']) && !empty($_POST['country']))
+			{		
+				//UsersDetails model values
+				$success[] = false;
 				$fn = trim($_POST['firstname']);
 				$ln = trim($_POST['lastname']);
 				$email = trim($_POST['email']);
 				$gender = $_POST['gender'];
 				$dob = trim($_POST['dob']);
-				$search = $_POST['search'];
+				$search = isset($_POST['search'])?$_POST['search']:'';				
 				$url = trim($_POST['url']);
-				/* UsersLanguage model values */
-				$language = trim($_POST['language']);
-				/* UsersLocation model values */
+				//UsersLanguage model values
+				$language = trim($_POST['language']);			
 				$country = trim($_POST['country']);
-				$region = trim($_POST['region']);
-				$state = trim($_POST['state']);
-				$city = trim($_POST['city']);
-				/* UsersEthinicity model values */
-				$ethinicity = trim($_POST['ethinicity']);
-				/* UsersSecurity model values */
-				$privacy = $_POST['privacy'];
-				/* UsersNotification model values */
-				$email_notify = $_POST['email_notify'];
-				$like_pic = $_POST['like_pic'];
-				$follow = $_POST['follow'];
-				$comment_pic = $_POST['comment_pic'];
-				$sent_msg = $_POST['sent_msg'];
-				$week_newsletter = $_POST['week_newsletter'];
-				$feature_announce = $_POST['feature_announce'];
-				$week_inspiration = $_POST['week_inspiration'];
-				$invi_feed = $_POST['invi_feed'];
-				$pic_of_week = $_POST['pic_of_week'];
-				$someone_fb = $_POST['someone_fb'];
-				/* UsersSocialPrivacy model values */
-				$fb_like = $_POST['fb_like'];
-				$fb_upload = $_POST['fb_upload'];
-				$fb_comment = $_POST['fb_comment'];
-				$fb_favour = $_POST['fb_favour'];
-				//userdetails saved in table : users_details
-				// if row is already there update the row with the values
+				$region = (trim($_POST['region'])=='0')?'':trim($_POST['region']);
+				$state = (trim($_POST['state'])=='0')?'':trim($_POST['state']);
+				$city = trim($_POST['city']);				
+				$ethinicity = trim($_POST['etnicity']);
+				//UsersSecurity model values 
+				$privacy = isset($_POST['privacy'])?$_POST['privacy']:'';
+				//UsersNotification model values
+				$email_notify = isset($_POST['email_notify'])?$_POST['email_notify']:'';
+				$like_pic = isset($_POST['like_pic'])?$_POST['like_pic']:''; 
+				$follow = isset($_POST['follow_you'])?$_POST['follow_you']:'';
+				$comment_pic = isset($_POST['comment_pic'])?$_POST['comment_pic']:'';
+				$sent_msg = isset($_POST['sent_msg'])?$_POST['sent_msg']:''; 
+				$week_newsletter = isset($_POST['week_newsletter'])?$_POST['week_newsletter']:'';
+				$feature_announce = isset($_POST['featannounce'])?$_POST['featannounce']:'';
+				$week_inspiration = isset($_POST['week_inspiration'])?$_POST['week_inspiration']:'';
+				$invi_feed = isset($_POST['invi_feed'])?$_POST['invi_feed']:'';
+				$pic_of_week = isset($_POST['pic_of_week'])?$_POST['pic_of_week']:'';
+				$someone_fb = isset($_POST['someone_fb'])?$_POST['someone_fb']:'';
+				//UsersSocialPrivacy model values 
+				$fb_like = isset($_POST['fb_like'])?$_POST['fb_like']:'';
+				$fb_upload = isset($_POST['fb_upload'])?$_POST['fb_upload']:'';
+				$fb_comment = isset($_POST['fb_comment'])?$_POST['fb_comment']:'';
+				$fb_favour = isset($_POST['fb_favour'])?$_POST['fb_favour']:'';
+			
+				//userdetails saved in table : users_details				
 				if(isset($model->userDetails)) 
 				{
 					$row = UsersDetails::model()->updateByPk($model->userDetails->user_details_id, array(
@@ -210,8 +219,7 @@ class RegistrationController extends Controller
 					} else {
 					$success[] = false;
 					}
-				}
-				
+				}				
 				//EMAIL NOTIFICATIONS is saved in table : users_notification
 				if(isset($model->userNotification)) 
 				{
@@ -245,11 +253,9 @@ class RegistrationController extends Controller
 					$success[] = false;	
 					}
 				}
-
 				// SOCIAL SHARING details is saved in table : user_social_privacy	
 				if(isset($model->userSocialPrivacy)) 
 				{
-
 					$row = UserSocialPrivacy::model()->updateByPk($model->userSocialPrivacy->id, array(
 					"type"=>"Facebook", "user_i_like"=>$fb_like, "user_i_upload"=>$fb_upload, "user_comment"=>$fb_comment, "user_albums_fav"=>$fb_favour));
 					if($row) {
@@ -275,9 +281,8 @@ class RegistrationController extends Controller
 					$success[] = false;
 					}
 				}
-
 				//user language in saved in table : users_language
-				if (isset($model->userLanguage)) 
+				/*if(isset($model->userLanguage)) 
 				{
 					$row = UsersLanguage::model()->updateByPk($model->userLanguage->users_language_id, array(
 					"users_language_name"=>$language));
@@ -303,6 +308,7 @@ class RegistrationController extends Controller
 					$success[] = false;	 
 					}
 				}
+				*/
 				
 				//user location details are saved in table : users_location
 				if(isset($model->userLocation)) 
@@ -333,10 +339,9 @@ class RegistrationController extends Controller
 					} else {
 					$success[] = false;	 
 					}
-				}
-				
+				}				
 				//user ethinicity is saved in the table : users_ethnicity 
-				if (isset($model->userEthnicity)) 
+				/*if(isset($model->userEthnicity)) 
 				{
 					$row = UsersEthnicity::model()->updateByPk($model->userEthnicity->users_ethnicity_id, array("users_ethnicity_name"=>$ethinicity));
 					if ($row) {
@@ -349,9 +354,9 @@ class RegistrationController extends Controller
 				{
 					$usersEthinicity = new UsersEthnicity;
 					$usersEthinicity->users_ethnicity_name = $ethinicity;
-					if ($usersEthinicity->save()) {
+					if($usersEthinicity->save()) {
 					$users->user_ethnicity_id = $usersEthinicity->users_ethnicity_id;
-					if ($users->save()) {
+					if($users->save()) {
 					$success[] = true;
 					} else {
 					$success[] = false;	
@@ -360,18 +365,28 @@ class RegistrationController extends Controller
 					} else {
 					$success[] =false;	
 					}
-				} 
-
-				if (in_array(false, $success)) {
-					echo false; 
-				} else {
-					echo true;	
-				}
-				//print_r($success);
-				Yii::app()->end();
-				return true;
-			}
-			$this->render('account-settings', array('model'=>$model, 'country'=>$country,'ethnicity'=>$ethnicity,'languages'=>$languages));
+				} */
+				
+				$iserror = false;
+				if(in_array(false, $success)) {
+					$iserror=true;
+					$errmsg = "Error Occur! can't save ";
+				} else {					
+					$iserror=false; 					
+				}				
+				if($iserror===false){
+					$this->redirect(array('registration/secondstep'));
+					Yii::app()->end();
+				}				
+			} else{
+				$errmsg = "Please Enter Mandatory Fields (name, email, dob, gender,ethinicity, country & city)";
+			}			
+			//Render the page
+			$country = Countries::model()->findAll();
+			$ethnicity = UsersEthnicity::model()->findAll();
+			$languages = UsersLanguage::model()->findAll();
+			$model = Users::model()->with('userDetails', 'userNotification', 'userSocialPrivacy', 'userSecurity', 'userLanguage', 'userLocation', 'userEthnicity')->findByPk($id);
+			$this->render('account-settings', array('model'=>$model, 'country'=>$country,'ethnicity'=>$ethnicity,'languages'=>$languages,'errmsg'=>$errmsg));
 		} 
 		else {
 			$this->redirect(Yii::app()->homeUrl);		
@@ -488,8 +503,7 @@ class RegistrationController extends Controller
 			$userId = Yii::app()->user->id; 
 			$catname = $category_name->hashtags_category_name;
 			
-			$tagfind = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->find("hashtags.hashtags_name='$name' and hashtags.hashtags_category_id='$category_name->hashtags_category_id' and t.user_id=$userId");
-			
+			$tagfind = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->find("hashtags.hashtags_name='$name' and hashtags.hashtags_category_id='$category_name->hashtags_category_id' and t.user_id=$userId");		
 			 
 			 
 			if (!isset($tagfind)) {
@@ -505,10 +519,7 @@ class RegistrationController extends Controller
 					$hastag->hashtags_category_id = $category_name->hashtags_category_id;
 					$hastag->save(false);
 					
-				}
-				
-				 
-				 
+				}				 
 				
 				$m_users_hashtags->hashtags_id = $hastag->hashtags_id;
 				$m_users_hashtags->user_id = Yii::app()->user->id;
@@ -613,8 +624,7 @@ class RegistrationController extends Controller
 	
 	
 	public function actionDeletedesigners()
-	{
-		
+	{		
 		if(isset($_POST['id']))
 		{
 			$id = $_POST['id'];
@@ -653,15 +663,12 @@ class RegistrationController extends Controller
 				$category_name = new HashtagsCategory;
 				$category_name->hashtags_category_name = 'Shops';	
 				$category_name->save(false);
-			}
-			
+			}		
 			 
 			$userId = Yii::app()->user->id; 
 			$catname = $category_name->hashtags_category_name;
 			
-			$tagfind = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->find("hashtags.hashtags_name='$name' and hashtags.hashtags_category_id='$category_name->hashtags_category_id' and t.user_id=$userId");
-			
-			 
+			$tagfind = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->find("hashtags.hashtags_name='$name' and hashtags.hashtags_category_id='$category_name->hashtags_category_id' and t.user_id=$userId");			 
 			 
 			if (!isset($tagfind)) {
 				$hastag = Hashtags::model()->with('hashtagsCategory')->find("t.hashtags_name='$name' and hashtagsCategory.hashtags_category_id='$category_name->hashtags_category_id'");
@@ -674,18 +681,15 @@ class RegistrationController extends Controller
 					$hastag->hashtags_count = 1;
 					$hastag->hashtags_name = $_POST['name'];
 					$hastag->hashtags_category_id = $category_name->hashtags_category_id;
-					$hastag->save(false);
-					
-				}
-				
+					$hastag->save(false);					
+				}				
 				$m_users_hashtags->hashtags_id = $hastag->hashtags_id;
 				$m_users_hashtags->user_id = Yii::app()->user->id;
 				$m_users_hashtags->save(false);
 				
 				$m_loghash_tags->hashtags_id = $hastag->hashtags_id;
 				$m_loghash_tags->log_hashtags_date = $time;
-				$m_loghash_tags->save(false);
-				
+				$m_loghash_tags->save(false);				
 				
 				echo CJavaScript::jsonEncode($hastag);
 				Yii::app()->end();
@@ -744,22 +748,18 @@ class RegistrationController extends Controller
 				$category_name = new HashtagsCategory;
 				$category_name->hashtags_category_name = 'StyleIcons';	
 				$category_name->save(false);
-			}
-			
+			}		
 			 
 			$userId = Yii::app()->user->id; 
 			$catname = $category_name->hashtags_category_name;
 			
-			$tagfind = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->find("hashtags.hashtags_name='$name' and hashtags.hashtags_category_id='$category_name->hashtags_category_id' and t.user_id=$userId");
-			
-			 
+			$tagfind = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->find("hashtags.hashtags_name='$name' and hashtags.hashtags_category_id='$category_name->hashtags_category_id' and t.user_id=$userId");	 
 			 
 			if (!isset($tagfind)) {
 				$hastag = Hashtags::model()->with('hashtagsCategory')->find("t.hashtags_name='$name' and hashtagsCategory.hashtags_category_id='$category_name->hashtags_category_id'");
 				if (isset($hastag)) {
 					$hastag->hashtags_count += 1;
-					$hastag->save(false);
-												
+					$hastag->save(false);												
 				} else {
 					$hastag = new Hashtags;
 					$hastag->hashtags_count = 1;
@@ -848,8 +848,7 @@ class RegistrationController extends Controller
 				$hastag = Hashtags::model()->with('hashtagsCategory')->find("t.hashtags_name='$name' and hashtagsCategory.hashtags_category_id='$category_name->hashtags_category_id'");
 				if (isset($hastag)) {
 					$hastag->hashtags_count += 1;
-					$hastag->save(false);
-												
+					$hastag->save(false);												
 				} else {
 					$hastag = new Hashtags;
 					$hastag->hashtags_count = 1;
@@ -857,8 +856,7 @@ class RegistrationController extends Controller
 					$hastag->hashtags_category_id = $category_name->hashtags_category_id;
 					$hastag->save(false);
 					
-				}
-				
+				}				
 				$m_users_hashtags->hashtags_id = $hastag->hashtags_id;
 				$m_users_hashtags->user_id = Yii::app()->user->id;
 				$m_users_hashtags->save(false);
@@ -880,16 +878,14 @@ class RegistrationController extends Controller
 	{
 		if(isset($_POST['id']))
 		{
-			 $id = $_POST['id'];
-			 
+			$id = $_POST['id'];			 
 			$uht = UsersHashtags::model()->findByAttributes(array('hashtags_id' => $id));
 			if ($uht->delete()) {
 				$m = Hashtags::model()->findByPk($id);
 				if($m->hashtags_count > 0) {
 					$m->hashtags_count--;
 					$m->save(false);	
-				}
-				
+				}				
 				echo 'ok';
 			} else {
 				echo 'error';	
@@ -897,4 +893,52 @@ class RegistrationController extends Controller
 		}
 		Yii::app()->end();
 	}
+	
+	/**
+	* This user define Common Ajax function, 
+	* To get city,state,region data wrt to countryid or regionId
+	* Last Modified: 03-Sept-14
+	*/	
+	public function actionGetcity()
+	{		
+		if(isset($_POST['pdata']))
+		{
+			$val = $_POST['pdata'];
+			$sourcename = $_POST['pname'];
+			$countryid = $_POST['cid'];
+			$result = '';
+			$str = '<option value="">-</option>';
+			if($sourcename=='country'){
+				//select region wrt country
+				$notaval = "Regions Not available";
+				$result = Countries::model()->getregions($val);				
+			}
+			else if($sourcename=='region'){
+				//select state wrt region
+				$notaval = "States Not available";
+				$result = Countries::model()->getstates($val);
+			}
+			else {
+				//select city wrt state
+				$notaval = "Cities Not available";
+				$result = Countries::model()->getcities($val,$countryid);
+			}
+			
+			if(isset($result) && count($result))
+			{
+				//create the options
+				foreach($result as $keys=>$values){
+				$str.='<option value="'.$values['name'].'" data-id="'.$values['id'].'" > '.$values['name'].'</option>';
+				}
+			} else{
+				$str.= '<option value="0" data-id="">'.$notaval.'</option>';
+			}
+			echo CJSON::encode(array(
+				'status'=>'success',
+				'msg'=>$str,
+			));	
+			Yii::app()->end();			
+		}		
+	}
+	
 }

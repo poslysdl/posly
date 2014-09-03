@@ -57,7 +57,7 @@
 <!--TOP MENU-->
 <ul class="nav navbar-nav pull-left hidden-xs hidden-small">
 <li><?php echo CHtml::link('Catwalk',array('site/index'), array('class'=>'menu')); ?></li>
-<li><?php echo CHtml::link('News Feed',array('newsfeed/index'), array('class'=>'menu')); ?></li>
+<li><?php echo CHtml::link('News Feed',array('news/index'), array('class'=>'menu')); ?></li>
 <li><?php echo CHtml::link('Blog',array('blog/index'), array('class'=>'menu')); ?></li>
 </ul>
 <!--END TOP MENU--> 
@@ -242,234 +242,41 @@
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/scripts/form-validation.js"></script>
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/scripts/app.js" type="text/javascript"></script> 
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/scripts/quick-sidebar.js" type="text/javascript"></script>
-<script src="<?php echo Yii::app()->theme->baseUrl; ?>/scripts/ui-extended-modals.js"></script> 
-
+<script src="<?php echo Yii::app()->theme->baseUrl; ?>/scripts/ui-extended-modals.js"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
+
+<script src="<?php echo Yii::app()->theme->baseUrl; ?>/scripts/poslyfunctions.js"></script> 
+<!---Important JS Functions mainly for PHP developers --->
 
 <script>
 
 var posWas;
  
 $(window).bind('scroll', function(){ //when the user is scrolling...
-
-	var pos = $(window).scrollTop(); //position of the scrollbar
-	
+	var pos = $(window).scrollTop(); //position of the scrollbar	
 	if(pos > posWas){ 
 		//do something
 		 $(".page-sidebar-menu.marktop").addClass("lentren2");
 	}
 	else if(pos < posWas){ 
-		//do something
-		
-						
-	}
-	
-	 
-	
-	if (pos == 0 ) { $("#top-shadow").removeClass("topsha");   $(".page-sidebar-menu.marktop").removeClass("lentren2");}
-	
+		//do something						
+	} 	
+	if (pos == 0 ) { $("#top-shadow").removeClass("topsha");   $(".page-sidebar-menu.marktop").removeClass("lentren2");}	
 	else {$("#top-shadow").addClass("topsha");  }
-
-	posWas = pos; 
-	
+	posWas = pos;
 	
 })
  
 </script>
 
 <script>
-      jQuery(document).ready(function() {    
-         App.init(); // initlayout and core plugins        
-		 FormValidation.init();
-		  	 $(".custom-combify").combify();
-      });
-   </script> 
-
- 
-
-<script>
-
- 
-
-$('.accset_save').click(function(e){
-	 	
-		var verify = 0;
-		
-		/* user details data (first form) Table: users_details */
-	 	var fn = $('#firstname').val();
-		var ln = $('#lastname').val();
-		var email = $('#email').val();
-		var dob = $('#dob').val();
-		var gender = $("input:radio[name='gender']:checked").val();
-		
-		//Table : users_language
-		var lan = $('#form_2_select22').val();
-		if (lan == "") { 
-			$('.lan_error').text('Please Enter Language');
-		} else {
- 			$('.lan_error').text('');
-			verify = verify + 1;
-			 
-		}
-		
-		
-		//Table : users_location
-		var cnty = $('#form_2_select2').val();
-		if (cnty == "") {
-			$('.cnty_error').text('Please Enter Country');
-		} else {
-			$('.cnty_error').text('');		
-			verify = verify + 1;
-		}
-		
-		var region = $('#form_2_selectregion').val();
-		if (region == "") {
-			$('.region_error').text('Please Enter Region');
-		} else {
-			$('.region_error').text('');
-			verify = verify + 1;
-		}
-		
-		var state = $('#form_2_selectstate').val();
-		if (state == "") {
-			$('.state_error').text('Please Enter State');	
-		} else {
-			$('.state_error').text('');
-			verify = verify + 1;
-		}
-		
-		var city = $('#form_2_select222').val();
-		if (city == "") {
-			$('.city_error').text('Please Enter City');	
-		} else {
-			$('.city_error').text('');
-			verify = verify + 1;
-		}
-		
-		//Table : users_ethnicity
-		var ethinicity = $('#form_2_select2222').val(); 
-		if (ethinicity == "") {
-			$('.ethi_error').text('Please Enter Ethinicity');	
-		} else {
-			$('.ethi_error').text('');
-			verify = verify + 1;
-		}
-		
-		 
-		
-		//Table : users_details
-		var search_pri = $('#search_privacy').bootstrapSwitch('status');  // (added this field and modified in the model)
-		if (search_pri == true) 
-			search_pri = 1;
-		else 
-			search_pri = 0;
-		
-		
-		var url = $('#url').val(); // (added new field and modified in the model)
-		
-		/* privacy on/off (second form) Table : users_security*/
-		var privacy = $("input:radio[name='messageme']:checked").val(); //added new field and modified in model
-		
-		/* email notification (third form) Table : users_notification (added new fields and generated the model) */
-		var email_notify = $('#email_notify').bootstrapSwitch('status');
-		if (email_notify) email_notify = 1; else email_notify = 0;
-			
-		 
-		var like_pic = $('#like_pic').bootstrapSwitch('status');
-		if (like_pic) like_pic = 1; else like_pic = 0;
-		
-		var follow = $('#follow_you').bootstrapSwitch('status');
-		if (follow) follow = 1; else follow = 0;
-		
-		var comment_pic = $('#cmt_pic').bootstrapSwitch('status');
-		if (comment_pic) comment_pic = 1; else comment_pic = 0;
-		
-		var sent_msg = $('#sent_msg').bootstrapSwitch('status');
-		if (sent_msg) sent_msg = 1; else sent_msg = 0;
-		
-		var week_newsletter = $('#week_newsletter').bootstrapSwitch('status');
-		if (week_newsletter) week_newsletter = 1; else week_newsletter = 0;
-		
-		var feature_announce = $('#fea_ann_upd').bootstrapSwitch('status');
-		if (feature_announce) feature_announce = 1; else feature_announce = 0;
-		
-		var week_inspiration = $('#week_inspiration').bootstrapSwitch('status');
-		if (week_inspiration) week_inspiration = 1; else week_inspiration = 0;
-		
-		var invi_feed = $('#invi_feed').bootstrapSwitch('status');
-		if (invi_feed) invi_feed = 1; else invi_feed = 0;
-		
-		var pic_of_week = $('#pic_of_week').bootstrapSwitch('status');
-		if (pic_of_week) pic_of_week = 1; else pic_of_week = 0;
-		
-		var someone_fb = $('#someon_on_fb').bootstrapSwitch('status');
-		if (someone_fb) someone_fb = 1; else someone_fb = 0;
-		
-		/* social sharing privacy Table : user_social_privacy (added new table and generated the model) */
-		
-		
-		var fb_like = $('#fb_like').bootstrapSwitch('status');
-		if (fb_like) fb_like = 1; else fb_like = 0;
-		
-		var fb_upload = $('#fb_upload').bootstrapSwitch('status');
-		if (fb_upload) fb_upload = 1; else fb_upload = 0;
-		
-		var fb_comment = $('#fb_comment').bootstrapSwitch('status');
-		if (fb_comment) fb_comment = 1; else fb_comment = 0;
-		
-		var fb_favour = $('#fb_favour').bootstrapSwitch('status');
-		if (fb_favour) fb_favour = 1; else fb_favour = 0;
-		
-		data = 'firstname='+ fn  + '&lastname='+ ln + '&email=' + email + '&gender=' + gender + '&dob=' + dob + '&language=' + lan;
-		data = data + '&country=' + cnty + '&region=' + region + '&state=' + state + '&city=' + city + '&ethinicity=' + ethinicity + '&search=' + search_pri + '&url=' + url;
-		data = data + '&privacy=' + privacy;
-		data = data + '&email_notify=' + email_notify + '&like_pic=' + like_pic + '&follow=' + follow + '&comment_pic=' + comment_pic + '&sent_msg=' + sent_msg + '&week_newsletter=' + week_newsletter + '&feature_announce=' + feature_announce + '&week_inspiration=' + week_inspiration + '&invi_feed=' + invi_feed + '&pic_of_week=' + pic_of_week + '&someone_fb=' + someone_fb;
-		data = data + '&fb_like=' + fb_like + '&fb_upload=' + fb_upload + '&fb_comment=' + fb_comment + '&fb_favour=' + fb_favour;
-		
-		//console.log(data);
-	 	//value = $('#form_sample_2').serialize();
-		
-		
- 
-		if (verify == 6) {
-		 
-		var form = $( "#form_sample_2" );
-		form.validate();
-		 
-		  if( form.valid() ) {
-		  	 
-			  $.ajax({
-					type: "POST",
-					url:"<?php echo Yii::app()->createUrl('/registration/settings'); ?>",
-					data: data,	
-					success: function (msg1) {
-						 
-						 console.log(msg1);
-					}
-					 
-				}).done(function (msg) {
-					//alert(msg);
-					});
-		  
-		} 
-		  
-		} else {
-			 
-			
-		}
-});
-
-
 
 $(function() {
   var txt = $("#url");
-  var exist = '';
-  
+  var exist = '';  
   var button = $('.accset_save');
   var func = function() {
-	 if (txt.val().length >= 8) { 
-	 
-	 
+	if(txt.val().length >= 8) {	 
     txt.val(txt.val().replace(/\s/g, ''));
 	val = txt.val();
 	$.ajax({
@@ -477,37 +284,34 @@ $(function() {
 		url: "<?php echo Yii::app()->createUrl('/registration/geturlname'); ?>",
 		data : {value : val},
 		success: function(data) {
-			if (data) {
-				
+			if (data) {				
 				$('.url_msg').text("Already Taken");
 				txt.closest('.form-group').removeClass('has-success').addClass('has-error');
-				$('.accset_save').attr('disabled', 'disabled');
-				
-				exist = true;
-				 
+				$('.accset_save').attr('disabled', 'disabled');				
+				exist = true;				 
 			}
-			else {
-				
+			else {				
 				$('.url_msg').text("");
 				$('.accset_save').removeAttr('disabled');
-				txt.closest('.form-group').removeClass('has-error').addClass('has-success');
-				
-				exist = false;
-				 
+				txt.closest('.form-group').removeClass('has-error').addClass('has-success');				
+				exist = false;				 
 			}
 		}
 	});
 	
-	 }//if the text box value is greater than eight characters
+	}//if the text box value is greater than eight characters
 	 else {
-		 $('.url_msg').text("");
-		}
-  }
-  
- 	
+		$('.url_msg').text("");
+	}
+  } 	
   txt.keyup(func).blur(func);
- });
+});
 
+jQuery(document).ready(function() {    
+	App.init(); // initlayout and core plugins        
+	//FormValidation.init();
+	//$(".custom-combify").combify();
+});
 
 </script>
 
