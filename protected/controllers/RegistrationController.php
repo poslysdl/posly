@@ -114,7 +114,7 @@ class RegistrationController extends Controller
 			$errmsg = '';
 			if($users->user_registration_steps>1)
 			{
-				//redirect to other steps, if user had already completed this
+				//redirect to other steps, if user had already completed this Step
 				$regsteps = $users->user_registration_steps;
 				if($regsteps==2 && !isset($_REQUEST['stepflag'])){				
 					$this->redirect(array('registration/secondstep'));
@@ -128,7 +128,8 @@ class RegistrationController extends Controller
 				} else{
 					$this->redirect(Yii::app()->homeUrl);
 				}
-			}		
+			}			
+			$model = Users::model()->with('userDetails', 'userNotification', 'userSocialPrivacy', 'userSecurity', 'userLocation')->findByPk($id);			
 			//Validate POST data
 			if(isset($_POST['firstname']) && !empty($_POST['firstname']) && $_POST['city']!='' && !empty($_POST['etnicity']) && !empty($_POST['email']) && !empty($_POST['gender']) && !empty($_POST['country']))
 			{		
@@ -170,15 +171,16 @@ class RegistrationController extends Controller
 			
 				//userdetails saved in table : users_details				
 				if(isset($model->userDetails)) 
-				{
-					$row = UsersDetails::model()->updateByPk($model->userDetails->user_details_id, array(
-					"user_details_firstname"=>$fn, "user_details_lastname"=>$ln, "user_details_email"=>$email, "user_details_dob"=>$dob, "user_details_gender"=>$gender, "searchprivacy"=>$search, "user_unique_url"=>$url));
-					if($row) 
-						$success[] = true; 
-					else 
-						$success[] = false;
-
-				} 
+				{		
+					//Post::model()->updateByPk($pk,$attributes,$condition,$params);					
+					$pk = $model->userDetails->user_details_id;
+					$attributes = array(			
+					'user_details_firstname'=>$fn, 'user_details_lastname'=>$ln, 'user_details_email'=>$email, 'user_details_dob'=>$dob, 'user_details_gender'=>$gender, 'searchprivacy'=>$search, 'user_unique_url'=>$url);
+					$condition = 'user_details_id = :userdetailid';
+					$params = array(':userdetailid'=>$pk);
+					$row = UsersDetails::model()->updateByPk($pk,$attributes,$condition,$params);					
+					$success[] = true;
+				}
 				else { 
 					//if the row is not there add a new row in the table
 					$userDetials = new UsersDetails;
@@ -196,7 +198,8 @@ class RegistrationController extends Controller
 					} else {
 					$success[] = false;
 					}
-				}
+				}				
+			
 				//whocansee is saved in table : users_security
 				if(isset($model->userSecurity)) {
 					$row = UsersSecurity::model()->updateByPk($model->userSecurity->users_security_id, array(
@@ -370,9 +373,14 @@ class RegistrationController extends Controller
 				$iserror = false;
 				if(in_array(false, $success)) {
 					$iserror=true;
-					$errmsg = "Error Occur! can't save ";
+					$errmsg = "Error Occur! Unable to save the Record ";
 				} else {					
-					$iserror=false; 					
+					$iserror=false;
+					if($users->user_registration_steps<2){
+					//Increment for next step
+					$users->user_registration_steps = 2; 
+					$users->save();
+					}
 				}				
 				if($iserror===false){
 					$this->redirect(array('registration/secondstep'));
@@ -384,10 +392,9 @@ class RegistrationController extends Controller
 			//Render the page
 			$country = Countries::model()->findAll();
 			$ethnicity = UsersEthnicity::model()->findAll();
-			$languages = UsersLanguage::model()->findAll();
-			$model = Users::model()->with('userDetails', 'userNotification', 'userSocialPrivacy', 'userSecurity', 'userLanguage', 'userLocation', 'userEthnicity')->findByPk($id);
+			$languages = UsersLanguage::model()->findAll();			
 			$this->render('account-settings', array('model'=>$model, 'country'=>$country,'ethnicity'=>$ethnicity,'languages'=>$languages,'errmsg'=>$errmsg));
-		} 
+		}
 		else {
 			$this->redirect(Yii::app()->homeUrl);		
 		}
@@ -472,10 +479,8 @@ class RegistrationController extends Controller
 				echo 'error';
 			Yii::app()->end();
 			}
-		}
-		
-		$this->render('slogan', array('model'=>$model));
-		
+		}		
+		$this->render('slogan', array('model'=>$model));		
 	}	
 	
 	

@@ -7,6 +7,7 @@ POSLY SQL Changes
 
 ALTER TABLE `users` ADD `user_registration_steps` TINYINT( 1 ) NOT NULL DEFAULT '0' COMMENT '0-intial, 1-userInfo, 2-profilepic, 3-invite frnd, 4-like pics, 5-Tour, 6-finish';
 
+UPDATE `users` SET `user_registration_steps` = 6;
 -- -- 02-September-2014
 
 TRUNCATE TABLE `users_ethnicity`;
