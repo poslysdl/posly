@@ -11,7 +11,7 @@ if($_SERVER['SERVER_ADDR']=='127.0.0.1'){
 	$FB_APPId = '277829039091254';
 	$FB_SECRETKey = "7291db28e16d2ecddb40a9e8e00e17e4";
 	$DB_USERNAME = 'root';
-	$DB_PASSWORD = '';
+	$DB_PASSWORD = 'sdl123';
 	$Base_URL = 'http://localhost/projects/posly_v2/posly/index.php/user/hybridauth/endpoint';
 } else{
 	$FB_APPId = '508534549216916';
