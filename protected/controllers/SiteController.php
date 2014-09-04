@@ -220,8 +220,7 @@ class SiteController extends Controller
 		//Get Hash Tags Listings for sidebar, this action define in Controller class
 		$limit = (Yii::app()->user->isGuest)?9:6;		
 		$hash_tags = $this->actionHashtaglist($limit);		
-		$this->render('index', array('photos'=>$allusersphotos,'hash_tags'=>$hash_tags,'menulink'=>'newmember'));
-		
+		$this->render('index', array('photos'=>$allusersphotos,'hash_tags'=>$hash_tags,'menulink'=>'newmember'));		
 	}
 	
 	/**
