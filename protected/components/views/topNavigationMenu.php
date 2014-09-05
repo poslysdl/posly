@@ -19,9 +19,12 @@ if(Yii::app()->user->isGuest)
 	<li>
 	<?php echo CHtml::link('Facebook',array('user/hybridauth/authenticate','provider'=>'Facebook'), array('class'=>'btn faceS')); ?>
 	</li>
-	<li>
+<!--	<li>
 	<?php echo CHtml::link('Instagram',array('#','provider'=>'Instagram'), array('class'=>'btn insta')); ?>
-	</li>
+	</li>-->
+	<li>
+	<a class="btn insta" data-toggle="modal" href="https://api.instagram.com/oauth/authorize?client_id=d1b24c4e53364af880b33c5561ce12f4&redirect_uri=http://localhost/projects/posly_v2/posly/index.php/site/instagramauth&scope=basic&response_type=code">Instagram</a>
+	</li>	
 	<li>
 	<button type="button" class="btn meoS checkmsg" data-toggle="modal" href="#loginModal">Email</button>
 	</li>
