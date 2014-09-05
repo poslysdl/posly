@@ -1,6 +1,7 @@
 <?php
 /* An Component for User Authentication
 * is used By FB, Email SignUp & SignIn.
+** SESSIONS gets started Here
 * Last Modified - 02-Sep-14
 */
 class UserIdentity extends CUserIdentity {

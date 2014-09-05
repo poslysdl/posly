@@ -119,18 +119,7 @@
 				if ($model->userDetails->user_details_gender == 2) echo 'checked' ?> class="toggle" name="gender"/>
 				</div>
 				<p class="help-block-more">Female</p>
-			</div>
-			<!--  <div class="make-switch pull-left needmar" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
-			< ? php 
-			if ($modelUserDetails->user_details_gender == 1) {
-			$gender = "checked";  
-			} else {
-			$gender = "unchecked";	
-			}
-			?>
-			<input type="checkbox" name="gender" <?php //echo $gender;  ?> class="toggle" id="toggle-state-switch"  />
-			</div>
-			<p class="help-block-more">On for male and Off for female</p>-->
+			</div>			
 			<div class="errorMessage myhide" id="gendererr"></div>
 			</div>
 		</div>
@@ -167,39 +156,39 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label  class="col-md-3 control-label">Region</label>
+			<label class="col-md-3 control-label">Region</label>
 			<div class="col-md-9">
-			<?php if (isset($model->userLocation->user_location_region)) {$reg_val = $model->userLocation->user_location_region;} else $reg_val=""; ?>
+			<?php if(isset($model->userLocation->user_location_region)) {$reg_val = $model->userLocation->user_location_region;} else $reg_val="-"; ?>
 			<select id="formreg_region" class="form-control custom-combify" name="region">
-			<option value="">-</option>
+			<option value="<?php echo $reg_val; ?>"><?php echo $reg_val; ?></option>
 			</select>
 			<p class="region_error" data-url="<?php echo Yii::app()->createUrl('registration/getcity'); ?>"></p>
 			</div>
 		</div>
 		<div class="form-group">
-			<label  class="col-md-3 control-label">State</label>
+			<label class="col-md-3 control-label">State</label>
 			<div class="col-md-9">
-			<?php if (isset($model->userLocation->user_location_state)) {$st_val = $model->userLocation->user_location_state;} else $st_val=""; ?>
+			<?php if(isset($model->userLocation->user_location_state)) {$st_val = $model->userLocation->user_location_state;} else $st_val="-"; ?>
 			<select id="formreg_state" class="form-control custom-combify" name="state">
-			<option value="">-</option>
+			<option value="<?php echo $st_val; ?>"><?php echo $st_val; ?></option>
 			</select>
 			<p class="state_error" data-url="<?php echo Yii::app()->createUrl('registration/getcity'); ?>"></p>
 			</div>
 		</div>
 		<div class="form-group">
-			<label  class="col-md-3 control-label">City</label>
+			<label class="col-md-3 control-label">City</label>
 			<div class="col-md-9">
-			<?php if (isset($model->userLocation->user_location_city)) {$city_val = $model->userLocation->user_location_city;} else $city_val=""; ?>
+			<?php if(isset($model->userLocation->user_location_city)) {$city_val = $model->userLocation->user_location_city;} else $city_val="-"; ?>
 			<select id="formreg_city" class="form-control custom-combify" name="city">
-			<option value="">-</option>
+			<option value="<?php echo $city_val; ?>"><?php echo $city_val; ?></option>
 			</select>
 			<p class="city_error errorMessage" data-url="<?php echo Yii::app()->createUrl('registration/getcity'); ?>"></p>
 			</div>
 		</div>
 		<div class="form-group">
-			<label  class="col-md-3 control-label">Etnicity</label>
+			<label class="col-md-3 control-label">Etnicity</label>
 			<div class="col-md-9">	
-			<?php $et_val = (isset($model->user_ethnicity_id))?$model->user_ethnicity_id:''; ?>		
+			<?php $et_val =(isset($model->user_ethnicity_id))?$model->user_ethnicity_id:''; ?>		
 			<select id="form_2_select2222" class="form-control custom-combify" name="etnicity">
 			<option value="">-</option>
 			<?php 
@@ -217,9 +206,11 @@
 			<label  class="col-md-3 control-label">Search Privacy</label>
 			<div class="col-md-9">
 			<div class="make-switch pull-left needmar" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
-			<input type="checkbox" <?php
-			if (isset($model->userDetails->searchprivacy))
-			if ($model->userDetails->searchprivacy == 1) echo 'checked'; ?> name="search" id="search_privacy" name="privacy"  class="toggle" />
+			<?php 
+			$checked = '';
+			$checked = (isset($model->userDetails->searchprivacy) && $model->userDetails->searchprivacy == 1)?'checked':'';			
+			?>
+			<input type="checkbox" name="search" id="search_privacy" value="1" class="toggle" <?php echo $checked; ?> />
 			</div>
 			<p class="help-block-more">Keep search engines (e.g. Google) from showing your 2Pretty profile in search results</p>
 			</div>
@@ -231,9 +222,11 @@
 			</div>
 			<div class="col-md-7">
 			<div class="input-icon right"> <i class="fa"></i>
-			<input type="text" class="form-control" id="url" value="<?php  
-			if (isset($model->userDetails->user_unique_url))
-			echo $model->userDetails->user_unique_url ?>" name="url"/>
+			<?php 
+			$checked = '';
+			$checked = (isset($model->userDetails->user_unique_url))?$model->userDetails->user_unique_url:'';			
+			?>
+			<input type="text" class="form-control" id="url" value="<?php echo $checked;?>" name="url"/>
 			</div>
 			<span class="help-block-more">e.g: <strong>SimonKing25</strong>, <strong>Rosejane25</strong>, <strong>king-25</strong></span> </div>
 			<div class="url_msg"></div>
@@ -256,7 +249,7 @@
 		<h3>Privacy</h3>
 		</div>
 		</div>
-		<button  class="btn white pull-right" >Show blocked Users</button>
+		<button class="btn white pull-right">Show blocked Users</button>
 		</div>
 		<div class="portlet-body form">
 		<div class="form-body">
@@ -294,42 +287,38 @@
 		<div class="col-md-12">
 		<div class="divider"></div>
 		</div>
-		</div>-->
+		</div>-->		
 		<div class="form-group">
 			<label  class="col-md-3 control-label">Who can message me</label>
 			<div class="col-md-9">
 			<ul class="checkbox-list">
 			<li>
-			<div class="pull-left needmar" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
-			<input type="radio"  class="toggle" value="1" <?php 
-			if (isset($model->userSecurity->whocansee)) {
-			if ($model->userSecurity->whocansee == 1)
-			echo 'checked';
-
-			} else { echo 'checked';}
-			?> name="messageme"/>
+			<div class="pull-left needmar" data-on="danger" data-off="default" data-label-icon="icon-reorder">
+			<?php 
+			$checked = '';
+			$checked = (isset($model->userSecurity->whocansee) && $model->userSecurity->whocansee == 1)?'checked':'';			
+			?>
+			<input type="radio"  class="toggle" value="1" name="messageme" <?php echo $checked; ?> />
 			</div>
 			<p class="help-block-more">Everybody</p>
 			</li>
 			<li>
-			<div class=" pull-left needmar" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
-			<input type="radio"  class="toggle" value="2" <?php
-			if (isset($model->userSecurity->whocansee)) {
-			if ($model->userSecurity->whocansee == 2)
-			echo 'checked';
-			} 
-			?> name="messageme"/>
+			<div class=" pull-left needmar" data-on="danger" data-off="default" data-label-icon="icon-reorder">
+			<?php 
+			$checked = '';
+			$checked = (isset($model->userSecurity->whocansee) && $model->userSecurity->whocansee == 2)?'checked':'';			
+			?>
+			<input type="radio" class="toggle" value="2" name="messageme" <?php echo $checked; ?> />
 			</div>
 			<p class="help-block-more">Follower</p>
 			</li>
 			<li>
+			<?php 
+			$checked = '';
+			$checked = (isset($model->userSecurity->whocansee) && $model->userSecurity->whocansee == 3)?'checked':'';			
+			?>
 			<div class=" pull-left needmar" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
-			<input type="radio"  class="toggle" value="3" <?php 
-			if (isset($model->userSecurity->whocansee)) {
-			if ($model->userSecurity->whocansee == 3)
-			echo 'checked';
-			} 
-			?> name="messageme"/>
+			<input type="radio" class="toggle" value="3" name="messageme" <?php echo $checked; ?>/>
 			</div>
 			<p class="help-block-more">Nobody</p>
 			</li>
@@ -366,11 +355,12 @@
 		<div class="form-group">
 		<label  class="col-md-3 control-label">Email Notifications</label>
 		<div class="col-md-9">
+		<?php 
+		$checked = '';
+		$checked = (isset($model->userNotification->user_notification_on) && $model->userNotification->user_notification_on == 1)?'checked':'';		
+		?>
 		<div class="make-switch pull-left needmar" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
-		<input type="checkbox" id="email_notify" name="email_notify"  
-		<?php if (isset($model->userNotification->user_notification_on)){
-		if ($model->userNotification->user_notification_on == 1) echo 'checked';
-		} ?>  class="toggle"/>
+		<input type="checkbox" id="email_notify" name="email_notify" value="1" class="toggle" <?php echo $checked;?> />
 		</div>
 		</div>
 		</div>
@@ -385,17 +375,21 @@
 		<div class="form-group">
 			<div class="col-md-6">
 			<div class="make-switch pull-left needmar2" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
-			<input type="checkbox" id="like_pic" name="like_pic" <?php if (isset($model->userNotification->user_like_pic)){
-			if ($model->userNotification->user_like_pic == 1) echo 'checked';
-			} ?>   class="toggle"/>
+			<?php 
+			$checked = '';
+			$checked = (isset($model->userNotification->user_like_pic) && $model->userNotification->user_like_pic == 1)?'checked':'';		
+			?>
+			<input type="checkbox" id="like_pic" value="1" name="like_pic" class="toggle" <?php echo $checked;?> />
 			</div>
 			<p class="help-block-more2">Likes a Picture</p>
 			</div>
 			<div class="col-md-6">
 			<div class="make-switch pull-left needmar2" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
-			<input type="checkbox" name="follow_you" id="follow_you" <?php if (isset($model->userNotification->user_follow_pic)){
-			if ($model->userNotification->user_follow_pic == 1) echo 'checked';
-			} ?>  class="toggle"/>
+			<?php 
+			$checked = '';
+			$checked = (isset($model->userNotification->user_follow_pic) && $model->userNotification->user_follow_pic == 1)?'checked':'';		
+			?>
+			<input type="checkbox" name="follow_you" value="1" id="follow_you" class="toggle" <?php echo $checked;?> />
 			</div>
 			<p class="help-block-more2">Follows you</p>
 			</div>
@@ -403,17 +397,21 @@
 		<div class="form-group">
 			<div class="col-md-6">
 			<div class="make-switch pull-left needmar2" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
-			<input type="checkbox" name="comment_pic" id="cmt_pic" <?php if (isset($model->userNotification->user_comment_pic)){
-			if ($model->userNotification->user_comment_pic == 1) echo 'checked';
-			} ?>  class="toggle"/>
+			<?php 
+			$checked = '';
+			$checked = (isset($model->userNotification->user_comment_pic) && $model->userNotification->user_comment_pic == 1)?'checked':'';		
+			?>
+			<input type="checkbox" name="comment_pic" value="1" id="cmt_pic" class="toggle" <?php echo $checked;?> />
 			</div>
 			<p class="help-block-more2">Comments on a Picture</p>
 			</div>
 			<div class="col-md-6">
 			<div class="make-switch pull-left needmar2" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
-			<input type="checkbox" name="sent_msg" id="sent_msg" <?php if (isset($model->userNotification->user_sent_msg)){
-			if ($model->userNotification->user_sent_msg == 1) echo 'checked';
-			} ?> class="toggle"/>
+			<?php 
+			$checked = '';
+			$checked = (isset($model->userNotification->user_sent_msg) && $model->userNotification->user_sent_msg == 1)?'checked':'';		
+			?>
+			<input type="checkbox" name="sent_msg" id="sent_msg" value="1" class="toggle" <?php echo $checked;?> />
 			</div>
 			<p class="help-block-more2">Sends a message</p>
 			</div>
@@ -429,17 +427,21 @@
 		<div class="form-group">
 			<div class="col-md-6">
 			<div class="make-switch pull-left needmar2" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
-			<input type="checkbox" name="week_newsletter" id="week_newsletter" <?php if (isset($model->userNotification->user_week_newsletter)){
-			if ($model->userNotification->user_week_newsletter == 1) echo 'checked';
-			} ?> class="toggle"/>
+			<?php 
+			$checked = '';
+			$checked = (isset($model->userNotification->user_week_newsletter) && $model->userNotification->user_week_newsletter == 1)?'checked':'';		
+			?>
+			<input type="checkbox" name="week_newsletter" id="week_newsletter" value="1" class="toggle" <?php echo $checked;?> />
 			</div>
 			<p class="help-block-more2">Weekly Newsletter</p>
 			</div>
 			<div class="col-md-6">
 			<div class="make-switch pull-left needmar2" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
-			<input type="checkbox" name="featannounce" id="fea_ann_upd"  <?php if (isset($model->userNotification->user_feature_announce)){
-			if ($model->userNotification->user_feature_announce == 1) echo 'checked';
-			} ?>  class="toggle"/>
+			<?php 
+			$checked = '';
+			$checked = (isset($model->userNotification->user_feature_announce) && $model->userNotification->user_feature_announce == 1)?'checked':'';		
+			?>
+			<input type="checkbox" name="featannounce" id="fea_ann_upd" value="1" class="toggle" <?php echo $checked;?> />
 			</div>
 			<p class="help-block-more2">Feature announcements ans updates</p>
 			</div>
@@ -447,17 +449,21 @@
 		<div class="form-group">
 			<div class="col-md-6">
 			<div class="make-switch pull-left needmar2" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
-			<input type="checkbox" name="week_inspiration" id="week_inspiration"  <?php if (isset($model->userNotification->user_week_inspiration)){
-			if ($model->userNotification->user_week_inspiration == 1) echo 'checked';
-			} ?> class="toggle"/>
+			<?php 
+			$checked = '';
+			$checked = (isset($model->userNotification->user_week_inspiration) && $model->userNotification->user_week_inspiration == 1)?'checked':'';		
+			?>
+			<input type="checkbox" name="week_inspiration" id="week_inspiration" value="1" class="toggle" <?php echo $checked;?> />
 			</div>
 			<p class="help-block-more2">Weekly Inspiration</p>
 			</div>
 			<div class="col-md-6">
 			<div class="make-switch pull-left needmar2" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
-			<input type="checkbox" name="invi_feed" id="invi_feed" <?php if (isset($model->userNotification->user_invitation_fb)){
-			if ($model->userNotification->user_invitation_fb == 1) echo 'checked';
-			} ?>  class="toggle"/>
+			<?php 
+			$checked = '';
+			$checked = (isset($model->userNotification->user_invitation_fb) && $model->userNotification->user_invitation_fb == 1)?'checked':'';		
+			?>
+			<input type="checkbox" name="invi_feed" id="invi_feed" value="1" class="toggle" <?php echo $checked;?>/>
 			</div>
 			<p class="help-block-more2">Invitation to give us feedback</p>
 			</div>
@@ -465,17 +471,21 @@
 		<div class="form-group">
 			<div class="col-md-6">
 			<div class="make-switch pull-left needmar2" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
-			<input type="checkbox" name="pic_of_week" id="pic_of_week" <?php if (isset($model->userNotification->user_weekly_pic)){
-			if ($model->userNotification->user_weekly_pic == 1) echo 'checked';
-			} ?> class="toggle"/>
+			<?php 
+			$checked = '';
+			$checked = (isset($model->userNotification->user_weekly_pic) && $model->userNotification->user_weekly_pic == 1)?'checked':'';		
+			?>
+			<input type="checkbox" name="pic_of_week" id="pic_of_week" value="1" class="toggle" <?php echo $checked;?> />
 			</div>
 			<p class="help-block-more2">Picture of the week</p>
 			</div>
 			<div class="col-md-6">
 			<div class="make-switch pull-left needmar2" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
-			<input type="checkbox" name="someone_fb" id="someon_on_fb" <?php if (isset($model->userNotification->user_someone_fb)){
-			if ($model->userNotification->user_someone_fb == 1) echo 'checked';
-			} ?>  class="toggle"/>
+			<?php 
+			$checked = '';
+			$checked = (isset($model->userNotification->user_someone_fb) && $model->userNotification->user_someone_fb == 1)?'checked':'';		
+			?>
+			<input type="checkbox" name="someone_fb" id="someon_on_fb" value="1" class="toggle" <?php echo $checked;?> />
 			</div>
 			<p class="help-block-more2">Someone of you FB friends join Posly</p>
 			</div>
@@ -522,9 +532,11 @@
 		<div class="do-mobile">
 		<div class="col-md-2">
 		<div class="make-switch pull-left" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
-		<input type="checkbox" name="fb_like" id="fb_like" <?php if (isset($model->userSocialPrivacy->user_i_like)){
-		if ($model->userSocialPrivacy->user_i_like == 1) echo 'checked';
-		} ?> class="toggle"/>
+		<?php 
+		$checked = '';
+		$checked = (isset($model->userSocialPrivacy->user_i_like) && $model->userSocialPrivacy->user_i_like == 1)?'checked':'';		
+		?>
+		<input type="checkbox" name="fb_like" id="fb_like" value="1" class="toggle" <?php echo $checked;?> />
 		</div>
 		</div>
 		<div class="col-md-3">
@@ -536,9 +548,11 @@
 		<div class="do-mobile">
 		<div class="col-md-2">
 		<div class="make-switch pull-left" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
-		<input type="checkbox" name="fb_upload" id="fb_upload" <?php if (isset($model->userSocialPrivacy->user_i_upload)){
-		if ($model->userSocialPrivacy->user_i_upload == 1) echo 'checked';
-		} ?> class="toggle"/>
+		<?php 
+		$checked = '';
+		$checked = (isset($model->userSocialPrivacy->user_i_upload) && $model->userSocialPrivacy->user_i_upload == 1)?'checked':'';		
+		?>
+		<input type="checkbox" name="fb_upload" id="fb_upload" value="1" class="toggle" <?php echo $checked;?> />
 		</div>
 		</div>
 		<div class="col-md-3">
@@ -553,9 +567,11 @@
 		<div class="do-mobile">
 		<div class="col-md-2">
 		<div class="make-switch pull-left" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
-		<input type="checkbox" name="fb_comment" id="fb_comment" <?php if (isset($model->userSocialPrivacy->user_comment)){
-		if ($model->userSocialPrivacy->user_comment == 1) echo 'checked';
-		} ?> class="toggle"/>
+		<?php 
+		$checked = '';
+		$checked = (isset($model->userSocialPrivacy->user_comment) && $model->userSocialPrivacy->user_comment == 1)?'checked':'';		
+		?>
+		<input type="checkbox" name="fb_comment" id="fb_comment" value="1" class="toggle" <?php echo $checked;?> />
 		</div>
 		</div>
 		<div class="col-md-3">
@@ -567,9 +583,11 @@
 		<div class="do-mobile">
 		<div class="col-md-2">
 		<div class="make-switch pull-left" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
-		<input type="checkbox" name="fb_favour" id="fb_favour" <?php if (isset($model->userSocialPrivacy->user_albums_fav)){
-		if ($model->userSocialPrivacy->user_albums_fav == 1) echo 'checked';
-		} ?> class="toggle"/>
+		<?php 
+		$checked = '';
+		$checked = (isset($model->userSocialPrivacy->user_albums_fav) && $model->userSocialPrivacy->user_albums_fav == 1)?'checked':'';		
+		?>
+		<input type="checkbox" name="fb_favour" id="fb_favour" value="1" class="toggle" <?php echo $checked;?> />
 		</div>
 		</div>
 		<div class="col-md-3">
@@ -578,8 +596,7 @@
 		</label>
 		</div> 
 		</div>
-		</div>
-		
+		</div>		
 		<!-- comented code  -->
 		<!--sdf-->
 		</div>
@@ -588,8 +605,7 @@
 		</div>
 		</div>
 	</div>
-	<!--end-->
-	
+	<!--end-->	
 </div>
 </div> <!-- page-content-wrapper ENDS -->
 	

@@ -111,16 +111,16 @@ else
 	<span class="username"></span><i class="icon-caret-down"></i> 
 	</a>
 	<ul class="dropdown-menu">		
-		<!--<li><?php //echo CHtml::link('your profile',array('profile/index', 'url'=>$a->user_unique_url), array('class'=>'gren  first')); ?> </li> -->	
-		<li><a class="gren first" href="#">Your rank</a></li>
+		<li><?php echo CHtml::link('My profile',array('profile/index', 'url'=>$a->user_unique_url), array('class'=>'gren  first')); ?> </li>	
+		<!--<li><a class="gren first" href="#">Your rank</a></li>
 		<li><a class="gren" href="#">your albums</a></li>
-		<li><a class="gren" href="#">your like</a></li>
-		<li class="divider"></li>
+		<li><a class="gren" href="#">your like</a></li>-->
+		<!--<li class="divider"></li>
 		<li><a class="gren" href="#">find friends</a></li>
-		<li><a class="gren" href="#">language</a></li>
+		<li><a class="gren" href="#">language</a></li>-->
 		<li><a class="gren" href="#">settings</a></li>
 		<li class="divider"></li>
-		<li><a class="gren center" href="#">report a problem</a> </li>		
+		<!--<li><a class="gren center" href="#">report a problem</a> </li>-->
 		<li class="buttcen">
 		<?php echo CHtml::link('Logout',array('site/logout'), array('class'=>'btn meoS')); ?>
 		</li>

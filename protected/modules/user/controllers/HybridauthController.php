@@ -1,9 +1,10 @@
 <?php
 /*
-	*Important One for developers. Do change in code here Only
-	*will get data for FB here itself
-	*Widgets/HybridAuth No need to change any code there
-	Last Modified - 01-Sept-14
+*Important One for developers. Do change in code here Only
+*will get data for FB here itself
+*Will Save FB profileImage, Email, Name to Users record in Posly
+*Widgets/HybridAuth No need to CHANGE any code there
+*Last Modified - 01-Sept-14
 */
 class HybridauthController extends Controller{
  

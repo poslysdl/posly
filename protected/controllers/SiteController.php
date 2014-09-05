@@ -454,6 +454,7 @@ class SiteController extends Controller
 
 	/**
 	* Displays the Register Modal window - SignUp
+	* FB SignUp goes to HybridauthController..
 	* Last Modified:27-Aug-14
 	*/
 	public function actionRegister()
@@ -471,7 +472,8 @@ class SiteController extends Controller
 				$ud->user_details_firstname=$model->firstname;
 				$ud->user_details_lastname=$model->lastname;
 				$ud->user_details_email=$model->email;
-				$ud->user_details_password=md5($model->password);				
+				$ud->user_details_password=md5($model->password);
+				$ud->user_details_avatar='noimage.jpg';
 				if($ud->save())
 				{
 					$u->user_details_id=$ud->user_details_id;
