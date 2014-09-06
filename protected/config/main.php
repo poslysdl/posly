@@ -83,6 +83,7 @@ return array(
 
 		'urlManager'=>array(
 			'urlFormat'=>'path',
+			'showScriptName'=>true,
 			'rules'=>array(
 				''=>'site/index',
 				'country/<c:\w+>'=>'site/country',

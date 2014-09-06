@@ -301,7 +301,7 @@ class RegistrationController extends Controller
 			$country = Countries::model()->findAll();
 			$ethnicity = UsersEthnicity::model()->findAll();
 			$languages = UsersLanguage::model()->findAll();			
-			$this->render('account-settings', array('model'=>$model, 'country'=>$country,'ethnicity'=>$ethnicity,'languages'=>$languages,'errmsg'=>$errmsg));
+			$this->render('account-settings', array('model'=>$model, 'country'=>$country,'ethnicity'=>$ethnicity,'languages'=>$languages,'errmsg'=>$errmsg,'stepflag'=>$stepflag));
 		}
 		else {
 			$this->redirect(Yii::app()->homeUrl);		
@@ -338,7 +338,7 @@ class RegistrationController extends Controller
 		}
 		else
 		{
-			$socialUser=array();
+		$socialUser=array();
 		$user= Users::model()->with('userDetails')->findByPk($id);
 		$this->render('firststep', array('list'=>$socialUser, 'user'=>$user));	
 		}
@@ -499,7 +499,7 @@ class RegistrationController extends Controller
 		{
 			$id = $_POST['id'];			 
 			$uht = UsersHashtags::model()->findByAttributes(array('hashtags_id' => $id));
-			if ($uht->delete()) {
+			if($uht->delete()) {
 				$m = Hashtags::model()->findByPk($id);
 				if($m->hashtags_count > 0) {
 					$m->hashtags_count--;

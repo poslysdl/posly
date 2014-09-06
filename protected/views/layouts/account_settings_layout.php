@@ -344,7 +344,7 @@ $('.addtagbutton').click(function(e){
 
 
 jQuery(document).ready(function() {    
-	App.init(); // initlayout and core plugins        
+	App.init(); // initlayout and core plugins    
 	//FormValidation.init();
 	//$(".custom-combify").combify();
 });
@@ -358,6 +358,31 @@ $(document).on('click', '.step2skip', function(){
 	var url = "<?php echo Yii::app()->createUrl('/registration/thirdstep'); ?>";
 	window.location=url;
 });
+
+$(document).on('click', '.step1skip', function(){
+	var url = "<?php echo Yii::app()->createUrl('/registration/secondstep'); ?>";
+	window.location=url;
+});
+
+$(document).on('click', '.step1cancel', function(){
+	var url = "<?php echo Yii::app()->createAbsoluteUrl('/site/logout'); ?>";
+	window.location=url;
+});
+
+function deleteM(id)
+{
+	$.ajax({
+	type: "POST",
+	url: "<?php echo Yii::app()->createUrl('/registration/deletemagazines'); ?>",
+	data: { id: id}
+	})
+	.done(function( msg ) {
+	if(msg=='ok')
+	$( "#"+id ).remove();
+	});
+	return false;
+}
+
 </script>
 
 <!-- END JAVASCRIPTS -->

@@ -1,3 +1,6 @@
+<?php
+/* The Template page for Registration Step-1# */
+?>
 <div class="page-container">
 <div class="page-content-3step container padd">
 <div class="row">
@@ -609,7 +612,7 @@
 </div>
 </div> <!-- page-content-wrapper ENDS -->
 	
-<div class="page-sidebar-wrapper">     
+<div class="page-sidebar-wrapper"> 
 	<div class="page-sidebar-button">
 	<div class="btton-fix">
 	<ul class="page-sidebar-menu marktop">
@@ -617,8 +620,13 @@
 	<Input type="button" value="Save" class="btn cyan accset accset_save" >
 	</li>
 	<li> <!--/registration/secondstep-->
-	<button type="button" class="btn white accset" onclick="window.location='<?php echo Yii::app()->createAbsoluteUrl('/site/logout'); ?>'" >Cancel</button>
+	<button type="button" class="btn white accset step1cancel" >Cancel</button>
 	</li>
+	<?php if($stepflag=='y'){ ?>
+	<li>
+	<button type="button" class="btn white accset step1skip" >Next Step</button>	
+	</li>
+	<?php } ?>
 	</ul>
 	</div>
 	</div>

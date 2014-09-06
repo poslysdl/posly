@@ -503,9 +503,7 @@ class SiteController extends Controller
 				));	
 				Yii::app()->end();	
 			}
-		}
-		// display the login form
-		//$this->render('register',array('model'=>$model));
+		}		
 	}
 
 	/**

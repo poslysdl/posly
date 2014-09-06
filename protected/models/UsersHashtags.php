@@ -16,16 +16,16 @@
 class UsersHashtags extends CActiveRecord
 {
 	/**
-	 * @return string the associated database table name
-	 */
+	* @return string the associated database table name
+	*/
 	public function tableName()
 	{
 		return 'users_hashtags';
 	}
 
 	/**
-	 * @return array validation rules for model attributes.
-	 */
+	* @return array validation rules for model attributes.
+	*/
 	public function rules()
 	{
 		// NOTE: you should only define rules for those attributes that
@@ -39,8 +39,8 @@ class UsersHashtags extends CActiveRecord
 	}
 
 	/**
-	 * @return array relational rules.
-	 */
+	* @return array relational rules.
+	*/
 	public function relations()
 	{
 		// NOTE: you may need to adjust the relation name and the related
@@ -53,8 +53,8 @@ class UsersHashtags extends CActiveRecord
 	}
 
 	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
+	* @return array customized attribute labels (name=>label)
+	*/
 	public function attributeLabels()
 	{
 		return array(
@@ -65,27 +65,24 @@ class UsersHashtags extends CActiveRecord
 	}
 
 	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 *
-	 * Typical usecase:
-	 * - Initialize the model fields with values from filter form.
-	 * - Execute this method to get CActiveDataProvider instance which will filter
-	 * models according to data in model fields.
-	 * - Pass data provider to CGridView, CListView or any similar widget.
-	 *
-	 * @return CActiveDataProvider the data provider that can return the models
-	 * based on the search/filter conditions.
-	 */
+	* Retrieves a list of models based on the current search/filter conditions.
+	*
+	* Typical usecase:
+	* - Initialize the model fields with values from filter form.
+	* - Execute this method to get CActiveDataProvider instance which will filter
+	* models according to data in model fields.
+	* - Pass data provider to CGridView, CListView or any similar widget.
+	*
+	* @return CActiveDataProvider the data provider that can return the models
+	* based on the search/filter conditions.
+	*/
 	public function search()
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
-
 		$criteria=new CDbCriteria;
-
 		$criteria->compare('users_hashtags_id',$this->users_hashtags_id);
 		$criteria->compare('hashtags_id',$this->hashtags_id);
 		$criteria->compare('user_id',$this->user_id);
-
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

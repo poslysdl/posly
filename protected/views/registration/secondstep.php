@@ -1,3 +1,6 @@
+<?php
+/* The Template page for Registration Step-2# */
+?>
 <div class="page-content">
 <div id="form_wizard_1">
 <!-- <form action="#" class="form-horizontal" id="submit_form">-->
@@ -94,7 +97,7 @@
 	</div>
 	</div>
 	<?php 
-	//getting the solgan
+	//getting the solgan, remove comment to show Slogan Box
 	/*$sloganf= new SloganForm;
 	if(!Yii::app()->user->isGuest)
 	{
@@ -121,7 +124,7 @@
 	<div class="input-group">
 	<input name="magazine" type="text" class="form-control text-italic addtag" data-tag="magazine" /> <!--addmagazine-->
 	<span class="input-group-btn">
-	<button class="btn green flat addtagbutton" type="submit"><i class="icon-plus-sign" data-tag="magazine"></i></button> <!-- addmagazinebutton -->
+	<button class="btn green flat addtagbutton" type="submit" data-tag="magazine"><i class="icon-plus-sign"></i></button> <!-- addmagazinebutton -->
 	</span> 
 	</div>
 	<div class="tagcloud taglists"> <!-- addmagazinetags -->
@@ -132,7 +135,7 @@
 		$user1 = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->findAll("hashtags.hashtags_category_id='$categoryId->hashtags_category_id' and t.user_id=$user");
 		if(isset($user1)){
 		foreach($user1 as $m) {
-		echo "<a  href='#' class='novato' id=".$m->hashtags->hashtags_id." onclick=deleteM($(this).attr('id'));><i class='icon-remove-sign'></i>".$m->hashtags->hashtags_name."</a>";
+		echo "<a href='javascript:void(0);' class='novato' id=".$m->hashtags->hashtags_id." onclick=deleteM($(this).attr('id'));><i class='icon-remove-sign'></i>".$m->hashtags->hashtags_name."</a>";
 		}
 		}
 	}
@@ -160,17 +163,11 @@
 		$user1 = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->findAll("hashtags.hashtags_category_id='$categoryId->hashtags_category_id' and t.user_id=$user");
 		if(isset($user1)){
 		foreach($user1 as $m){
-		echo "<a  href='#' class='novato' id=".$m->hashtags->hashtags_id." onclick=deleteD($(this).attr('id'));><i class='icon-remove-sign'></i>".$m->hashtags->hashtags_name."</a>";
+		echo "<a href='javascript:void(0);' class='novato' id=".$m->hashtags->hashtags_id." onclick=deleteM($(this).attr('id'));><i class='icon-remove-sign'></i>".$m->hashtags->hashtags_name."</a>";
 		}
 		}
 	}
-	?> 
-	<?php /* if(isset($user->designers))
-	foreach($user->designers as $m)
-	{
-	echo "<a  href='#' class='novato' id=".$m->id." onclick=deleteD($(this).attr('id'));><i class='icon-remove-sign'></i>".$m->names."</a>";
-	}*/
-	?>
+	?>	
 	</div>
 	</div>
 	</div>
@@ -195,17 +192,11 @@
 		$user1 = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->findAll("hashtags.hashtags_category_id='$categoryId->hashtags_category_id' and t.user_id=$user");
 		if (isset($user1)) {
 		foreach($user1 as $m) {
-		echo "<a  href='#' class='novato' id=".$m->hashtags->hashtags_id ." onclick=deleteS($(this).attr('id'));><i class='icon-remove-sign'></i>".$m->hashtags->hashtags_name."</a>";
+		echo "<a href='javascript:void(0);' class='novato' id=".$m->hashtags->hashtags_id ." onclick=deleteM($(this).attr('id'));><i class='icon-remove-sign'></i>".$m->hashtags->hashtags_name."</a>";
 		}
 		}
 	}
-	?>     
-	<?php /*if(isset($user->shops))
-	foreach($user->shops as $m)
-	{
-	echo "<a  href='#' class='novato' id=".$m->id." onclick=deleteS($(this).attr('id'));><i class='icon-remove-sign'></i>".$m->names."</a>";
-	}
-	*/ ?> 
+	?>	
 	</div>
 	</div>
 	</div>
@@ -229,17 +220,11 @@
 		$user1 = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->findAll("hashtags.hashtags_category_id='$categoryId->hashtags_category_id' and t.user_id=$user");								
 		if(isset($user1)){
 		foreach($user1 as $m){
-		echo "<a  href='#' class='novato' id=".$m->hashtags->hashtags_id." onclick=deleteSS($(this).attr('id'));><i class='icon-remove-sign'></i>".$m->hashtags->hashtags_name."</a>";
+		echo "<a href='javascript:void(0);' class='novato' id=".$m->hashtags->hashtags_id." onclick=deleteM($(this).attr('id'));><i class='icon-remove-sign'></i>".$m->hashtags->hashtags_name."</a>";
 		}
 		}
 	}
-	?>
-	<?php /*if(isset($user->icons))
-	foreach($user->icons as $m)
-	{
-	echo "<a  href='#' class='novato' id=".$m->id." onclick=deleteSS($(this).attr('id'));><i class='icon-remove-sign'></i>".$m->names."</a>";
-	}StyleIcons*/
-	?>
+	?>	
 	</div>
 	</div>
 	</div>
@@ -263,18 +248,11 @@
 		$user1 = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->findAll("hashtags.hashtags_category_id='$categoryId->hashtags_category_id' and t.user_id=$user");								
 		if(isset($user1)){
 		foreach($user1 as $m) {
-		echo "<a  href='#' class='novato' id=".$m->hashtags->hashtags_id." onclick=deleteMS($(this).attr('id'));><i class='icon-remove-sign'></i>".$m->hashtags->hashtags_name."</a>";
+		echo "<a href='javascript:void(0);' class='novato' id=".$m->hashtags->hashtags_id." onclick=deleteM($(this).attr('id'));><i class='icon-remove-sign'></i>".$m->hashtags->hashtags_name."</a>";
 		}
 		}
 	}
-	?>
-	<?php 
-	/*if(isset($user->styles))
-	foreach($user->styles as $m)
-	{
-	echo "<a  href='#' class='novato' id=".$m->id." onclick=deleteMS($(this).attr('id'));><i class='icon-remove-sign'></i>".$m->names."</a>";
-	}*/
-	?>
+	?>	
 	</div>
 	</div>
 	</div>
@@ -297,9 +275,9 @@
 	<div class="nhomnut pull-right">
 	<?php
 	//echo CHtml::link('Back', array('registration/settings','stepflag'=>'y'), array('class'=>'btn btn white buttonprevious'));	
-	echo '<a href="#" class="btn btn white buttonprevious" id="step2bk">Back</a>';
-	echo '<a href="#" class="btn btn white skipmiddle step2skip">Skip this Step</a>';
-	echo '<a href="#" class="btn cyan active button-next step2skip">Next Step</a>';	
+	echo '<a href="javascript:void(0);" class="btn btn white buttonprevious" id="step2bk">Back</a>';
+	echo '<a href="javascript:void(0);" class="btn btn white skipmiddle step2skip">Skip this Step</a>';
+	echo '<a href="javascript:void(0);" class="btn cyan active button-next step2skip">Next Step</a>';	
 	?>
 	</div>
 	</div>
