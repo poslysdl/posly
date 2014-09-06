@@ -1,17 +1,16 @@
 <?php
-
 // uncomment the following to define a path alias
 // Yii::setPathOfAlias('local','path/to/local-folder');
 
 // This is the main Web application configuration. Any writable
-// CWebApplication properties can be configured here.
+// CWebApplication properties can be configured here. 
 
 $_SERVER['SERVER_ADDR']; //127.0.0.1
 if($_SERVER['SERVER_ADDR']=='127.0.0.1'){
-	$FB_APPId = '277829039091254';
-	$FB_SECRETKey = "7291db28e16d2ecddb40a9e8e00e17e4";
+	$FB_APPId = '647620848638998';
+	$FB_SECRETKey = "4855626d478b8c2280db3ef8a5ead448";
 	$DB_USERNAME = 'root';
-	$DB_PASSWORD = 'sdl123';
+	$DB_PASSWORD = '';
 	$Base_URL = 'http://localhost/projects/posly_v2/posly/index.php/user/hybridauth/endpoint';
 } else{
 	$FB_APPId = '508534549216916';

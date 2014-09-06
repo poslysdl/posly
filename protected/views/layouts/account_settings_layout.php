@@ -230,7 +230,7 @@
 
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/scripts/poslyfunctions.js"></script> 
 <!---Important JS Functions mainly for PHP developers --->
-
+<script src='http://connect.facebook.net/en_US/all.js' type="text/javascript"></script>
 <script>
 var posWas; 
 $(window).bind('scroll', function(){ //when the user is scrolling...
@@ -254,7 +254,7 @@ $(window).bind('scroll', function(){ //when the user is scrolling...
 
 <script>
 
-$(function() {
+/*$(function() {
   var txt = $("#url");
   var exist = '';  
   var button = $('.accset_save');
@@ -288,7 +288,7 @@ $(function() {
 	}
   } 	
   txt.keyup(func).blur(func);
-});
+}); */
 
 //key enter for the magazine add -- .addmagazine
 $('.addtag').keypress(function(e){

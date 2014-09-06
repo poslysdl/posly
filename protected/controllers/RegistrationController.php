@@ -316,8 +316,13 @@ class RegistrationController extends Controller
 	{
 		$this->layout='account_settings_layout'; //secondstep_layout
 		$id=Yii::app()->user->id;
-		$user= Users::model()->with('userDetails')->findByPk($id);
-		$this->render('secondstep', array('user'=>$user));
+		$users= Users::model()->with('userDetails')->findByPk($id);
+		if($users->user_registration_steps<4){
+			//Increment for next step
+			$users->user_registration_steps = 3; 
+			$users->save();
+		}
+		$this->render('secondstep', array('user'=>$users));
 	}
 	
 	/* This is (3rd Step) getting Started, 
@@ -329,20 +334,23 @@ class RegistrationController extends Controller
 		$this->layout='account_settings_layout'; //steps_layout
 		$id=Yii::app()->user->id;
 		$c=Yii::app()->hybridAuth->getConnectedProviders();
+		$socialUser=array();		
 		if(!empty($c))
-		{
-			if(Yii::app()->hybridAuth->isAdapterUserConnected('Facebook'))
-		$socialUser = Yii::app()->hybridAuth->getAdapterUserContacts('Facebook');
+		{	
+			if(Yii::app()->hybridAuth->isAdapterUserConnected('Facebook')){
+			$socialUser = Yii::app()->hybridAuth->getAdapterUserProfile('Facebook'); //working
+			//print_r($socialUser);
+			$socialUser = Yii::app()->hybridAuth->getAdapterUserContacts('Facebook');
+			//print_r($socialUser); exit;
+			}					
+		}		
 		$user= Users::model()->with('userDetails')->findByPk($id);
-		$this->render('firststep', array('list'=>$socialUser, 'user'=>$user));			
+		if($user->user_registration_steps<5){
+			//Increment for next step
+			$user->user_registration_steps = 4; 
+			$user->save();
 		}
-		else
-		{
-		$socialUser=array();
-		$user= Users::model()->with('userDetails')->findByPk($id);
-		$this->render('firststep', array('list'=>$socialUser, 'user'=>$user));	
-		}
-
+		$this->render('thirdstep', array('list'=>$socialUser, 'user'=>$user));
 	}
 	
 	/* This is (4th Step) getting Started, 
@@ -354,7 +362,7 @@ class RegistrationController extends Controller
 		$this->layout='account_settings_layout'; //steps_layout
 		$id=Yii::app()->user->id;
 		$user= Users::model()->with('userDetails')->findByPk($id);
-		$this->render('thirdstep', array('user'=>$user));
+		$this->render('fourthstep', array('user'=>$user));
 	}	
 	
 	public function actionInvite()
@@ -376,7 +384,7 @@ class RegistrationController extends Controller
 			//$user = UsersDetails::model()->findAll('user_unique_url LIKE :match and user_id=:id', array(':match' => "%$val%", ":id"=>$id));			
 			//$user = UsersDetails::model()->find('user_unique_url LIKE :match', array(':match' => "%$val%"));
 			$user = UsersDetails::model()->find("user_unique_url = '$val'");			 
-		 	if (isset($user) && !empty($user)) {
+		 	if(isset($user) && !empty($user)) {
 				if($user->user_id==$id)
 					echo false;
 				else	
@@ -512,341 +520,6 @@ class RegistrationController extends Controller
 		}
 		Yii::app()->end();
 	}	
-	
-	/*
-	public function actionAdddesigners()
-	{
-		if(isset($_POST['name']) && $_POST['name']!='' && $_POST['name']!=NULL)
-		{
-			$name = $_POST['name'];
-			$m_users_hashtags = new UsersHashtags;
-			$m_loghash_tags = new LogHashtags;
-			$timestamp = new CTimestamp;
-			$value = $timestamp->getDate();
-			$time = $value[0];
-			
-			$category_name=HashtagsCategory::model()->find("hashtags_category_name='Design'");
-			
-			if(!isset($category_name))
-			{
-				$category_name = new HashtagsCategory;
-				$category_name->hashtags_category_name = 'Design';	
-				$category_name->save(false);
-			}
-			
-			 
-			$userId = Yii::app()->user->id; 
-			$catname = $category_name->hashtags_category_name;
-			
-			$tagfind = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->find("hashtags.hashtags_name='$name' and hashtags.hashtags_category_id='$category_name->hashtags_category_id' and t.user_id=$userId");
-			
-			 
-			 
-			if (!isset($tagfind)) {
-				$hastag = Hashtags::model()->with('hashtagsCategory')->find("t.hashtags_name='$name' and hashtagsCategory.hashtags_category_id='$category_name->hashtags_category_id'");
-				if (isset($hastag)) {
-					$hastag->hashtags_count += 1;
-					$hastag->save(false);
-												
-				} else {
-					$hastag = new Hashtags;
-					$hastag->hashtags_count = 1;
-					$hastag->hashtags_name = $_POST['name'];
-					$hastag->hashtags_category_id = $category_name->hashtags_category_id;
-					$hastag->save(false);
-					
-				}
-				
-				$m_users_hashtags->hashtags_id = $hastag->hashtags_id;
-				$m_users_hashtags->user_id = Yii::app()->user->id;
-				$m_users_hashtags->save(false);
-				
-				$m_loghash_tags->hashtags_id = $hastag->hashtags_id;
-				$m_loghash_tags->log_hashtags_date = $time;
-				$m_loghash_tags->save(false);
-				
-				
-				echo CJavaScript::jsonEncode($hastag);
-				Yii::app()->end();
-			} 
-			echo CJavaScript::jsonEncode(array('status'=>'false'));
-		}
-		Yii::app()->end();
-	}
-	
-	
-	public function actionDeletedesigners()
-	{		
-		if(isset($_POST['id']))
-		{
-			$id = $_POST['id'];
-			 
-			$uht = UsersHashtags::model()->findByAttributes(array('hashtags_id' => $id));
-			if ($uht->delete()) {
-				$m = Hashtags::model()->findByPk($id);
-				if($m->hashtags_count > 0) {
-					$m->hashtags_count--;
-					$m->save(false);	
-				}
-				
-				echo 'ok';
-			} else {
-				echo 'error';	
-			}	 
-		} 
-		Yii::app()->end();
-	}
-	
-	public function actionAddshops()
-	{
-		if(isset($_POST['name']) && $_POST['name']!='' && $_POST['name']!=NULL)
-		{
-			$name = $_POST['name'];
-			$m_users_hashtags = new UsersHashtags;
-			$m_loghash_tags = new LogHashtags;
-			$timestamp = new CTimestamp;
-			$value = $timestamp->getDate();
-			$time = $value[0];
-			
-			$category_name=HashtagsCategory::model()->find("hashtags_category_name='Shops'");
-			
-			if(!isset($category_name))
-			{
-				$category_name = new HashtagsCategory;
-				$category_name->hashtags_category_name = 'Shops';	
-				$category_name->save(false);
-			}		
-			 
-			$userId = Yii::app()->user->id; 
-			$catname = $category_name->hashtags_category_name;
-			
-			$tagfind = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->find("hashtags.hashtags_name='$name' and hashtags.hashtags_category_id='$category_name->hashtags_category_id' and t.user_id=$userId");			 
-			 
-			if (!isset($tagfind)) {
-				$hastag = Hashtags::model()->with('hashtagsCategory')->find("t.hashtags_name='$name' and hashtagsCategory.hashtags_category_id='$category_name->hashtags_category_id'");
-				if (isset($hastag)) {
-					$hastag->hashtags_count += 1;
-					$hastag->save(false);
-												
-				} else {
-					$hastag = new Hashtags;
-					$hastag->hashtags_count = 1;
-					$hastag->hashtags_name = $_POST['name'];
-					$hastag->hashtags_category_id = $category_name->hashtags_category_id;
-					$hastag->save(false);					
-				}				
-				$m_users_hashtags->hashtags_id = $hastag->hashtags_id;
-				$m_users_hashtags->user_id = Yii::app()->user->id;
-				$m_users_hashtags->save(false);
-				
-				$m_loghash_tags->hashtags_id = $hastag->hashtags_id;
-				$m_loghash_tags->log_hashtags_date = $time;
-				$m_loghash_tags->save(false);				
-				
-				echo CJavaScript::jsonEncode($hastag);
-				Yii::app()->end();
-			} 
-			echo CJavaScript::jsonEncode(array('status'=>'false'));
-		}
-		Yii::app()->end();
-	}	
-	
-	public function actionDeleteshops()
-	{
-		if(isset($_POST['id']))
-		{
-			//$m=InterestedShops::model()->findByPk($_POST['id']);
-			//if($m->delete())
-			//{
-				//echo 'ok';
-			//}
-			//else
-			//echo'error';
-			
-			$id = $_POST['id'];
-			 
-			$uht = UsersHashtags::model()->findByAttributes(array('hashtags_id' => $id));
-			if ($uht->delete()) {
-				$m = Hashtags::model()->findByPk($id);
-				if($m->hashtags_count > 0) {
-					$m->hashtags_count--;
-					$m->save(false);	
-				}
-				
-				echo 'ok';
-			} else {
-				echo 'error';	
-			}	
-			
-		}
-		Yii::app()->end();
-	}	
-	
-	public function actionAddstyles()
-	{
-		if(isset($_POST['name']) && $_POST['name']!='' && $_POST['name']!=NULL)
-		{
-			 $name = $_POST['name'];
-			$m_users_hashtags = new UsersHashtags;
-			$m_loghash_tags = new LogHashtags;
-			$timestamp = new CTimestamp;
-			$value = $timestamp->getDate();
-			$time = $value[0];
-			
-			$category_name=HashtagsCategory::model()->find("hashtags_category_name='StyleIcons'");
-			
-			if(!isset($category_name))
-			{
-				$category_name = new HashtagsCategory;
-				$category_name->hashtags_category_name = 'StyleIcons';	
-				$category_name->save(false);
-			}		
-			 
-			$userId = Yii::app()->user->id; 
-			$catname = $category_name->hashtags_category_name;
-			
-			$tagfind = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->find("hashtags.hashtags_name='$name' and hashtags.hashtags_category_id='$category_name->hashtags_category_id' and t.user_id=$userId");	 
-			 
-			if (!isset($tagfind)) {
-				$hastag = Hashtags::model()->with('hashtagsCategory')->find("t.hashtags_name='$name' and hashtagsCategory.hashtags_category_id='$category_name->hashtags_category_id'");
-				if (isset($hastag)) {
-					$hastag->hashtags_count += 1;
-					$hastag->save(false);												
-				} else {
-					$hastag = new Hashtags;
-					$hastag->hashtags_count = 1;
-					$hastag->hashtags_name = $_POST['name'];
-					$hastag->hashtags_category_id = $category_name->hashtags_category_id;
-					$hastag->save(false);
-					
-				}
-				
-				$m_users_hashtags->hashtags_id = $hastag->hashtags_id;
-				$m_users_hashtags->user_id = Yii::app()->user->id;
-				$m_users_hashtags->save(false);
-				
-				$m_loghash_tags->hashtags_id = $hastag->hashtags_id;
-				$m_loghash_tags->log_hashtags_date = $time;
-				$m_loghash_tags->save(false);
-				
-				
-				echo CJavaScript::jsonEncode($hastag);
-				Yii::app()->end();
-			} 
-			echo CJavaScript::jsonEncode(array('status'=>'false'));
-		}
-		Yii::app()->end();
-	}
-	
-	
-	
-	public function actionDeletestyles()
-	{
-		if(isset($_POST['id']))
-		{
-			//$m=InterestedStyleIcons::model()->findByPk($_POST['id']);
-			//if($m->delete())
-			//{
-				//echo 'ok';
-			//}
-			//else
-			//echo'error';
-			
-			$id = $_POST['id'];
-			 
-			$uht = UsersHashtags::model()->findByAttributes(array('hashtags_id' => $id));
-			if ($uht->delete()) {
-				$m = Hashtags::model()->findByPk($id);
-				if($m->hashtags_count > 0) {
-					$m->hashtags_count--;
-					$m->save(false);	
-				}
-				
-				echo 'ok';
-			} else {
-				echo 'error';	
-			}	
-			
-		}
-		Yii::app()->end();
-	}	
-	
-	public function actionAddmystyles()
-	{
-		if(isset($_POST['name']) && $_POST['name']!='' && $_POST['name']!=NULL)
-		{
-			  $name = $_POST['name'];
-			$m_users_hashtags = new UsersHashtags;
-			$m_loghash_tags = new LogHashtags;
-			$timestamp = new CTimestamp;
-			$value = $timestamp->getDate();
-			$time = $value[0];
-			
-			$category_name=HashtagsCategory::model()->find("hashtags_category_name='MyStyle'");
-			
-			if(!isset($category_name))
-			{
-				$category_name = new HashtagsCategory;
-				$category_name->hashtags_category_name = 'MyStyle';	
-				$category_name->save(false);
-			}			
-			 
-			$userId = Yii::app()->user->id; 
-			$catname = $category_name->hashtags_category_name;
-			
-			$tagfind = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->find("hashtags.hashtags_name='$name' and hashtags.hashtags_category_id='$category_name->hashtags_category_id' and t.user_id=$userId");			 
-			 
-			if (!isset($tagfind)) {
-				$hastag = Hashtags::model()->with('hashtagsCategory')->find("t.hashtags_name='$name' and hashtagsCategory.hashtags_category_id='$category_name->hashtags_category_id'");
-				if (isset($hastag)) {
-					$hastag->hashtags_count += 1;
-					$hastag->save(false);												
-				} else {
-					$hastag = new Hashtags;
-					$hastag->hashtags_count = 1;
-					$hastag->hashtags_name = $_POST['name'];
-					$hastag->hashtags_category_id = $category_name->hashtags_category_id;
-					$hastag->save(false);
-					
-				}				
-				$m_users_hashtags->hashtags_id = $hastag->hashtags_id;
-				$m_users_hashtags->user_id = Yii::app()->user->id;
-				$m_users_hashtags->save(false);
-				
-				$m_loghash_tags->hashtags_id = $hastag->hashtags_id;
-				$m_loghash_tags->log_hashtags_date = $time;
-				$m_loghash_tags->save(false);
-				
-				
-				echo CJavaScript::jsonEncode($hastag);
-				Yii::app()->end();
-			} 
-			echo CJavaScript::jsonEncode(array('status'=>'false'));
-		}
-		Yii::app()->end();
-	}
-	
-	public function actionDeletemystyles()
-	{
-		if(isset($_POST['id']))
-		{
-			$id = $_POST['id'];			 
-			$uht = UsersHashtags::model()->findByAttributes(array('hashtags_id' => $id));
-			if ($uht->delete()) {
-				$m = Hashtags::model()->findByPk($id);
-				if($m->hashtags_count > 0) {
-					$m->hashtags_count--;
-					$m->save(false);	
-				}				
-				echo 'ok';
-			} else {
-				echo 'error';	
-			}	
-		}
-		Yii::app()->end();
-	}
-	
-	*/
 	
 	/**
 	* This user define Common Ajax function, 
