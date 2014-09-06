@@ -133,7 +133,7 @@ class Countries extends CActiveRecord
 	* Last Modified: 03-Sept-14
 	*/
 	public function getregions($countryid){
-		$countryid = mysql_real_escape_string($countryid);
+		//$countryid = mysql_real_escape_string($countryid);
 		$query ="SELECT * FROM regions WHERE country_id='".$countryid."'";
 		$command= Yii::app()->db->createCommand($query);		
 		$rawData = $command->queryAll();
@@ -147,7 +147,7 @@ class Countries extends CActiveRecord
 	* Last Modified: 03-Sept-14
 	*/
 	public function getstates($regionid){
-		$regionid = mysql_real_escape_string($regionid);
+		//$regionid = mysql_real_escape_string($regionid);
 		$query ="SELECT * FROM states WHERE region_id='".$regionid."'";
 		$command= Yii::app()->db->createCommand($query);		
 		$rawData = $command->queryAll();
@@ -161,7 +161,7 @@ class Countries extends CActiveRecord
 	* Last Modified: 03-Sept-14
 	*/
 	public function getcities($stateid,$countryid){
-		$stateid = mysql_real_escape_string($stateid);
+		//$stateid = mysql_real_escape_string($stateid);
 		if($stateid==0 || empty($stateid))
 			$query ="SELECT * FROM city WHERE country_id='".$countryid."'";
 		else
