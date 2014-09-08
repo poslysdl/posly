@@ -88,3 +88,14 @@ INSERT INTO `states` (`id`, `country_id`, `region_id`, `name`) VALUES
 (4, 99, 1, 'Rajasthan');
 
 ---------------------
+
+CREATE TABLE IF NOT EXISTS `countries_ip` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `alpha_2_code` varchar(15) NOT NULL,
+  `begin_ip` varchar(15) NOT NULL,
+  `end_ip` varchar(15) NOT NULL,
+  `begin_ip_num` int(11) NOT NULL,
+  `end_ip_num` int(11) NOT NULL,
+  `status` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=97052 ;

@@ -301,6 +301,7 @@ $('.addtag').keypress(function(e){
 		$.ajax({
 		type: "POST",
 		url: "<?php echo Yii::app()->createUrl('/registration/addmagazines'); ?>",
+		async: false,
 		data: { name: d,cat: tagstyle}
 		})
 		.done(function( msg ) {			 
@@ -327,6 +328,7 @@ $('.addtagbutton').click(function(e){
 		$.ajax({
 		type: "POST",
 		url: "<?php echo Yii::app()->createUrl('/registration/addmagazines'); ?>",
+		async: false,
 		data: { name: d,cat: tagstyle}
 		})
 		.done(function( msg ) {
@@ -369,6 +371,66 @@ $(document).on('click', '.step1cancel', function(){
 	window.location=url;
 });
 
+//Click event of Follow, unfollow in Step-3
+$(document).on('click', '.st3follow', function(){
+	var btntxt = $(this).text();
+	var elmn = $(this);
+	var uid = $(this).attr('data-src');	
+	var fid = $(this).attr('data-id');
+	var f1 = "<?php echo Yii::app()->createUrl('/follow/adduser'); ?>";
+	var f2 = "<?php echo Yii::app()->createUrl('/follow/unfollow'); ?>";
+	var url='';
+	if(fid=="")
+		url = f1;		
+	else
+		url = f2;	
+	//Ajax Call
+	$.ajax({
+	type: "POST",
+	url: url,
+	async: false,
+	data: { id: uid,fid: fid}
+	})
+	.done(function(data) {			 
+		var obj = JSON.parse(data); 
+		if(obj.status=='success'){
+			if(fid=="")
+				btntxt = "UnFollow";
+			else
+				btntxt = "Follow";
+			$(elmn).attr('data-id',obj.msg);
+		}
+	});	
+	$(elmn).text(btntxt);
+	return false;	
+});
+
+//Click event of Invite in Step-3
+$(document).on('click', '.st3invite', function(){	
+	var invite = new Array();
+	var i=0;
+	$('#fbinvite input:checked').each(function() {
+		//invite[i] = $(this).val();
+		invite.push($(this).val());
+		//i++;
+	});
+	var myJsonString = JSON.stringify(invite);
+	//Ajax Call
+	$.ajax({
+	type: "POST",
+	url: "<?php echo Yii::app()->createUrl('/follow/fbinvite'); ?>",
+	async: false,
+	data: { id: '',idata: myJsonString}
+	})
+	.done(function(data) {			 
+		var obj = JSON.parse(data); 
+		if(obj.status=='success'){			
+			//$(elmn).attr('data-id',obj.msg);
+		}
+	});	
+	return false;	
+});
+
 function deleteM(id)
 {
 	$.ajax({
@@ -382,7 +444,6 @@ function deleteM(id)
 	});
 	return false;
 }
-
 </script>
 
 <!-- END JAVASCRIPTS -->

@@ -124,9 +124,10 @@ else
 		<li><a class="gren" href="#">settings</a></li>
 		<li class="divider"></li>
 		<!--<li><a class="gren center" href="#">report a problem</a> </li>-->
-		<li class="buttcen">
-		<?php echo CHtml::link('Logout',array('site/logout'), array('class'=>'btn meoS')); ?>
+		<li> <!--class="buttcen" class=btn meoS-->
+		<?php echo CHtml::link('Logout',array('site/logout'), array('class'=>'gren  first')); ?>
 		</li>
+		
 	</ul>	
 	</li>
    <!-- END USER LOGIN DROPDOWN --> 

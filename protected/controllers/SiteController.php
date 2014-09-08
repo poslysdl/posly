@@ -449,7 +449,9 @@ class SiteController extends Controller
 				));
 				Yii::app()->end();
 			}			
-		}		
+		} else{
+			$this->redirect(Yii::app()->homeUrl);
+		}
 	}
 
 	/**
@@ -467,6 +469,8 @@ class SiteController extends Controller
 			$valid=$model->validate();            
 			if($valid)
 			{
+				$time=new CTimestamp;
+				$value=$time->getDate();				
 				$u=new Users;
 				$ud=new UsersDetails;
 				$ud->user_details_firstname=$model->firstname;
@@ -474,6 +478,7 @@ class SiteController extends Controller
 				$ud->user_details_email=$model->email;
 				$ud->user_details_password=md5($model->password);
 				$ud->user_details_avatar='noimage.jpg';
+				$ud->user_details_created_date=$value[0];
 				if($ud->save())
 				{
 					$u->user_details_id=$ud->user_details_id;

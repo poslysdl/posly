@@ -1,5 +1,6 @@
 <?php
 /* The Template page for Registration Step-3#  - Find Your Friends */
+$FBfrndsInPosly = $fbfriends;
 ?>
 <div class="page-content">
 <div id="form_wizard_1">
@@ -54,20 +55,21 @@
 		<div class="scrollercm" style="height: 220px;" data-always-visible="1" data-rail-visible1="1">
 		<div class="row-fluid">
 		<?php 
-		if(isset($list)){
-		foreach($list as $l)
+		if(isset($FBfrndsInPosly) && count($FBfrndsInPosly)>0){
+		foreach($FBfrndsInPosly as $l=>$vs)
 		{
 		?>
 		<div class="col-md-6">
-		<div class="caption-epic"><img class="avatar-user-step img-responsive" alt="" src="<?php echo $l->photoURL; ?>">
-		<div class="cap1"><a href="#" class="username"><?php echo $l->displayName; ?></a><span class="button">
-		<button type="button" class="btn white">Follow</button>
+		<div class="caption-epic"><img class="avatar-user-step img-responsive" alt="" src="<?php echo $vs['photoURL']; ?>">
+		<div class="cap1"><a href="#" class="username"><?php echo $vs['displayName']; ?></a><span class="button">
+		<button type="button" class="btn white st3follow" data-tag="<?php echo $vs['identifier']; ?>" data-src="<?php echo $l;?>" data-id="">Follow</button>
 		</span> 
 		</div>
 		</div>
 		</div>
 		<?php 
-		} }
+		} 
+		}
 		?>
 		</div>
 		</div>
@@ -76,389 +78,43 @@
 		<h4 class="panel-title"> <a > <i></i>Invite FACEBOOK FRIENDS</a> </h4>
 		</div>
 		<div class="padd">
-		<div class="scrollercm" style="height: 220px;" data-always-visible="1" data-rail-visible1="1">
-		<div class="row-fluid">
-		<?php 
-		if(isset($list)){
-		foreach($list as $l)
-		{
-		?>
-		<div class="col-md-6">
-		<div class="caption-epic">
-		<input type="checkbox" id="<?php echo $l->identifier; ?>" class="facebook-invitation">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo $l->photoURL; ?>">
-		<div class="cap1"> <a href="#" class="username"><?php echo $l->displayName; ?> </a>
-		<span class="button">Hewlett Packard</span> </div>
-		</div>
-		</div>
-		<?php 
-		} } 
-		?>
-		</div>
-		</div>
-		<div class="panel-heading-bot-con">
-		<h4 class="panel-title">Selected <strong>2</strong> of <strong>24</strong> maximum</h4>
-		</div>
-		</div>
-		</div>
-		</div>
-	</div>
-	<!--Twitter-->
-	<!--<div class="panel panel-default">
-		<div class="panel-heading tw">
-		<h4 class="panel-title">
-		<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse_2_2">
-		<i class="icon-twitter"></i> Connect to twitter</a> </h4>
-		<span><a href="#"><strong>CONNECT NOW</strong></a></span> 
-		</div>
-		<div id="collapse_2_2" class="panel-collapse collapse">
-		<div class="panel-body">
-		<div class="padd">
-		<div class="scrollercm" style="height: 220px;" data-always-visible="1" data-rail-visible1="1">
-		<div class="row-fluid">
-		<div class="col-md-6">
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn white">Follow</button>
-		</span> </div>
-		</div>
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn white">Follow</button>
-		</span> </div>
-		</div>
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn white active">Following</button>
-		</span> </div>
-		</div>
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn white">Follow</button>
-		</span> </div>
-		</div>
-		</div>
-		<div class="col-md-6">
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn white active">Following</button>
-		</span> </div>
-		</div>
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn cyan active">Unfollow</button>
-		</span> </div>
-		</div>
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn white">Follow</button>
-		</span> </div>
-		</div>
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn white">Follow</button>
-		</span> </div>
-		</div>
-		</div>
-		</div>
-		</div>
-		</div>
-		<div class="panel-heading tw">
-		<h4 class="panel-title"> <a > <i></i>Invite twitter FRIENDS</a> </h4>
-		</div>
-		<div class="padd">
-		<div class="scrollercm" style="height: 220px;" data-always-visible="1" data-rail-visible1="1">
-		<div class="row-fluid">
-		<div class="col-md-6">
-		<div class="caption-epic">
-		<input checked type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		<div class="caption-epic">
-		<input type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		<div class="caption-epic">
-		<input type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		<div class="caption-epic">
-		<input type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		</div>
-		<div class="col-md-6">
-		<div class="caption-epic">
-		<input checked type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		<div class="caption-epic">
-		<input type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		<div class="caption-epic">
-		<input type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		<div class="caption-epic">
-		<input type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		</div>
-		</div>
-		</div>
-		<div class="panel-heading-bot-con">
-		<h4 class="panel-title">Selected <strong>2</strong> of <strong>24</strong> maximum</h4>
-		</div>
-		</div>
-		</div>
-		</div>
-	</div>-->
-	<!-- VK-->
-	<!--<div class="panel panel-default">
-		<div class="panel-heading vk">
-		<h4 class="panel-title"> 
-		<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse_2_3"> 
-		<i class="icon-vk"></i>CONNECT TO VK</a> </h4>
-		<span><a href="#"><strong>CONNECT NOW</strong></a></span> 
-		</div>
-		<div id="collapse_2_3" class="panel-collapse collapse">
-		<div class="panel-body">
-		<div class="padd">
-		<div class="scrollercm" style="height: 220px;" data-always-visible="1" data-rail-visible1="1">
-		<div class="row-fluid">
-		<div class="col-md-6">
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn white">Follow</button>
-		</span> </div>
-		</div>
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn white">Follow</button>
-		</span> </div>
-		</div>
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn white active">Following</button>
-		</span> </div>
-		</div>
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn white">Follow</button>
-		</span> </div>
-		</div>
-		</div>
-		<div class="col-md-6">
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn white active">Following</button>
-		</span> </div>
-		</div>
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn cyan active">Unfollow</button>
-		</span> </div>
-		</div>
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn white">Follow</button>
-		</span> </div>
-		</div>
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn white">Follow</button>
-		</span> </div>
-		</div>
-		</div>
-		</div>
-		</div>
-		</div>
-		<div class="panel-heading vk">
-		<h4 class="panel-title"> <a > <i></i>Invite VK FRIENDS</a> </h4>
-		</div>
-		<div class="padd">
-		<div class="scrollercm" style="height: 220px;" data-always-visible="1" data-rail-visible1="1">
-		<div class="row-fluid">
-		<div class="col-md-6">
-		<div class="caption-epic">
-		<input checked type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		<div class="caption-epic">
-		<input type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		<div class="caption-epic">
-		<input type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		<div class="caption-epic">
-		<input type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		</div>
-		<div class="col-md-6">
-		<div class="caption-epic">
-		<input checked type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		<div class="caption-epic">
-		<input type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		<div class="caption-epic">
-		<input type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		<div class="caption-epic">
-		<input type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		</div>
-		</div>
-		</div>
-		<div class="panel-heading-bot-con">
-		<h4 class="panel-title">Selected <strong>2</strong> of <strong>24</strong> maximum</h4>
-		</div>
-		</div>
-		</div>
-		</div>
-	</div>-->
-	<!-- PinInt -->
-	<!--<div class="panel panel-default">
-		<div class="panel-heading pin">
-		<h4 class="panel-title"><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse_2_4">
-		<i class="icon-pinterest"></i>CONNECT TO Pinterest </a></h4>
-		<span><a href="#"><strong>CONNECT NOW</strong></a></span> 
-		</div>
-		<div id="collapse_2_4" class="panel-collapse collapse">
-		<div class="panel-body">
-		<div class="padd">
-		<div class="scrollercm" style="height: 220px;" data-always-visible="1" data-rail-visible1="1">
-		<div class="row-fluid">
-		<div class="col-md-6">
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn white">Follow</button>
-		</span> </div>
-		</div>
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn white">Follow</button>
-		</span> </div>
-		</div>
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn white active">Following</button>
-		</span> </div>
-		</div>
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn white">Follow</button>
-		</span> </div>
-		</div>
-		</div>
-		<div class="col-md-6">
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn white active">Following</button>
-		</span> </div>
-		</div>
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn cyan active">Unfollow</button>
-		</span> </div>
-		</div>
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn white">Follow</button>
-		</span> </div>
-		</div>
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn white">Follow</button>
-		</span> </div>
-		</div>
-		</div>
-		</div>
-		</div>
-		</div>
-		<div class="panel-heading pin">
-		<h4 class="panel-title"> <a > <i></i>Invite Pinterest FRIENDS</a> </h4>
-		</div>
-		<div class="padd">
-		<div class="scrollercm" style="height: 220px;" data-always-visible="1" data-rail-visible1="1">
-		<div class="row-fluid">
-		<div class="col-md-6">
-		<div class="caption-epic">
-		<input checked type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		<div class="caption-epic">
-		<input type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		<div class="caption-epic">
-		<input type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		<div class="caption-epic">
-		<input type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		</div>
-		<div class="col-md-6">
-		<div class="caption-epic">
-		<input checked type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		<div class="caption-epic">
-		<input type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		<div class="caption-epic">
-		<input type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		<div class="caption-epic">
-		<input type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		</div>
-		</div>
-		</div>
-		<div class="panel-heading-bot-con">
-		<h4 class="panel-title">Selected <strong>2</strong> of <strong>24</strong> maximum</h4>
-		</div>
-		</div>
-		</div>
-		</div>
-	</div>-->
+			<div class="scrollercm" style="height: 220px;" data-always-visible="1" data-rail-visible1="1">
+				<div id="fbinvite" class="row-fluid">
+				<?php 
+				if(isset($list)){
+				foreach($list as $l)
+				{
+				?>
+				<div class="col-md-6">
+				<div class="caption-epic">
+				<input type="checkbox" value="<?php echo $l->identifier; ?>" class="facebook-invitation">
+				<img class="avatar-user-step img-responsive" alt="" src="<?php echo $l->photoURL; ?>">
+				<div class="cap1"><a href="#" class="username"><?php echo $l->displayName; ?></a>
+				<!--<span class="button">Hewlett Packard</span>--> 
+				</div>
+				</div>
+				</div>
+				<?php 
+				} } 
+				?>
+				</div>
+			</div>			
+			<div class="panel-heading-bot-con">
+				<div style="float:left;">
+				<h4 class="panel-title">Selected <strong>2</strong> of <strong>24</strong> maximum</h4>				
+				</div>
+				<div style="float:right;">
+				<?php if(isset($list)){?>
+				<span class="button">
+				<button type="button" class="btn white st3invite">Invite</button>
+				</span>
+				<?php } ?>
+				</div>
+			</div>
+		</div>
+		</div>
+		</div>
+	</div>	
 	<!--lnst-->
 	<div class="panel panel-default">
 		<div class="panel-heading inst">
@@ -576,126 +232,7 @@
 		</div>
 		</div>
 		</div>
-	</div>
-	<!--Google+-->
-	<!--<div class="panel panel-default">
-		<div class="panel-heading goo">
-		<h4 class="panel-title"> 
-		<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse_2_6">
-		<i class="icon-google-plus"></i>Connect to google+ </a> </h4>
-		<span><a href="#"><strong>CONNECT NOW</strong></a></span> 
-		</div>
-		<div id="collapse_2_6" class="panel-collapse collapse">
-		<div class="panel-body">
-		<div class="padd">
-		<div class="scrollercm" style="height: 220px;" data-always-visible="1" data-rail-visible1="1">
-		<div class="row-fluid">
-		<div class="col-md-6">
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn white">Follow</button>
-		</span> </div>
-		</div>
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn white">Follow</button>
-		</span> </div>
-		</div>
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn white active">Following</button>
-		</span> </div>
-		</div>
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn white">Follow</button>
-		</span> </div>
-		</div>
-		</div>
-		<div class="col-md-6">
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn white active">Following</button>
-		</span> </div>
-		</div>
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn cyan active">Unfollow</button>
-		</span> </div>
-		</div>
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn white">Follow</button>
-		</span> </div>
-		</div>
-		<div class="caption-epic"> <img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">
-		<button type="button" class="btn white">Follow</button>
-		</span> </div>
-		</div>
-		</div>
-		</div>
-		</div>
-		</div>
-		<div class="panel-heading goo">
-		<h4 class="panel-title"> <a > <i></i>Invite Google+ FRIENDS</a> </h4>
-		</div>
-		<div class="padd">
-		<div class="scrollercm" style="height: 220px;" data-always-visible="1" data-rail-visible1="1">
-		<div class="row-fluid">
-		<div class="col-md-6">
-		<div class="caption-epic">
-		<input checked type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		<div class="caption-epic">
-		<input type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		<div class="caption-epic">
-		<input type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		<div class="caption-epic">
-		<input type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		</div>
-		<div class="col-md-6">
-		<div class="caption-epic">
-		<input checked type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		<div class="caption-epic">
-		<input type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		<div class="caption-epic">
-		<input type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		<div class="caption-epic">
-		<input type="checkbox">
-		<img class="avatar-user-step img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg">
-		<div class="cap1"> <a href="#" class="username">Sara Pely </a><span class="button">Hewlett Packard</span> </div>
-		</div>
-		</div>
-		</div>
-		</div>
-		<div class="panel-heading-bot-con">
-		<h4 class="panel-title">Selected <strong>2</strong> of <strong>24</strong> maximum</h4>
-		</div>
-		</div>
-		</div>
-		</div>
-	</div>-->
+	</div>	
 	<!--email-->
 	<div class="panel panel-default">
 		<div class="panel-heading meo">

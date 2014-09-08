@@ -106,11 +106,15 @@ class Users extends CActiveRecord
 		);
 	}
 	
-	public function findBySocial($provider, $identifier, $email){
-	 $checkemail=$this->with('userDetails')->find("userDetails.user_details_email='$email'");
-	 $checkIdentifier=$this->with('userSocialmedia')->find("userSocialmedia.user_socialmedia_provider='$provider' and user_socialmedia_identifier=$identifier");
-	 if(isset($checkemail) || isset($checkIdentifier))
-	 return  $checkIdentifier;
+	public function findBySocial($provider, $identifier, $email)
+	{	
+		$checkemail=$this->with('userDetails')->find("userDetails.user_details_email='$email'");		
+		$user_socialmedia_id = $checkemail->user_socialmedia_id;
+		$checkIdentifier=$this->with('userSocialmedia')->find("userSocialmedia.user_socialmedia_id=$user_socialmedia_id");		
+		if(isset($checkemail) && isset($checkIdentifier))
+			return $checkIdentifier;
+		else
+			return null;
    }
  
    // for social user login

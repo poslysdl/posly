@@ -330,18 +330,18 @@ class RegistrationController extends Controller
 		LastModifed : 26-Aug-14
 	*/
 	public function actionThirdstep()
-	{
+	{		
 		$this->layout='account_settings_layout'; //steps_layout
 		$id=Yii::app()->user->id;
 		$c=Yii::app()->hybridAuth->getConnectedProviders();
-		$socialUser=array();		
+		$socialUser=array();
+		$FBUserArray = array();
+		$FBfrndsInPosly = array();
 		if(!empty($c))
 		{	
-			if(Yii::app()->hybridAuth->isAdapterUserConnected('Facebook')){
-			$socialUser = Yii::app()->hybridAuth->getAdapterUserProfile('Facebook'); //working
-			//print_r($socialUser);
-			$socialUser = Yii::app()->hybridAuth->getAdapterUserContacts('Facebook');
-			//print_r($socialUser); exit;
+			if(Yii::app()->hybridAuth->isAdapterUserConnected('Facebook')){				
+				$socialUser = Yii::app()->hybridAuth->getAdapterUserContacts('Facebook');
+				//Use Older version FB App to get Friends List..
 			}					
 		}		
 		$user= Users::model()->with('userDetails')->findByPk($id);
@@ -350,7 +350,27 @@ class RegistrationController extends Controller
 			$user->user_registration_steps = 4; 
 			$user->save();
 		}
-		$this->render('thirdstep', array('list'=>$socialUser, 'user'=>$user));
+		if(count($socialUser)>0)
+		{	//Get the List of Friends who are in FB and also in Posly...
+			foreach($socialUser as $keys=>$values){
+				$FBUserArray[$values->identifier] = 
+				array('identifier'=>$values->identifier,'profileURL'=>$values->profileURL,'photoURL'=>$values->photoURL,
+				'displayName'=>$values->displayName); //Store all my friends Identifier
+			}
+			$criteria = array("select"=>"user_socialmedia_id,user_socialmedia_identifier");			
+			$usersidentifier=UsersSocialmedia::model()->with('users')->findAll($criteria);
+			foreach($usersidentifier as $k1=>$v1){
+				//echo "<pre>"; print_r($v1); 
+				//Check with socialmedia Table to find yr frnd in Fb also in Posly
+				if(array_key_exists($v1->user_socialmedia_identifier,$FBUserArray)===true)
+				$FBfrndsInPosly[$v1->users[0]->user_id]=$FBUserArray[$v1->user_socialmedia_identifier];
+			}
+			//exit;
+			unset($FBUserArray);
+			unset($usersidentifier);
+			unset($criteria);
+		}		
+		$this->render('thirdstep', array('list'=>$socialUser, 'user'=>$user,'fbfriends'=>$FBfrndsInPosly));
 	}
 	
 	/* This is (4th Step) getting Started, 
@@ -362,7 +382,7 @@ class RegistrationController extends Controller
 		$this->layout='account_settings_layout'; //steps_layout
 		$id=Yii::app()->user->id;
 		$user= Users::model()->with('userDetails')->findByPk($id);
-		$this->render('fourthstep', array('user'=>$user));
+		$this->render('forthstep', array('user'=>$user));
 	}	
 	
 	public function actionInvite()

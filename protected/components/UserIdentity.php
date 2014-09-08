@@ -1,18 +1,22 @@
 <?php
 /* An Component for User Authentication
-* is used By FB, Email SignUp & SignIn.
-** SESSIONS gets started Here
-* Last Modified - 02-Sep-14
+* is used By FB SignUp & SignIn, Email SignUp & SignIn.
+** Posly Users SESSIONS gets started Here
+* Last Modified - 06-Sep-14
 */
 class UserIdentity extends CUserIdentity {
 	private $_id; 
 	public $registration_steps;
+	protected $provider;
+	protected $socialidentifier;
+	
+	//Main function for authenticate
 	public function authenticate($type=null) 
 	{
 		switch(strtolower($type))
 		{
 			case 'social': // for social user login - use in HybridauthController.php
-				$user=Users::model()->findByAuthSocial($this->username, $this->password);
+				$user=Users::model()->findByAuthSocial($this->provider, $this->socialidentifier);
 				break;
 			case 'user':
 			default: 				
@@ -57,7 +61,7 @@ class UserIdentity extends CUserIdentity {
 		$url = '/site/index';
 		if($this->registration_steps!="")
 		{
-			$step = $this->registration_steps;			
+			$step = $this->registration_steps;	
 			switch($step){
 				case 0:
 				$url = '/registration/settings';
@@ -86,5 +90,10 @@ class UserIdentity extends CUserIdentity {
  
 	public function getId() {
 		return $this->_id;
+	}
+	
+	public function setsocialdata($socialprovider,$identifier){
+		$this->provider = $socialprovider;
+		$this->socialidentifier = $identifier;
 	}
 }
