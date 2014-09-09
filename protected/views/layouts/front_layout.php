@@ -120,7 +120,6 @@
 <?php if(Yii::app()->user->isGuest){ ?>
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/flexislider/jquery.flexslider.js" type="text/javascript" ></script> 
 <?php }?>
-<script type="text/javascript" src="//js.maxmind.com/js/geoip.js"></script>
 <script>
 var posWas; 
 $(window).bind('scroll', function(){ //when the user is scrolling...
@@ -328,11 +327,11 @@ $(document).ready(function(){
 	showUsersActivities();
 	
 <?php } else{ //Guset Login *** ?>
-$(window).load(function() {
-	$('.flexslider').flexslider({
-	  animation: "slide",
-	  controlsContainer: ".flex-container"
-  });
+    $(window).load(function() {
+        $('.flexslider').flexslider({
+          animation: "slide",
+          controlsContainer: ".flex-container"
+    });
     get_current_nearby_country("<?php echo $this->createUrl('/site/getnearbycountry'); ?>"); 
 });
 <?php } ?>

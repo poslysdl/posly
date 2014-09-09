@@ -101,30 +101,55 @@ class Countries extends CActiveRecord
 	* @param  $latlong Array of latitude and longitude
 	* @return Array of Near by countries
 	*/
-	public function get_nearbycountries($geoinfo){
-		$latitude = $geoinfo['latitude'];
-		$longitude = $geoinfo['longitude'];
-		$country = strtolower($geoinfo['country']);
-		$query = "SELECT LOWER(country) AS countryname, alpha_2_code,alpha_3_code,
+
+	public function get_current_nearbycountries($ip){
+		//$ip = '122.166.211.149';
+		$countries = array();
+		$query_current = "SELECT *
+						FROM countries_ip_lat_long
+					WHERE INET_ATON('".$ip."')
+						BETWEEN ip_from AND ip_to
+					LIMIT 1";
+		$command_current = Yii::app()->db->createCommand($query_current);
+		//$command->bindValue(':limit', $limit);
+		$raw_current_Data = $command_current->queryAll();
+		foreach($raw_current_Data as $raw_current){
+			$countries['current']['country_name']= $raw_current['country_name'];
+			$countries['current']['country_code'] = $raw_current['country_code'];
+			$countries['current']['region_name'] = $raw_current['region_name'];
+			$countries['current']['city_name'] = $raw_current['city_name'];
+			$countries['current']['latitude'] = $raw_current['latitude'];
+			$countries['current']['longitude'] = $raw_current['longitude'];
+			$countries['current']['zip_code'] = $raw_current['zip_code'];
+			$countries['current']['time_zone'] = $raw_current['time_zone'];					
+		}
+		$latitude = $countries['current']['latitude'];
+		$longitude = $countries['current']['longitude'];
+		$current_country = strtolower($countries['current']['country_name']);		
+		$query_nearby = "SELECT LOWER(country) AS countryname, alpha_2_code,alpha_3_code,
 		3956 * 2 * ASIN(SQRT( POWER(SIN((".$latitude." -
 		abs( 
 		dest.latitude)) * pi()/180 / 2),2) + COS(".$latitude." * pi()/180 ) * COS( 
 		abs
-		(dest.latitude) *  pi()/180) * POWER(SIN((".$longitude." - dest.longitude) *  pi()/180 / 2), 2) ))
-		 
-		as distance FROM countries_lat_long dest having distance < 10000 ORDER BY distance limit 7";		
-		
-		$command= Yii::app()->db->createCommand($query);
+		(dest.latitude) *  pi()/180) * POWER(SIN((".$longitude." - dest.longitude) *  pi()/180 / 2), 2) ))		 
+		as distance FROM countries_lat_long dest having distance < 10000 ORDER BY distance limit 7";	
+		$command_nearby = Yii::app()->db->createCommand($query_nearby);
 		//$command->bindValue(':limit', $limit);
-		$rawData = $command->queryAll();
-		foreach($rawData as $subKey => $subArray){
-			if($subArray['countryname'] == $country){
-				  unset($rawData[$subKey]);
+		$countries['nearby'] = array();
+		$raw_nearby_Data = $command_nearby->queryAll();
+		foreach($raw_nearby_Data as $subKey => $subArray){
+			if($subArray['countryname'] == $current_country){
+				  unset($raw_nearby_Data[$subKey]);
 			}
-		}	
-		$jsonData = json_encode($rawData);
-		return $jsonData;
-	}
+			else{
+				$countries['nearby'][] = array("country_name" => $subArray['countryname'],"country_code" => $subArray['alpha_2_code']);
+			}
+			
+		}		
+		$jsonData = json_encode($countries);
+		return $jsonData;		
+	}	
+
 
 	/**	
 	* User_Define Function, to get Regions wrt country
