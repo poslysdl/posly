@@ -16,15 +16,13 @@
 	height: 50px;
 	padding: 10px 0px;
 }
-
 .errorMessage {
     color: red;
 }
-
 .myhide {
     display:none;
 }
-
+.clearboth{ clear:both; height:10px;}
 
 /* CSS for scroll top */
 

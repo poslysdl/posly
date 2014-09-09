@@ -17,13 +17,11 @@ if(Yii::app()->user->isGuest)
 	<ul class="dropdown-menu signup">
 	<li><span>Sign in with</span></li>
 	<li>
-	<?php echo CHtml::link('Facebook',array('user/hybridauth/authenticate','provider'=>'Facebook'), array('class'=>'btn faceS')); ?>
+	<?php //echo CHtml::link('Facebook',array('#','provider'=>'Facebook'), array('class'=>'btn faceS')); ?>
+	<a class="btn faceS" href="javascript:void(0);">Facebook</a>
 	</li>
-<!--	<li>
-	<?php echo CHtml::link('Instagram',array('#','provider'=>'Instagram'), array('class'=>'btn insta')); ?>
-	</li>-->
 	<li>
-	<a class="btn insta" data-toggle="modal" href="https://api.instagram.com/oauth/authorize?client_id=d1b24c4e53364af880b33c5561ce12f4&redirect_uri=http://localhost/projects/posly_v2/posly/index.php/site/instagramauth&scope=basic&response_type=code">Instagram</a>
+	<a class="btn insta instaS" href="javascript:void(0);">Instagram</a>
 	</li>	
 	<li>
 	<button type="button" class="btn meoS checkmsg" data-toggle="modal" href="#loginModal">Email</button>
@@ -39,10 +37,10 @@ if(Yii::app()->user->isGuest)
 	<ul class="dropdown-menu signup">
 	<li><span>Sign Up with</span></li>
 	<li>
-	<?php echo CHtml::link('Facebook',array('user/hybridauth/authenticate','provider'=>'Facebook'), array('class'=>'btn faceS')); ?>
+	<a class="btn faceS" href="javascript:void();">Facebook</a>
 	</li>
 	<li>
-	<?php echo CHtml::link('Instagram',array('#','provider'=>'Instagram'), array('class'=>'btn insta')); ?>
+	<a class="btn insta instaS" href="">Instagram</a>
 	</li>
 	<li>
 	<button type="button" class="btn meoS checkmsg" data-toggle="modal" href="#sign-up">Email</button>

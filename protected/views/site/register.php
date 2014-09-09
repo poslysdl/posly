@@ -26,7 +26,14 @@
 	<input type="text" id="RegisterForm_email" name="RegisterForm[email]" tabindex="3" placeholder="Email" class="form-control placeholder-no-fix" maxlength="60">	
 	</div>
 	<div style="display:none" id="RegisterForm_email_em" class="errorMessage"></div>	
-	</div>
+	</div>	
+	<div class="form-group">
+	<label for="RegisterForm_username" class="control-label visible-ie8 visible-ie9 required">User Name <span class="required">*</span></label>	
+	<div class="input-icon"> 
+	<i class="icon-user"></i>
+	<input type="text" maxlength="20" id="RegisterForm_username" name="RegisterForm[username]" tabindex="4" placeholder="User Name" class="form-control placeholder-no-fix"></div>
+	<div style="display:none" id="RegisterForm_username_em" class="errorMessage"></div>	
+	</div>	
 	<div class="form-group">
 	<label for="RegisterForm_password" class="control-label visible-ie8 visible-ie9 required">Password <span class="required">*</span></label>	
 	<div class="input-icon"> 

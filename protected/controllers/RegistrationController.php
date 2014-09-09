@@ -11,7 +11,7 @@ class RegistrationController extends Controller
     {
         return array(
             array('allow',
-            	'actions'=>array('index','geturlname', 'invite','thirdstep', 'secondstep', 'settings', 'fourthstep', 'slogan', 'addmagazines', 'deletemagazines', 'adddesigners', 'deletedesigners', 'addshops', 'deleteshops',  'addstyles', 'deletestyles',  'addmystyles', 'deletemystyles', 'changephoto','getcity'),
+            	'actions'=>array('index','geturlname', 'invite','thirdstep', 'secondstep', 'settings', 'fourthstep', 'slogan', 'addmagazines', 'deletemagazines', 'adddesigners', 'deletedesigners', 'addshops', 'deleteshops',  'addstyles', 'deletestyles',  'addmystyles', 'deletemystyles', 'changephoto','getcity','dualfbsignup'),
                 'users'=>array('@'),
             ),
             array('deny'),
@@ -387,12 +387,13 @@ class RegistrationController extends Controller
 	
 	public function actionInvite()
 	{
-		if(isset($_POST['ids'])){
+		/*if(isset($_POST['ids'])){
 		if(Yii::app()->hybridAuth->isAdapterUserConnected('Facebook'))
 		$socialUser = Yii::app()->hybridAuth->sendInvite('Facebook', $_POST['ids']);
 		}
 		echo $socialUser;
 		Yii::app()->end();	
+		*/
 	}	
 	
 	public function actionGetUrlName() 
@@ -588,4 +589,5 @@ class RegistrationController extends Controller
 		}		
 	}
 	
+//END
 }

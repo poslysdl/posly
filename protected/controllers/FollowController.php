@@ -115,17 +115,22 @@ class FollowController extends Controller
 		$fbinvited_identifier = json_decode($idata); 
 		//$fbinvited_identifier is an PHP array contains FB identifier		
 		$msg='';
-		$status='error';
+		$status='error';		
 		if(isset($fbinvited_identifier) && count($fbinvited_identifier)>0)
 		{
-			
-				$status='success';
-			}		
+			//foreach($fbinvited_identifier as $keys=>$values)
+			//{ 
+				$ids = "1273065231"; //'100003310892205';
+				Yii::app()->hybridAuth->sendInvite('Facebook',$ids);
+			//}
+			$status='success';					
 		}
 		echo CJSON::encode(array(
 		'status'=>$status,
 		'msg'=>$msg
 		));
 		Yii::app()->end();
-	}	
+	}
+	
+//END	
 }

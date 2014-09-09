@@ -1,5 +1,7 @@
 <?php
-/* The Template page for Registration Step-1# */
+/* The Template page for Registration Step-1# 
+** Last Modified: 09-Sept-14
+*/
 ?>
 <div class="page-container">
 <div class="page-content-3step container padd">
@@ -219,10 +221,10 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label  class="col-md-3 control-label">Unique URL</label>
-			<div class="col-md-2">
+			<label  class="col-md-3 control-label">User Name</label>
+			<!--<div class="col-md-2">
 			<span class="help-block-more">http://www.Posly.com/</span>
-			</div>
+			</div>-->
 			<div class="col-md-7">
 			<div class="input-icon right"> <i class="fa"></i>
 			<?php 
@@ -242,7 +244,7 @@
 	</div>	
 	
 	<!--dfd-->
-	<div class="row ">
+	<div class="row">
 		<div class="col-md-12"> 
 		<!--card1-->
 		<div class="portlet box blue boxshadown">
@@ -336,7 +338,7 @@
 	</div>	
 	
 	<!--cvc-->
-	<div class="row ">
+	<div class="row">
 		<div class="col-md-12"> 
 		<!--card1-->
 		<div class="portlet box blue boxshadown">
@@ -499,8 +501,8 @@
 		</div>
 		</div>
 	</div>
-	<!--sdas-->
-	<div class="row ">
+	<!--sdas-->	
+	<div class="row">
 		<div class="col-md-12"> 
 		<!--card1-->
 		<div class="portlet box blue boxshadown">
@@ -520,85 +522,95 @@
 		<button class="close" data-close="alert"></button>
 		Your form validation is successful! </div>
 		<div class="form-group nhommang">
-		<label  class="col-md-2 control-label"><i class="icon-facebook-sign"></i></label>
-		<div class="col-md-2 ctlmbile">
-		<label class="control-label">
-		Facebook
-		</label>
+			<label  class="col-md-2 control-label"><i class="icon-facebook-sign"></i></label>
+			<div class="col-md-3 ctlmbile">
+			<label class="control-label">
+			Facebook User Name
+			</label>
+			</div>
+			<div class="col-md-3 ctlmbile2">
+			<?php 
+			$checked = '';
+			$checked = (isset($model->userDetails->user_unique_url))?$model->userDetails->user_unique_url:'';			
+			?>
+			<input type="text" class="form-control" name="fbusername" id="fbusername" value="<?php echo $checked;?>">
+			</div>
+			<div class="col-md-2 ctlmbile2">
+			<?php if(empty($model->user_socialmedia_id)){ ?>
+			<button id="connectfb" class="btn white active pull-left needmar fix80" href="javascript:void(0);">Connected</button>
+			<?php } ?>
+			</div>
 		</div>
-		<div class="col-md-8 ctlmbile2">
-		<button class="btn white active pull-left needmar fix130" href="#">Connected</button>
-		</div>
+		<div class="clearboth"></div>
+		<div class="form-group nhommang1">
+			<label  class="col-md-2 control-label hidden-320 hidden-480 hidden-600 hidden-620" ></label>
+			<div class="do-mobile">
+			<div class="col-md-2">
+			<div class="make-switch pull-left" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
+			<?php 
+			$checked = '';
+			$checked = (isset($model->userSocialPrivacy->user_i_like) && $model->userSocialPrivacy->user_i_like == 1)?'checked':'';		
+			?>
+			<input type="checkbox" name="fb_like" id="fb_like" value="1" class="toggle" <?php echo $checked;?> />
+			</div>
+			</div>
+			<div class="col-md-3">
+			<label class="control-label">
+			Photos I Like
+			</label>
+			</div>
+			</div>
+			<div class="do-mobile">
+			<div class="col-md-2">
+			<div class="make-switch pull-left" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
+			<?php 
+			$checked = '';
+			$checked = (isset($model->userSocialPrivacy->user_i_upload) && $model->userSocialPrivacy->user_i_upload == 1)?'checked':'';		
+			?>
+			<input type="checkbox" name="fb_upload" id="fb_upload" value="1" class="toggle" <?php echo $checked;?> />
+			</div>
+			</div>
+			<div class="col-md-3">
+			<label class="control-label">
+			Photos I Upload
+			</label>
+			</div> 
+			</div> 
 		</div>
 		<div class="form-group nhommang1">
-		<label  class="col-md-2 control-label hidden-320 hidden-480 hidden-600 hidden-620" ></label>
-		<div class="do-mobile">
-		<div class="col-md-2">
-		<div class="make-switch pull-left" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
-		<?php 
-		$checked = '';
-		$checked = (isset($model->userSocialPrivacy->user_i_like) && $model->userSocialPrivacy->user_i_like == 1)?'checked':'';		
-		?>
-		<input type="checkbox" name="fb_like" id="fb_like" value="1" class="toggle" <?php echo $checked;?> />
-		</div>
-		</div>
-		<div class="col-md-3">
-		<label class="control-label">
-		Photos I Like
-		</label>
-		</div>
-		</div>
-		<div class="do-mobile">
-		<div class="col-md-2">
-		<div class="make-switch pull-left" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
-		<?php 
-		$checked = '';
-		$checked = (isset($model->userSocialPrivacy->user_i_upload) && $model->userSocialPrivacy->user_i_upload == 1)?'checked':'';		
-		?>
-		<input type="checkbox" name="fb_upload" id="fb_upload" value="1" class="toggle" <?php echo $checked;?> />
-		</div>
-		</div>
-		<div class="col-md-3">
-		<label class="control-label">
-		Photos I Upload
-		</label>
-		</div> 
-		</div> 
-		</div>
-		<div class="form-group nhommang1">
-		<label  class="col-md-2 control-label hidden-320 hidden-480 hidden-600 hidden-620" ></label>
-		<div class="do-mobile">
-		<div class="col-md-2">
-		<div class="make-switch pull-left" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
-		<?php 
-		$checked = '';
-		$checked = (isset($model->userSocialPrivacy->user_comment) && $model->userSocialPrivacy->user_comment == 1)?'checked':'';		
-		?>
-		<input type="checkbox" name="fb_comment" id="fb_comment" value="1" class="toggle" <?php echo $checked;?> />
-		</div>
-		</div>
-		<div class="col-md-3">
-		<label class="control-label">
-		Comments I make
-		</label>
-		</div>
-		</div>
-		<div class="do-mobile">
-		<div class="col-md-2">
-		<div class="make-switch pull-left" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
-		<?php 
-		$checked = '';
-		$checked = (isset($model->userSocialPrivacy->user_albums_fav) && $model->userSocialPrivacy->user_albums_fav == 1)?'checked':'';		
-		?>
-		<input type="checkbox" name="fb_favour" id="fb_favour" value="1" class="toggle" <?php echo $checked;?> />
-		</div>
-		</div>
-		<div class="col-md-3">
-		<label class="control-label">
-		Albums I favourite
-		</label>
-		</div> 
-		</div>
+			<label  class="col-md-2 control-label hidden-320 hidden-480 hidden-600 hidden-620" ></label>
+			<div class="do-mobile">
+			<div class="col-md-2">
+			<div class="make-switch pull-left" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
+			<?php 
+			$checked = '';
+			$checked = (isset($model->userSocialPrivacy->user_comment) && $model->userSocialPrivacy->user_comment == 1)?'checked':'';		
+			?>
+			<input type="checkbox" name="fb_comment" id="fb_comment" value="1" class="toggle" <?php echo $checked;?> />
+			</div>
+			</div>
+			<div class="col-md-3">
+			<label class="control-label">
+			Comments I make
+			</label>
+			</div>
+			</div>
+			<div class="do-mobile">
+			<div class="col-md-2">
+			<div class="make-switch pull-left" data-on="danger" data-off="default" data-label-icon="icon-reorder">
+			<?php 
+			$checked = '';
+			$checked = (isset($model->userSocialPrivacy->user_albums_fav) && $model->userSocialPrivacy->user_albums_fav == 1)?'checked':'';		
+			?>
+			<input type="checkbox" name="fb_favour" id="fb_favour" value="1" class="toggle" <?php echo $checked;?> />
+			</div>
+			</div>
+			<div class="col-md-3">
+			<label class="control-label">
+			Albums I favourite
+			</label>
+			</div> 
+			</div>
 		</div>		
 		<!-- comented code  -->
 		<!--sdf-->
@@ -607,7 +619,7 @@
 		</div>
 		</div>
 		</div>
-	</div>
+	</div>	
 	<!--end-->	
 </div>
 </div> <!-- page-content-wrapper ENDS -->

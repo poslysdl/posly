@@ -142,7 +142,27 @@ class Users extends CActiveRecord
 	  else
 		return false;	  
 	}
-
+	
+	/* this function is used to check , if user already registered
+	* using FB emailId through SignUp with Emailid steps.
+	* Then if emailid exits and social_media didn't then go for Update
+	* Last modified: 09-Sep-14
+	*/
+	public function findByFBmailId($username)
+	{
+	  $email=strtolower($username);	  
+	  $user=$this->with('userDetails')->find("userDetails.user_details_email='$email'");
+	  if(is_object($user) && isset($user->user_id))
+	  {
+		if(empty($user->user_socialmedia_id))
+			return true;
+		else
+			return false;
+	  } else{
+		return false;
+		}
+	}
+	
 	/**
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!

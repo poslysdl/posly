@@ -230,7 +230,6 @@
 
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/scripts/poslyfunctions.js"></script> 
 <!---Important JS Functions mainly for PHP developers --->
-<script src='http://connect.facebook.net/en_US/all.js' type="text/javascript"></script>
 <script>
 var posWas; 
 $(window).bind('scroll', function(){ //when the user is scrolling...
@@ -371,6 +370,14 @@ $(document).on('click', '.step1cancel', function(){
 	window.location=url;
 });
 
+$(document).on('click', '#connectfb', function(){
+	//var url = "<?php echo Yii::app()->createAbsoluteUrl('/registration/dualfbsignup'); ?>";
+	var url = "<?php echo Yii::app()->createUrl('/user/hybridauth/authenticate'); ?>";
+	url=url+'?flagemail=y';		
+	window.location=url;
+	return false;
+});
+
 //Click event of Follow, unfollow in Step-3
 $(document).on('click', '.st3follow', function(){
 	var btntxt = $(this).text();
@@ -406,8 +413,9 @@ $(document).on('click', '.st3follow', function(){
 });
 
 //Click event of Invite in Step-3
-$(document).on('click', '.st3invite', function(){	
-	var invite = new Array();
+$(document).on('click', '.st3invite', function(){
+		FacebookInviteFriends();
+	/*var invite = new Array();
 	var i=0;
 	$('#fbinvite input:checked').each(function() {
 		//invite[i] = $(this).val();
@@ -427,7 +435,7 @@ $(document).on('click', '.st3invite', function(){
 		if(obj.status=='success'){			
 			//$(elmn).attr('data-id',obj.msg);
 		}
-	});	
+	});	 */
 	return false;	
 });
 
@@ -443,6 +451,23 @@ function deleteM(id)
 	$( "#"+id ).remove();
 	});
 	return false;
+}
+</script>
+<script src='http://connect.facebook.net/en_US/all.js' type="text/javascript"></script>
+<script>
+FB.init({
+appId:'647620848638998',
+cookie:true,
+status:true,
+xfbml:true
+});
+ 
+function FacebookInviteFriends()
+{
+FB.ui({
+method: 'apprequests',
+message: 'Your Message diaolog'
+});
 }
 </script>
 

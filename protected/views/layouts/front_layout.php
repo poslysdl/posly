@@ -304,8 +304,22 @@ $(document).ready(function(){
 		if($('#RegisterForm_firstname').val()==''){
 			$('#RegisterForm_email').val('');
 			$('#RegisterForm_password').val('');
+			$('#RegisterForm_username').val('');
 		}
 		$('.errorMessage').hide();
+	});
+	
+	//** FB & Instagram SignIn,SignUp Icon links
+	$(document).on('click', '.faceS', function(){
+		var url = "<?php echo Yii::app()->createUrl('/user/hybridauth/authenticate'); ?>";
+		window.location=url;
+	});
+	$(document).on('click', '.instaS', function(){
+		var clientId = "d1b24c4e53364af880b33c5561ce12f4"; //Instagram Client Id
+		var local = "<?php echo Yii::app()->createUrl('/site/instagramauth'); ?>";
+		var url = "https://api.instagram.com/oauth/authorize?client_id="+clientId+"&redirect_uri="+local+"&scope=basic&response_type=code";
+		//console.log(url);		
+		window.location=url;
 	});
    
 });

@@ -190,7 +190,7 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model
 	function sendInvitation($ids)
 	{
 		$parameters = array();
-		$parameters["ids"] = $ids;
+		$parameters["to"] = $ids;
 		$parameters["message"]="hello this is testing invitation";
 		try{ 
 			$response = $this->api->api("/apprequests", "post", $parameters); 
@@ -199,7 +199,7 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model
 			throw new Exception( "Send invitation request failed! {$this->providerId} returned an error: $e" );
 		} 
  
-		if( ! $response || ! count( $response["data"] ) ){
+		if(!isset($response)){ //if( ! $response || ! count( $response["data"] ) ){
 			return ARRAY();
 		}
 

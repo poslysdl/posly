@@ -455,9 +455,9 @@ class SiteController extends Controller
 	}
 
 	/**
-	* Displays the Register Modal window - SignUp
+	* Displays the Register Modal window - SignUp By EmailId
 	* FB SignUp goes to HybridauthController..
-	* Last Modified:27-Aug-14
+	* Last Modified:09-Sept-14
 	*/
 	public function actionRegister()
 	{	
@@ -476,6 +476,7 @@ class SiteController extends Controller
 				$ud->user_details_firstname=$model->firstname;
 				$ud->user_details_lastname=$model->lastname;
 				$ud->user_details_email=$model->email;
+				$ud->user_unique_url=$model->username;
 				$ud->user_details_password=md5($model->password);
 				$ud->user_details_avatar='noimage.jpg';
 				$ud->user_details_created_date=$value[0];
@@ -567,8 +568,9 @@ class SiteController extends Controller
 		
 	}
 	/**
-	 * This user define function is used to set up an authentication with instagram
-	 * Last Modified: 04-Sep-14
+	* Call Back Function
+	* This user define function is used to set up an authentication with instagram
+	* Last Modified: 04-Sep-14
 	*/
 	public function actionInstagramauth(){		
 		$code = $_GET['code'];		
@@ -713,6 +715,8 @@ class SiteController extends Controller
 		));*/
 		Yii::app()->end();	
 	}
+	
+//END
 }
 
 ?>

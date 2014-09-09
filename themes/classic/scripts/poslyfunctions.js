@@ -101,33 +101,18 @@ $(document).on('keypress', '.custom-comment-box', function(e){
 				end=end+'</a> <span class="datetime">@ '+data.created_date;
 				end=end+'</span>';
 				end=end+' <span class="body">'+data.comment+'</span> </div> </li>';
-			 }			 
-			 $('#cart-data-maincomments'+id).append(end);
+			}			 
+			$('#cart-data-maincomments'+id).append(end);
 			 
-			 //Now increase the comment count at '5 comments' at Cart Data.
-			 var totcom = $('#cart-data-topcomments'+id+' .tools a').attr('data-src');
-			 totcom = parseInt(totcom) + 1;
-			 $('#cart-data-topcomments'+id+' .tools a').text(totcom+' comments');
+			//Now increase the comment count at '5 comments' at Cart Data.
+			var totcom = $('#cart-data-topcomments'+id+' .tools a').attr('data-src');
+			totcom = parseInt(totcom) + 1;
+			$('#cart-data-topcomments'+id+' .tools a').text(totcom+' comments');
 			 
-			 if(isfromzoom_img=='1'){
+			if(isfromzoom_img=='1'){
 				// As User has Put comment from Zoom Image Textarea, append the new comment Text
 				$('#zoomcart-data-comments'+id).append(end);
-			 }
-			
-			/* var h= $('#'+id).height()+10;
-			 if(h<225)
-			 {
-				$('#'+id).parent().parent().css('height', h);
-				$('#'+id).parent().parent().find('.scrollercm').css('height', h);
-			 }
-			 else
-			 {
-				$('#'+id).parent().parent().css('height', 225);
-				$('#'+id).parent().parent().find('.scrollercm').css('height', 225);					
-				$('#'+id).parent().parent().find('.scrollercm').scrollTop( $('#'+id).height() );
-			 }			
-			$("#"+id ).scrollTop( $('#'+id).height());			
-			*/
+			}			
 		});
 		$(this).val('');
 		return false;
@@ -295,6 +280,10 @@ function checkSignUp(elm)
 		$('#RegisterForm_email_em').html('Email cannot be blank.');
 		haserror='1';
 	}
+	if($('#RegisterForm_username').val()==''){
+		$('#RegisterForm_username_em').html('UserName cannot be blank.');
+		haserror='1';
+	}
 	if($('#RegisterForm_password').val()==''){
 		$('#RegisterForm_password_em').html('Password cannot be blank.');
 		pass='0';
@@ -417,8 +406,8 @@ function getcountrycity(elm,targetid)
 	});
 }
 
+//** Registration process Step- #1
 $(document).on('click', '.accset_save', function(){
-	//Registration process Step-1
 	var noerr = true;
 	var gender = $("input[name='gender']:checked").val();
 	$('.errorMessage').html('');
@@ -491,7 +480,3 @@ $(document).on('change', '#formreg_region', function(){
 $(document).on('change', '#formreg_state', function(){
 	getcountrycity($(this),'formreg_city');
 });
-
-
-//$('#firstname').parent('.right').parent('.col-md-9').parent('.form-group').children('.col-md-9').children('.errorMessage').html('ddd');
-//$('#firstname').parent('.right').parent('.col-md-9').parent('.form-group').children('.col-md-9').children('.errorMessage').show();
