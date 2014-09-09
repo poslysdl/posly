@@ -545,7 +545,7 @@ class SiteController extends Controller
 	public function actionLogout()
 	{
 		 if(Yii::app()->hybridAuth->getConnectedProviders()){
-            Yii::app()->hybridAuth->logoutAllProviders();
+         Yii::app()->hybridAuth->logoutAllProviders();
         }
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
@@ -557,11 +557,10 @@ class SiteController extends Controller
 	*/
 	public function actionGetnearbycountry(){
 		
-		$latitude = $_REQUEST['latitude'];
-		$longitude = $_REQUEST['longitude'];
-		$country =  $_REQUEST['country'];	
-		$latlong = array("latitude" => $latitude, "longitude" => $longitude, "country" => $country);		
-		$countries = Countries::model()->get_nearbycountries($latlong);
+		$ip = $this->get_client_ip();
+		if($ip){
+			$countries = Countries::model()->get_current_nearbycountries($ip);
+		}
 		echo $countries;
 		Yii::app()->end();
 		

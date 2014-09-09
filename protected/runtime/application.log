@@ -1693,3 +1693,13 @@ in C:\wamp\www\projects\posly_v2\posly\index.php (12)
 in C:\wamp\www\projects\posly_v2\posly\protected\models\UsersFriends.php (127)
 in C:\wamp\www\projects\posly_v2\posly\protected\controllers\SiteController.php (481)
 in C:\wamp\www\projects\posly_v2\posly\index.php (12)
+2014/09/09 17:39:48 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''127.0.0.1)
+				BETWEEN ip_from AND ip_to
+			LIMIT 1' at line 3. The SQL statement executed was: SELECT *
+				FROM countries_ip_lat_long
+			WHERE INET_ATON('127.0.0.1)
+				BETWEEN ip_from AND ip_to
+			LIMIT 1.
+in /var/www/projects/posly_v2/posly/protected/models/Countries.php (114)
+in /var/www/projects/posly_v2/posly/protected/controllers/SiteController.php (562)
+in /var/www/projects/posly_v2/posly/index.php (13)

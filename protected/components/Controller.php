@@ -32,8 +32,8 @@ class Controller extends CController
 		$hash_tags = array();
 		$trend=LogHashtags::model()->getmyhashtags($limit);		
 		if(isset($trend)){		
-			foreach($trend as $tagg1=>$tagg)				
-			$hash_tags[] = CHtml::link($tagg['hashtags_name'], array('site/hashtags', 'hid'=>$tagg['hashtags_id']));			
+		foreach($trend as $tagg1=>$tagg)				
+		$hash_tags[] = CHtml::link($tagg['hashtags_name'], array('site/hashtags', 'hid'=>$tagg['hashtags_id']));			
         }  
 		return $hash_tags;
 	}
@@ -120,6 +120,27 @@ class Controller extends CController
 	        // TODO: This pluralizes the time unit, which is done by adding "s" at the end; this will not work for i18n!
 	        return $time_units . ' ' . $time_unit . 's ago';
 	    }
+	}
+	
+	// Function to get the client ip address
+	public function get_client_ip() {
+		$ipaddress = '';
+		if (getenv('HTTP_CLIENT_IP'))
+			$ipaddress = getenv('HTTP_CLIENT_IP');
+		else if(getenv('HTTP_X_FORWARDED_FOR'))
+			$ipaddress = getenv('HTTP_X_FORWARDED_FOR');
+		else if(getenv('HTTP_X_FORWARDED'))
+			$ipaddress = getenv('HTTP_X_FORWARDED');
+		else if(getenv('HTTP_FORWARDED_FOR'))
+			$ipaddress = getenv('HTTP_FORWARDED_FOR');
+		else if(getenv('HTTP_FORWARDED'))
+			$ipaddress = getenv('HTTP_FORWARDED');
+		else if(getenv('REMOTE_ADDR'))
+			$ipaddress = getenv('REMOTE_ADDR');
+		else
+			$ipaddress = 'FALSE';
+		
+		return $ipaddress;
 	}	
 	
 }

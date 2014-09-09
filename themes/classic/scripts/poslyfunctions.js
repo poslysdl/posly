@@ -138,27 +138,17 @@ $(document).on('keypress', '.custom-comment-box', function(e){
 */
 
 function get_current_nearby_country(url){
-    //if (navigator.geolocation) {
-    //  navigator.geolocation.getCurrentPosition(showPosition);
-    //} else { 
-    //  alert("Geolocation is not supported by this browser.");
-    //}
-	 
-	var latitude = geoip_latitude();
-	var longitude = geoip_longitude();
-	var country = geoip_country_name();
-	var data = "latitude="+latitude+"&longitude="+longitude+"&country="+country;
 	var nearbyCountry = '';
-	
 	$.ajax({
 		type: 'POST',  
 		url: url,
-		data:data,
 		success:function(response){			
-			$("#current_country").html(country);
-			var item = jQuery.parseJSON(response);			
-			$.each(item, function(idx, obj) {
-				nearbyCountry += '<li><a href="/projects/posly_v2/posly/index.php/country/'+obj.countryname+'">'+obj.countryname+'</a></li>';
+			var item = jQuery.parseJSON(response);
+			var current_country = item.current.country_name;
+			$("#current_country").html(current_country);
+			var nearby_countries = item.nearby;
+			$.each(nearby_countries, function(idx, obj) {
+				nearbyCountry += '<li><a href="/projects/posly_v2/posly/index.php/country/'+obj.countryname+'">'+obj.country_name+'</a></li>';
 			});
 			$("#nearby_country").html(nearbyCountry);
 		},
