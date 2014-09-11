@@ -27,8 +27,8 @@
 		</span>
 		</div>		
 		<label for="LoginForm_rememberMe">Remember me next time</label>		
-		<div style="display:none" id="LoginForm_rememberMe_em_" class="errorMessage"></div>		
-		<span class="text-right"> <a href="#">Forgot Password</a></span>
+		<div style="display:none" id="LoginForm_rememberMe_em_" class="errorMessage"></div>
+		<span class="text-right"> <a data-toggle="modal" href="#forgetpasswordModal" id = "forgetpassword">Forgot Password</a></span>
 		</div>
 	</div>
 	<div class="modal-div">

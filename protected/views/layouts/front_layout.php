@@ -301,9 +301,9 @@ $(document).ready(function(){
 	$('.lerrormsg').hide();	
 	$('#RegisterForm_firstname').focus(function() {
 		if($('#RegisterForm_firstname').val()==''){
-			$('#RegisterForm_email').val('');
-			$('#RegisterForm_password').val('');
-			$('#RegisterForm_username').val('');
+                    $('#RegisterForm_email').val('');
+                    $('#RegisterForm_password').val('');
+                    $('#RegisterForm_username').val('');
 		}
 		$('.errorMessage').hide();
 	});
@@ -320,6 +320,11 @@ $(document).ready(function(){
 		//console.log(url);		
 		window.location=url;
 	});
+   
+   
+   $("#forgetpassword").click(function(){
+     $('#loginModal').modal('hide');
+   });   
    
 });
 
@@ -340,12 +345,15 @@ $(document).ready(function(){
 
 <!-- END JAVASCRIPTS -->
 <?php
-if(Yii::app()->user->isGuest)
-{
-	$model=new LoginForm;
-$this->renderPartial('//site/login', array('model'=>$model)); //to display SignIn Email Modal window
-	$model=new RegisterForm;
-$this->renderPartial('//site/register', array('model'=>$model)); //to display SignUp By Email Modal window
+if(Yii::app()->user->isGuest){
+   $model=new LoginForm;
+   $this->renderPartial('//site/login', array('model'=>$model)); //to display SignIn Email Modal window
+   $model=new RegisterForm;
+   $this->renderPartial('//site/register', array('model'=>$model)); //to display SignUp By Email Modal window
+   $model=new ForgetpasswordForm;
+   $this->renderPartial('//site/forgetpassword', array('model'=>$model)); //to display SignUp By Email Modal window   
+   
+
 }
 
 ?>

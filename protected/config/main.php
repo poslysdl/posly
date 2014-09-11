@@ -51,7 +51,7 @@ return array(
 
 	// application components
 	'components'=>array(
-		'hybridAuth'=>array(
+	 'hybridAuth'=>array(
             'class'=>'ext.widgets.hybridAuth.CHybridAuth',
             'enabled'=>true, // enable or disable this component
             'config'=>array(
@@ -74,6 +74,21 @@ return array(
                  "debug_file" => "",
              ),
          ),//end hybridAuth
+	 
+		'mail' => array(
+			'class' => 'ext.yii-mail.YiiMail',
+			'transportType'=>'smtp',
+			'transportOptions'=>array(
+			'host'=>'smtp.gmail.com',
+			'username'=>'poslymail@gmail.com',
+			'password'=>'posly123!',
+			'port'=>'465',
+			'encryption'=>'ssl',
+			),
+			'viewPath' => 'application.views.mail',
+			'logging' => true,
+			'dryRun' => false
+		),
 		'user'=>array(
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,

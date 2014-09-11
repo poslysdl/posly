@@ -103,7 +103,7 @@ class Countries extends CActiveRecord
 	*/
 
 	public function get_current_nearbycountries($ip){
-		//$ip = '122.166.211.149';
+		$ip = '122.166.211.149';
 		$countries = array();
 		$query_current = "SELECT *
 						FROM countries_ip_lat_long

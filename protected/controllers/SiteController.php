@@ -434,8 +434,8 @@ class SiteController extends Controller
 				$returnurl = Yii::app()->createUrl($model->returnurl);
 			   //do anything here
 				echo CJSON::encode(array(
-					  'status'=>'success',
-					  'returnUrl'=>$returnurl
+					'status'=>'success',
+					'returnUrl'=>$returnurl
 				));
 				Yii::app()->end();
 			}
@@ -453,6 +453,16 @@ class SiteController extends Controller
 			$this->redirect(Yii::app()->homeUrl);
 		}
 	}
+	
+	/**
+	* Displays the Forget password Modal window - By EmailId
+	* Last Modified:10-Sept-14
+	*/
+	public function actionForgetpassword(){
+		$model=new ForgetpasswordForm; //**models/LoginForm.php
+		$returnurl = Yii::app()->user->returnUrl;		
+		
+	}	
 
 	/**
 	* Displays the Register Modal window - SignUp By EmailId
@@ -566,6 +576,22 @@ class SiteController extends Controller
 		Yii::app()->end();
 		
 	}
+	/**
+	 * Test Email
+	 * Last Modified: 10-Sep-14
+	*/
+	public function actionGetmail(){
+		Yii::import('ext.yii-mail.YiiMailMessage');
+		$message = new YiiMailMessage;
+		$message->setBody('Message content here with HTML', 'text');
+		$message->subject = 'test dipankar';
+		$message->addTo('anand.aneesh@gmail.com');
+		$message->from = Yii::app()->params['adminEmail'];
+		Yii::app()->mail->send($message);
+		Yii::app()->end();
+		
+	}	
+	
 	/**
 	* Call Back Function
 	* This user define function is used to set up an authentication with instagram
