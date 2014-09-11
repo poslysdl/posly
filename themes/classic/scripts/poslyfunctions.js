@@ -181,6 +181,37 @@ function signInByEmail()
 	});
 }
 
+/* ** This is for resetting paasword to EmailId
+** Yii CActiveForm is used to show forget password Modal box
+** /views/site/forgetpassword.php
+*/
+function forgetpasswordToEmail(){
+	var data=$("#forgetpassword-form").serialize();
+	var urlforget = $('#forgetpassword-form .blue').attr('data-url');
+	$('#ForgetpasswordForm_email_em_').show();
+	$('#ForgetpasswordForm_email_em_').addClass("loader");
+	$.ajax({
+		type: 'POST',  
+		url: urlforget,
+		data:data,
+		success:function(data){
+			data = jQuery.parseJSON(data);
+			if(data.status=="success"){				
+				//window.location=data.returnUrl;
+				$('#ForgetpasswordForm_email_em_').removeClass("loader");
+				$('#ForgetpasswordForm_email_em_').html("A new password has been sent to your e-mail address");
+			}
+			else{				
+				$('#ForgetpasswordForm_email_em_').removeClass("loader");
+				$('#ForgetpasswordForm_email_em_').html(data.msg);
+			}       
+		},
+		error: function(data) { // if error occured
+			console.log("error: "+data);
+		}
+	});
+}
+
 /*
  * This function is used to Render 
  "You & 12 person Like This"..Like txt below cart Image
@@ -447,6 +478,24 @@ $(document).on('click', '.accset_save', function(){
 //** click and keypress events
 $(document).on('click', '#signinmail', function(){
 	signInByEmail();
+});
+
+$(document).on('click', '#forgetmail', function(){
+	$('#ForgetpasswordForm_email_em_').hide();
+	if($('#ForgetpasswordForm_email').val()!=''){		
+		var email = $('#ForgetpasswordForm_email').val();
+		if(validateEmail(email)){	//check Email uniqueness
+			forgetpasswordToEmail();	
+		} else{
+			$('#ForgetpasswordForm_email_em_').show();
+			$('#ForgetpasswordForm_email_em_').html('Enter Valid Email Id');
+		}		
+	}
+	else{
+		$('#ForgetpasswordForm_email_em_').show();
+		$('#ForgetpasswordForm_email_em_').html('Enter Email Id');
+	}
+	
 });
 
 $(document).on('click', '#signupmail', function(){

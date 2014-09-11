@@ -20,10 +20,15 @@ class ForgetpasswordForm extends CFormModel
 	public function rules()
 	{
 		return array(
-			// email and password are required
 			array('email', 'required'),
-			// rememberMe needs to be a boolean
 		);
+	}
+	
+	public function reset_password($password,$email){
+		$password = md5($password);		
+		$sql = "UPDATE users_details SET user_details_password = '$password' WHERE user_details_email= '$email'";
+		$command= Yii::app()->db->createCommand($sql);
+		$rawData = $command->execute();
 	}
 	
 }
