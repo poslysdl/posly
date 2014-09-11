@@ -459,10 +459,56 @@ class SiteController extends Controller
 	* Last Modified:10-Sept-14
 	*/
 	public function actionForgetpassword(){
-		$model=new ForgetpasswordForm; //**models/LoginForm.php
-		$returnurl = Yii::app()->user->returnUrl;		
 		
-	}	
+		$model=new ForgetpasswordForm; //**models/ForgetpasswordForm.php
+		$returnurl = Yii::app()->user->returnUrl;		
+		if(isset($_POST['ForgetpasswordForm'])){
+			$model->attributes = $_POST['ForgetpasswordForm'];		
+			$user=Users::model()->findByEmailId($model->attributes['email']);
+			if($user){
+				$chars = array_merge( range('a','z'),range(0,9),range('A','Z'));
+				shuffle($chars);
+				$password = implode(array_slice($chars, 0, 8));
+				$model->reset_password($password,$model->attributes['email']);
+				Yii::import('ext.yii-mail.YiiMailMessage');				
+				$message = new YiiMailMessage;
+				$message->setBody('Dear Member,
+
+You have received this message in response to your request to reset the password associated with your Posly account. 
+
+Your New Password is:
+'.$password.'
+
+Please log in on to your Posly Account using this passsword. If you wish to change your password, please navigate to the Profile section under My Account after logging in.
+
+Sincerely, 
+Posly Team
+
+
+', 'text');
+				$message->subject = 'Your Posly password has been changed';
+				$message->addTo($model->attributes['email']);
+				$message->from = Yii::app()->params['adminEmail'];
+				Yii::app()->mail->send($message);				
+				
+				echo CJSON::encode(array(
+					'status'=>'success',
+					'returnUrl'=>$returnurl
+				));
+			}
+			else{
+				$msg = 'Email Not Exists! Please SignUp';	
+				echo CJSON::encode(array(
+				  'status'=>'error',
+				  'msg'=>$msg
+				));
+			}
+		}
+		else{
+			$this->redirect(Yii::app()->homeUrl);
+		}
+		exit;	
+	}
 
 	/**
 	* Displays the Register Modal window - SignUp By EmailId

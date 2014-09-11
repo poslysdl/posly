@@ -319,8 +319,7 @@ $(document).ready(function(){
 		var url = "https://api.instagram.com/oauth/authorize?client_id="+clientId+"&redirect_uri="+local+"&scope=basic&response_type=code";
 		//console.log(url);		
 		window.location=url;
-	});
-   
+	});   
    
    $("#forgetpassword").click(function(){
      $('#loginModal').modal('hide');
