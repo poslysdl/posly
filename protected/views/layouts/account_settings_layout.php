@@ -370,6 +370,10 @@ $(document).on('click', '.step1cancel', function(){
 	window.location=url;
 });
 
+$(document).on('focus', '.form-control', function(){
+	$('.errorMessage').hide();
+});
+
 $(document).on('click', '#connectfb', function(){
 	//var url = "<?php echo Yii::app()->createAbsoluteUrl('/registration/dualfbsignup'); ?>";
 	var url = "<?php echo Yii::app()->createUrl('/user/hybridauth/authenticate'); ?>";

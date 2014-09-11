@@ -40,7 +40,7 @@ if(Yii::app()->user->isGuest)
 	<a class="btn faceS" href="javascript:void();">Facebook</a>
 	</li>
 	<li>
-	<a class="btn insta instaS" href="">Instagram</a>
+	<a class="btn insta instaS" href="javascript:void(0);">Instagram</a>
 	</li>
 	<li>
 	<button type="button" class="btn meoS checkmsg" data-toggle="modal" href="#sign-up">Email</button>

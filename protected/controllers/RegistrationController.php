@@ -118,8 +118,9 @@ class RegistrationController extends Controller
 				//UsersDetails model values
 				$success[] = true;
 				$fn = trim($_POST['firstname']);
-				$ln = trim($_POST['lastname']);
+				$ln = isset($_POST['lastname'])?trim($_POST['lastname']):NULL;
 				$email = trim($_POST['email']);
+				$password = isset($_POST['password'])?$_POST['password']:'';
 				$gender = $_POST['gender'];
 				$dob = trim($_POST['dob']);
 				$search = isset($_POST['search'])?$_POST['search']:'';				
@@ -158,6 +159,10 @@ class RegistrationController extends Controller
 					$pk = $model->userDetails->user_details_id;
 					$attributes = array(			
 					'user_details_firstname'=>$fn, 'user_details_lastname'=>$ln, 'user_details_email'=>$email, 'user_details_dob'=>$dob, 'user_details_gender'=>$gender, 'searchprivacy'=>$search, 'user_unique_url'=>$url);
+					if(!empty($password)){
+						$aa = array('user_details_password'=>md5($password));
+						$attributes = array_merge($attributes,$aa);						
+					}
 					$condition = 'user_details_id = :userdetailid';
 					$params = array(':userdetailid'=>$pk);
 					$row = UsersDetails::model()->updateByPk($pk,$attributes,$condition,$params);					
@@ -175,11 +180,13 @@ class RegistrationController extends Controller
 					$userDetials = new UsersDetails;
 					$userDetials->user_details_firstname = $fn;
 					$userDetials->user_details_lastname = $ln;
-					$userDetials->user_details_email = $email;
+					$userDetials->user_details_email = $email;					
 					$userDetials->user_details_dob = $dob;
 					$userDetials->user_details_gender = $gender;
 					$userDetials->searchprivacy = $search;
 					$userDetials->user_unique_url = $url;
+					if(!empty($password))
+						$userDetials->user_details_password = md5($password);
 					if($userDetials->save()){
 					$users->user_details_id = $userDetials->user_details_id;
 					$users->save();

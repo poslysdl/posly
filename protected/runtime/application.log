@@ -2277,3 +2277,91 @@ in C:\wamp\www\projects\posly_v2\posly\protected\models\Countries.php (115)
 in C:\wamp\www\projects\posly_v2\posly\protected\controllers\SiteController.php (563)
 in C:\wamp\www\projects\posly_v2\posly\index.php (13)
 >>>>>>> d6fe74b97ec59b48a0ff80b228d7745ecb2a3fdd
+2014/09/11 13:16:17 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'newposly.countries_ip_lat_long' doesn't exist. The SQL statement executed was: SELECT *
+						FROM countries_ip_lat_long
+					WHERE INET_ATON('122.166.211.149')
+						BETWEEN ip_from AND ip_to
+					LIMIT 1.
+in C:\wamp\www\projects\posly_v2\posly\protected\models\Countries.php (115)
+in C:\wamp\www\projects\posly_v2\posly\protected\controllers\SiteController.php (573)
+in C:\wamp\www\projects\posly_v2\posly\index.php (13)
+2014/09/11 13:16:28 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'newposly.countries_ip_lat_long' doesn't exist. The SQL statement executed was: SELECT *
+						FROM countries_ip_lat_long
+					WHERE INET_ATON('122.166.211.149')
+						BETWEEN ip_from AND ip_to
+					LIMIT 1.
+in C:\wamp\www\projects\posly_v2\posly\protected\models\Countries.php (115)
+in C:\wamp\www\projects\posly_v2\posly\protected\controllers\SiteController.php (573)
+in C:\wamp\www\projects\posly_v2\posly\index.php (13)
+2014/09/11 13:16:34 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'newposly.countries_ip_lat_long' doesn't exist. The SQL statement executed was: SELECT *
+						FROM countries_ip_lat_long
+					WHERE INET_ATON('122.166.211.149')
+						BETWEEN ip_from AND ip_to
+					LIMIT 1.
+in C:\wamp\www\projects\posly_v2\posly\protected\models\Countries.php (115)
+in C:\wamp\www\projects\posly_v2\posly\protected\controllers\SiteController.php (573)
+in C:\wamp\www\projects\posly_v2\posly\index.php (13)
+2014/09/11 13:16:39 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'newposly.countries_ip_lat_long' doesn't exist. The SQL statement executed was: SELECT *
+						FROM countries_ip_lat_long
+					WHERE INET_ATON('122.166.211.149')
+						BETWEEN ip_from AND ip_to
+					LIMIT 1.
+in C:\wamp\www\projects\posly_v2\posly\protected\models\Countries.php (115)
+in C:\wamp\www\projects\posly_v2\posly\protected\controllers\SiteController.php (573)
+in C:\wamp\www\projects\posly_v2\posly\index.php (13)
+2014/09/11 13:16:58 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'newposly.countries_ip_lat_long' doesn't exist. The SQL statement executed was: SELECT *
+						FROM countries_ip_lat_long
+					WHERE INET_ATON('122.166.211.149')
+						BETWEEN ip_from AND ip_to
+					LIMIT 1.
+in C:\wamp\www\projects\posly_v2\posly\protected\models\Countries.php (115)
+in C:\wamp\www\projects\posly_v2\posly\protected\controllers\SiteController.php (573)
+in C:\wamp\www\projects\posly_v2\posly\index.php (13)
+2014/09/11 13:17:32 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'newposly.countries_ip_lat_long' doesn't exist. The SQL statement executed was: SELECT *
+						FROM countries_ip_lat_long
+					WHERE INET_ATON('122.166.211.149')
+						BETWEEN ip_from AND ip_to
+					LIMIT 1.
+in C:\wamp\www\projects\posly_v2\posly\protected\models\Countries.php (115)
+in C:\wamp\www\projects\posly_v2\posly\protected\controllers\SiteController.php (573)
+in C:\wamp\www\projects\posly_v2\posly\index.php (13)
+2014/09/11 13:19:14 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'newposly.countries_ip_lat_long' doesn't exist. The SQL statement executed was: SELECT *
+						FROM countries_ip_lat_long
+					WHERE INET_ATON('122.166.211.149')
+						BETWEEN ip_from AND ip_to
+					LIMIT 1.
+in C:\wamp\www\projects\posly_v2\posly\protected\models\Countries.php (115)
+in C:\wamp\www\projects\posly_v2\posly\protected\controllers\SiteController.php (573)
+in C:\wamp\www\projects\posly_v2\posly\index.php (13)
+2014/09/11 13:19:33 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'newposly.countries_ip_lat_long' doesn't exist. The SQL statement executed was: SELECT *
+						FROM countries_ip_lat_long
+					WHERE INET_ATON('122.166.211.149')
+						BETWEEN ip_from AND ip_to
+					LIMIT 1.
+in C:\wamp\www\projects\posly_v2\posly\protected\models\Countries.php (115)
+in C:\wamp\www\projects\posly_v2\posly\protected\controllers\SiteController.php (573)
+in C:\wamp\www\projects\posly_v2\posly\index.php (13)
+2014/09/11 13:19:41 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'newposly.countries_ip_lat_long' doesn't exist. The SQL statement executed was: SELECT *
+						FROM countries_ip_lat_long
+					WHERE INET_ATON('122.166.211.149')
+						BETWEEN ip_from AND ip_to
+					LIMIT 1.
+in C:\wamp\www\projects\posly_v2\posly\protected\models\Countries.php (115)
+in C:\wamp\www\projects\posly_v2\posly\protected\controllers\SiteController.php (573)
+in C:\wamp\www\projects\posly_v2\posly\index.php (13)
+2014/09/11 13:19:54 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'newposly.countries_ip_lat_long' doesn't exist. The SQL statement executed was: SELECT *
+						FROM countries_ip_lat_long
+					WHERE INET_ATON('122.166.211.149')
+						BETWEEN ip_from AND ip_to
+					LIMIT 1.
+in C:\wamp\www\projects\posly_v2\posly\protected\models\Countries.php (115)
+in C:\wamp\www\projects\posly_v2\posly\protected\controllers\SiteController.php (573)
+in C:\wamp\www\projects\posly_v2\posly\index.php (13)
+2014/09/11 13:20:16 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'newposly.countries_ip_lat_long' doesn't exist. The SQL statement executed was: SELECT *
+						FROM countries_ip_lat_long
+					WHERE INET_ATON('122.166.211.149')
+						BETWEEN ip_from AND ip_to
+					LIMIT 1.
+in C:\wamp\www\projects\posly_v2\posly\protected\models\Countries.php (115)
+in C:\wamp\www\projects\posly_v2\posly\protected\controllers\SiteController.php (573)
+in C:\wamp\www\projects\posly_v2\posly\index.php (13)

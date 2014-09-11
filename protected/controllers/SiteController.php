@@ -471,7 +471,7 @@ class SiteController extends Controller
 	*/
 	public function actionRegister()
 	{	
-		$model=new RegisterForm;
+		$model=new RegisterForm; //model/RegisterForm.php
 		// collect user input data
 		if(isset($_POST['RegisterForm']))
 		{
@@ -483,8 +483,7 @@ class SiteController extends Controller
 				$value=$time->getDate();				
 				$u=new Users;
 				$ud=new UsersDetails;
-				$ud->user_details_firstname=$model->firstname;
-				$ud->user_details_lastname=$model->lastname;
+				$ud->user_details_firstname=$model->firstname;				
 				$ud->user_details_email=$model->email;
 				$ud->user_unique_url=$model->username;
 				$ud->user_details_password=md5($model->password);
@@ -592,18 +591,19 @@ class SiteController extends Controller
 		
 	}	
 	
-	/**
-	* Call Back Function
-=======
+	/**	
 	* Call Back Function-- INSTAGRAM
->>>>>>> d6fe74b97ec59b48a0ff80b228d7745ecb2a3fdd
 	* This user define function is used to set up an authentication with instagram
 	* After getting data from Instagram SignUp or SignIn the User
 	* Last Modified: 10-Sep-14
 	*/
 	public function actionInstagramauth()
 	{	
-		$code = $_GET['code'];
+		if(isset($_REQUEST['error_reason']) || isset($_REQUEST['error'])){
+			//$_REQUEST['error_reason']=="user_denied";
+			$this->redirect(Yii::app()->homeUrl);
+		}		
+		$code = isset($_GET['code'])?$_GET['code']:'';
 		$provider = "Instagram";
 		$url = "https://api.instagram.com/oauth/access_token"; 
 		$access_token_parameters = array(

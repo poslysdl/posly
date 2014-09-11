@@ -337,7 +337,7 @@ $(document).ready(function(){
           animation: "slide",
           controlsContainer: ".flex-container"
     });
-    get_current_nearby_country("<?php echo $this->createUrl('/site/getnearbycountry'); ?>"); 
+   // get_current_nearby_country("<?php echo $this->createUrl('/site/getnearbycountry'); ?>"); 
 });
 <?php } ?>
 
