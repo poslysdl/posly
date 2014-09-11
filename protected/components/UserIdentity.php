@@ -12,11 +12,14 @@ class UserIdentity extends CUserIdentity {
 	
 	//Main function for authenticate
 	public function authenticate($type=null) 
-	{
+	{	
 		switch(strtolower($type))
-		{
+		{	
 			case 'social': // for social user login - use in HybridauthController.php
 				$user=Users::model()->findByAuthSocial($this->provider, $this->socialidentifier);
+				break;
+			case 'media': 
+				$user=Users::model()->findBySocialId($this->provider, $this->socialidentifier);
 				break;
 			case 'user':
 			default: 				
@@ -25,7 +28,6 @@ class UserIdentity extends CUserIdentity {
 				break;
 		}
 		//end switch
-
 		if(empty($user)){
 			$this->errorCode = self::ERROR_USERNAME_INVALID;
 			$this->errorCode = self::ERROR_PASSWORD_INVALID;

@@ -1,5 +1,5 @@
 <?php
-/* The Template page for Registration Step-2# */
+/* The Template page for Registration Step-2# Update your Profile Hashtags & Profile Pic */
 ?>
 <div class="page-content">
 <div id="form_wizard_1">

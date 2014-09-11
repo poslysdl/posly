@@ -119,7 +119,7 @@ class Users extends CActiveRecord
  
    // for social user login
    public function findByAuthSocial($provider, $identifier){
-     return $this->with('userSocialmedia', 'userDetails')->find("userSocialmedia.user_socialmedia_provider='$provider' and user_socialmedia_identifier=$identifier");
+     return $this->with('userSocialmedia', 'userDetails')->find("userSocialmedia.user_socialmedia_provider='$provider' and userSocialmedia.user_socialmedia_identifier=$identifier");
    }
  
    // for normal registered user login
@@ -129,6 +129,25 @@ class Users extends CActiveRecord
       $user=$this->with('userDetails')->find("userDetails.user_details_email='$email' and userDetails.user_details_password='$pass'");
       return $user; //->password === crypt($password, $user->password)? $user:null;
    }
+   
+	/* Get Users Details from their Social identifier
+	* Last modified: 09-Sep-14
+	*/
+	public function findBySocialId($provider, $identifier)
+	{
+		$query = "SELECT u.user_id FROM `users_socialmedia` uso JOIN `users` u ON u.user_socialmedia_id = uso.user_socialmedia_id";
+		$query.=" WHERE uso.user_socialmedia_provider = :provider AND uso.user_socialmedia_identifier = :identifier";	
+		$command= Yii::app()->db->createCommand($query);
+		$command->bindParam(":provider", $provider);
+		$command->bindParam(":identifier", $identifier,PDO::PARAM_INT);		
+		$rawData = $command->queryAll();
+		if(isset($rawData) && count($rawData)>0)
+		{			
+			$uid = $rawData[0]['user_id'];
+			unset($rawData);
+			return $this->with('userSocialmedia', 'userDetails')->findByPk($uid);
+		} else{ return NULL; }
+	}
    
 	/* this function is used to find weather, email exists in DB or not
 	* Last modified: 01-Sep-14
@@ -173,4 +192,33 @@ class Users extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	
+	/**
+	 * Name: checkSocialAuth
+	 * Will find weather in Socialmedia that provider exits
+	 * @param string $provider, Int $identifier .
+	 * @return true or false 
+	 */
+	public function checkSocialAuth($provider, $identifier)
+	{	
+		$query = "SELECT count(*) as cnt FROM `users_socialmedia` WHERE `user_socialmedia_provider` = :provider AND `user_socialmedia_identifier` = :identifier";		
+		$command= Yii::app()->db->createCommand($query);
+		$command->bindParam(":provider", $provider);
+		$command->bindParam(":identifier", $identifier,PDO::PARAM_INT);		
+		$rawData = $command->queryAll();		
+		if(!empty($rawData) && isset($rawData[0]['cnt'])){
+			if($rawData[0]['cnt']==1)
+				return true;
+			else
+				return false;
+		}
+		elseif(empty($rawData)){
+			return false;
+		}
+		else{
+			return false;
+		}		
+	}
+	
+	
 }

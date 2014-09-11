@@ -99,3 +99,6 @@ CREATE TABLE IF NOT EXISTS `countries_ip` (
   `status` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=97052 ;
+
+--------------------
+ALTER TABLE `users_socialmedia` ADD INDEX ( `user_socialmedia_provider` , `user_socialmedia_identifier` ) ;
