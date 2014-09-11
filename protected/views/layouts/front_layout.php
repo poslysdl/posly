@@ -314,8 +314,8 @@ $(document).ready(function(){
 		window.location=url;
 	});
 	$(document).on('click', '.instaS', function(){
-		var clientId = "d1b24c4e53364af880b33c5561ce12f4"; //Instagram Client Id
-		var local = "<?php echo Yii::app()->createUrl('/site/instagramauth'); ?>";
+		var clientId = "<?php echo Yii::app()->params['instaClientId']; ?>"; //Instagram Client Id
+		var local = "<?php echo Yii::app()->params['instaredirecturl']; ?>";
 		var url = "https://api.instagram.com/oauth/authorize?client_id="+clientId+"&redirect_uri="+local+"&scope=basic&response_type=code";
 		//console.log(url);		
 		window.location=url;

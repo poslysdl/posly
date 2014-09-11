@@ -11,7 +11,7 @@ class RegistrationController extends Controller
     {
         return array(
             array('allow',
-            	'actions'=>array('index','geturlname', 'invite','thirdstep', 'secondstep', 'settings', 'fourthstep', 'slogan', 'addmagazines', 'deletemagazines', 'adddesigners', 'deletedesigners', 'addshops', 'deleteshops',  'addstyles', 'deletestyles',  'addmystyles', 'deletemystyles', 'changephoto','getcity','dualfbsignup'),
+            	'actions'=>array('index','geturlname', 'invite','thirdstep', 'secondstep', 'settings', 'fourthstep', 'slogan', 'addmagazines', 'deletemagazines','changephoto','getcity','dualfbsignup'),
                 'users'=>array('@'),
             ),
             array('deny'),
@@ -75,7 +75,7 @@ class RegistrationController extends Controller
 		LastModifed : 05-Sept-14
 	*/
 	public function actionSettings() 
-	{	
+	{
 		$isStep1 = false;
 		$stepflag = 'n';
 		if(!Yii::app()->user->isGuest)
@@ -104,6 +104,9 @@ class RegistrationController extends Controller
 				} else if($regsteps==4 && $stepflag=='n'){					
 					$this->redirect(array('registration/fourthstep'));
 					Yii::app()->end();
+				} else if($regsteps==5 && $stepflag=='n'){					
+					$this->redirect(array('registration/fourthstep'));
+					Yii::app()->end(); 				
 				} else{
 					//$this->redirect(Yii::app()->homeUrl);
 				}				
@@ -308,7 +311,7 @@ class RegistrationController extends Controller
 		}
 	}
 	
-	/* This is (2nd Step) getting Started, 
+	/* This is (2nd Step) Update your Profile Hashtags & Profile Pic, 
 		After User First time Gets Registered (3-Step Process) Through Email or FB		
 		LastModifed : 26-Aug-14
 	*/
@@ -325,7 +328,7 @@ class RegistrationController extends Controller
 		$this->render('secondstep', array('user'=>$users));
 	}
 	
-	/* This is (3rd Step) getting Started, 
+	/* This is (3rd Step) Invite Friends, 
 		After User First time Gets Registered (3-Step Process) Through Email or FB		
 		LastModifed : 26-Aug-14
 	*/
@@ -359,13 +362,11 @@ class RegistrationController extends Controller
 			}
 			$criteria = array("select"=>"user_socialmedia_id,user_socialmedia_identifier");			
 			$usersidentifier=UsersSocialmedia::model()->with('users')->findAll($criteria);
-			foreach($usersidentifier as $k1=>$v1){
-				//echo "<pre>"; print_r($v1); 
+			foreach($usersidentifier as $k1=>$v1){				 
 				//Check with socialmedia Table to find yr frnd in Fb also in Posly
 				if(array_key_exists($v1->user_socialmedia_identifier,$FBUserArray)===true)
 				$FBfrndsInPosly[$v1->users[0]->user_id]=$FBUserArray[$v1->user_socialmedia_identifier];
-			}
-			//exit;
+			}			
 			unset($FBUserArray);
 			unset($usersidentifier);
 			unset($criteria);
@@ -373,7 +374,7 @@ class RegistrationController extends Controller
 		$this->render('thirdstep', array('list'=>$socialUser, 'user'=>$user,'fbfriends'=>$FBfrndsInPosly));
 	}
 	
-	/* This is (4th Step) getting Started, 
+	/* This is (4th Step) "getting Started", 
 		After User First time Gets Registered (3-Step Process) Through Email or FB		
 		LastModifed : 26-Aug-14
 	*/

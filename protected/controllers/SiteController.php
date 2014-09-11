@@ -594,34 +594,114 @@ class SiteController extends Controller
 	
 	/**
 	* Call Back Function
+=======
+	* Call Back Function-- INSTAGRAM
+>>>>>>> d6fe74b97ec59b48a0ff80b228d7745ecb2a3fdd
 	* This user define function is used to set up an authentication with instagram
-	* Last Modified: 04-Sep-14
+	* After getting data from Instagram SignUp or SignIn the User
+	* Last Modified: 10-Sep-14
 	*/
-	public function actionInstagramauth(){		
-		$code = $_GET['code'];		
-		$url = "https://api.instagram.com/oauth/access_token";
+	public function actionInstagramauth()
+	{	
+		$code = $_GET['code'];
+		$provider = "Instagram";
+		$url = "https://api.instagram.com/oauth/access_token"; 
 		$access_token_parameters = array(
-			'client_id' => 'd1b24c4e53364af880b33c5561ce12f4',
-			'client_secret' => '6eae2cbe86a24929beec86437bc58c7f',
+			'client_id' => Yii::app()->params['instaClientId'],
+			'client_secret' => Yii::app()->params['instaKey'],
 			'grant_type' => 'authorization_code',
-			'redirect_uri' => 'http://localhost/projects/posly_v2/posly/index.php/site/instagramauth',
+			'redirect_uri' => Yii::app()->params['instaredirecturl'],
 			'code' => $code
 		);
+		//Curl Option should be SET in Server
 		$curl = curl_init($url); // we init curl by passing the url
 		curl_setopt($curl,CURLOPT_POST,true); // to send a POST request
 		curl_setopt($curl,CURLOPT_POSTFIELDS,$access_token_parameters); // indicate the data to send
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); // to return the transfer as a string of the return value of curl_exec() instead of outputting it out directly.
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); 
+		// to return the transfer as a string of the return value of curl_exec() instead of outputting it out directly.
 		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false); // to stop cURL from verifying the peer's certificate.
 		$result = curl_exec($curl); // to perform the curl session
 		curl_close($curl); // to close the curl session		
 		$data = json_decode($result,true);
-		echo "<pre>";
-			print_r($data);
-		echo "</pre>";
-		//echo $arr['access_token']; // display the access_token
-		//echo $arr['user']['username']; // display the username		
-		Yii::app()->end();
-		
+		if(isset($data['user']['username']))
+		{
+			//Instagram Had User Info
+			$access_token = $data['access_token']; 
+			$username = $data['user']['username'];
+			$profilePicture = $data['user']['profile_picture'];
+			$name = $data['user']['full_name'];
+			$identifier = $data['user']['id'];
+			//Validate User
+			$user=Users::model()->checkSocialAuth($provider, $identifier);			
+			if($user===false)
+			{
+				//New SignUp
+				$user_socialmedia=new UsersSocialmedia;
+				$user_socialmedia->user_socialmedia_provider=$provider;
+				$user_socialmedia->user_socialmedia_identifier=$identifier;
+				if($user_socialmedia->save())
+				{
+					$time=new CTimestamp;
+					$value=$time->getDate();				
+					$u=new Users;
+					$ud=new UsersDetails;
+					$ud->user_details_firstname=$name;
+					$ud->user_details_lastname=NULL;
+					$ud->user_details_email=NULL;
+					$ud->user_unique_url=$username;
+					$ud->user_details_password=NULL;
+					$ud->user_details_avatar=$profilePicture;
+					$ud->user_details_created_date=$value[0];
+					if($ud->save())
+					{
+						$u->user_details_id=$ud->user_details_id;
+						$u->user_socialmedia_id=$user_socialmedia->user_socialmedia_id;
+						if($u->save())
+						{
+							$updateud=UsersDetails::model()->findByPk($ud->user_details_id);
+							$updateud->user_id=$u->user_id;
+							$updateud->save();
+							//Now Login
+							$url = Yii::app()->createUrl('/site/index');
+							$identity = new UserIdentity($provider, $identifier); 
+							$identity->setsocialdata($provider,$identifier);
+							$identity->authenticate('media'); //Authenticate							
+							switch($identity->errorCode)
+							{
+								case UserIdentity::ERROR_NONE:
+								$duration=isset($this->rememberMe)? 3600*24*30 : 0; // 30 days
+								Yii::app()->user->login($identity,$duration); //Login Session
+								$url = Yii::app()->createUrl('/registration/settings');																
+								break;
+							}				
+							$this->redirect($url);
+							Yii::app()->end();													
+						}					
+					}
+				}							
+			} else{			
+				//Already Registered
+				$url = Yii::app()->createUrl('/site/index');
+				$identity = new UserIdentity($provider, $identifier); 
+				$identity->setsocialdata($provider,$identifier);
+				$identity->authenticate('media'); //Authenticate							
+				switch($identity->errorCode)
+				{
+					case UserIdentity::ERROR_NONE:
+					$duration=isset($this->rememberMe)? 3600*24*30 : 0; // 30 days
+					Yii::app()->user->login($identity,$duration); //Login Session
+					$url = Yii::app()->createUrl('/registration/settings');																
+					break;
+				}				
+				$this->redirect($url);
+				Yii::app()->end();
+			}
+		} else{
+			//Error Occur!!
+			$this->layout='front_layout';
+			$this->render('error', array('code'=>'','message'=>'User Profile Not Available In Instagram'));
+		}		
+		Yii::app()->end();		
 	}	
 	
 	/**
