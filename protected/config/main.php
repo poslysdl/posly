@@ -10,8 +10,8 @@ if($poslyIP=='127.0.0.1'){
 	$FB_APPId = '647620848638998'; //2pretty.in FBApp
 	$FB_SECRETKey = "4855626d478b8c2280db3ef8a5ead448";
 	$DB_USERNAME = 'root';
-	$DB_PASSWORD = '';
-	$Base_URL = 'http://localhost/projects/posly_v2/posly/index.php/user/hybridauth/endpoint';
+	$DB_PASSWORD = 'sdl123';
+	$Base_URL = 'http://localhost/projects/posly_v2/posly_reset/index.php/user/hybridauth/endpoint';
 	$INSTAGRAM_CLIENTID = "d1b24c4e53364af880b33c5561ce12f4";
 	$INSTAGRAM_KEY = "6eae2cbe86a24929beec86437bc58c7f";
 	$INSTARAM_REDIRECTURL = "http://localhost/projects/posly_v2/posly/index.php/site/instagramauth";
