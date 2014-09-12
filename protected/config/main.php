@@ -7,7 +7,7 @@
 
 $poslyIP = $_SERVER['SERVER_ADDR'];
 if($poslyIP=='127.0.0.1'){
-	$FB_APPId = '647620848638998';
+	$FB_APPId = '647620848638998'; //2pretty.in FBApp
 	$FB_SECRETKey = "4855626d478b8c2280db3ef8a5ead448";
 	$DB_USERNAME = 'root';
 	$DB_PASSWORD = '';
@@ -17,8 +17,8 @@ if($poslyIP=='127.0.0.1'){
 	$INSTARAM_REDIRECTURL = "http://localhost/projects/posly_v2/posly/index.php/site/instagramauth";
 }else if($poslyIP=='172.31.7.97'){
 	//AWS server
-	$FB_APPId = '647620848638998';
-	$FB_SECRETKey = "4855626d478b8c2280db3ef8a5ead448";
+	$FB_APPId = '1482379155345539'; //LocalPosly FBApp
+	$FB_SECRETKey = "44eb95e1a9a3eac850c1383d4eab1b8a";
 	$DB_USERNAME = 'root';
 	$DB_PASSWORD = 'root';
 	$Base_URL = 'http://54.255.144.92/posly/index.php/user/hybridauth/endpoint';
