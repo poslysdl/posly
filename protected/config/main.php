@@ -5,8 +5,8 @@
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here. 
 
-$_SERVER['SERVER_ADDR']; //127.0.0.1
-if($_SERVER['SERVER_ADDR']=='127.0.0.1'){
+$poslyIP = $_SERVER['SERVER_ADDR'];
+if($poslyIP=='127.0.0.1'){
 	$FB_APPId = '647620848638998';
 	$FB_SECRETKey = "4855626d478b8c2280db3ef8a5ead448";
 	$DB_USERNAME = 'root';
@@ -15,15 +15,18 @@ if($_SERVER['SERVER_ADDR']=='127.0.0.1'){
 	$INSTAGRAM_CLIENTID = "d1b24c4e53364af880b33c5561ce12f4";
 	$INSTAGRAM_KEY = "6eae2cbe86a24929beec86437bc58c7f";
 	$INSTARAM_REDIRECTURL = "http://localhost/projects/posly_v2/posly/index.php/site/instagramauth";
-} else{
-	$FB_APPId = '508534549216916';
-	$FB_SECRETKey = "b3400b3da3b05ad469ee5ba2cc2d289e";
+}else if($poslyIP=='172.31.7.97'){
+	//AWS server
+	$FB_APPId = '647620848638998';
+	$FB_SECRETKey = "4855626d478b8c2280db3ef8a5ead448";
 	$DB_USERNAME = 'root';
-	$DB_PASSWORD = 'sdl123';
-	$Base_URL = 'http://localhost/projects/posly_v2/posly/user/hybridauth/endpoint';
+	$DB_PASSWORD = 'root';
+	$Base_URL = 'http://54.255.144.92/posly/index.php/user/hybridauth/endpoint';
 	$INSTAGRAM_CLIENTID = "d1b24c4e53364af880b33c5561ce12f4";
 	$INSTAGRAM_KEY = "6eae2cbe86a24929beec86437bc58c7f";
-	$INSTARAM_REDIRECTURL = "http://localhost/projects/posly_v2/posly/index.php/site/instagramauth";
+	$INSTARAM_REDIRECTURL = "http://54.255.144.92/posly/index.php/site/instagramauth";
+} else{
+	//nothing
 }
 //** Above code added, to change credentials according to live & developement server
 

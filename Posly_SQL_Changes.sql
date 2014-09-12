@@ -103,6 +103,6 @@ CREATE TABLE IF NOT EXISTS `countries_ip` (
 --------------------
 ALTER TABLE `users_socialmedia` ADD INDEX ( `user_socialmedia_provider` , `user_socialmedia_identifier` ) ;
 
-----------11Sept14
+----------11Sept14-----
 ALTER TABLE `users_details` ADD `phone` VARCHAR( 15 ) NULL AFTER `user_id` ,
 ADD `address` VARCHAR( 255 ) NULL AFTER `phone` ;
