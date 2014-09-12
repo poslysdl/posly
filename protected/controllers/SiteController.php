@@ -453,6 +453,63 @@ class SiteController extends Controller
 			$this->redirect(Yii::app()->homeUrl);
 		}
 	}
+	/**
+	* Displays the resetpassword 
+	* Last Modified:12-Sept-14
+	*/
+	public function actionResetpasswordajax(){
+		$model=new ResetpasswordForm; //**models/ResetpasswordForm.php
+		$returnurl = Yii::app()->user->returnUrl;		
+		if(isset($_POST['ResetpasswordForm'])){
+			$model->attributes =  $_POST['ResetpasswordForm'];
+			$password = $model->attributes['password'];
+			$user_detail_id = $model->attributes['user_detail_id'];
+			$model->reset_password($user_detail_id,$password);
+			echo CJSON::encode(array(
+				'status'=>'success',
+				'returnUrl'=>$returnurl
+			));				
+		}
+		else{
+			$this->redirect(Yii::app()->homeUrl);
+		}	
+		
+		Yii::app()->end();
+	}
+
+	/**
+	* Displays the resetpassword 
+	* Last Modified:12-Sept-14
+	*/
+	public function actionResetpassword(){
+		$model=new ResetpasswordForm; //**models/ForgetpasswordForm.php
+		$returnurl = Yii::app()->user->returnUrl;
+		$key = 'forget password posly';	
+		$token_request = urldecode($_REQUEST['token']);
+		$decrypted_token = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($token_request), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
+		if ($decrypted_token && !empty($decrypted_token) && (strpos($decrypted_token, 'user') !== false) && $decrypted_token != ''){
+			$token_array = explode("user",$decrypted_token);
+			$user_detail_id = mysql_real_escape_string($token_array[1]);
+			$user_token = $model->findTokenByUserDetailId($user_detail_id);
+			if(($user_token) && ($user_token == $decrypted_token)){			
+				$this->layout='front_layout';
+				$limit = (Yii::app()->user->isGuest)?9:6;		
+				$hash_tags = $this->actionHashtaglist($limit);		
+				//Inside views/site/index.php ** widget are there to Include SubHeader, TopMenu & SideBar..
+				$user = array('user_detail_id'=>$user_detail_id);
+				$this->render('resetpassword', array('user'=>$user,'hash_tags'=>$hash_tags));
+			}
+			else{
+				$this->redirect(Yii::app()->homeUrl);
+			}
+			
+		}
+		else{
+			//echo "wrong token";
+			$this->redirect(Yii::app()->homeUrl);
+		}
+		Yii::app()->end();
+	}
 	
 	/**
 	* Displays the Forget password Modal window - By EmailId
@@ -468,18 +525,26 @@ class SiteController extends Controller
 			if($user){
 				$chars = array_merge( range('a','z'),range(0,9),range('A','Z'));
 				shuffle($chars);
-				$password = implode(array_slice($chars, 0, 8));
-				$model->reset_password($password,$model->attributes['email']);
+				$token = implode(array_slice($chars, 0, 8));
+				$path = $this->createAbsoluteUrl('/site/resetpassword');
+				$user_id = $model->get_user_id($model->attributes['email']);			
+				$token = $token."user".$user_id;
+				$key = 'forget password posly';		
+				$encrypted_token = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $token, MCRYPT_MODE_CBC, md5(md5($key))));
+				$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($encrypted_token), MCRYPT_MODE_CBC, md5(md5($key))), "\0"); 
+				$user_token = urlencode($encrypted_token);
+				$link = $path."?token=".$user_token;				
+				$model->reset_password_token($token,$model->attributes['email']);
 				Yii::import('ext.yii-mail.YiiMailMessage');				
 				$message = new YiiMailMessage;
 				$message->setBody('Dear Member,
 
 You have received this message in response to your request to reset the password associated with your Posly account. 
 
-Your New Password is:
-'.$password.'
+Please find the link showed below:
+'.$link.'
 
-Please log in on to your Posly Account using this passsword. If you wish to change your password, please navigate to the Profile section under My Account after logging in.
+
 
 Sincerely, 
 Posly Team
@@ -507,7 +572,7 @@ Posly Team
 		else{
 			$this->redirect(Yii::app()->homeUrl);
 		}
-		exit;	
+		Yii::app()->end();
 	}
 
 	/**
