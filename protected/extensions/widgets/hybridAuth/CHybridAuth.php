@@ -256,7 +256,8 @@ class CHybridAuth extends CApplicationComponent {
 		$str='<script type="text/javascript">
 		window.location="'.$url.'";
 		</script>';
-		echo $str;
+		//echo $str;
+		return false;
     }
     
 }
