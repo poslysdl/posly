@@ -310,37 +310,22 @@ function checkSignUp(elm)
 	$('.errorMessage').html('');
 	$('.errorMessage').show();	
 	if($('#RegisterForm_firstname').val()==''){
-		$('#RegisterForm_firstname_em').html('First Name cannot be blank.');
+		$('#RegisterForm_firstname_em').html('Name cannot be blank.');
 		haserror='1';
-	}
-	if($('#RegisterForm_lastname').val()==''){
-		$('#RegisterForm_lastname_em').html('Last Name cannot be blank.');
-		haserror='1';
-	}
+	}	
 	if($('#RegisterForm_email').val()==''){
 		$('#RegisterForm_email_em').html('Email cannot be blank.');
 		haserror='1';
 	}
 	if($('#RegisterForm_username').val()==''){
-		$('#RegisterForm_username_em').html('UserName cannot be blank.');
+		$('#RegisterForm_username_em').html('PageName cannot be blank.');
 		haserror='1';
 	}
 	if($('#RegisterForm_password').val()==''){
 		$('#RegisterForm_password_em').html('Password cannot be blank.');
 		pass='0';
 		haserror='1';
-	}
-	if($('#RegisterForm_re_password').val()==''){
-		$('#RegisterForm_re_password_em').html('Confirm Password cannot be blank.');
-		pass='0';
-		haserror='1';
-	}
-	if(pass=='1'){
-		if($('#RegisterForm_password').val()!=$('#RegisterForm_re_password').val()){
-			$('#RegisterForm_re_password_em').html('Confirm Password must be repeated exactly.');			
-			return false;
-		}
-	}
+	}	
 	//to check Email
 	if($('#RegisterForm_email').val()!='')
 	{	var email = $('#RegisterForm_email').val();
@@ -368,7 +353,7 @@ function checkSignUp(elm)
 			$('#RegisterForm_password_em').html('Enter Minimum 6 char length');
 			haserror='1';
 		}
-	}
+	}	
 	//console.log(haserror);
 	if(haserror=='1')
 	return false;
@@ -456,16 +441,19 @@ $(document).on('click', '.accset_save', function(){
 		$('#firstname').parent('.right').next('.errorMessage').html('Please Enter First Name');
 		$('#firstname').parent('.right').next('.errorMessage').show();		
 		noerr = false;
-	}
-	if($('#lastname').val()==""){	
-		$('#lastname').parent('.right').next('.errorMessage').html('Please Enter Last Name');
-		$('#lastname').parent('.right').next('.errorMessage').show();		
-		noerr = false;
-	}
+	}	
 	if($('#email').val()==""){	
 		$('#email').parent('.right').next('.errorMessage').html('Please Enter Email');
 		$('#email').parent('.right').next('.errorMessage').show();		
 		noerr = false;
+	}
+	if($('#password').val()==""){	
+		var pflag = $('#password').attr('data-flag');
+		if(pflag=="y"){
+		$('#passerr').html('Please Enter Password');
+		$('#passerr').show();
+		noerr = false;
+		}
 	}
 	if($('#dob').val()==""){	
 		$('#dob').parent('.right').next('.errorMessage').html('Please Enter DOB');
@@ -489,6 +477,19 @@ $(document).on('click', '.accset_save', function(){
 		$('.ethi_error').html('Please Select Etnicity');		
 		noerr = false;
 	}
+	if($('#url').val()==""){	
+		$('#urlerror').html('Please Enter Page Name');		
+		$('#urlerror').css('display','block');
+		noerr = false;		
+	} else{
+		var str = $('#url').val();
+		if(str.length<3){
+			$('#urlerror').html('Page Name should be Minimum 4 chars');		
+			$('#urlerror').css('display','block');
+			noerr = false;	
+		}
+	}
+	
 	if(noerr)
 		$('#formregstep1').submit();
 	else

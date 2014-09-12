@@ -53,6 +53,11 @@ class HybridauthController extends Controller{
                 if(empty($user))
 				{	
 					//..New, SignUp
+					$FBusername = $socialUser->profileURL;
+					if(!empty($FBusername)){
+						$FBusername = explode("/",$FBusername);
+						$FBusername = $FBusername[3];
+					}
                 	$user_socialmedia=new UsersSocialmedia;
                 	$user_socialmedia->user_socialmedia_provider=$provider;
                 	$user_socialmedia->user_socialmedia_identifier=$this->authSocialIdentifier;
@@ -61,10 +66,11 @@ class HybridauthController extends Controller{
                 		$users=new Users;
                 		$users->user_socialmedia_id=$user_socialmedia->user_socialmedia_id;                		
 						$user_details=new UsersDetails;
-						$user_details->user_details_firstname=$socialUser->firstName;
-						$user_details->user_details_lastname=$socialUser->lastName;
+						$user_details->user_details_firstname=$socialUser->firstName.' '.$socialUser->lastName;
+						$user_details->user_details_lastname=NULL;
 						$user_details->user_details_email=$socialUser->email;
 						$user_details->user_details_avatar=$socialUser->photoURL;
+						$user_details->user_unique_url=$FBusername;
 						$time=new CTimestamp;
 						$value=$time->getDate();
 						$user_details->user_details_created_date=$value[0];
@@ -124,7 +130,7 @@ class HybridauthController extends Controller{
 	/**
 	* This function is a Dual signUp with FB & EmailId, comes from Step-#1 - Social Sharing
 	* User first SignUp with Email, then if also want to connect with their FB Account
-	* Update users details, Users and only Insert in social media table
+	* Update users details, Users with FB data and only Insert in social media table
 	* Last Modified: 09-Sept-14
 	*/	
     public function actionAlreadyemail($provider,$socialUser)

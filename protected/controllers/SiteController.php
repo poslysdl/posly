@@ -582,7 +582,7 @@ Posly Team
 	*/
 	public function actionRegister()
 	{	
-		$model=new RegisterForm;
+		$model=new RegisterForm; //model/RegisterForm.php
 		// collect user input data
 		if(isset($_POST['RegisterForm']))
 		{
@@ -594,8 +594,7 @@ Posly Team
 				$value=$time->getDate();				
 				$u=new Users;
 				$ud=new UsersDetails;
-				$ud->user_details_firstname=$model->firstname;
-				$ud->user_details_lastname=$model->lastname;
+				$ud->user_details_firstname=$model->firstname;				
 				$ud->user_details_email=$model->email;
 				$ud->user_unique_url=$model->username;
 				$ud->user_details_password=md5($model->password);
@@ -711,7 +710,11 @@ Posly Team
 	*/
 	public function actionInstagramauth()
 	{	
-		$code = $_GET['code'];
+		if(isset($_REQUEST['error_reason']) || isset($_REQUEST['error'])){
+			//$_REQUEST['error_reason']=="user_denied";
+			$this->redirect(Yii::app()->homeUrl);
+		}		
+		$code = isset($_GET['code'])?$_GET['code']:'';
 		$provider = "Instagram";
 		$url = "https://api.instagram.com/oauth/access_token"; 
 		$access_token_parameters = array(

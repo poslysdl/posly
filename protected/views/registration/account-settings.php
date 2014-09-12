@@ -1,6 +1,6 @@
 <?php
 /* The Template page for Registration Step-1# 
-** Last Modified: 09-Sept-14
+** Last Modified: 11-Sept-14
 */
 ?>
 <div class="page-container">
@@ -54,7 +54,7 @@
 		Your form validation is successful! </div>
 		
 		<div class="form-group">
-			<label  class="col-md-3 control-label">First Name</label>
+			<label  class="col-md-3 control-label">Name <font color="red">*</font></label>
 			<div class="col-md-9">
 			<div class="input-icon right"> <i class="fa"></i>
 			<input type="text" class="form-control" id="firstname" name="firstname" value="<?php 
@@ -65,19 +65,19 @@
 			<div class="errorMessage myhide"></div>
 			</div>
 		</div>
-		<div class="form-group">
+		<!--<div class="form-group">
 			<label  class="col-md-3 control-label">Last Name</label>
 			<div class="col-md-9">
 			<div class="input-icon right"> <i class="fa"></i>
 			<input type="text" class="form-control" name="lastname" id="lastname" value="<?php 
-			if (isset($model->userDetails))
-			echo $model->userDetails->user_details_lastname; ?>" >
+			//if (isset($model->userDetails))
+			//echo $model->userDetails->user_details_lastname; ?>" >
 			</div>
 			<div class="errorMessage myhide"></div>
 			</div>
-		</div>
+		</div>-->
 		<div class="form-group">
-			<label  class="col-md-3 control-label">Email</label>
+			<label  class="col-md-3 control-label">Email <font color="red">*</font></label>
 			<div class="col-md-9">
 			<div class="input-icon right"> <i class="fa"></i>
 			<input name="email" type="text" class="form-control" id="email" value="<?php 
@@ -88,14 +88,19 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label  class="col-md-3 control-label">Password</label>
+			<label  class="col-md-3 control-label">Password <font color="red">*</font></label>
 			<div class="col-md-9">
+			<?php if(empty($model->userDetails->user_details_password)){?>
+			<input type="password" name="password" class="form-control" data-flag="y" id="password" maxlength="20">
+			<?php } else{?>
 			<p class="form-control-static-green paddless"> <a href="#">Change your Password here</a></p>
-			<input style="display:none" type="password" class="form-control"  placeholder="Password">
+			<input style="display:none" name="password" type="password" class="form-control"  placeholder="Password" data-flag="n" id="password" maxlength="20">
+			<?php } ?>
+			<div id="passerr" class="errorMessage myhide"></div>
 			</div>
 		</div>
 		<div class="form-group">
-			<label  class="col-md-3 control-label">DOB</label>
+			<label  class="col-md-3 control-label">DOB <font color="red">*</font></label>
 			<div class="col-md-9">
 			<div class="input-icon right"> <i class="fa"></i>
 			<input name="dob" type="text" id="dob" class="form-control" value="<?php 
@@ -107,7 +112,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label  class="col-md-3 control-label">Gender</label>
+			<label  class="col-md-3 control-label">Gender <font color="red">*</font></label>
 			<div class="col-md-9">
 			<div class="col-md-3">
 				<div class="pull-left needmar" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
@@ -146,7 +151,7 @@
 			</div>			
 		</div>
 		<div class="form-group">
-			<label  class="col-md-3 control-label">Country</label>
+			<label  class="col-md-3 control-label">Country <font color="red">*</font></label>
 			<div class="col-md-9">			
 			<?php $cnty_val = (isset($model->userLocation->user_location_country))?$model->userLocation->user_location_country:''; ?>			
 			<select id="formreg_country" name="country" class="form-control custom-combify">
@@ -181,7 +186,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-md-3 control-label">City</label>
+			<label class="col-md-3 control-label">City <font color="red">*</font></label>
 			<div class="col-md-9">
 			<?php if(isset($model->userLocation->user_location_city)) {$city_val = $model->userLocation->user_location_city;} else $city_val="-"; ?>
 			<select id="formreg_city" class="form-control custom-combify" name="city">
@@ -191,7 +196,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-md-3 control-label">Etnicity</label>
+			<label class="col-md-3 control-label">Etnicity <font color="red">*</font></label>
 			<div class="col-md-9">	
 			<?php $et_val =(isset($model->user_ethnicity_id))?$model->user_ethnicity_id:''; ?>		
 			<select id="form_2_select2222" class="form-control custom-combify" name="etnicity">
@@ -206,24 +211,11 @@
 			</select>		
 			<p class="ethi_error errorMessage"></p>
 			</div>
-		</div>
+		</div>		
 		<div class="form-group">
-			<label  class="col-md-3 control-label">Search Privacy</label>
-			<div class="col-md-9">
-			<div class="make-switch pull-left needmar" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
-			<?php 
-			$checked = '';
-			$checked = (isset($model->userDetails->searchprivacy) && $model->userDetails->searchprivacy == 1)?'checked':'';			
-			?>
-			<input type="checkbox" name="search" id="search_privacy" value="1" class="toggle" <?php echo $checked; ?> />
-			</div>
-			<p class="help-block-more">Keep search engines (e.g. Google) from showing your 2Pretty profile in search results</p>
-			</div>
-		</div>
-		<div class="form-group">
-			<label  class="col-md-3 control-label">User Name</label>
+			<label  class="col-md-3 control-label">Page Name <font color="red">*</font></label>
 			<!--<div class="col-md-2">
-			<span class="help-block-more">http://www.Posly.com/</span>
+			<span class="help-block-more">http://www.Posly.com/</span> SimonKing25
 			</div>-->
 			<div class="col-md-7">
 			<div class="input-icon right"> <i class="fa"></i>
@@ -231,10 +223,15 @@
 			$checked = '';
 			$checked = (isset($model->userDetails->user_unique_url))?$model->userDetails->user_unique_url:'';			
 			?>
-			<input type="text" class="form-control" id="url" value="<?php echo $checked;?>" name="url"/>
+			<input type="text" id="userurl" class="form-control" id="url" value="<?php echo $checked;?>" name="url" maxlength="40"/>
 			</div>
-			<span class="help-block-more">e.g: <strong>SimonKing25</strong>, <strong>Rosejane25</strong>, <strong>king-25</strong></span> </div>
-			<div class="url_msg"></div>
+			<p id="urlerror" class="errorMessage"></p>
+			<div class="username_preview">
+				<span class="help-block-more urlc">http://www.Posly.com/<strong>SimonKing25</strong></span>
+				<small class="field-check valid" id="username-check" style="display:none;"><span>verifying..</span></small>
+				<small class="field-check" id="maxchar" style="display:block;"><span>Max 40 Chars.</span></small>
+			</div>
+			</div>						
 			</div>
 		</div>
 		<!--sds--> 
@@ -257,42 +254,7 @@
 		<button class="btn white pull-right">Show blocked Users</button>
 		</div>
 		<div class="portlet-body form">
-		<div class="form-body">
-		<!-- <div class="form-group">
-		<label  class="col-md-3 control-label">Hide Profile on the search</label>
-		<div class="col-md-9">
-		<div class="make-switch pull-left needmar" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
-		<input type="checkbox" checked class="toggle"/>
-		</div>
-		</div>
-		</div>
-		<div class="form-group">
-		<div class="col-md-12">
-		<div class="divider"></div>
-		</div>
-		</div>
-		<div class="form-group">
-		<label  class="col-md-3 control-label">Activate Autotagging</label>
-		<div class="col-md-9">
-		<div class="make-switch pull-left needmar" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
-		<input type="checkbox"  class="toggle"/>
-		</div>
-		<p class="help-block-more">Ethnicity</p>
-		</div>
-		</div>
-		<div class="form-group">
-		<label  class="col-md-3 control-label">Can be tagged by other user</label>
-		<div class="col-md-9">
-		<div class="make-switch" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
-		<input type="checkbox" checked class="toggle"/>
-		</div>
-		</div>
-		</div>
-		<div class="form-group">
-		<div class="col-md-12">
-		<div class="divider"></div>
-		</div>
-		</div>-->		
+		<div class="form-body">				
 		<div class="form-group">
 			<label  class="col-md-3 control-label">Who can message me</label>
 			<div class="col-md-9">
@@ -328,6 +290,19 @@
 			<p class="help-block-more">Nobody</p>
 			</li>
 			</ul>
+			</div>
+		</div>
+		<div class="form-group">
+			<label  class="col-md-3 control-label">Search Privacy</label>
+			<div class="col-md-9">
+			<div class="make-switch pull-left needmar" data-on="danger" data-off="default"  data-label-icon="icon-reorder">
+			<?php 
+			$checked = '';
+			$checked = (isset($model->userDetails->searchprivacy) && $model->userDetails->searchprivacy == 1)?'checked':'';			
+			?>
+			<input type="checkbox" name="search" id="search_privacy" value="1" class="toggle" <?php echo $checked; ?> />
+			</div>
+			<p class="help-block-more">Keep search engines (e.g. Google) from showing your Posly profile in search results</p>
 			</div>
 		</div>
 		</div>

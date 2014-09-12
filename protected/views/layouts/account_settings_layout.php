@@ -370,6 +370,10 @@ $(document).on('click', '.step1cancel', function(){
 	window.location=url;
 });
 
+$(document).on('focus', '.form-control', function(){
+	$('.errorMessage').hide();
+});
+
 $(document).on('click', '#connectfb', function(){
 	//var url = "<?php echo Yii::app()->createAbsoluteUrl('/registration/dualfbsignup'); ?>";
 	var url = "<?php echo Yii::app()->createUrl('/user/hybridauth/authenticate'); ?>";
@@ -452,25 +456,56 @@ function deleteM(id)
 	});
 	return false;
 }
-</script>
-<script src='http://connect.facebook.net/en_US/all.js' type="text/javascript"></script>
-<script>
-FB.init({
-appId:'647620848638998',
-cookie:true,
-status:true,
-xfbml:true
+				
+//Page Name Validation at Step-1#
+$(document).on('keyup', '#userurl', function(e){
+	code= (e.keyCode ? e.keyCode : e.which);	
+	if(code != 13)
+	{
+		var d=$(this).val();	
+		var elmn = $(this);
+		$('.username_preview .urlc strong').text(d);
+		$('#username-check').show(); 
+		$('#maxchar').hide();
+		if(d.length>3)
+		{					
+			setTimeout(validateusername(d), 1000); //timer
+		}
+	}
+	
 });
- 
-function FacebookInviteFriends()
-{
-FB.ui({
-method: 'apprequests',
-message: 'Your Message diaolog'
+
+$(document).on('focus', '#userurl', function(){
+	$('.username_preview .urlc strong').text('');
 });
+
+function validateusername(d){
+	var name = new Array();
+	name[0] = d;
+	var mystring = JSON.stringify(name);
+	//Ajax Call
+	$.ajax({
+	type: "POST",
+	url: "<?php echo Yii::app()->createUrl('/registration/validatepagename'); ?>",
+	async: false,
+	data: { id: '0',idata: mystring}
+	})
+	.done(function(data) {			 
+		var obj = JSON.parse(data); 
+		if(obj.status=='success'){			
+		$('#username-check').removeClass('valid');
+		$('#username-check').removeClass('error');
+		$('#username-check').addClass('success');
+		$('#username-check span').html('valid');
+		} else{
+		$('#username-check').removeClass('success');
+		$('#username-check').removeClass('valid');
+		$('#username-check').addClass('error');
+		$('#username-check span').html('already taken');
+		}
+	});		
 }
 </script>
-
 <!-- END JAVASCRIPTS -->
 </body>
 <!-- END BODY -->

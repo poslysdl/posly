@@ -8,10 +8,11 @@
 class RegisterForm extends CFormModel
 {
 	public $firstname;
-	public $lastname;
+	//public $lastname;
 	public $email;
+	public $username;
 	public $password;
-	public $re_password;
+	//public $re_password;
 
 	private $_identity;
 
@@ -24,14 +25,19 @@ class RegisterForm extends CFormModel
 	{
 		return array(
 			// email and password are required
-			array('firstname, lastname, email, password, re_password', 'required'),
+			array('firstname,email,username,password', 'required'),
+			array('firstname', 'length', 'min'=>6, 'max'=>200),
 			array('email', 'email'),
 			array('email', 'checkunique'),
-            array('password, re_password', 'length', 'min'=>6, 'max'=>15),
-            array('re_password', 'compare', 'compareAttribute'=>'password'),
+            array('password', 'length', 'min'=>6, 'max'=>15),			
 		);
 	}
-
+	
+	//Removed 11-Sept-2014
+	//array('firstname,email,username,password,re_password', 'required'),
+	//array('password, re_password', 'length', 'min'=>6, 'max'=>15),
+    //array('re_password', 'compare', 'compareAttribute'=>'password'),
+	
 	/**
 	 * Declares attribute labels.
 	 */
