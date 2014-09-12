@@ -215,7 +215,7 @@
 		<div class="form-group">
 			<label  class="col-md-3 control-label">Page Name <font color="red">*</font></label>
 			<!--<div class="col-md-2">
-			<span class="help-block-more">http://www.Posly.com/</span>
+			<span class="help-block-more">http://www.Posly.com/</span> SimonKing25
 			</div>-->
 			<div class="col-md-7">
 			<div class="input-icon right"> <i class="fa"></i>
@@ -223,10 +223,14 @@
 			$checked = '';
 			$checked = (isset($model->userDetails->user_unique_url))?$model->userDetails->user_unique_url:'';			
 			?>
-			<input type="text" class="form-control" id="url" value="<?php echo $checked;?>" name="url"/>
+			<input type="text" id="userurl" class="form-control" id="url" value="<?php echo $checked;?>" name="url" maxlength="40"/>
 			</div>
 			<p id="urlerror" class="errorMessage"></p>
-			<span class="help-block-more">e.g: http://www.Posly.com/<strong>SimonKing25</strong></span>			
+			<div class="username_preview">
+				<span class="help-block-more urlc">http://www.Posly.com/<strong>SimonKing25</strong></span>
+				<small class="field-check valid" id="username-check" style="display:none;"><span>verifying..</span></small>
+				<small class="field-check" id="maxchar" style="display:block;"><span>Max 40 Chars.</span></small>
+			</div>
 			</div>						
 			</div>
 		</div>

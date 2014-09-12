@@ -330,13 +330,13 @@ $(document).ready(function(){
 <?php if(!Yii::app()->user->isGuest){ ?>
 	showUsersActivities();
 	
-<?php } else{ //Guset Login *** ?>
+<?php } else{ //Guest Login *** ?>
     $(window).load(function() {
         $('.flexslider').flexslider({
           animation: "slide",
           controlsContainer: ".flex-container"
     });
-   // get_current_nearby_country("<?php echo $this->createUrl('/site/getnearbycountry'); ?>"); 
+   get_current_nearby_country("<?php echo $this->createUrl('/site/getnearbycountry'); ?>"); 
 });
 <?php } ?>
 
@@ -350,11 +350,8 @@ if(Yii::app()->user->isGuest){
    $model=new RegisterForm;
    $this->renderPartial('//site/register', array('model'=>$model)); //to display SignUp By Email Modal window
    $model=new ForgetpasswordForm;
-   $this->renderPartial('//site/forgetpassword', array('model'=>$model)); //to display SignUp By Email Modal window   
-   
-
+   $this->renderPartial('//site/forgetpassword', array('model'=>$model)); //to display SignUp By Email Modal window 
 }
-
 ?>
 </body>
 <!-- END BODY -->

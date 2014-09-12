@@ -77,3 +77,31 @@
     font-weight: normal;
     vertical-align: middle;
 }
+
+/* Page name validation*/
+.username_preview { 
+	position: absolute;
+	top: 30px;
+	width:94%;
+	display: inline-block;
+}
+.field-check { 
+	display: block;
+	padding: 6px;
+	text-indent: 16px;
+	float:left;
+	margin-left:10px;
+	background: no-repeat left center;
+}
+.field-check.success{
+	color: #57a957;
+	background-image: url('../img/tick_green.png');
+}
+.field-check.error{
+	color: #c43c35;
+	background-image: url('../img/closex_red.png');
+}
+.field-check.valid{	
+	background-image: url('../img/input-spinner.gif');
+}
+/* end */

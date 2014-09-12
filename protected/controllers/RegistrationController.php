@@ -11,7 +11,7 @@ class RegistrationController extends Controller
     {
         return array(
             array('allow',
-            	'actions'=>array('index','geturlname', 'invite','thirdstep', 'secondstep', 'settings', 'fourthstep', 'slogan', 'addmagazines', 'deletemagazines','changephoto','getcity','dualfbsignup'),
+            	'actions'=>array('index','geturlname', 'invite','thirdstep', 'secondstep', 'settings', 'fourthstep', 'slogan', 'addmagazines', 'deletemagazines','changephoto','getcity','dualfbsignup','validatepagename'),
                 'users'=>array('@'),
             ),
             array('deny'),
@@ -594,7 +594,40 @@ class RegistrationController extends Controller
 				'msg'=>$str,
 			));	
 			Yii::app()->end();			
-		}		
+		}
+	}
+	
+	/**
+	* This user define Common Ajax function, 
+	* To validate username, check if it already exits
+	* Last Modified: 12-Sept-14
+	*/	
+	public function actionValidatepagename()
+	{		
+		if(isset($_POST['idata']))
+		{
+			$pagename='';
+			$sat = 'success';
+			$uid = Yii::app()->user->id;
+			$val = CJSON::decode($_POST['idata']);
+			$pagename = $val[0];
+			//check for duplicate page name
+			$criteria = new CDbCriteria();
+			$criteria->select = "user_unique_url";
+			$criteria->condition = "user_unique_url='$pagename'";
+			$userdetail=UsersDetails::model()->findAll($criteria);			
+			if(isset($userdetail) && count($userdetail)>0)
+				$sat = 'error';
+			else
+				$sat = 'success';
+			//foreach($userdetail as $p)
+			//$p->user_unique_url
+			echo CJSON::encode(array(
+				'status'=>$sat,
+				'msg'=>$pagename,
+			));	
+			Yii::app()->end();			
+		}
 	}
 	
 //END

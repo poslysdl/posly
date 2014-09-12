@@ -461,7 +461,15 @@ $(document).on('click', '.accset_save', function(){
 		$('#urlerror').html('Please Enter Page Name');		
 		$('#urlerror').css('display','block');
 		noerr = false;		
+	} else{
+		var str = $('#url').val();
+		if(str.length<3){
+			$('#urlerror').html('Page Name should be Minimum 4 chars');		
+			$('#urlerror').css('display','block');
+			noerr = false;	
+		}
 	}
+	
 	if(noerr)
 		$('#formregstep1').submit();
 	else
