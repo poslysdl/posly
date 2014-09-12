@@ -152,7 +152,26 @@ function showPosition(position) {
 	alert(poslong);
 }
 
-
+/* ** This is for Reset password
+** /views/site/resetpassword.php
+*/
+function resetpassword(){
+	var data=$("#resetpassword-form").serialize();
+	var url_reset_password = $('#resetpassword-form').attr('data-url');
+	$.ajax({
+		type: 'POST',  
+		url: url_reset_password,
+		data:data,
+		success:function(data){
+			data = jQuery.parseJSON(data);
+			if(data.status=="success"){				
+				window.location=data.returnUrl;				
+			}      
+		},
+		error: function(data) { // if error occured
+		}
+	});	
+}
 
 /* ** This is for site Login by EmailId
 ** Yii CActiveForm is used to show site Login Modal box
@@ -195,6 +214,7 @@ function forgetpasswordToEmail(){
 		url: urlforget,
 		data:data,
 		success:function(data){
+			console.log(data);
 			data = jQuery.parseJSON(data);
 			if(data.status=="success"){				
 				//window.location=data.returnUrl;
@@ -480,7 +500,33 @@ $(document).on('click', '#signinmail', function(){
 	signInByEmail();
 });
 
+$(document).on('click', '#submit_resetpassword', function(){
+	
+	$('#ResetpasswordForm_password_em_').html('');
+	$('#ResetpasswordForm_retype_password_em_').html('');
+	$('#lerrormsg').html('');
+	if($('#ResetpasswordForm_password').val()==''){
+		$('#ResetpasswordForm_password_em_').show();
+		$('#ResetpasswordForm_password_em_').html('Enter password');		
+	}	
+	else if($('#ResetpasswordForm_retype_password').val()==''){
+		$('#ResetpasswordForm_retype_password_em_').show();
+		$('#ResetpasswordForm_retype_password_em_').html('Retype  password');		
+	}	
+	else{
+		var forget_password = $("#ResetpasswordForm_password").val();
+		var forget_confirmPassword = $("#ResetpasswordForm_retype_password").val();
+		if (forget_password == forget_confirmPassword) {
+			resetpassword();
+		}
+		else{		
+			$('#lerrormsg').html('Your Passwords Must Match');
+		}
+	}
+});
+
 $(document).on('click', '#forgetmail', function(){
+	$('#ForgetpasswordForm_email_em_').html('');
 	$('#ForgetpasswordForm_email_em_').hide();
 	if($('#ForgetpasswordForm_email').val()!=''){		
 		var email = $('#ForgetpasswordForm_email').val();

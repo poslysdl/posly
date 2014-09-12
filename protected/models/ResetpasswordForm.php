@@ -5,11 +5,12 @@
  * ForgetpasswordForm is the data structure for keeping
  * user login form data. It is used by the 'login' action of 'SiteController'.
  */
-class ForgetpasswordForm extends CFormModel
+class ResetpasswordForm extends CFormModel
 {
-	public $email;
+	public $password;
 	public $errmsg;
 	public $returnurl;
+	public $user_detail_id;
 	private $_identity;
 
 	/**
@@ -20,7 +21,7 @@ class ForgetpasswordForm extends CFormModel
 	public function rules()
 	{
 		return array(
-			array('email', 'required'),
+			array('password, user_detail_id', 'required'),
 		);
 	}
 	
@@ -29,6 +30,13 @@ class ForgetpasswordForm extends CFormModel
 		$command= Yii::app()->db->createCommand($sql);
 		$rawData = $command->execute();
 	}
+
+	public function reset_password($user_detail_id,$password){
+		$password = md5($password);
+		$sql = "UPDATE users_details SET user_details_password = '$password' WHERE user_details_id= '$user_detail_id'";
+		$command= Yii::app()->db->createCommand($sql);
+		$rawData = $command->execute();
+	}	
 	
 	public function get_user_id($email){
 		$query_user= "SELECT *
@@ -60,10 +68,7 @@ class ForgetpasswordForm extends CFormModel
 		else{
 			return false;
 		}
-	}
-	
-	public function findUserDetailId($user_detail_id){
-		
 	}	
+
 	
 }
