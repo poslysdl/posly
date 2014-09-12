@@ -106,3 +106,7 @@ ALTER TABLE `users_socialmedia` ADD INDEX ( `user_socialmedia_provider` , `user_
 ----------11Sept14-----
 ALTER TABLE `users_details` ADD `phone` VARCHAR( 15 ) NULL AFTER `user_id` ,
 ADD `address` VARCHAR( 255 ) NULL AFTER `phone` ;
+
+---------12Sept14------------
+ALTER TABLE `users_details` ADD  `reset_password_token` varchar(256) DEFAULT NULL ;  
+ALTER TABLE `users_details` ADD  `reset_password_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ;
