@@ -539,12 +539,12 @@ class SiteController extends Controller
 				$message = new YiiMailMessage;
 				$message->setBody('Dear Member,
 
-You have received this message in response to your request to reset the password associated with your Posly account. 
+We got a request to reset your Posly password.
 
 Please find the link showed below:
 '.$link.'
 
-
+If you ignore this message, your password would not be changed.
 
 Sincerely, 
 Posly Team
