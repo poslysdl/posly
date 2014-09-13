@@ -41,7 +41,7 @@ class HybridauthController extends Controller{
 			{	
 				$this->authSocialIdentifier = $socialUser->identifier;
 				//Check if Prior to FB SignUp, user is already registered with same FB emailId
-				$user = Users::model()->findByFBmailId($socialUser->email);
+				$user = Users::model()->findByFBmailId($socialUser->email); echo "<pre>"; echo $socialUser->email; print_r($user); exit("dds");
 				if($user)
 				$flagemail='y';				
 				unset($user);
@@ -49,7 +49,7 @@ class HybridauthController extends Controller{
 					$this->actionAlreadyemail($provider,$socialUser); //Dual signUp with FB & EmailId
                 // find user from db model with social user info, Both at timeof SignIn & SignUp process
                 $user = Users::model()->findBySocial($provider,$this->authSocialIdentifier,$socialUser->email);	
-echo "<pre>"; print_r($user); exit("dd");				
+				
                 if(empty($user))
 				{	
 					//..New, SignUp
