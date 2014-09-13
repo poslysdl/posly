@@ -550,7 +550,7 @@ Sincerely,
 Posly Team
 
 
-', 'text');
+', 'html');
 				$message->subject = 'Your Posly password has been changed';
 				$message->addTo($model->attributes['email']);
 				$message->from = Yii::app()->params['adminEmail'];

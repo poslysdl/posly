@@ -469,14 +469,19 @@ $(document).on('keyup', '#userurl', function(e){
 		$('#maxchar').hide();
 		if(d.length>3)
 		{					
-			setTimeout(validateusername(d), 1000); //timer
+			setTimeout(validateusername(d), 2000); //timer
 		}
 	}
 	
 });
 
+//Page Name Validation at Step-1#
 $(document).on('focus', '#userurl', function(){
 	$('.username_preview .urlc strong').text('');
+	$('#username-check').removeClass('valid');
+	$('#username-check').removeClass('error');
+	$('#username-check').removeClass('success');
+	$('#username-check span').html('');
 });
 
 function validateusername(d){
