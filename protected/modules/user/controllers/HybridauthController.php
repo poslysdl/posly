@@ -36,7 +36,7 @@ class HybridauthController extends Controller{
  
         if(Yii::app()->hybridAuth->isAdapterUserConnected($provider))
 		{
-            $socialUser = Yii::app()->hybridAuth->getAdapterUserProfile($provider);						
+            $socialUser = Yii::app()->hybridAuth->getAdapterUserProfile($provider);	echo "<pre>"; print_r($socialUser); exit;					
             if(isset($socialUser))
 			{
 				$this->authSocialIdentifier = $socialUser->identifier;
