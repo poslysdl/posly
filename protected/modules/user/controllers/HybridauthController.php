@@ -38,7 +38,7 @@ class HybridauthController extends Controller{
 		{
             $socialUser = Yii::app()->hybridAuth->getAdapterUserProfile($provider);						
             if(isset($socialUser))
-			{	echo "<pre>"; print_r($socialUser); exit("dd");
+			{	
 				$this->authSocialIdentifier = $socialUser->identifier;
 				//Check if Prior to FB SignUp, user is already registered with same FB emailId
 				$user = Users::model()->findByFBmailId($socialUser->email);
@@ -48,7 +48,8 @@ class HybridauthController extends Controller{
 				if($flagemail=='y')
 					$this->actionAlreadyemail($provider,$socialUser); //Dual signUp with FB & EmailId
                 // find user from db model with social user info, Both at timeof SignIn & SignUp process
-                $user = Users::model()->findBySocial($provider,$this->authSocialIdentifier,$socialUser->email);				
+                $user = Users::model()->findBySocial($provider,$this->authSocialIdentifier,$socialUser->email);	
+echo "<pre>"; print_r($user); exit("dd");				
                 if(empty($user))
 				{	
 					//..New, SignUp
@@ -134,7 +135,7 @@ class HybridauthController extends Controller{
 	* Last Modified: 09-Sept-14
 	*/	
     public function actionAlreadyemail($provider,$socialUser)
-	{		
+	{		echo "dfsdfsd";
 		$userid = Yii::app()->user->id;
 		$socialid = $socialUser->identifier;
 		$FBusername = NULL; //$socialUser->profileURL;
