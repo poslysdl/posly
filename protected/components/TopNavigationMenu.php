@@ -7,9 +7,10 @@ class TopNavigationMenu extends CWidget {
  
     public $navigationmenu = array(); //to Pass values to the view file  
  
-    public function run() {
+    public function run() {		
         $this->render('topNavigationMenu');
     }
  
 }
+
 ?>

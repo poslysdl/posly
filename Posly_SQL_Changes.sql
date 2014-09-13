@@ -111,3 +111,26 @@ ADD `user_details_address` VARCHAR(255) NULL AFTER `user_details_phone` ;
 ALTER TABLE `users_details` ADD  `reset_password_token` varchar(256) DEFAULT NULL ;  
 ALTER TABLE `users_details` ADD  `reset_password_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ;
 
+-----------13Sep14----------------
+DROP TABLE IF EXISTS `users_messages`;
+CREATE TABLE IF NOT EXISTS `users_messages` (
+  `user_message_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `from_user_id` int(11) DEFAULT NULL,
+  `to_user_id` int(11) DEFAULT NULL,
+  `status` varchar(2) NOT NULL DEFAULT '0' COMMENT '0 - unread, 1 - read',
+  `message_created_date` int(11) NOT NULL,
+  PRIMARY KEY (`user_message_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `users_messages_reply` (
+  `messages_reply_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_message_id` bigint(20) NOT NULL,
+  `user_details_id` int(11) NOT NULL,
+  `reply` text,
+  `reply_attachment` varchar(255) DEFAULT NULL,
+  `status` varchar(1) NOT NULL DEFAULT '0' COMMENT '0 - unread, 1 - read',
+  `reply_created_date` int(11) NOT NULL,
+  PRIMARY KEY (`messages_reply_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf16 AUTO_INCREMENT=1 ;
+
+---------------------------------------------------
