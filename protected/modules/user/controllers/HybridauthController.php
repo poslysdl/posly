@@ -41,12 +41,14 @@ class HybridauthController extends Controller{
 			{	
 				$this->authSocialIdentifier = $socialUser->identifier;
 				//Check if Prior to FB SignUp, user is already registered with same FB emailId
-				$user = Users::model()->findByFBmailId($socialUser->email); echo $user; exit("dds1");
-				if($user)
-				$flagemail='y';				
+				$user = Users::model()->findByFBmailId($socialUser->email);
+				if($user===true){
+					$flagemail='y';	
+				}			
 				unset($user);
-				if($flagemail=='y')
+				if($flagemail=='y'){
 					$this->actionAlreadyemail($provider,$socialUser); //Dual signUp with FB & EmailId
+				}			
                 // find user from db model with social user info, Both at timeof SignIn & SignUp process
                 $user = Users::model()->findBySocial($provider,$this->authSocialIdentifier,$socialUser->email);	
 				
@@ -135,7 +137,7 @@ class HybridauthController extends Controller{
 	* Last Modified: 09-Sept-14
 	*/	
     public function actionAlreadyemail($provider,$socialUser)
-	{		echo "dfsdfsd";
+	{	
 		$userid = Yii::app()->user->id;
 		$socialid = $socialUser->identifier;
 		$FBusername = NULL; //$socialUser->profileURL;
@@ -174,7 +176,17 @@ class HybridauthController extends Controller{
 				}
 			}
 		}
-		unset($socialUser);		
+		//Login & start session process
+		$identity = new UserIdentity($provider, $socialUser->identifier); 
+		$identity->setsocialdata($provider,$this->authSocialIdentifier);
+		$identity->authenticate('social');
+		unset($socialUser);
+		switch($identity->errorCode)
+		{
+			case UserIdentity::ERROR_NONE:
+			Yii::app()->user->login($identity);			
+			break;
+		}			
 		$this->redirect(Yii::app()->createUrl('/registration/settings'));
 		Yii::app()->end();	
 	}	

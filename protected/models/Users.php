@@ -171,17 +171,22 @@ class Users extends CActiveRecord
 	*/
 	public function findByFBmailId($username)
 	{
-	  $email=strtolower($username);	  
-	  $user=$this->with('userDetails')->find("userDetails.user_details_email='$email'"); echo "<pre>"; print_r($user);
-	  if(is_object($user) && isset($user->user_id))
-	  {
-		if(empty($user->user_socialmedia_id))
-			return true;
-		else
+		$email=strtolower($username);	
+		$criteria=new CDbCriteria;
+		$criteria->select='user_id,user_socialmedia_id';		
+		$criteria->condition="userDetails.user_details_email=:username";		
+		$criteria->params=array(':username'=>$email);		
+		$user=$this->with(array('userDetails'=>array('select'=>'user_details_id,user_details_email')))->find($criteria);	
+		if(is_object($user) && isset($user->user_id))
+		{	
+			if(!empty($user->user_socialmedia_id)){
+				return true;
+			} else{
+				return false;
+			}
+		} else{
 			return false;
-	  } else{
-		return false;
-		}
+		}		
 	}
 	
 	/**
