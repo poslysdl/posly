@@ -151,7 +151,7 @@ return array(
 					'levels'=>'error, warning, info',
 					'categories'=>'system.*',
 				),
-				// uncomment CWebLogRoute to show DB query log messages on web pages				
+				// uncomment CWebLogRoute to show DB query log & Coding error messages on web pages				
 				array(
 					'class'=>'CWebLogRoute',
 					'enabled' => YII_DEBUG,
