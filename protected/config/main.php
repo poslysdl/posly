@@ -152,11 +152,11 @@ return array(
 					'categories'=>'system.*',
 				),
 				// uncomment CWebLogRoute to show DB query log & Coding error messages on web pages				
-				/*array(
+				array(
 					'class'=>'CWebLogRoute',
 					'enabled' => YII_DEBUG,
 					'levels' => 'error, warning, trace, notice',
-				),*/				
+				),				
 			),
 		),
 	),
