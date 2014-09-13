@@ -41,7 +41,7 @@ class HybridauthController extends Controller{
 			{	
 				$this->authSocialIdentifier = $socialUser->identifier;
 				//Check if Prior to FB SignUp, user is already registered with same FB emailId
-				$user = Users::model()->findByFBmailId($socialUser->email); echo "<pre>"; echo $socialUser->email; print_r($user); exit("dds");
+				$user = Users::model()->findByFBmailId($socialUser->email); echo $user; exit("dds1");
 				if($user)
 				$flagemail='y';				
 				unset($user);
