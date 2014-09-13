@@ -156,8 +156,8 @@ class Users extends CActiveRecord
 	*/
 	public function findByEmailId($username)
 	{
-	  $email=strtolower($username);	  
-	  $user=$this->with('userDetails')->find("userDetails.user_details_email='$email'");
+	  $email=$username;	  
+	  $user=$this->with('userDetails')->find("userDetails.user_details_email='$email'"); echo "<pre>"; print_r($user);
 	  if(is_object($user) && isset($user->user_id))
 		return true;
 	  else
