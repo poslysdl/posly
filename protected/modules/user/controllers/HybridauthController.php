@@ -36,9 +36,9 @@ class HybridauthController extends Controller{
  
         if(Yii::app()->hybridAuth->isAdapterUserConnected($provider))
 		{
-            $socialUser = Yii::app()->hybridAuth->getAdapterUserProfile($provider);	echo "<pre>"; print_r($socialUser); exit;					
+            $socialUser = Yii::app()->hybridAuth->getAdapterUserProfile($provider);						
             if(isset($socialUser))
-			{
+			{	echo "<pre>"; print_r($socialUser); exit("dd");
 				$this->authSocialIdentifier = $socialUser->identifier;
 				//Check if Prior to FB SignUp, user is already registered with same FB emailId
 				$user = Users::model()->findByFBmailId($socialUser->email);
