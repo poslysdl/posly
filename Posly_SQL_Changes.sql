@@ -104,9 +104,10 @@ CREATE TABLE IF NOT EXISTS `countries_ip` (
 ALTER TABLE `users_socialmedia` ADD INDEX ( `user_socialmedia_provider` , `user_socialmedia_identifier` ) ;
 
 ----------11Sept14-----
-ALTER TABLE `users_details` ADD `phone` VARCHAR( 15 ) NULL AFTER `user_id` ,
-ADD `address` VARCHAR( 255 ) NULL AFTER `phone` ;
+ALTER TABLE `users_details` ADD `user_details_phone` VARCHAR(25) NULL AFTER `user_id` ,
+ADD `user_details_address` VARCHAR(255) NULL AFTER `user_details_phone` ;
 
 ---------12Sept14------------
 ALTER TABLE `users_details` ADD  `reset_password_token` varchar(256) DEFAULT NULL ;  
 ALTER TABLE `users_details` ADD  `reset_password_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ;
+

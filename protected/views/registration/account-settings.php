@@ -1,6 +1,6 @@
 <?php
 /* The Template page for Registration Step-1# 
-** Last Modified: 11-Sept-14
+** Last Modified: 13-Sept-14
 */
 ?>
 <div class="page-container">
@@ -80,9 +80,12 @@
 			<label  class="col-md-3 control-label">Email <font color="red">*</font></label>
 			<div class="col-md-9">
 			<div class="input-icon right"> <i class="fa"></i>
-			<input name="email" type="text" class="form-control" id="email" value="<?php 
-			if (isset($model->userDetails))
-			echo $model->userDetails->user_details_email; ?>" >
+			<?php 
+			$str='';
+			if(isset($model->userDetails))
+			$str=$model->userDetails->user_details_email;
+			?>
+			<input name="email" type="text" class="form-control" id="email" value="<?php echo $str;?>" >
 			</div>
 			<div class="errorMessage myhide"></div>
 			</div>
@@ -94,7 +97,7 @@
 			<input type="password" name="password" class="form-control" data-flag="y" id="password" maxlength="20">
 			<?php } else{?>
 			<p class="form-control-static-green paddless"> <a href="#">Change your Password here</a></p>
-			<input style="display:none" name="password" type="password" class="form-control"  placeholder="Password" data-flag="n" id="password" maxlength="20">
+			<input name="password" type="password" class="form-control"  placeholder="Password" data-flag="n" id="password" maxlength="20" style="display:none">
 			<?php } ?>
 			<div id="passerr" class="errorMessage myhide"></div>
 			</div>
@@ -211,7 +214,31 @@
 			</select>		
 			<p class="ethi_error errorMessage"></p>
 			</div>
-		</div>		
+		</div>	
+		<div class="form-group">
+			<?php 
+			$str="";
+			if(isset($model->userDetails))
+			$str=$model->userDetails->user_details_phone; 
+			?>
+			<label class="col-md-3 control-label">Phone </label>
+			<div class="col-md-9">	
+			<input name="phone" type="text" class="form-control" id="phone" value="<?php echo $str;?>" maxlength="25">
+			<p class="phone_error errorMessage"></p>
+			</div>
+		</div>
+		<div class="form-group">
+			<?php 
+			$str="";
+			if(isset($model->userDetails))
+			$str=$model->userDetails->user_details_address; 
+			?>
+			<label class="col-md-3 control-label">Address</label>
+			<div class="col-md-9">	
+			<input name="address" type="text" class="form-control" id="address" value="<?php echo $str;?>" maxlength="200">
+			<p class="phone_error errorMessage"></p>
+			</div>
+		</div>			
 		<div class="form-group">
 			<label  class="col-md-3 control-label">Page Name <font color="red">*</font></label>
 			<!--<div class="col-md-2">
@@ -223,7 +250,7 @@
 			$checked = '';
 			$checked = (isset($model->userDetails->user_unique_url))?$model->userDetails->user_unique_url:'';			
 			?>
-			<input type="text" id="userurl" class="form-control" id="url" value="<?php echo $checked;?>" name="url" maxlength="40"/>
+			<input type="text" id="userurl" name="url" class="form-control" value="<?php echo $checked;?>" maxlength="40"/>
 			</div>
 			<p id="urlerror" class="errorMessage"></p>
 			<div class="username_preview">
@@ -231,8 +258,9 @@
 				<small class="field-check valid" id="username-check" style="display:none;"><span>verifying..</span></small>
 				<small class="field-check" id="maxchar" style="display:block;"><span>Max 40 Chars.</span></small>
 			</div>
+			<input type="hidden" name="errorname" id="errorpgname" value="0">
 			</div>						
-			</div>
+		</div>
 		</div>
 		<!--sds--> 
 		</div>

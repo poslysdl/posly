@@ -132,6 +132,8 @@ class RegistrationController extends Controller
 				$state = (trim($_POST['state'])=='0')?'':trim($_POST['state']);
 				$city = trim($_POST['city']);				
 				$ethinicity = trim($_POST['etnicity']);
+				$phone = (trim($_POST['phone'])=='')?'':trim($_POST['phone']);
+				$address = (trim($_POST['address'])=='')?'':trim($_POST['address']);
 				//UsersSecurity model values 
 				$privacy = isset($_POST['messageme'])?$_POST['messageme']:'0';
 				//UsersNotification model values
@@ -158,7 +160,7 @@ class RegistrationController extends Controller
 					//Post::model()->updateByPk($pk,$attributes,$condition,$params);			
 					$pk = $model->userDetails->user_details_id;
 					$attributes = array(			
-					'user_details_firstname'=>$fn, 'user_details_lastname'=>$ln, 'user_details_email'=>$email, 'user_details_dob'=>$dob, 'user_details_gender'=>$gender, 'searchprivacy'=>$search, 'user_unique_url'=>$url);
+					'user_details_firstname'=>$fn, 'user_details_lastname'=>$ln, 'user_details_email'=>$email, 'user_details_dob'=>$dob, 'user_details_gender'=>$gender, 'searchprivacy'=>$search, 'user_unique_url'=>$url,'user_details_phone'=>$phone,'user_details_address'=>$address);
 					if(!empty($password)){
 						$aa = array('user_details_password'=>md5($password));
 						$attributes = array_merge($attributes,$aa);						
@@ -185,6 +187,8 @@ class RegistrationController extends Controller
 					$userDetials->user_details_gender = $gender;
 					$userDetials->searchprivacy = $search;
 					$userDetials->user_unique_url = $url;
+					$userDetials->user_details_phone = $phone;
+					$userDetials->user_details_address = $address;
 					if(!empty($password))
 						$userDetials->user_details_password = md5($password);
 					if($userDetials->save()){

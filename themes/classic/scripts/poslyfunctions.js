@@ -477,16 +477,21 @@ $(document).on('click', '.accset_save', function(){
 		$('.ethi_error').html('Please Select Etnicity');		
 		noerr = false;
 	}
-	if($('#url').val()==""){	
+	if($('#userurl').val()==""){	
 		$('#urlerror').html('Please Enter Page Name');		
 		$('#urlerror').css('display','block');
 		noerr = false;		
 	} else{
-		var str = $('#url').val();
+		var str = $('#userurl').val();
 		if(str.length<3){
 			$('#urlerror').html('Page Name should be Minimum 4 chars');		
 			$('#urlerror').css('display','block');
 			noerr = false;	
+		}
+		if($('#errorpgname').val()=='1'){
+			$('#urlerror').html('Page Name Already Used');		
+			$('#urlerror').css('display','block');
+			noerr = false;
 		}
 	}
 	

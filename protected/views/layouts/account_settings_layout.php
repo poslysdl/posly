@@ -366,7 +366,7 @@ $(document).on('click', '.step1skip', function(){
 });
 
 $(document).on('click', '.step1cancel', function(){
-	var url = "<?php echo Yii::app()->createAbsoluteUrl('/site/logout'); ?>";
+	var url = "<?php echo Yii::app()->createAbsoluteUrl('/site'); ?>";
 	window.location=url;
 });
 
@@ -502,11 +502,13 @@ function validateusername(d){
 		$('#username-check').removeClass('error');
 		$('#username-check').addClass('success');
 		$('#username-check span').html('valid');
+		$('#errorpgname').val('0');
 		} else{
 		$('#username-check').removeClass('success');
 		$('#username-check').removeClass('valid');
 		$('#username-check').addClass('error');
 		$('#username-check span').html('already taken');
+		$('#errorpgname').val('1');
 		}
 	});		
 }
