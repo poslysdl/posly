@@ -37,8 +37,7 @@ class HybridauthController extends Controller{
         if(Yii::app()->hybridAuth->isAdapterUserConnected($provider))
 		{
             $socialUser = Yii::app()->hybridAuth->getAdapterUserProfile($provider);
-			$this->authSocialIdentifier = $socialUser->identifier;
-			print_r($socialUser); exit;
+			$this->authSocialIdentifier = $socialUser->identifier;			
             if(isset($socialUser))
 			{
 				//Check if Prior to FB SignUp, user is already registered with same FB emailId
@@ -53,10 +52,11 @@ class HybridauthController extends Controller{
                 if(empty($user))
 				{	
 					//..New, SignUp
-					$FBusername = $socialUser->profileURL;
+					$FBusername = NULL; //$socialUser->profileURL;
 					if(!empty($FBusername)){
-						$FBusername = explode("/",$FBusername);
-						$FBusername = $FBusername[3];
+						//$FBusername = explode("/",$FBusername);  
+						//[profileURL] => https://www.facebook.com/app_scoped_user_id/616175085169516/  ...creates ambiguity with diffrent APPs
+						//$FBusername = $FBusername[3];
 					}
                 	$user_socialmedia=new UsersSocialmedia;
                 	$user_socialmedia->user_socialmedia_provider=$provider;
