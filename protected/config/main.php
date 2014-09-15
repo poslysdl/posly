@@ -7,12 +7,11 @@
 
 $poslyIP = $_SERVER['SERVER_ADDR'];
 if($poslyIP=='127.0.0.1'){
-	//Local system
 	$FB_APPId = '647620848638998'; //2pretty.in FBApp
 	$FB_SECRETKey = "4855626d478b8c2280db3ef8a5ead448";
 	$DB_USERNAME = 'root';
 	$DB_PASSWORD = 'sdl123';
-	$Base_URL = 'http://localhost/projects/posly_v2/posly/index.php/user/hybridauth/endpoint';
+	$Base_URL = 'http://localhost/projects/posly_v2/posly_reset/index.php/user/hybridauth/endpoint';
 	$INSTAGRAM_CLIENTID = "d1b24c4e53364af880b33c5561ce12f4";
 	$INSTAGRAM_KEY = "6eae2cbe86a24929beec86437bc58c7f";
 	$INSTARAM_REDIRECTURL = "http://localhost/projects/posly_v2/posly/index.php/site/instagramauth";
@@ -23,8 +22,8 @@ if($poslyIP=='127.0.0.1'){
 	$DB_USERNAME = 'root';
 	$DB_PASSWORD = 'root';
 	$Base_URL = 'http://54.255.144.92/posly/index.php/user/hybridauth/endpoint';
-	$INSTAGRAM_CLIENTID = "a9e30b61950343b7ae8301803e2dc858";
-	$INSTAGRAM_KEY = "0e091399d56e4771a3d249d1f7e80086";
+	$INSTAGRAM_CLIENTID = "d1b24c4e53364af880b33c5561ce12f4";
+	$INSTAGRAM_KEY = "6eae2cbe86a24929beec86437bc58c7f";
 	$INSTARAM_REDIRECTURL = "http://54.255.144.92/posly/index.php/site/instagramauth";
 } else{
 	//nothing
@@ -92,7 +91,7 @@ return array(
 			'host'=>'smtp.gmail.com',
 			'username'=>'poslymail@gmail.com',
 			'password'=>'posly123!',
-			'port'=>'587',
+			'port'=>'465',
 			'encryption'=>'ssl',
 			),
 			'viewPath' => 'application.views.mail',
@@ -152,12 +151,10 @@ return array(
 					'levels'=>'error, warning, info',
 					'categories'=>'system.*',
 				),
-				// uncomment CWebLogRoute to show DB query log & Coding error messages on web pages				
-				array(
+				// uncomment CWebLogRoute to show DB query log messages on web pages				
+				/*array(
 					'class'=>'CWebLogRoute',
-					'enabled' => YII_DEBUG,
-					'levels' => 'error, warning, trace, notice',
-				),			
+				),*/				
 			),
 		),
 	),
