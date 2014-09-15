@@ -555,7 +555,7 @@ Posly Team
 				$message->addTo($model->attributes['email']);
 				$message->from = Yii::app()->params['adminEmail'];
 				echo "<pre>";
-				print_r($message);
+				var_dump($message);
 				echo "</pre>";
 				Yii::app()->mail->send($message);				
 				
