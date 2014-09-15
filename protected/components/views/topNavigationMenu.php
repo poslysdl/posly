@@ -74,6 +74,8 @@ else
 			<?php foreach($msglist as $keys=>$values){
 				$avatar='';
 				$name='';
+				$replyico='<img src="'.Yii::app()->theme->baseUrl.'/img/replyico.gif">';
+				$unreadclass = '';
 				if($values['from_detailid']!=$userDetailId)
 				{
 					$name=$values['from_uname'];
@@ -94,14 +96,22 @@ else
 					else
 						$avatar = Yii::app()->baseUrl.'/profiles/'.$values['to_avatar'];
 				}
+				if($values['reply_detailid']!=$userDetailId){
+					//reply By Others sent to Me
+					$replyico='';
+					if($values['rplystatus']==0)
+					$unreadclass = 'unreadmsg';
+				}
 				$msgtxt=$values['reply'];
 				$temp = explode(" ",$msgtxt);
 				if(count($temp)>6)
 					$msgtxt = $temp[0].' '.$temp[1].' '.$temp[2].' '.$temp[3].' '.$temp[4].' '.$temp[5].'...';
-				$datetime=$this->get_msgtime($values['replydate']);				
+				$datetime=$this->get_msgtime($values['replydate']);
+				$msgtxt = $replyico.' '.$msgtxt;
+				
 			?>
 			<li> 
-			<a href="<?php echo Yii::app()->createUrl('/message/index/?id=2'); ?>"> <!-- inbox.html?a=view -->
+			<a href="<?php echo Yii::app()->createUrl('/message/index/?id=2'); ?>" class="<?php echo $unreadclass;?>"> <!-- inbox.html?a=view -->
 			<span class="photo">
 				<img class="avatar-user-l img-responsive" src="<?php echo $avatar; ?>" alt=""/>
 			</span> 
