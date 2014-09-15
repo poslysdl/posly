@@ -535,8 +535,7 @@ class SiteController extends Controller
 				//$user_token = urlencode($encrypted_token);
 				//$link = $path."?token=".$user_token;
 				
-				echo $link = "test";
-				exit;
+				$link = "test";
 				//$model->reset_password_token($token,$model->attributes['email']);
 				Yii::import('ext.yii-mail.YiiMailMessage');				
 				$message = new YiiMailMessage;
