@@ -520,6 +520,7 @@ class SiteController extends Controller
 		$model=new ForgetpasswordForm; //**models/ForgetpasswordForm.php
 		$returnurl = Yii::app()->user->returnUrl;		
 		if(isset($_POST['ForgetpasswordForm'])){
+			header('Content-Type: text/html; charset=utf-8');
 			$model->attributes = $_POST['ForgetpasswordForm'];
 			$user=Users::model()->findByEmailId($model->attributes['email']);
 			if($user){
@@ -531,8 +532,7 @@ class SiteController extends Controller
 				$token = $token."user".$user_id;
 				$key = "forget password posly";				
 				$key_md5 = md5($key);				
-				echo $key_md5_md5 = md5($key_md5 );
-				exit;
+				$key_md5_md5 = md5($key_md5 );				
 				echo $encrypted_token = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $key_md5, $token, MCRYPT_MODE_CBC, $key_md5_md5));
 				exit;
 				//$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($encrypted_token), MCRYPT_MODE_CBC, md5(md5($key))), "\0"); 
