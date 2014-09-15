@@ -539,6 +539,8 @@ class SiteController extends Controller
 				//$model->reset_password_token($token,$model->attributes['email']);
 				Yii::import('ext.yii-mail.YiiMailMessage');				
 				$message = new YiiMailMessage;
+				echo "in";
+				exit;
 				$message->setBody('Dear Member,
 
 We got a request to reset your Posly password.
