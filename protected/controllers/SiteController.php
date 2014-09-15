@@ -529,9 +529,9 @@ class SiteController extends Controller
 				$path = $this->createAbsoluteUrl('/site/resetpassword');
 				$user_id = $model->get_user_id($model->attributes['email']);			
 				$token = $token."user".$user_id;
-				echo $key = "forget password posly";
+				$key = "forget password posly";
+				echo $encrypted_token = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $token, MCRYPT_MODE_CBC, md5(md5($key))));
 				exit;
-				$encrypted_token = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $token, MCRYPT_MODE_CBC, md5(md5($key))));
 				$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($encrypted_token), MCRYPT_MODE_CBC, md5(md5($key))), "\0"); 
 				$user_token = urlencode($encrypted_token);
 				$link = $path."?token=".$user_token;
