@@ -540,8 +540,6 @@ class SiteController extends Controller
 				Yii::import('ext.yii-mail.YiiMailMessage');				
 				$message = new YiiMailMessage;
 				$message->setBody($link, "text");
-				var_dump($message);
-				exit;
 				$message->subject = 'Reset Your Password';
 				$message->addTo($model->attributes['email']);
 				$message->from = Yii::app()->params['adminEmail'];
