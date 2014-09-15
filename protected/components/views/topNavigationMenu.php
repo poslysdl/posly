@@ -53,30 +53,81 @@ else
 { ?>     
 	<!-- BEGIN INBOX DROPDOWN -->
 	<?php
-		$id=Yii::app()->user->id;
-		//$msglist=UsersMessagesReply::model()->with('usersdetails','message')->find();
-		//$msglist=UsersMessages::model()->with('messagereply')->find();
-		//echo "<pre>"; print_r($msglist);
-		//exit;
+		$id=Yii::app()->user->id; 
+		$userDetailId = Yii::app()->user->detailid;
+		$msglist=UsersMessages::model()->getLatestmsg($id,$userDetailId);
+		$unreadcnt = '';
+		foreach($msglist as $k1=>$v1){
+			if($v1['reply_detailid']!=$userDetailId && $v1['rplystatus']==0)
+			$unreadcnt++;
+		}
 	?>
 	<li class="dropdown" id="header_inbox_bar"> 
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
-	  data-close-others="true"><i class="icon-envelope"></i><span class="badge">5</span></a>
+		<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
+		data-close-others="true"><i class="icon-envelope"></i>
+		<span class="badge"><?php echo $unreadcnt; ?></span>
+		</a>
+		<?php if(isset($msglist) && count($msglist)>0){ ?>
 		<ul class="dropdown-menu extended inbox">
 		<li>
-		<ul class="dropdown-menu-list scroller" style="height: 205px;">
-		<li> <a href="inbox.html?a=view"> <span class="photo"><img class="avatar-user-l img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar2.jpg" alt=""/></span> <span class="subject"> <span class="from">Lisa Wong</span> <span class="time">Just Now</span> </span> <span class="message"> Coming from TopNavigation widget </span> </a> </li>
-		<li> <a href="inbox.html?a=view"> <span class="photo"><img class="avatar-user-l img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar3.jpg" alt=""/></span> <span class="subject"> <span class="from">Richard Doe</span> <span class="time">16 mins</span> </span> <span class="message"> Vivamus sed congue nibh auctor nibh congue nibh. auctor nibh
-		auctor nibh... </span> </a> </li>
-		<li> <a href="inbox.html?a=view"> <span class="photo"><img class="avatar-user-l img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1.jpg" alt=""/></span> <span class="subject"> <span class="from">NY Nilson</span> <span class="time">2 hrs</span> </span> <span class="message"> Vivamus sed nibh auctor nibh congue nibh. auctor nibh
-		auctor nibh... </span> </a> </li>
-		<li> <a href="inbox.html?a=view"> <span class="photo"><img class="avatar-user-l img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar2.jpg" alt=""/></span> <span class="subject"> <span class="from">NY Nilson</span> <span class="time">2 hrs</span> </span> <span class="message"> Vivamus sed nibh auctor nibh congue nibh. auctor nibh
-		auctor nibh... </span> </a> </li>
-		</ul>
+			<ul class="dropdown-menu-list scroller" style="height: 205px;">
+			<?php foreach($msglist as $keys=>$values){
+				$avatar='';
+				$name='';
+				if($values['from_detailid']!=$userDetailId)
+				{
+					$name=$values['from_uname'];
+					$avatar=$values['from_avatar'];
+					$fromurl=strstr($avatar, '://', true);
+					if($fromurl=='http' || $fromurl=='https')
+						$avatar = $values['from_avatar']; 
+					else
+						$avatar = Yii::app()->baseUrl.'/profiles/'.$values['from_avatar'];
+				}
+				if($values['to_detailid']!=$userDetailId)
+				{
+					$name=$values['to_uname'];
+					$avatar=$values['to_avatar'];
+					$fromurl=strstr($avatar, '://', true);
+					if($fromurl=='http' || $fromurl=='https')
+						$avatar = $values['to_avatar']; 
+					else
+						$avatar = Yii::app()->baseUrl.'/profiles/'.$values['to_avatar'];
+				}
+				$msgtxt=$values['reply'];
+				$temp = explode(" ",$msgtxt);
+				if(count($temp)>6)
+					$msgtxt = $temp[0].' '.$temp[1].' '.$temp[2].' '.$temp[3].' '.$temp[4].' '.$temp[5].'...';
+				$datetime=$this->get_msgtime($values['replydate']);				
+			?>
+			<li> 
+			<a href="<?php echo Yii::app()->createUrl('/message/index/?id=2'); ?>"> <!-- inbox.html?a=view -->
+			<span class="photo">
+				<img class="avatar-user-l img-responsive" src="<?php echo $avatar; ?>" alt=""/>
+			</span> 
+			<span class="subject">
+				<span class="from"><?php echo $name;?></span> 
+			</span> 
+			<span class="message"><?php echo $msgtxt; ?></span>
+			<span class="newtime"><?php echo $datetime;?></span><!--style.css 4479-->			
+			</a> 
+			</li>
+			<?php } ?>
+			</ul>
 		</li>
-		<li class="external canhtop"><a href="<?php echo Yii::app()->createUrl('/message/index'); ?>">See all messages
-		<i class="icon-arrow-right-light"></i></a></li>
+		<li class="external canhtop">
+		<a href="<?php echo Yii::app()->createUrl('/message/index'); ?>">See all messages
+		<i class="icon-arrow-right-light"></i>
+		</a>
+		</li>
 		</ul>
+		<?php } else{ ?>
+		<ul class="dropdown-menu extended inbox">
+		<li><ul class="dropdown-menu-list scroller" style="height: 100px;">
+		<li>No Messages Yet !</li>
+		</ul></li>
+		</ul>
+		<?php } ?>
 	</li>
 	<!-- END INBOX DROPDOWN --> 
       

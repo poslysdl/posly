@@ -8,7 +8,8 @@ class MessageController extends Controller
 		Yii::app()->clientScript->registerCoreScript('jquery'); 
 		$time=new CTimestamp;
 		$value=$time->getDate();
-		$end= $value[0];		
+		$end= $value[0]; 
+		echo "Message Center";		
 		$this->render('index');				
 	}
 }
