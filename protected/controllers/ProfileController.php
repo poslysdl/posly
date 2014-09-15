@@ -20,24 +20,25 @@ class ProfileController extends Controller
 	{			
 		//allow user profiles who has everyone		 
 		if(Yii::app()->user->isGuest) 
-		{
+		{	
 			$error = false;
 			if(isset($url) && !empty($url)) 
-			{				
+			{	
 				$profile_url = $url;
 				Yii::app()->session['url'] = $profile_url;
 				$row = UsersDetails::model()->find("user_unique_url='$profile_url'");
 				Yii::app()->session['user_id'] = $row['user_id'];				
-				if (isset($row)) {
+				if (isset($row)) {	
 					$user_id = $row['user_id'];
 					
 					$sec_row = UsersSecurity::model()->find("user_id=$user_id");
 					$privacy = $sec_row['whocansee'];
 					
-					if ($privacy == 1) {
-							$this->layout='profile_layout';
+					if ($privacy == 1) {	
+							$this->layout='profile_layout';	
 							Yii::app()->clientScript->registerCoreScript('jquery'); 
 							$this->render('index');
+							
 
 					} else /* if privacy is 2 or 3 */ {
 						$error = true;
