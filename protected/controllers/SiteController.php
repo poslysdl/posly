@@ -552,12 +552,13 @@ Posly Team
 
 ');
 				$message->subject = 'Reset Your Password';
-				$message->addTo($model->attributes['email']);
-				$message->from = Yii::app()->params['adminEmail'];
 				echo "<pre>";
 				var_dump($message);
 				echo "</pre>";
-				exit;
+				exit;				
+				$message->addTo($model->attributes['email']);
+				$message->from = Yii::app()->params['adminEmail'];
+
 				Yii::app()->mail->send($message);				
 				
 				echo CJSON::encode(array(
