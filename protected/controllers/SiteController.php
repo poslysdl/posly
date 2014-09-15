@@ -557,9 +557,9 @@ Posly Team
 				$message->from = Yii::app()->params['adminEmail'];
 
 				Yii::app()->mail->send($message);
-				echo "<pre>";
+/*				echo "<pre>";
 				var_dump($message);
-				echo "</pre>";				
+				echo "</pre>"*/;				
 				
 				echo CJSON::encode(array(
 					'status'=>'success',
