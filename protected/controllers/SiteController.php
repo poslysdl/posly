@@ -537,12 +537,29 @@ class SiteController extends Controller
 				$model->reset_password_token($token,$model->attributes['email']);
 				Yii::import('ext.yii-mail.YiiMailMessage');				
 				$message = new YiiMailMessage;
-				$message->setBody($link, 'text');
+				$message->setBody('Dear Member,
+
+We got a request to reset your Posly password.
+
+Please find the link showed below:
+'.$link.'
+
+If you ignore this message, your password would not be changed.
+
+Sincerely, 
+Posly Team
+
+
+');
 				$message->subject = 'Reset Your Password';
 				$message->addTo($model->attributes['email']);
 				$message->from = Yii::app()->params['adminEmail'];
-				//Yii::app()->mail->send($message);				
-				echo "in"; exit;
+				echo "<pre>";
+				var_dump($message);
+				echo "</pre>";
+				exit;
+				Yii::app()->mail->send($message);				
+				
 				echo CJSON::encode(array(
 					'status'=>'success',
 					'returnUrl'=>$returnurl
