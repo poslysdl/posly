@@ -523,7 +523,6 @@ class SiteController extends Controller
 			$model->attributes = $_POST['ForgetpasswordForm'];		
 			$user=Users::model()->findByEmailId($model->attributes['email']);
 			if($user){
-				header('Content-Type: text/html; charset=utf-8');
 				$chars = array_merge( range('a','z'),range(0,9),range('A','Z'));
 				shuffle($chars);
 				$token = implode(array_slice($chars, 0, 8));
@@ -531,7 +530,7 @@ class SiteController extends Controller
 				$user_id = $model->get_user_id($model->attributes['email']);			
 				$token = $token."user".$user_id;
 				$key = 'forget password posly';		
-				echo $encrypted_token = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $token, MCRYPT_MODE_CBC, md5(md5($key))));
+				echo $encrypted_token = base64_encode($key);
 				exit;
 				$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($encrypted_token), MCRYPT_MODE_CBC, md5(md5($key))), "\0"); 
 				$user_token = urlencode($encrypted_token);
