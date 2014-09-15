@@ -531,7 +531,9 @@ class SiteController extends Controller
 				$token = $token."user".$user_id;
 				$key = "forget password posly";
 				//echo $encrypted_token = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $token, MCRYPT_MODE_CBC, md5(md5($key))));
-				echo $encrypted_token = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $token, MCRYPT_MODE_CBC, md5(md5($key)));
+				$iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB), MCRYPT_RAND);
+				
+				echo $encrypted_string = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $key, $token, MCRYPT_MODE_CBC, $iv);
 				exit;
 				//$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($encrypted_token), MCRYPT_MODE_CBC, md5(md5($key))), "\0"); 
 				$user_token = urlencode($encrypted_token);
