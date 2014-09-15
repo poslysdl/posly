@@ -520,6 +520,8 @@ class SiteController extends Controller
 		$model=new ForgetpasswordForm; //**models/ForgetpasswordForm.php
 		$returnurl = Yii::app()->user->returnUrl;		
 		if(isset($_POST['ForgetpasswordForm'])){
+			echo "in";
+			exit;
 			$model->attributes = $_POST['ForgetpasswordForm'];		
 			$user=Users::model()->findByEmailId($model->attributes['email']);
 			if($user){
