@@ -103,7 +103,7 @@
 <!--<script type="text/javascript" src="<?php //echo Yii::app()->theme->baseUrl; ?>/plugins/jquery-validation/dist/jquery.validate.min.js"></script> 
 <script type="text/javascript" src="<?php //echo Yii::app()->theme->baseUrl; ?>/plugins/jquery-validation/dist/additional-methods.min.js"></script> 
 <script type="text/javascript" src="<?php //echo Yii::app()->theme->baseUrl; ?>/plugins/select2/select2.min.js"></script> 
-<script src="<?php//echo Yii::app()->theme->baseUrl; ?>/plugins/bootstrap-switch/static/js/bootstrap-switch.min.js" type="text/javascript" ></script> 
+<script src="<?php //echo Yii::app()->theme->baseUrl; ?>/plugins/bootstrap-switch/static/js/bootstrap-switch.min.js" type="text/javascript" ></script> 
 -->
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/bootstrap-modal/js/bootstrap-modalmanager.js" type="text/javascript" ></script> 
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/bootstrap-modal/js/bootstrap-modal.js" type="text/javascript" ></script> 
