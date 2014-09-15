@@ -528,19 +528,16 @@ class SiteController extends Controller
 				$token = implode(array_slice($chars, 0, 8));
 				$path = $this->createAbsoluteUrl('/site/resetpassword');
 				$user_id = $model->get_user_id($model->attributes['email']);			
-				$token = $token."user".$user_id;
-				$key = 'forget password posly';		
-				$encrypted_token = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $token, MCRYPT_MODE_CBC, md5(md5($key))));
-				$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($encrypted_token), MCRYPT_MODE_CBC, md5(md5($key))), "\0"); 
-				$user_token = urlencode($encrypted_token);
-				$link = $path."?token=".$user_token;				
-				$model->reset_password_token($token,$model->attributes['email']);
+				//$token = $token."user".$user_id;
+				//$key = 'forget password posly';		
+				//$encrypted_token = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $token, MCRYPT_MODE_CBC, md5(md5($key))));
+				//$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($encrypted_token), MCRYPT_MODE_CBC, md5(md5($key))), "\0"); 
+		//		$user_token = urlencode($encrypted_token);
+			//	$link = $path."?token=".$user_token;				
+				//$model->reset_password_token($token,$model->attributes['email']);
+				$link = "test";
 				Yii::import('ext.yii-mail.YiiMailMessage');				
 				$message = new YiiMailMessage;
-				echo "<pre>";
-				var_dump($message);
-				echo "</pre>";
-				exit;
 				$message->setBody('Dear Member,
 
 We got a request to reset your Posly password.
@@ -554,12 +551,13 @@ Sincerely,
 Posly Team
 
 
-');
+', 'text');
 				$message->subject = 'Reset Your Password';
-	
 				$message->addTo($model->attributes['email']);
 				$message->from = Yii::app()->params['adminEmail'];
-
+				echo "<pre>";
+				var_dump($message);
+				echo "</pre>";
 				Yii::app()->mail->send($message);				
 				
 				echo CJSON::encode(array(
