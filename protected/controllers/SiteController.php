@@ -521,10 +521,6 @@ class SiteController extends Controller
 		$returnurl = Yii::app()->user->returnUrl;		
 		if(isset($_POST['ForgetpasswordForm'])){
 			$model->attributes = $_POST['ForgetpasswordForm'];
-			echo "<pre>";
-			print_r($model->attributes);
-			echo "</pre>";
-			exit;
 			$user=Users::model()->findByEmailId($model->attributes['email']);
 			if($user){
 				$chars = array_merge( range('a','z'),range(0,9),range('A','Z'));
@@ -537,6 +533,8 @@ class SiteController extends Controller
 				$encrypted_token = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $token, MCRYPT_MODE_CBC, md5(md5($key))));
 				$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($encrypted_token), MCRYPT_MODE_CBC, md5(md5($key))), "\0"); 
 				$user_token = urlencode($encrypted_token);
+				echo $user_token;
+				exit;
 				$link = $path."?token=".$user_token;				
 				$model->reset_password_token($token,$model->attributes['email']);
 				Yii::import('ext.yii-mail.YiiMailMessage');				
