@@ -4501,6 +4501,11 @@ float:left
 	color:#6fc0df;
 	float: right;
 }
+.dropdown-menu.inbox li > a .newtime {
+	color:#6fc0df; 
+	line-height: 10px; 
+	font-size:11px; /* by PHP developer-15sep14 */
+}
 .dropdown-menu.inbox li > a .message {
 	display: block !important;
 	font-size: 11px;
@@ -4508,7 +4513,6 @@ float:left
 	margin-left: 55px;
 	line-height:14px;
 }
-
 /**/
 .dropdown-menu.notifi li > a .photo {
 	float: left;

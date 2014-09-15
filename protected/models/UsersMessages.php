@@ -99,25 +99,28 @@ class UsersMessages extends CActiveRecord
 	}
 	
 	/**
-	 * Name: getLatestmsg
-	 * User_Define Function, to get Latest Message read/unread
-	 * @param numeric $limit record limit.
-	 * @return Array of Latest hash	 
-	 */
-	public function getLatestmsg($uid,$limit=5)
-	{
-		//$criteria=new CDbCriteria;			
-		//$criteria->condition="from_user_id=:username OR to_user_id=:usernamet";		
-		//$criteria->params=array(':username'=>$uid,':usernamet'=>$uid);
-		$user=$this->find();
-
-		echo "<pre>"; print_r($user); exit;
-		
-		//$query = "SELECT DESC LIMIT 0,:limit ";	
-		
-		//$command= Yii::app()->db->createCommand($query);
-		//$command->bindValue(':limit', $limit);		
-		//$rawData = $command->queryAll();		
-		//return $rawData;
+	* Name: getLatestmsg
+	* User_Define Function, to get Latest Message read/unread for TopMenu
+	* @param numeric $limit record limit.
+	* @return Array of Latest hash
+	* Last Modified: 15-Sept-14
+	*/
+	public function getLatestmsg($uid,$userdetailid,$limit=5)
+	{		
+		$query = "SELECT m.user_message_id,m.from_user_id,ud.user_details_avatar as from_avatar,ud.user_details_id as from_detailid,";
+		$query.=" ud.user_details_firstname as from_uname,m.to_user_id,udd.user_details_avatar as to_avatar,udd.user_details_firstname as to_uname,";
+		$query.=" udd.user_details_id as to_detailid,mrply.reply,mrply.user_details_id as reply_detailid,mrply.messages_reply_id,";
+		$query.=" mrply.status as rplystatus,mrply.reply_attachment as attach,mrply.reply_created_date as replydate";
+		$query.=" FROM users_messages m JOIN users_details ud ON m.from_user_id=ud.user_id JOIN users_details udd ON m.to_user_id=udd.user_id";
+		$query.=" JOIN (SELECT messages_reply_id,user_message_id,user_details_id,reply,status,reply_attachment,reply_created_date";
+		$query.=" FROM users_messages_reply ORDER BY messages_reply_id DESC) as mrply ON m.user_message_id=mrply.user_message_id"; 
+		$query.=" WHERE m.from_user_id=:uid OR m.to_user_id=:uidd GROUP BY m.user_message_id ORDER BY mrply.messages_reply_id DESC";
+		$query.=" LIMIT 0,:limit";
+		$command= Yii::app()->db->createCommand($query);
+		$command->bindValue(':limit', $limit);
+		$command->bindValue(':uid', $uid);
+		$command->bindValue(':uidd', $uid);
+		$rawData = $command->queryAll();	//echo "<pre>"; print_r($rawData); exit;	
+		return $rawData;
 	}
 }

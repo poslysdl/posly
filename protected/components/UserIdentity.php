@@ -2,7 +2,8 @@
 /* An Component for User Authentication
 * is used By FB SignUp & SignIn, Email SignUp & SignIn.
 ** Posly Users SESSIONS gets started Here
-* Last Modified - 06-Sep-14
+* Last Modified - 15-Sep-14
+* http://www.yiiframework.com/doc/api/1.1/CUserIdentity
 */
 class UserIdentity extends CUserIdentity {
 	private $_id; 
@@ -39,6 +40,8 @@ class UserIdentity extends CUserIdentity {
 			else
 			$this->setState('name', $user->userDetails->user_details_email);
 			//$this->setState('language', $user->preferredLanguage);
+			if(isset($user->userDetails->user_details_id))
+				$this->setState('detailid', $user->userDetails->user_details_id);
 			$this->errorCode = self::ERROR_NONE;
 		}
 		return $this->errorCode == self::ERROR_NONE;
