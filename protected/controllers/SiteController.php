@@ -530,9 +530,9 @@ class SiteController extends Controller
 				$user_id = $model->get_user_id($model->attributes['email']);			
 				$token = $token."user".$user_id;
 				$key = "forget password posly";				
-				echo $key_md5 = md5($key);
+				$key_md5 = md5($key);				
+				echo $key_md5_md5 = md5($key_md5 );
 				exit;
-				$key_md5_md5 = md5($key_md5 );
 				echo $encrypted_token = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $key_md5, $token, MCRYPT_MODE_CBC, $key_md5_md5));
 				exit;
 				//$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($encrypted_token), MCRYPT_MODE_CBC, md5(md5($key))), "\0"); 
