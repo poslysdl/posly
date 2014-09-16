@@ -130,6 +130,7 @@ function get_current_nearby_country(url){
 		success:function(response){			
 			var item = jQuery.parseJSON(response);
 			var current_country = item.current.country_name;
+			//added on 16-10-2014
 			if (current_country=='-') {
 				current_country = "Worldwide";
 			}
