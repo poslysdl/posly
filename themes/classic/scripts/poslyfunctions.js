@@ -139,7 +139,7 @@ function get_current_nearby_country(url){
 			$("#current_view_country").html(current_country);			
 			var nearby_countries = item.nearby;
 			$.each(nearby_countries, function(idx, obj) {
-				nearbyCountry += '<li><a href="/projects/posly_v2/posly/index.php/country/'+obj.countryname+'">'+obj.country_name+'</a></li>';
+				nearbyCountry += '<li><a href="/projects/posly_v2/posly/index.php/country/'+obj.country_name+'">'+obj.country_name+'</a></li>';
 			});
 			$("#nearby_country").html(nearbyCountry);
 		},
