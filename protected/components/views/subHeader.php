@@ -62,6 +62,7 @@ $newmem_class = ($menulink=='newmember')?'active':'';
 		<ul>
 		<li>
 		<?php
+		//commented on 16/10/2014
 		//if(isset($_GET['c']))
 		//	echo CHtml::link($_GET['c'],array('site/country', 'c'=>$_GET['c']));
 		//else
