@@ -649,8 +649,7 @@ Posly Team
 	 * This user define Ajax function to check Email exits in DB or Not
 	 * Last Modified: 27-Aug-14
 	*/
-	public function actionEmailunique()
-	{
+	public function actionEmailunique(){
 		$email = $_GET['email'];
 		$isexits = '0';
 		$check=UsersDetails::model()->find("user_details_email='$email'");
@@ -694,7 +693,7 @@ Posly Team
 		Yii::import('ext.yii-mail.YiiMailMessage');
 		$message = new YiiMailMessage;
 		$message->setBody('Message content here with HTML', 'text');
-		$message->subject = 'test mail from production';
+		$message->subject = 'test mail from production ';
 		$message->addTo('anand.aneesh@gmail.com');
 		$message->from = Yii::app()->params['adminEmail'];
 		Yii::app()->mail->send($message);
@@ -734,8 +733,7 @@ Posly Team
 		$result = curl_exec($curl); // to perform the curl session
 		curl_close($curl); // to close the curl session		
 		$data = json_decode($result,true);
-		if(isset($data['user']['username']))
-		{
+		if(isset($data['user']['username'])){
 			//Instagram Had User Info
 			$access_token = $data['access_token']; 
 			$username = $data['user']['username'];

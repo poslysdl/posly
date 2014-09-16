@@ -20,7 +20,7 @@ $newmem_class = ($menulink=='newmember')?'active':'';
 		<a href="<?php echo Yii::app()->createUrl("/newmembers"); ?>" class="ma-den hidden-480 hidden-320 hidden-600 hidden-620 <?php echo $newmem_class;?>">New Member</a>			
 		<div class="ma-den dropdown"> 		
 		<!-- CAPTION LOCATION --> 
-		<a class="dropdown-toggle caption" data-close-others="true"  data-toggle="dropdown" href="#">Monaco<i class="icon-map-marker"></i></a>
+		<a class="dropdown-toggle caption" data-close-others="true"  data-toggle="dropdown" href="#"><span id="top_current_country"></span><i class="icon-map-marker"></i></a>
 		<ul data-delay="1000" class="dropdown-menu extended loc">
 		<li>
 		<div class="rowb">
@@ -62,11 +62,12 @@ $newmem_class = ($menulink=='newmember')?'active':'';
 		<ul>
 		<li>
 		<?php
-		if(isset($_GET['c']))
-			echo CHtml::link($_GET['c'],array('site/country', 'c'=>$_GET['c']));
-		else
-			echo CHtml::link('All Countries',array('site/country', 'c'=>''));
+		//if(isset($_GET['c']))
+		//	echo CHtml::link($_GET['c'],array('site/country', 'c'=>$_GET['c']));
+		//else
+		//	echo CHtml::link('All Countries',array('site/country', 'c'=>''));		
 		?>
+		<a href="#"><span id = "current_view_country"></span></a>
 		</li>
 		</ul>
 		</div>
