@@ -121,7 +121,6 @@ $(document).on('keypress', '.custom-comment-box', function(e){
 
 /* ** This is for getting current country and near by country
 */
-
 function get_current_nearby_country(url){
 	var nearbyCountry = '';
 	$.ajax({
@@ -144,7 +143,6 @@ function get_current_nearby_country(url){
 }
 
 //alternate function to get latlong
-
 function showPosition(position) {
 	var poslat =  position.coords.latitude;
 	var poslong = position.coords.longitude;
@@ -550,6 +548,7 @@ $(document).on('click', '#forgetmail', function(){
 	
 });
 
+//** Click, change &onkeypress Events
 $(document).on('click', '#signupmail', function(){
 	checkSignUp( $(this) );
 });
@@ -559,15 +558,13 @@ $(document).on('keypress', '#LoginForm_password', function(event){
 		signInByEmail();   
 	}
 });
-
+//Step-1# Email-SignUp page
 $(document).on('change', '#formreg_country', function(){
 	getcountrycity($(this),'formreg_region');
 });
-
 $(document).on('change', '#formreg_region', function(){
 	getcountrycity($(this),'formreg_state');
 });
-
 $(document).on('change', '#formreg_state', function(){
 	getcountrycity($(this),'formreg_city');
 });

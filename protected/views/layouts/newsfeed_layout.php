@@ -322,10 +322,16 @@ $(document).ready(function(){
 		window.location=url;
 	});
    
+   //** Forgotpassword link
+   $("#forgetpassword").click(function(){
+     $('#loginModal').modal('hide');
+   }); 
+   
 });
 
 <?php if(!Yii::app()->user->isGuest){ ?>
-	showUsersActivities();	
+	showUsersActivities();
+	
 <?php } else{ //Guset Login *** ?>
 $(window).load(function() {
 	$('.flexslider').flexslider({

@@ -828,6 +828,7 @@ Posly Team
 		$activityArray = array(); //contains, all activities, Like,Dislikes,Become friends etc
 		$str='';
 		$limit = 10;
+		$flag = (isset($_GET['flag']))?$_GET['flag']:'';
 		if(!empty($uid))
 		{
 			// ** User Logged IN ***
@@ -839,8 +840,15 @@ Posly Team
 				{	
 					$uname = ($uid==$v['userid'])?'You':$v['username'];
 					$owner_name = $v['ownername'];					
-					$msg = ' Likes '.$owner_name.'&#39;s photo:';					
+					$msg = ' Likes '.$owner_name.'&#39;s photo:';
+					$msg.='<img class="img-responsive thumbimg" alt="" src="'.Yii::app()->theme->baseUrl.'/img/avatar2.jpg" />';
 					$activityArray[$v['hdate']] = array('avatar'=>$v['useravatar'],'name'=>$uname,'message'=>$msg);
+					
+					//Duplicate Testing	Data				
+					$activityArray['1410354280'] = array('avatar'=>$v['useravatar'],'name'=>$uname,'message'=>$msg);
+					$activityArray['1410354380'] = array('avatar'=>$v['useravatar'],'name'=>$uname,'message'=>$msg);
+					$activityArray['1410354480'] = array('avatar'=>$v['useravatar'],'name'=>$uname,'message'=>$msg);
+					//Duplicate Ends
 				}
 			}
 			unset($photolikes);
@@ -869,6 +877,9 @@ Posly Team
 				}
 			}			
 			unset($friends);
+			//Now get List of Extra Notification of Posly, only for Top-Header
+			if($flag=="header")
+			$activityArray['1410849978'] = array('avatar'=>'avatar1_small.jpg','name'=>'Posly','message'=>'There is an event to be organised at bangalore, at 1-oct-14, for Fashion ..an fasion event'); //*** Testing Data
 		}
 		else
 		{
@@ -902,7 +913,7 @@ Posly Team
 		//Now Create the display Activity HTML		
 		if(count($activityArray)>0)
 		{
-			arsort($activityArray);
+			arsort($activityArray); //Sort The Activity Array -- SORT
 			foreach($activityArray as $keys=>$values)
 			{			
 				$fromurl=strstr($values['avatar'], '://', true);
@@ -910,11 +921,32 @@ Posly Team
 					$avatar = $values['avatar']; 
 				else
 				$avatar = Yii::app()->baseUrl.'/profiles/'.$values['avatar'];
-				$str.='
-				<li class="noti-area"> <img class="avatar img-responsive" alt="" src="'.$avatar.'" />
-				<div class="message"> <span class="name">'.$values['name'].'</span> '.$values['message'].' </div>
-				</li>					
-				';
+				if($flag=="header")
+				{
+					//This is for Top-Header Notification Display
+					$str.='
+					<li> 
+					<a href="#">
+					<div class="main">
+					<span class="photo">
+					<img class="avatar-user-l img-responsive" src="'.$avatar.'" alt=""/>
+					</span>					
+					<div class="message"> 
+						<span class="name">'.$values['name'].'</span> '.$values['message'].' 
+						<div class="newtime">'.$this->get_msgtime($keys).'</div>
+					</div>
+					</div>
+					</a> 
+					</li>				
+					';
+				} else{
+					//This for Side-Bar UserActivity/Notification Display
+					$str.='
+					<li class="noti-area"> <img class="avatar img-responsive" alt="" src="'.$avatar.'" />
+					<div class="message"> <span class="name">'.$values['name'].'</span> '.$values['message'].' </div>
+					</li>					
+					';
+				}
 			}
 		}
 		unset($activityArray);
