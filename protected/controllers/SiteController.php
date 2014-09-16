@@ -694,7 +694,7 @@ Posly Team
 		Yii::import('ext.yii-mail.YiiMailMessage');
 		$message = new YiiMailMessage;
 		$message->setBody('Message content here with HTML', 'text');
-		$message->subject = 'test dipankar';
+		$message->subject = 'test mail from production';
 		$message->addTo('anand.aneesh@gmail.com');
 		$message->from = Yii::app()->params['adminEmail'];
 		Yii::app()->mail->send($message);

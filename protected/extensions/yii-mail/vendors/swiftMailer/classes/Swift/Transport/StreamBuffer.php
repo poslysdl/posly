@@ -39,6 +39,8 @@ class Swift_Transport_StreamBuffer
   /** The ReplacementFilterFactory */
   private $_replacementFactory;
   
+  private $_sequence;
+  
   /** Translations performed on data being streamed into the buffer */
   private $_translations = array();
   
