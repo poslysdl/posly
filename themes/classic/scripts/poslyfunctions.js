@@ -129,10 +129,16 @@ function get_current_nearby_country(url){
 		success:function(response){			
 			var item = jQuery.parseJSON(response);
 			var current_country = item.current.country_name;
+			//added on 16-10-2014
+			if (current_country=='-') {
+				current_country = "Worldwide";
+			}
 			$("#current_country").html(current_country);
+			$("#top_current_country").html(current_country);
+			$("#current_view_country").html(current_country);			
 			var nearby_countries = item.nearby;
 			$.each(nearby_countries, function(idx, obj) {
-				nearbyCountry += '<li><a href="/projects/posly_v2/posly/index.php/country/'+obj.countryname+'">'+obj.country_name+'</a></li>';
+				nearbyCountry += '<li><a href="/projects/posly_v2/posly/index.php/country/'+obj.country_name+'">'+obj.country_name+'</a></li>';
 			});
 			$("#nearby_country").html(nearbyCountry);
 		},
@@ -175,8 +181,7 @@ function resetpassword(){
 ** Yii CActiveForm is used to show site Login Modal box
 ** /views/site/login.php
 */
-function signInByEmail()
-{
+function signInByEmail(){
 	var data=$("#login-form").serialize();
 	var url1 = $('#login-form .blue').attr('data-url');
 	$.ajax({

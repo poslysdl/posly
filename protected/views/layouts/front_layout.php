@@ -312,9 +312,9 @@ $(document).ready(function(){
 	$('.lerrormsg').hide();	
 	$('#RegisterForm_firstname').focus(function() {
 		if($('#RegisterForm_firstname').val()==''){
-                    $('#RegisterForm_email').val('');
-                    $('#RegisterForm_password').val('');
-                    $('#RegisterForm_username').val('');
+         $('#RegisterForm_email').val('');
+         $('#RegisterForm_password').val('');
+         $('#RegisterForm_username').val('');
 		}
 		$('.errorMessage').hide();
 	});
