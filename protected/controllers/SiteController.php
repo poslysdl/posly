@@ -816,7 +816,7 @@ Posly Team
 	/**
 	This user define Ajax function is used to return the html for rendering of
 	user's Activities List at Sidebar.
-	Last Modified:20-Aug-14
+	Last Modified:16-Sep-14
 	*/
 	public function actionShowusersactivities()
 	{	
@@ -906,12 +906,20 @@ Posly Team
 				}
 			}			
 			unset($friends);
-		}		
+		}
 		
+		//Get Notification count from SESSION variable
+		$existingCount=Yii::app()->user->getState("notify_count");
+		$existingCount=(empty($existingCount))?0:$existingCount;
 		//Now Create the display Activity HTML		
 		if(count($activityArray)>0)
 		{
 			arsort($activityArray); //Sort The Activity Array -- SORT
+			echo count($activityArray).'--'.$existingCount;
+			$notifyCount = count($activityArray)-$existingCount;
+			if($notifyCount<0 || $notifyCount==0)
+				$notifyCount='';
+			Yii::app()->user->setState("notify_count",$notifyCount);
 			foreach($activityArray as $keys=>$values)
 			{			
 				$fromurl=strstr($values['avatar'], '://', true);
@@ -940,8 +948,8 @@ Posly Team
 				} else{
 					//This for Side-Bar UserActivity/Notification Display
 					$str.='
-					<li class="noti-area"> <img class="avatar img-responsive" alt="" src="'.$avatar.'" />
-					<div class="message"> <span class="name">'.$values['name'].'</span> '.$values['message'].' </div>
+					<li class="noti-area"><img class="avatar img-responsive" alt="" src="'.$avatar.'" />
+					<div class="message"><span class="name">'.$values['name'].'</span> '.$values['message'].' </div>
 					</li>					
 					';
 				}
@@ -950,16 +958,45 @@ Posly Team
 		unset($activityArray);
 		if(empty($str)){
 			//a Default Dummy status.
-			$str='<li class="noti-area"> <img class="avatar img-responsive" alt="" src="'.Yii::app()->theme->baseUrl.'/img/avatar2.jpg" />
+			$str='<li class="noti-area"><img class="avatar img-responsive" alt="" src="'.Yii::app()->theme->baseUrl.'/img/avatar2.jpg" />
 			<div class="message"> <span class="name">Chanh Ny</span> likes Chi Minh Anh photo. </div>
 			</li>';
-		}
+		}		
 		echo $str;
 		/*echo CJSON::encode(array(
 			  'status'=>'success',
 			  'values'=>$html
 		));*/
 		Yii::app()->end();	
+	}
+	
+	/**
+	* This user define Ajax function, 
+	* to get Unread Notification Count
+	* Last Modified:16-Sep-14
+	*/
+	public function actionGetnotifycount()
+	{
+		echo CJSON::encode(array(
+			  'status'=>'success',
+			  'values'=>Yii::app()->user->getState("notify_count")
+		));
+		Yii::app()->end();
+	}
+	
+	/**
+	* This user define Ajax function, 
+	* to remove notify count from session, After User Reads It
+	* Last Modified:16-Sep-14
+	*/
+	public function actionRemovenotifycount()
+	{
+		Yii::app()->user->setState("notify_count",'');
+		echo CJSON::encode(array(
+			  'status'=>'success',
+			  'values'=>''
+		));
+		Yii::app()->end();
 	}
 	
 //END

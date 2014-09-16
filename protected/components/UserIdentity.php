@@ -40,6 +40,7 @@ class UserIdentity extends CUserIdentity {
 			else
 			$this->setState('name', $user->userDetails->user_details_email);
 			//$this->setState('language', $user->preferredLanguage);
+			$this->setState('notify_count', '');
 			if(isset($user->userDetails->user_details_id))
 				$this->setState('detailid', $user->userDetails->user_details_id);
 			$this->errorCode = self::ERROR_NONE;

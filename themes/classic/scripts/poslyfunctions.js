@@ -124,7 +124,8 @@ $(document).on('keypress', '.custom-comment-box', function(e){
 function get_current_nearby_country(url){
 	var nearbyCountry = '';
 	$.ajax({
-		type: 'POST',  
+		type: 'POST', 
+		async: false,
 		url: url,
 		success:function(response){			
 			var item = jQuery.parseJSON(response);
@@ -165,6 +166,7 @@ function resetpassword(){
 	$.ajax({
 		type: 'POST',  
 		url: url_reset_password,
+		async: false,
 		data:data,
 		success:function(data){
 			data = jQuery.parseJSON(data);
@@ -187,6 +189,7 @@ function signInByEmail(){
 	$.ajax({
 		type: 'POST',  
 		url: url1,
+		async: false,
 		data:data,
 		success:function(data){
 			data = jQuery.parseJSON(data);
@@ -215,9 +218,10 @@ function forgetpasswordToEmail(){
 	$.ajax({
 		type: 'POST',  
 		url: urlforget,
+		async: false,
 		data:data,
 		success:function(data){
-			console.log(data);
+			//console.log(data);
 			data = jQuery.parseJSON(data);
 			if(data.status=="success"){				
 				//window.location=data.returnUrl;
@@ -244,7 +248,8 @@ function poslyAjaxLikecalls(ajaxurl,id,sdata)
 	var returnstring;
 	$.ajax({
 		type: 'POST',  
-		url: ajaxurl,		
+		url: ajaxurl,
+		async: false,
 		data:{                            
 			  pid: id,
 			  pdata: sdata			  
@@ -380,6 +385,7 @@ function signUpEmail()
 	$.ajax({
 		type: 'POST',  
 		url: url1,
+		async: false,
 		data:data,
 		success:function(data){
 			data = jQuery.parseJSON(data);
@@ -415,6 +421,7 @@ function getcountrycity(elm,targetid)
 	$.ajax({
 		type: 'POST',  
 		url: url1,
+		async: false,
 		data:{         
 			pdata: sdata,
 			pname: name,
@@ -552,6 +559,29 @@ $(document).on('click', '#forgetmail', function(){
 	}
 	
 });
+
+/*A common Ajax function 
+url - controller Path
+data1 - single string variable
+*/
+function getAjaxreturn(url,data1){
+	var val1;
+	$.ajax({
+		type: 'POST',  
+		url: url,
+		async: false,
+		data:data1,
+		success:function(data){
+			data = jQuery.parseJSON(data);
+			if(data.status=="success"){				
+				val1 = data.values		
+			}      
+		},
+		error: function(data) { // if error occured
+		}
+	});	
+	return val1;
+}
 
 //** Click, change &onkeypress Events
 $(document).on('click', '#signupmail', function(){
