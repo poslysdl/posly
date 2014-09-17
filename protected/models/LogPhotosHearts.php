@@ -174,30 +174,31 @@ class LogPhotosHearts extends CActiveRecord
 	 * User_Define Function, to get Latest information
 	 * of user who had like, used mainly for Site Users Activity
 	 * @param numeric $limit record limit.
-	 * @return Array of records	 
+	 * @return Array of records	
+	 * Last Modified: 16-Sept-14
 	 */
 	public function getActivityWhoLikes($limit = 15,$uid = null)
 	{	
 		if(empty($uid))
-		{
-			//user is not logged in so, show every one's Photo likes randomly
+		{	//user is not logged in so, show every one's Photo likes randomly
 			$query = "SELECT p.photos_id,p.album_id,p.photos_name,pl.log_photos_hearts_date as hdate,pl.user_id as userid,
-			u.user_details_firstname as username,u.user_details_avatar as useravatar,pl.owner_id,CONCAT(ow.user_details_firstname,' ',ow.user_details_lastname) as ownername
+			u.user_details_firstname as username,u.user_details_avatar as useravatar,pl.owner_id,CONCAT(ow.user_details_firstname,' ',ow.user_details_lastname) as ownername, p.user_id as photouserid,p.photos_name as photoname 
 			FROM log_photos_hearts pl JOIN photos p ON pl.photos_id=p.photos_id JOIN users_details u ON pl.user_id=u.user_id
 			JOIN users_details ow ON pl.owner_id=ow.user_id ORDER BY pl.log_photos_hearts_date DESC LIMIT 0,".$limit;
 		} else{
-			//user is Logged in so show only hi/her friends like's and photo likes
-			//get list of users who had like your photos
+			//user is Logged in so show only hi/her friends like's and photo likes			
 			$query="SELECT * FROM 
 			(";
+				//get list of users who had like your photos
 				$query.= "SELECT p.photos_id,p.album_id,p.photos_name,pl.log_photos_hearts_date as hdate,pl.user_id as userid,
-				u.user_details_firstname as username,u.user_details_avatar as useravatar,pl.owner_id,'yours' as ownername
+				u.user_details_firstname as username,u.user_details_avatar as useravatar,pl.owner_id,'yours' as ownername,
+				p.user_id as photouserid,p.photos_name as photoname 
 				FROM log_photos_hearts pl JOIN photos p ON pl.photos_id=p.photos_id JOIN users_details u ON pl.user_id=u.user_id
 				WHERE pl.owner_id=".$uid;
 				$query.=" UNION ";
 				//get list of users who Followed You likes some photos of others
 				$query.= "SELECT p.photos_id,p.album_id,p.photos_name,pl.log_photos_hearts_date as hdate,pl.user_id as userid,
-				u.user_details_firstname as username,u.user_details_avatar as useravatar,pl.owner_id,CONCAT(ow.user_details_firstname,' ',ow.user_details_lastname) as ownername
+				u.user_details_firstname as username,u.user_details_avatar as useravatar,pl.owner_id,CONCAT(ow.user_details_firstname,' ',ow.user_details_lastname) as ownername, p.user_id as photouserid,p.photos_name as photoname 
 				FROM log_photos_hearts pl JOIN photos p ON pl.photos_id=p.photos_id JOIN users_details u ON pl.user_id=u.user_id
 				JOIN users_details ow ON pl.owner_id=ow.user_id JOIN users_follow fw ON pl.user_id=fw.follow_id 
 				WHERE pl.owner_id<>".$uid." AND fw.user_id=".$uid;
@@ -205,13 +206,20 @@ class LogPhotosHearts extends CActiveRecord
 				//get list of users who You Followed likes some photos of others
 				$query.= "SELECT p.photos_id,p.album_id,p.photos_name,pl.log_photos_hearts_date as hdate,pl.user_id as userid,
 				u.user_details_firstname as username,u.user_details_avatar as useravatar,pl.owner_id,
-				CONCAT(ow.user_details_firstname,' ',ow.user_details_lastname) as ownername
+				CONCAT(ow.user_details_firstname,' ',ow.user_details_lastname) as ownername, p.user_id as photouserid,p.photos_name as photoname 
 				FROM log_photos_hearts pl JOIN photos p ON pl.photos_id=p.photos_id JOIN users_details u ON pl.user_id=u.user_id
 				JOIN users_details ow ON pl.owner_id=ow.user_id JOIN users_follow fw ON pl.user_id=fw.user_id 
 				WHERE pl.owner_id<>".$uid." AND fw.follow_id=".$uid;
-			$query.=") as a ORDER BY hdate DESC LIMIT 0,".$limit;
-		}	
-		
+				$query.=" UNION ";
+				//get list When You Like someone Else's Photo
+				$query.= "SELECT p.photos_id,p.album_id,p.photos_name,pl.log_photos_hearts_date as hdate,pl.user_id as userid,
+				u.user_details_firstname as username,u.user_details_avatar as useravatar,pl.owner_id,u.user_details_firstname as ownername,
+				p.user_id as photouserid,p.photos_name as photoname 
+				FROM log_photos_hearts pl JOIN photos p ON pl.photos_id=p.photos_id JOIN users_details u ON pl.owner_id=u.user_id
+				WHERE pl.user_id=".$uid;
+			$query.=") as a ORDER BY hdate DESC LIMIT 0,".$limit; 
+		}
+		//Execute The Query
 		$command= Yii::app()->db->createCommand($query);		
 		$rawData = $command->queryAll();		
 		return $rawData;

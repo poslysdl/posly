@@ -121,11 +121,11 @@ $(document).on('keypress', '.custom-comment-box', function(e){
 
 /* ** This is for getting current country and near by country
 */
-
 function get_current_nearby_country(url){
 	var nearbyCountry = '';
 	$.ajax({
-		type: 'POST',  
+		type: 'POST', 
+		async: false,
 		url: url,
 		success:function(response){			
 			var item = jQuery.parseJSON(response);
@@ -150,7 +150,6 @@ function get_current_nearby_country(url){
 }
 
 //alternate function to get latlong
-
 function showPosition(position) {
 	var poslat =  position.coords.latitude;
 	var poslong = position.coords.longitude;
@@ -167,6 +166,7 @@ function resetpassword(){
 	$.ajax({
 		type: 'POST',  
 		url: url_reset_password,
+		async: false,
 		data:data,
 		success:function(data){
 			data = jQuery.parseJSON(data);
@@ -189,6 +189,7 @@ function signInByEmail(){
 	$.ajax({
 		type: 'POST',  
 		url: url1,
+		async: false,
 		data:data,
 		success:function(data){
 			data = jQuery.parseJSON(data);
@@ -217,9 +218,10 @@ function forgetpasswordToEmail(){
 	$.ajax({
 		type: 'POST',  
 		url: urlforget,
+		async: false,
 		data:data,
 		success:function(data){
-			console.log(data);
+			//console.log(data);
 			data = jQuery.parseJSON(data);
 			if(data.status=="success"){				
 				//window.location=data.returnUrl;
@@ -246,7 +248,8 @@ function poslyAjaxLikecalls(ajaxurl,id,sdata)
 	var returnstring;
 	$.ajax({
 		type: 'POST',  
-		url: ajaxurl,		
+		url: ajaxurl,
+		async: false,
 		data:{                            
 			  pid: id,
 			  pdata: sdata			  
@@ -382,6 +385,7 @@ function signUpEmail()
 	$.ajax({
 		type: 'POST',  
 		url: url1,
+		async: false,
 		data:data,
 		success:function(data){
 			data = jQuery.parseJSON(data);
@@ -417,6 +421,7 @@ function getcountrycity(elm,targetid)
 	$.ajax({
 		type: 'POST',  
 		url: url1,
+		async: false,
 		data:{         
 			pdata: sdata,
 			pname: name,
@@ -555,6 +560,30 @@ $(document).on('click', '#forgetmail', function(){
 	
 });
 
+/*A common Ajax function 
+url - controller Path
+data1 - single string variable
+*/
+function getAjaxreturn(url,data1){
+	var val1;
+	$.ajax({
+		type: 'POST',  
+		url: url,
+		async: false,
+		data:data1,
+		success:function(data){
+			data = jQuery.parseJSON(data);
+			if(data.status=="success"){				
+				val1 = data.values		
+			}      
+		},
+		error: function(data) { // if error occured
+		}
+	});	
+	return val1;
+}
+
+//** Click, change &onkeypress Events
 $(document).on('click', '#signupmail', function(){
 	checkSignUp( $(this) );
 });
@@ -564,15 +593,13 @@ $(document).on('keypress', '#LoginForm_password', function(event){
 		signInByEmail();   
 	}
 });
-
+//Step-1# Email-SignUp page
 $(document).on('change', '#formreg_country', function(){
 	getcountrycity($(this),'formreg_region');
 });
-
 $(document).on('change', '#formreg_region', function(){
 	getcountrycity($(this),'formreg_state');
 });
-
 $(document).on('change', '#formreg_state', function(){
 	getcountrycity($(this),'formreg_city');
 });

@@ -249,6 +249,17 @@ function showUsersActivities(){
 		$('.notifi-panel').html(data);	
 	});
 }
+/* showNotifications function
+	will show users activity-Notifications, at Top-Header through ajax call
+*/
+function showNotifications(){
+	var url = '<?php echo $this->createUrl("/site/showusersactivities/?flag=header"); ?>';
+	$.get(url,function(data,status){
+		$('#header_notification_bar .scroller').html(data); //Top-Header		
+	});
+	var cnt = getAjaxreturn('<?php echo $this->createUrl("/site/getnotifycount"); ?>','');	
+	$('#header_notification_bar > .dropdown-toggle > .badge').text(cnt); //Notification count
+}
 
 //** Very Important To Initialize Plugins
 jQuery(document).ready(function() {  
@@ -322,10 +333,23 @@ $(document).ready(function(){
 		window.location=url;
 	});
    
+   //** Forgotpassword link
+   $("#forgetpassword").click(function(){
+     $('#loginModal').modal('hide');
+   });
+
+	//**Remove Notify count, after user opens the Notification Box & Read The Notifications
+	$(document).on('hover', '#header_notification_bar .scroller', function(){
+		$('#header_notification_bar > .dropdown-toggle > .badge').text(''); //Top Header Notification count
+		var cnt = getAjaxreturn('<?php echo $this->createUrl("/site/removenotifycount"); ?>','');
+	});
+   
 });
 
 <?php if(!Yii::app()->user->isGuest){ ?>
-	showUsersActivities();	
+	showUsersActivities();
+	showNotifications();
+	
 <?php } else{ //Guset Login *** ?>
 $(window).load(function() {
 	$('.flexslider').flexslider({

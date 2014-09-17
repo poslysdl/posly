@@ -33,9 +33,7 @@ if(Yii::app()->user->isGuest)
 	<h3>Posly Blog</h3>
 	</div>
 	<div class="side-tag">	
-	<!--<img class="img-responsive" alt="" src="<?php //echo Yii::app()->theme->baseUrl; ?>/img/gallery/item_img10.jpg">
-	<h5>Hike - Social Apps</h5>
-	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>-->
+	<!-- Flexi SLider Banner --->
 		<div class="flex-container">
 		<div class="flexslider">
 			<ul class="slides">
@@ -78,9 +76,9 @@ if(Yii::app()->user->isGuest)
 		<div>
 		<div class="panel">
 		<div class="panel-title solo"> </div>
-		<div class="scrollercm" style="height: 275px;" data-always-visible="0" data-rail-visible1="0">	
+		<div class="scrollercm" style="height: 175px;" data-always-visible="0" data-rail-visible1="0">	
 		<ul class="notifi-panel">
-			<!-- Site User's Activity Feeds will be append through JS function showUsersActivities() -->
+			<!-- Site User's Activity Feeds(** Notifications **) will be append through JS function showUsersActivities() -->
 			<br><div class="loader"></div>
 		</ul>
 		</div>

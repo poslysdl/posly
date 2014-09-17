@@ -133,4 +133,5 @@ CREATE TABLE IF NOT EXISTS `users_messages_reply` (
   PRIMARY KEY (`messages_reply_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf16 AUTO_INCREMENT=1 ;
 
----------------------------------------------------
+--------------16-Sept-14--------------------------------
+ALTER TABLE `users` ADD `user_notification_count` BIGINT( 20 ) NULL ;
