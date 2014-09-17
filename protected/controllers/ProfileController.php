@@ -9,7 +9,7 @@ class ProfileController extends Controller
 	public function accessRules() {
         return array(
             array('allow',
-            	'actions'=>array('index', 'addhearts', 'following', 'followers', 'about', 'albums', 'hearts', 'ranks','catwalk','friends'),
+            	'actions'=>array('index', 'addhearts', 'following', 'followers', 'about', 'albums', 'hearts', 'ranks','catwalk','friends','userAge'),
                 'users'=>array('*'),
             ),
             array('deny'),
@@ -17,27 +17,28 @@ class ProfileController extends Controller
     }
 	
 	public function actionIndex($url) 
-	{			
+	{
 		//allow user profiles who has everyone		 
 		if(Yii::app()->user->isGuest) 
 		{	
 			$error = false;
 			if(isset($url) && !empty($url)) 
-			{	
+			{
+
 				$profile_url = $url;
 				Yii::app()->session['url'] = $profile_url;
 				$row = UsersDetails::model()->find("user_unique_url='$profile_url'");
 				Yii::app()->session['user_id'] = $row['user_id'];				
 				if (isset($row)) {	
-					$user_id = $row['user_id'];
-					
+					$user_id = $row['user_id'];					
 					$sec_row = UsersSecurity::model()->find("user_id=$user_id");
-					$privacy = $sec_row['whocansee'];
-					
+					$privacy = $sec_row['whocansee'];					
 					if ($privacy == 1) {	
 							$this->layout='profile_layout';	
 							Yii::app()->clientScript->registerCoreScript('jquery'); 
-							$this->render('index');
+						$userAge = Users::model()->getUserAge($row['user_id']);
+						$age = ($userAge) ? $userAge : "";						
+						$this->render('index',array('user'=>$row,'age'=>$age));
 							
 
 					} else /* if privacy is 2 or 3 */ {
@@ -72,13 +73,15 @@ class ProfileController extends Controller
 					$user_id = $row['user_id'];					
 					if($id == $user_id) {
 						$this->layout='profile_layout';
-						Yii::app()->clientScript->registerCoreScript('jquery'); 
-						$this->render('index');
+						Yii::app()->clientScript->registerCoreScript('jquery');
+						$userAge = Users::model()->getUserAge($row['user_id']);
+						$age = ($userAge) ? $userAge : "";						
+						$this->render('index',array('user'=>$row,'age'=>$age));
 					} 
 					else 
 					{
 						$sec_row = UsersSecurity::model()->find("user_id=$user_id");
-						$privacy = $sec_row['whocansee'];						
+						$privacy = $sec_row['whocansee'];
 						if($privacy == 1) {
 								$this->layout='profile_layout';
 								Yii::app()->clientScript->registerCoreScript('jquery'); 
@@ -199,6 +202,16 @@ class ProfileController extends Controller
 	public function actionFriends(){
 		$this->renderPartial('friends');
 	}
+	
+	/**
+	* Displays the settings page for user
+	* Last Modified:17-Oct-14
+	*/	
+	public function actionProfilesettings(){
+		$this->layout='profile_layout';
+		$this->render('index');
+	}
+		
 
 	public function actionAddHearts() {
 		

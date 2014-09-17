@@ -489,7 +489,8 @@ class SiteController extends Controller
 		$decrypted_token = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($token_request), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
 		if ($decrypted_token && !empty($decrypted_token) && (strpos($decrypted_token, 'user') !== false) && $decrypted_token != ''){
 			$token_array = explode("user",$decrypted_token);
-			$user_detail_id = mysql_real_escape_string($token_array[1]);
+			//$user_detail_id = mysql_real_escape_string($token_array[1]);
+			$user_detail_id = $token_array[1];
 			$user_token = $model->findTokenByUserDetailId($user_detail_id);
 			if(($user_token) && ($user_token == $decrypted_token)){			
 				$this->layout='front_layout';
@@ -514,7 +515,7 @@ class SiteController extends Controller
 	/**
 	* Displays the Forget password Modal window - By EmailId
 	* Last Modified:10-Sept-14
-	*/
+	*/	
 	public function actionForgetpassword(){
 		
 		$model=new ForgetpasswordForm; //**models/ForgetpasswordForm.php
@@ -649,7 +650,8 @@ Posly Team
 	 * This user define Ajax function to check Email exits in DB or Not
 	 * Last Modified: 27-Aug-14
 	*/
-	public function actionEmailunique(){
+	public function actionEmailunique()
+	{
 		$email = $_GET['email'];
 		$isexits = '0';
 		$check=UsersDetails::model()->find("user_details_email='$email'");
@@ -733,7 +735,8 @@ Posly Team
 		$result = curl_exec($curl); // to perform the curl session
 		curl_close($curl); // to close the curl session		
 		$data = json_decode($result,true);
-		if(isset($data['user']['username'])){
+		if(isset($data['user']['username']))
+		{
 			//Instagram Had User Info
 			$access_token = $data['access_token']; 
 			$username = $data['user']['username'];
@@ -1004,6 +1007,7 @@ Posly Team
 		));
 		Yii::app()->end();
 	}
+
 	/*$time1=new CTimestamp;
 	$value1=$time1->getDate();
 	echo strtotime('now').'--'.$value1[0]; 

@@ -5,7 +5,12 @@
 </div>	
 </div> <!-- #top-shadow  ENDS --->
 <!-- END HEADER -->
+<?php
+$user_name = $user->user_details_firstname." ".$user->user_details_lastname;
 
+$user_gender = ($user->user_details_gender == 1) ? "M" : "F";
+
+?>
 <div class="clearfix"></div>
 
 <!-- BEGIN CONTAINER -->
@@ -78,7 +83,7 @@
 		<img title="Will Hatefbook" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/avanta.jpg" class="img-responsive" alt="Will Hatefbook"></a>
 		<div class="user-text">
 		<div class="bguser">
-		<h1> <a href="#">Sara Pelimakaro (F,24)</a> </h1>
+		<h1> <a href="#"><?php echo $user_name;?> (<?php echo $user_gender;?>,<?php echo $age;?>)</a> </h1>
 		<p>From Germany, Düsseldorf</p>
 		</div>
 		</div>
