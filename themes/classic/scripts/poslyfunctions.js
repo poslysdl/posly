@@ -211,32 +211,31 @@ function signInByEmail(){
 ** /views/site/forgetpassword.php
 */
 function forgetpasswordToEmail(){
-	var data=$("#forgetpassword-form").serialize();
-	var urlforget = $('#forgetpassword-form .blue').attr('data-url');
+	$('#forgot_password_loader').show();
 	$('#ForgetpasswordForm_email_em_').show();
-	$('#ForgetpasswordForm_email_em_').addClass("loader");
+	$('#ForgetpasswordForm_email_em_').html('');
+	var data=$("#forgetpassword-form").serialize();
+	var urlforget = $('#forgetpassword-form .blue').attr('data-url');	
 	$.ajax({
 		type: 'POST',  
 		url: urlforget,
-		async: false,
 		data:data,
 		success:function(data){
 			//console.log(data);
 			data = jQuery.parseJSON(data);
 			if(data.status=="success"){				
-				//window.location=data.returnUrl;
-				$('#ForgetpasswordForm_email_em_').removeClass("loader");
+				$('#forgot_password_loader').hide();
 				$('#ForgetpasswordForm_email_em_').html("A new password has been sent to your e-mail address");
 			}
 			else{				
-				$('#ForgetpasswordForm_email_em_').removeClass("loader");
+				$('#forgot_password_loader').hide();
 				$('#ForgetpasswordForm_email_em_').html(data.msg);
 			}       
 		},
 		error: function(data) { // if error occured
 			console.log("error: "+data);
 		}
-	});
+	});		
 }
 
 /*
@@ -547,7 +546,7 @@ $(document).on('click', '#forgetmail', function(){
 	if($('#ForgetpasswordForm_email').val()!=''){		
 		var email = $('#ForgetpasswordForm_email').val();
 		if(validateEmail(email)){	//check Email uniqueness
-			forgetpasswordToEmail();	
+			forgetpasswordToEmail();			
 		} else{
 			$('#ForgetpasswordForm_email_em_').show();
 			$('#ForgetpasswordForm_email_em_').html('Enter Valid Email Id');
@@ -556,9 +555,9 @@ $(document).on('click', '#forgetmail', function(){
 	else{
 		$('#ForgetpasswordForm_email_em_').show();
 		$('#ForgetpasswordForm_email_em_').html('Enter Email Id');
-	}
-	
+	}	
 });
+
 
 /*A common Ajax function 
 url - controller Path

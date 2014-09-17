@@ -515,7 +515,7 @@ class SiteController extends Controller
 	/**
 	* Displays the Forget password Modal window - By EmailId
 	* Last Modified:10-Sept-14
-	*/
+	*/	
 	public function actionForgetpassword(){
 		
 		$model=new ForgetpasswordForm; //**models/ForgetpasswordForm.php
@@ -1001,6 +1001,7 @@ Posly Team
 		));
 		Yii::app()->end();
 	}
+
 	
 //END
 }

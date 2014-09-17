@@ -202,6 +202,16 @@ class ProfileController extends Controller
 	public function actionFriends(){
 		$this->renderPartial('friends');
 	}
+	
+	/**
+	* Displays the settings page for user
+	* Last Modified:17-Oct-14
+	*/	
+	public function actionProfilesettings(){
+		$this->layout='profile_layout';
+		$this->render('index');
+	}
+		
 
 	public function actionAddHearts() {
 		

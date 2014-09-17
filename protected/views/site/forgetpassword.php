@@ -8,6 +8,7 @@
 		<div class="input-icon"> <i class="icon-user"></i>
 		<input type="text" id="ForgetpasswordForm_email" name="ForgetpasswordForm[email]" placeholder="Email" class="form-control placeholder-no-fix" >		
 		</div>
+		<div id ="forgot_password_loader" class="loader" style="display:none"></div>
 		<div style="display:none" id="ForgetpasswordForm_email_em_" class="errorMessage">
 		</div>	
 	</div>
