@@ -1036,41 +1036,48 @@ Posly Team
 			foreach($hashtags as $keys=>$values)
 			$hashtagArray[] = $values->hashtags_id;
 		} 
-		unset($hashtags);		
+		unset($hashtags);
+		unset($q);
+		$photoidArray = array();
+		if(count($hashtagArray)>0)
+		{
+			//Now from HashtagIds get Photo Ids			
+			$criteria = new CDbCriteria();			
+			$criteria->addInCondition("hashtags_id", $hashtagArray);		
+			$hashtags=PhotosHashtags::model()->findAll($criteria);			
+			if(isset($hashtags) && count($hashtags)>0){
+				foreach($hashtags as $keys=>$values)
+				$photoidArray[] = $values->photos_id;
+			}
+			unset($hashtags);
+			unset($hashtagArray);
+			$photoidArray = array_unique($photoidArray);
+		}
 		//Get Hash Tags Listings for sidebar, this action define in Controller class
 		$limit = (Yii::app()->user->isGuest)?9:6;		
 		$hash_tags = $this->actionHashtaglist($limit);
 		//** Search For Posly Card wrt userId or HashTagId
 		$allusersphotos=array();
-		if(count($hashtagArray)==0)
-		{
-			$time=new CTimestamp;
+		if(count($photoidArray)==0)
+		{	
+			$time=new CTimestamp; //Search By Name
 			$value=$time->getDate();		
 			$criteria = new CDbCriteria();			
 			$criteria->addSearchCondition('userDetails.user_details_firstname', $searchname, true);			
 			$criteria->limit=8;
 			$allusersphotos=Photos::model()->with('user','user.userDetails','photosHashtags')->findAll($criteria);	
-			unset($criteria);
-			$this->render('index', array('photos'=>$allusersphotos,'hash_tags'=>$hash_tags));	
-		} else{
-			/*$criteria = new CDbCriteria();
-			$criteria->group="photos.user_id";
-			$criteria->condition = "t.hashtags_id='72'";
-			//$criteria->addInCondition("t.hashtags_id", array(72,69));
-			$criteria->limit=2;
-			$allusersphotos=PhotosHashtags::model()->with('photos','photos.user', 'photos.user.userDetails',
-			'photos.user.userLocation')->findAll($criteria);  
-			$this->render('hashtags', array('photos'=>$allusersphotos));
-			*/
-			$criteria = new CDbCriteria();
-			$criteria->group="photos.user_id";
-			$criteria->addInCondition("t.hashtags_id", array(72,69));
-			$criteria->limit=2;
-			$allusersphotos=PhotosHashtags::model()->with('photos','photos.user', 'photos.user.userDetails', 'photos.user.userLocation')->findAll($criteria); 
-			$this->render('index', array('photos'=>$allusersphotos,'hash_tags'=>$hash_tags));			
-			
+			unset($criteria);							
+		} else{			
+			$time=new CTimestamp; //Search By HashTags
+			$value=$time->getDate();		
+			$criteria = new CDbCriteria();			
+			//$criteria->addSearchCondition('userDetails.user_details_firstname', $searchname, true);
+			$criteria->addInCondition("photos_id", $photoidArray);
+			$criteria->limit=8;
+			$allusersphotos=Photos::model()->with('user','user.userDetails','photosHashtags')->findAll($criteria);	
+			unset($criteria);			
 		}
-		
+		$this->render('index', array('photos'=>$allusersphotos,'hash_tags'=>$hash_tags));
 	}
 	
 //END
