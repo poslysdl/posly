@@ -145,21 +145,21 @@ class Controller extends CController
 		}
 		elseif ($time_difference >= 60 * 60 * 24 * 7)
 		{
-			/* 60 seconds/minute * 60 minutes/hour * 24 hours/day * 7 days/week
+			/* 60 seconds/minute * 60 minutes/hour * 24 hours/day * 7 days/week = 604800
 			 * This means that the time difference is 1 week or more
 			 */
 			return date('M j',$time_stamp);
 		}
 		elseif ($time_difference >= 60 * 60 * 24)
 		{
-			/* 60 seconds/minute * 60 minutes/hour * 24 hours/day
+			/* 60 seconds/minute * 60 minutes/hour * 24 hours/day = 86400
 			 * This means that the time difference is 1 day or more
 			 */
 			return date('M j',$time_stamp);
 		}
 		elseif ($time_difference >= 60 * 60)
 		{
-			/* 60 seconds/minute * 60 minutes/hour
+			/* 60 seconds/minute * 60 minutes/hour = 3600
 			 * This means that the time difference is 1 hour or more
 			 */
 			return date('g:ia',$time_stamp);
@@ -173,6 +173,12 @@ class Controller extends CController
 		}		
 	}
 	
+	/*  $time=new CTimestamp;
+		$value=$time->getDate(); --Yii method to get Time
+		echo strtotime('now').'--'.$value[0]; 
+		//O/p 1410935502--1410935502 (Same result)
+	*/
+		
 	// Function to get the client ip address
 	public function get_client_ip() {
 		$ipaddress = '';

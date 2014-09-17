@@ -227,5 +227,15 @@ class Users extends CActiveRecord
 		}		
 	}
 	
+	/**
+	 * Name: updateNotificationDate
+	 * An User_define function to Update user Read notify date
+	 * when user click on Notify icon to read it	 
+	 */
+	public function updateNotificationDate($uid,$time){		
+		$query="UPDATE users SET notification_read_date='".$time."' WHERE user_id='".$uid."'";
+		$command= Yii::app()->db->createCommand($query);
+		$command->execute();
+	}
 	
 }

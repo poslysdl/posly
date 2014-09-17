@@ -117,6 +117,7 @@ return array(
 				'following'=>'site/following',
 				'viral'=>'site/viral',
 				'tags/<hid:\d+>'=>'site/hashtags',
+				'search'=>'site/search',
 				'<url>'=>'profile/index',
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
@@ -154,6 +155,8 @@ return array(
 				// uncomment CWebLogRoute to show DB query log messages on web pages				
 				/*array(
 					'class'=>'CWebLogRoute',
+					'enabled' => YII_DEBUG,
+					'levels' => 'error, warning, trace, notice',
 				),*/				
 			),
 		),

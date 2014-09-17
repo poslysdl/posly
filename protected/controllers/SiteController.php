@@ -815,11 +815,11 @@ Posly Team
 	
 	/**
 	This user define Ajax function is used to return the html for rendering of
-	user's Activities List at Sidebar.
-	Last Modified:16-Sep-14
+	user's Activities List at Sidebar as well as For Top-Header Notification.
+	Last Modified:17-Sep-14
 	*/
 	public function actionShowusersactivities()
-	{	
+	{		
 		$criteria = new CDbCriteria();
 		$criteria->limit=2;	
 		$uid = Yii::app()->user->id; //logged in userId
@@ -844,8 +844,7 @@ Posly Team
 					
 					//Duplicate Testing	Data				
 					$activityArray['1410354280'] = array('avatar'=>$v['useravatar'],'name'=>$uname,'message'=>$msg);
-					$activityArray['1410354380'] = array('avatar'=>$v['useravatar'],'name'=>$uname,'message'=>$msg);
-					$activityArray['1410354480'] = array('avatar'=>$v['useravatar'],'name'=>$uname,'message'=>$msg);
+					$activityArray['1410354380'] = array('avatar'=>$v['useravatar'],'name'=>$uname,'message'=>$msg);					
 					//Duplicate Ends
 				}
 			}
@@ -877,7 +876,7 @@ Posly Team
 			unset($friends);
 			//Now get List of Extra Notification of Posly, only for Top-Header
 			if($flag=="header")
-			$activityArray['1410849978'] = array('avatar'=>'avatar1_small.jpg','name'=>'Posly','message'=>'There is an event to be organised at bangalore, at 1-oct-14, for Fashion ..an fasion event'); //*** Testing Data
+			$activityArray['1410835502'] = array('avatar'=>'avatar1_small.jpg','name'=>'Posly','message'=>'There is an event to be organised at bangalore, at 1-oct-14, for Fashion ..an fasion event'); //*Duplicate Testing Data
 		}
 		else
 		{
@@ -906,20 +905,15 @@ Posly Team
 				}
 			}			
 			unset($friends);
-		}
+		}	
 		
-		//Get Notification count from SESSION variable
-		$existingCount=Yii::app()->user->getState("notify_count");
-		$existingCount=(empty($existingCount))?0:$existingCount;
 		//Now Create the display Activity HTML		
 		if(count($activityArray)>0)
 		{
-			arsort($activityArray); //Sort The Activity Array -- SORT
-			echo count($activityArray).'--'.$existingCount;
-			$notifyCount = count($activityArray)-$existingCount;
-			if($notifyCount<0 || $notifyCount==0)
-				$notifyCount='';
-			Yii::app()->user->setState("notify_count",$notifyCount);
+			krsort($activityArray); 
+			//Sort activity Array By Keys -- SORT	
+			$unread_notifycount=0;
+			$user_notifyReaddate = (!empty($uid))?Yii::app()->user->getState("notify_readdate"):'0';			
 			foreach($activityArray as $keys=>$values)
 			{			
 				$fromurl=strstr($values['avatar'], '://', true);
@@ -953,6 +947,17 @@ Posly Team
 					</li>					
 					';
 				}
+				//Now check For notify Cnt for LoggedIn user				
+				if(!empty($uid))
+				{  //Condition if notify Date in DB is Less then Keys(notifyTimedate), then its an Unread		
+					if($user_notifyReaddate < $keys){
+						$unread_notifycount++; 
+					}
+				}
+			}
+			if(!empty($uid)){
+				$unread_notifycount = ($unread_notifycount==0)?'':$unread_notifycount;
+				Yii::app()->user->setState('notify_count', $unread_notifycount);
 			}
 		}
 		unset($activityArray);
@@ -962,11 +967,7 @@ Posly Team
 			<div class="message"> <span class="name">Chanh Ny</span> likes Chi Minh Anh photo. </div>
 			</li>';
 		}		
-		echo $str;
-		/*echo CJSON::encode(array(
-			  'status'=>'success',
-			  'values'=>$html
-		));*/
+		echo $str;		
 		Yii::app()->end();	
 	}
 	
@@ -985,18 +986,87 @@ Posly Team
 	}
 	
 	/**
-	* This user define Ajax function, 
+	* This user define Ajax function, When User Clicks on Notification Icon 
 	* to remove notify count from session, After User Reads It
 	* Last Modified:16-Sep-14
 	*/
 	public function actionRemovenotifycount()
 	{
+		$time=new CTimestamp;
+		$value=$time->getDate();
+		$uid = Yii::app()->user->id;
+		Users::model()->updateNotificationDate($uid,$value[0]);
+		Yii::app()->user->setState("notify_readdate",$value[0]);
 		Yii::app()->user->setState("notify_count",'');
 		echo CJSON::encode(array(
 			  'status'=>'success',
 			  'values'=>''
 		));
 		Yii::app()->end();
+	}
+	/*$time1=new CTimestamp;
+	$value1=$time1->getDate();
+	echo strtotime('now').'--'.$value1[0]; 
+	//O/p 1410935502--1410935502 (Same result)
+	date('d-m-y',strtotime('now'));
+	*/	
+	
+	/**
+	*This is a seach functionality
+	* to search Card by users or Tag name
+	*Last Modified:17-Sep-14
+	*/
+	public function actionSearch()
+	{
+		$this->layout='front_layout';
+		$searchname = $_POST['search'];
+		//get Hashtag Ids wrt to searchname
+		$searchname = addcslashes($searchname, '%_'); //escape LIKE's special characters
+		$q = new CDbCriteria( array(
+		'condition' => "hashtags_name LIKE :match",        
+		'params' => array(':match' => "%$searchname%")  
+		)); 
+		$hashtags = Hashtags::model()->findAll( $q ); 
+		$hashtagArray = array();
+		if(isset($hashtags) && count($hashtags)>0){
+			foreach($hashtags as $keys=>$values)
+			$hashtagArray[] = $values->hashtags_id;
+		} 
+		unset($hashtags);		
+		//Get Hash Tags Listings for sidebar, this action define in Controller class
+		$limit = (Yii::app()->user->isGuest)?9:6;		
+		$hash_tags = $this->actionHashtaglist($limit);
+		//** Search For Posly Card wrt userId or HashTagId
+		$allusersphotos=array();
+		if(count($hashtagArray)==0)
+		{
+			$time=new CTimestamp;
+			$value=$time->getDate();		
+			$criteria = new CDbCriteria();			
+			$criteria->addSearchCondition('userDetails.user_details_firstname', $searchname, true);			
+			$criteria->limit=8;
+			$allusersphotos=Photos::model()->with('user','user.userDetails','photosHashtags')->findAll($criteria);	
+			unset($criteria);
+			$this->render('index', array('photos'=>$allusersphotos,'hash_tags'=>$hash_tags));	
+		} else{
+			/*$criteria = new CDbCriteria();
+			$criteria->group="photos.user_id";
+			$criteria->condition = "t.hashtags_id='72'";
+			//$criteria->addInCondition("t.hashtags_id", array(72,69));
+			$criteria->limit=2;
+			$allusersphotos=PhotosHashtags::model()->with('photos','photos.user', 'photos.user.userDetails',
+			'photos.user.userLocation')->findAll($criteria);  
+			$this->render('hashtags', array('photos'=>$allusersphotos));
+			*/
+			$criteria = new CDbCriteria();
+			$criteria->group="photos.user_id";
+			$criteria->addInCondition("t.hashtags_id", array(72,69));
+			$criteria->limit=2;
+			$allusersphotos=PhotosHashtags::model()->with('photos','photos.user', 'photos.user.userDetails', 'photos.user.userLocation')->findAll($criteria); 
+			$this->render('index', array('photos'=>$allusersphotos,'hash_tags'=>$hash_tags));			
+			
+		}
+		
 	}
 	
 //END

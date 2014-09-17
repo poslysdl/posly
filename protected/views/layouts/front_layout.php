@@ -342,6 +342,8 @@ $(document).ready(function(){
 		$('#header_notification_bar > .dropdown-toggle > .badge').text(''); //Top Header Notification count
 		var cnt = getAjaxreturn('<?php echo $this->createUrl("/site/removenotifycount"); ?>','');
 	});
+	//** Timer to update Notification every 4min
+	//setInterval(function(){showNotifications()}, 40000);
    
 });
 

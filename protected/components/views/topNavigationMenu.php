@@ -183,7 +183,7 @@ else
 		<!--<li class="divider"></li>
 		<li><a class="gren" href="#">find friends</a></li>
 		<li><a class="gren" href="#">language</a></li>-->
-		<li><a class="gren" href="#">settings</a></li>
+		<li><a class="gren" href="<?php echo Yii::app()->createUrl('/profile/profilesettings'); ?>">settings</a></li>
 		<li class="divider"></li>
 		<!--<li><a class="gren center" href="#">report a problem</a> </li>-->
 		<li> <!--class="buttcen" class=btn meoS-->
@@ -195,12 +195,11 @@ else
    <!-- END USER LOGIN DROPDOWN --> 
      
 	<!-- BEGIN SEARCH FROM -->
-
 	<li class="searchbox hidden-mobi"> 
 	<!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->
-	<form class="sidebar-search" action="extra_search.html" method="POST">
+	<form class="sidebar-search" action="<?php echo Yii::app()->createUrl('/search'); ?>" method="POST">
 	<div class="form-container">
-	<input type="text" placeholder="Search for tag and user"/>
+	<input type="text" name="search" placeholder="Search for tag and user"/>
 	<input type="button" class="submit" value="&#xe058;"/>
 	</div>
 	</form>
