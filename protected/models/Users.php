@@ -117,7 +117,34 @@ class Users extends CActiveRecord
 			return $checkIdentifier;
 		else
 			return null;
-   }
+	}
+	
+	public function getUserAge($userId){
+		$query = "SELECT ud.user_details_dob FROM `users_details` ud JOIN `users` u ON u.user_details_id = ud.user_details_id";
+		$query.=" WHERE u.user_id = :userId ";
+		$command= Yii::app()->db->createCommand($query);
+		$command->bindParam(":userId", $userId);
+		$rawData = $command->queryAll();
+		foreach($rawData as $raw){
+			$dob = $raw['user_details_dob'];
+		}
+		if($dob){
+			//calculate years of age (input string: YYYY-MM-DD)
+			list($year, $month, $day) = explode("-", $dob);		
+			$year_diff  = date("Y") - $year;
+			$month_diff = date("m") - $month;
+			$day_diff   = date("d") - $day;		
+			if ($day_diff < 0 || $month_diff < 0)
+			$year_diff--;
+			return $year_diff;			
+		}
+		else{
+			return false;
+		}
+		
+		exit;
+	}  
+   
  
    // for social user login
    public function findByAuthSocial($provider, $identifier){
