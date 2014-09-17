@@ -9,14 +9,17 @@
 		<input type="text" id="ForgetpasswordForm_email" name="ForgetpasswordForm[email]" placeholder="Email" class="form-control placeholder-no-fix" >		
 		</div>
 		<div id ="forgot_password_loader" class="loader" style="display:none"></div>
-		<div style="display:none" id="ForgetpasswordForm_email_em_" class="errorMessage">
-		</div>	
+		<div style="display:none" id="ForgetpasswordForm_email_em_" class="errorMessage"></div>
+		<div style="display:none" id="ForgetpasswordForm_email_success" class="successmodalMessage"></div>
 	</div>
 	<div class="modal-div">
 		<div class="divider"></div>
 	</div>
 	<div class="modal-footer">
-		<input type="button" id="forgetmail" value="SUBMIT" name="yt0" data-url="<?php echo Yii::app()->createUrl('/site/forgetpassword');?>" data-dismiss="model" class="btn blue">          
+		<input type="button" id="forgetmail" value="SUBMIT" name="yt0" data-url="<?php echo Yii::app()->createUrl('/site/forgetpassword');?>" data-dismiss="model" class="btn blue">
+		<input style="display:none"  type="button" id="reset_password_close" value="CLOSE" name="reset_password_close" class="btn blue" data-url="<?php echo Yii::app()->homeUrl;?>">
+		
+		
 	</div>
 	</form>
 </div>

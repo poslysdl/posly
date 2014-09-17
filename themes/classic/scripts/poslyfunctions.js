@@ -225,7 +225,12 @@ function forgetpasswordToEmail(){
 			data = jQuery.parseJSON(data);
 			if(data.status=="success"){				
 				$('#forgot_password_loader').hide();
-				$('#ForgetpasswordForm_email_em_').html("A new password has been sent to your e-mail address");
+				$('#ForgetpasswordForm_email').hide();
+				$('.input-icon').hide();
+				$("#forgetmail").hide();				
+				$("#ForgetpasswordForm_email_success").show();
+				$("#reset_password_close").show();				
+				$('#ForgetpasswordForm_email_success').html("A new password has been sent to your e-mail address");
 			}
 			else{				
 				$('#forgot_password_loader').hide();
@@ -539,6 +544,13 @@ $(document).on('click', '#submit_resetpassword', function(){
 		}
 	}
 });
+
+$(document).on('click', '#reset_password_close', function(){
+	var urlforget = $('#reset_password_close').attr('data-url');
+	window.location=urlforget;	
+});
+
+
 
 $(document).on('click', '#forgetmail', function(){
 	$('#ForgetpasswordForm_email_em_').html('');
