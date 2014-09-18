@@ -352,15 +352,17 @@ $(document).ready(function(){
 	showNotifications();
 	
 <?php } else{ //Guest Login *** ?>
-    $(window).load(function() {
+$(window).load(function() {
         $('.flexslider').flexslider({
           animation: "slide",
           controlsContainer: ".flex-container"
     });
-   get_current_nearby_country("<?php echo $this->createUrl('/site/getnearbycountry'); ?>"); 
 });
 <?php } ?>
-
+//Location filter
+$(window).load(function() {
+   get_current_nearby_country("<?php echo $this->createUrl('/site/getnearbycountry'); ?>"); 
+});
 </script>
 
 <!-- END JAVASCRIPTS -->
