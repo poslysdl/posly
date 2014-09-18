@@ -101,7 +101,6 @@ class Countries extends CActiveRecord
 	* @param  $latlong Array of latitude and longitude
 	* @return Array of Near by countries
 	*/
-
 	public function get_current_nearbycountries($ip){
 		//$ip = '122.166.211.149';
 		$countries = array();
@@ -148,19 +147,30 @@ class Countries extends CActiveRecord
 		}		
 		$jsonData = json_encode($countries);
 		return $jsonData;		
-	}	
-
-
+	}
+	
+	/**	
+	* User_Define Function, to get World countries	
+	* @return Array of countries
+	* Last Modified: 18-Sept-14
+	*/
+	public function getcountries(){
+		$query ="SELECT distinct(country_code) as id,country_name FROM countries_ip_lat_long ORDER BY country_name";
+		$command= Yii::app()->db->createCommand($query);		
+		$rawData = $command->queryAll();		
+		return $rawData;
+	}
+	
 	/**	
 	* User_Define Function, to get Regions wrt country
 	* @param  $countryid Integer
 	* @return Array of regions
-	* Last Modified: 03-Sept-14
+	* Last Modified: 18-Sept-14
 	*/
-	public function getregions($countryid){
-		//$countryid = mysql_real_escape_string($countryid);
-		$query ="SELECT * FROM regions WHERE country_id='".$countryid."'";
-		$command= Yii::app()->db->createCommand($query);		
+	public function getregions($countryid){		
+		$query ="SELECT distinct(region_name) as id,region_name as name FROM countries_ip_lat_long";
+		$query.=" WHERE country_code='".$countryid."' AND region_name<>'-' ORDER BY region_name";
+		$command= Yii::app()->db->createCommand($query); 
 		$rawData = $command->queryAll();
 		return $rawData;
 	}
@@ -171,8 +181,7 @@ class Countries extends CActiveRecord
 	* @return Array of state
 	* Last Modified: 03-Sept-14
 	*/
-	public function getstates($regionid){
-		//$regionid = mysql_real_escape_string($regionid);
+	public function getstates($regionid){		
 		$query ="SELECT * FROM states WHERE region_id='".$regionid."'";
 		$command= Yii::app()->db->createCommand($query);		
 		$rawData = $command->queryAll();
@@ -183,14 +192,12 @@ class Countries extends CActiveRecord
 	* User_Define Function, to get Cities wrt Sates
 	* @param  $stateid Integer
 	* @return Array of Cities
-	* Last Modified: 03-Sept-14
+	* Last Modified: 18-Sept-14
 	*/
 	public function getcities($stateid,$countryid){
-		//$stateid = mysql_real_escape_string($stateid);
-		if($stateid==0 || empty($stateid))
-			$query ="SELECT * FROM city WHERE country_id='".$countryid."'";
-		else
-			$query ="SELECT * FROM city WHERE state_id='".$stateid."'";
+		$stateid = strtoupper($stateid);
+		$query ="SELECT distinct(city_name) as id,city_name as name";
+		$query.=" FROM countries_ip_lat_long WHERE region_name='".$stateid."' AND city_name<>'-' ORDER BY city_name";
 		$command= Yii::app()->db->createCommand($query);		
 		$rawData = $command->queryAll();
 		return $rawData;

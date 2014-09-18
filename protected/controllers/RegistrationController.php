@@ -120,7 +120,7 @@ class RegistrationController extends Controller
 				$fn = trim($_POST['firstname']);
 				$ln = isset($_POST['lastname'])?trim($_POST['lastname']):NULL;
 				$email = trim($_POST['email']);
-				$password = isset($_POST['password'])?$_POST['password']:'';
+				$password = (isset($_POST['password']) && $_POST['password']!='0')?$_POST['password']:NULL;
 				$gender = $_POST['gender'];
 				$dob = trim($_POST['dob']);
 				$search = isset($_POST['search'])?$_POST['search']:'';				
@@ -128,8 +128,8 @@ class RegistrationController extends Controller
 				//UsersLanguage model values
 				$language = trim($_POST['language']);			
 				$country = trim($_POST['country']);
-				$region = (trim($_POST['region'])=='0')?'':trim($_POST['region']);
-				$state = (trim($_POST['state'])=='0')?'':trim($_POST['state']);
+				$region = (trim($_POST['region'])=='0')?'':trim($_POST['region']);				
+				$state = isset($_POST['state'])?trim($_POST['state']):NULL;
 				$city = trim($_POST['city']);				
 				$ethinicity = trim($_POST['etnicity']);
 				$phone = (trim($_POST['phone'])=='')?'':trim($_POST['phone']);
@@ -312,7 +312,7 @@ class RegistrationController extends Controller
 			}			
 			//Render the page
 			$this->layout='account_settings_layout';
-			$country = Countries::model()->findAll();
+			$country = Countries::model()->getcountries();
 			$ethnicity = UsersEthnicity::model()->findAll();
 			$languages = UsersLanguage::model()->findAll();			
 			$this->render('account-settings', array('model'=>$model, 'country'=>$country,'ethnicity'=>$ethnicity,'languages'=>$languages,'errmsg'=>$errmsg,'stepflag'=>$stepflag));
@@ -573,22 +573,22 @@ class RegistrationController extends Controller
 				$notaval = "Regions Not available";
 				$result = Countries::model()->getregions($val);				
 			}
-			else if($sourcename=='region'){
+			/*else if($sourcename=='region'){
 				//select state wrt region
 				$notaval = "States Not available";
 				$result = Countries::model()->getstates($val);
-			}
+			} */
 			else {
-				//select city wrt state
+				//select city wrt region/state
 				$notaval = "Cities Not available";
-				$result = Countries::model()->getcities($val,$countryid);
-			}
+				$result = Countries::model()->getcities($val,$countryid);	}
 			
 			if(isset($result) && count($result))
 			{
 				//create the options
 				foreach($result as $keys=>$values){
-				$str.='<option value="'.$values['name'].'" data-id="'.$values['id'].'" > '.$values['name'].'</option>';
+					$rvalue = ucwords(strtolower($values['id']));
+					$str.='<option value="'.$rvalue.'" data-id="'.$rvalue.'" > '.$values['name'].'</option>';
 				}
 			} else{
 				$str.= '<option value="0" data-id="">'.$notaval.'</option>';
