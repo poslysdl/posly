@@ -1,8 +1,12 @@
 <?php
-class ProfileController extends Controller
-{ 
-   public function filters()
-    {
+class ProfileController extends Controller {
+	
+	public $user_guest = "guest";
+	public $user_self = "self";
+	public $user_logged_vistor = "logged_vistor";
+	public $user_friend = "friend";
+	 public $lang = 'en';
+   public function filters() {
         return array( 'accessControl' ); // perform access control for CRUD operations
     }
  
@@ -16,15 +20,12 @@ class ProfileController extends Controller
         );
     }
 	
-	public function actionIndex($url) 
-	{
+	public function actionIndex($url) {
 		//allow user profiles who has everyone		 
-		if(Yii::app()->user->isGuest) 
-		{	
+		if(Yii::app()->user->isGuest) {
 			$error = false;
-			if(isset($url) && !empty($url)) 
-			{
-
+			if(isset($url) && !empty($url)){
+				$user_additional_info = array();	
 				$profile_url = $url;
 				Yii::app()->session['url'] = $profile_url;
 				$row = UsersDetails::model()->find("user_unique_url='$profile_url'");
@@ -34,12 +35,13 @@ class ProfileController extends Controller
 					$sec_row = UsersSecurity::model()->find("user_id=$user_id");
 					$privacy = $sec_row['whocansee'];					
 					if ($privacy == 1) {	
-							$this->layout='profile_layout';	
-							Yii::app()->clientScript->registerCoreScript('jquery'); 
+						$this->layout='profile_layout';	
+						Yii::app()->clientScript->registerCoreScript('jquery'); 
 						$userAge = Users::model()->getUserAge($row['user_id']);
-						$age = ($userAge) ? $userAge : "";						
-						$this->render('index',array('user'=>$row,'age'=>$age));
-							
+						$age = ($userAge) ? $userAge : "";
+						$user_additional_info['age'] = $userAge;
+						$user_additional_info['current_user'] = $this->user_guest;
+						$this->render('index',array('user'=>$row,'user_info'=>$user_additional_info));							
 
 					} else /* if privacy is 2 or 3 */ {
 						$error = true;
@@ -58,57 +60,67 @@ class ProfileController extends Controller
 				$this->redirect(Yii::app()->homeUrl);
 			
 		} 					
-		else 
-		{
+		else {
 			//allow user profile accordingly everyone and followers
 			$error = false;
 			$id = Yii::app()->user->id;
-			if(isset($url) && !empty($url)) 
-			{
+
+			if(isset($url) && !empty($url)) {
 				$profile_url = $url;
 				Yii::app()->session['url'] = $profile_url;
 				$row = UsersDetails::model()->find("user_unique_url='$profile_url'");
 				Yii::app()->session['user_id'] = $row['user_id'];
 				if(isset($row)) {
-					$user_id = $row['user_id'];					
-					if($id == $user_id) {
+					$user_id = $row['user_id'];
+					$userAge = Users::model()->getUserAge($row['user_id']);
+					$age = ($userAge) ? $userAge : "";	
+					//checking logged in user (own profile)
+					if($id == $user_id) {		
+						
 						$this->layout='profile_layout';
-						Yii::app()->clientScript->registerCoreScript('jquery');
-						$userAge = Users::model()->getUserAge($row['user_id']);
-						$age = ($userAge) ? $userAge : "";						
-						$this->render('index',array('user'=>$row,'age'=>$age));
-					} 
-					else 
-					{
+						Yii::app()->clientScript->registerCoreScript('jquery');					
+						$user_additional_info['age'] = $userAge;
+						$user_additional_info['current_user'] = $this->user_self;
+						$this->render('index',array('user'=>$row,'user_info'=>$user_additional_info));
+					}
+					//checking logged in user (others profile)
+					else {
 						$sec_row = UsersSecurity::model()->find("user_id=$user_id");
 						$privacy = $sec_row['whocansee'];
 						if($privacy == 1) {
-								$this->layout='profile_layout';
-								Yii::app()->clientScript->registerCoreScript('jquery'); 
-								$this->render('index');
-
-						} else if ($privacy == 2){							
-						$row = UsersFollow::model()->find("follow_id=$user_id and user_id=$id");
+							$this->layout='profile_layout';
+							Yii::app()->clientScript->registerCoreScript('jquery'); 
+							$user_additional_info['age'] = $userAge;
+							$user_additional_info['current_user'] = $this->user_logged_vistor;
+							$this->render('index',array('user'=>$row,'user_info'=>$user_additional_info));
+						}
+						else if ($privacy == 2){							
+							$row = UsersFollow::model()->find("follow_id=$user_id and user_id=$id");
 								if (isset($row)) {
 									$this->layout='profile_layout';
 									Yii::app()->clientScript->registerCoreScript('jquery'); 
-									$this->render('index');
+									$user_additional_info['age'] = $userAge;
+									$user_additional_info['current_user'] = $this->$user_friend;
+									$this->render('index',array('user'=>$row,'user_info'=>user_additional_info));
 								} else {
 									//$this->redirect(Yii::app()->homeUrl);
 									//$this->render("error");
 									$error = true;
 								}  
-						} else {
+						}
+						else {
 							//$this->redirect(Yii::app()->homeUrl);
 							//$this->render("error");
 							$error = true;
 						}
 					}
-				} else /* if the user is not there with that profile id */ {
+				}
+				else /* if the user is not there with that profile id */ {
 					$error = true;
 				}
 			
-			} else /* if the url is not set */{
+			}
+			else /* if the url is not set */{
 				$error = true;
 			}			
 			if($error){

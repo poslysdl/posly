@@ -485,7 +485,8 @@ class SiteController extends Controller
 		$model=new ResetpasswordForm; //**models/ForgetpasswordForm.php
 		$returnurl = Yii::app()->user->returnUrl;
 		$key = 'forget password posly';	
-		$token_request = urldecode($_REQUEST['token']);
+		//$token_request = urldecode($_REQUEST['token']);
+		$token_request = $_REQUEST['token'];
 		$decrypted_token = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($token_request), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
 		if ($decrypted_token && !empty($decrypted_token) && (strpos($decrypted_token, 'user') !== false) && $decrypted_token != ''){
 			$token_array = explode("user",$decrypted_token);
@@ -531,10 +532,11 @@ class SiteController extends Controller
 				$user_id = $model->get_user_id($model->attributes['email']);			
 				$token = $token."user".$user_id;
 				$key = 'forget password posly';		
-				$encrypted_token = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $token, MCRYPT_MODE_CBC, md5(md5($key))));
-				$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($encrypted_token), MCRYPT_MODE_CBC, md5(md5($key))), "\0"); 
-				$user_token = urlencode($encrypted_token);
-				$link = $path."?token=".$user_token;				
+				 $encrypted_token = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $token, MCRYPT_MODE_CBC, md5(md5($key))));
+				//echo "<br/>";
+				//$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($encrypted_token), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
+				//$user_token = urlencode($encrypted_token);
+				$link = $path."?token=".$encrypted_token;				
 				$model->reset_password_token($token,$model->attributes['email']);
 				Yii::import('ext.yii-mail.YiiMailMessage');				
 				$message = new YiiMailMessage;
