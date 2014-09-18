@@ -60,7 +60,7 @@
 			<div>
 			<button type="button" class="btn faceS" >Facebook</button>
 			</div>
-			<div>
+			<!--<div>
 			<button type="button" class="btn twistS" >Twitter</button>
 			</div>
 			<div>
@@ -68,13 +68,13 @@
 			</div>
 			<div>
 			<button type="button" class="btn pinter" >Pinterest</button>
-			</div>
+			</div>-->
 			<div>
 			<button type="button" class="btn insta" >Instagram</button>
 			</div>
-			<div>
+			<!--<div>
 			<button type="button" class="btn googlep" >Google +</button>
-			</div>
+			</div>-->
 			<div>
 			<button type="button" class="btn meoS" data-toggle="modal" href="#sign-up">Email</button>
 			</div>

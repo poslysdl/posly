@@ -5,6 +5,7 @@ class SiteController extends Controller
 	/**
 	* Declares class-based actions.
 	*/
+	public $cartlimit = 2; //Display No of Card
 	public function actions()
 	{
 		return array(
@@ -44,7 +45,7 @@ class SiteController extends Controller
 				$criteria->group = 't.user_id';
 				$criteria->order = 'totalcount DESC';
 				
-				if($_GET['l']<6){
+				if($_GET['l']<$this->cartlimit){
 					$criteria->limit=$_GET['l']; //Total No of Records
 					$criteria->offset=$_GET['l']-2; //Starts from..
 				} else{
@@ -65,7 +66,7 @@ class SiteController extends Controller
 				$criteria->group = 't.user_id';
 				$criteria->order = 'totalcount DESC';
 				
-				if($_GET['l']<6){
+				if($_GET['l']<$this->cartlimit){
 					$criteria->limit=$_GET['l']; //Total No of Records
 					$criteria->offset=$_GET['l']-2; //Starts from..
 				} else{
@@ -81,7 +82,7 @@ class SiteController extends Controller
 				$criteria = new CDbCriteria();				
 				$criteria->group = 'userDetails.user_id';
 				$criteria->order = 'userDetails.user_details_created_date DESC';				
-				if($_GET['l']<6){
+				if($_GET['l']<$this->cartlimit){
 					$criteria->limit=$_GET['l']; //Total No of Records
 					$criteria->offset=$_GET['l']-2; //Starts from..
 				} else{
@@ -96,7 +97,7 @@ class SiteController extends Controller
 				$criteria = new CDbCriteria();				
 				$criteria->group = 'userDetails.user_id';
 				$criteria->order = 'userDetails.user_rank_worldwide ASC';				
-				if($_GET['l']<6){
+				if($_GET['l']<$this->cartlimit){
 					$criteria->limit=$_GET['l']; //Total No of Records
 					$criteria->offset=$_GET['l']-2; //Starts from..
 				} else{
@@ -112,7 +113,7 @@ class SiteController extends Controller
 				$criteria->condition = 'userDetails.user_details_gender = "1"';
 				$criteria->group = 'userDetails.user_id';
 				$criteria->order = 'userDetails.user_rank_worldwide ASC';				
-				if($_GET['l']<6){
+				if($_GET['l']<$this->cartlimit){
 					$criteria->limit=$_GET['l']; //Total No of Records
 					$criteria->offset=$_GET['l']-2; //Starts from..
 				} else{
@@ -128,7 +129,7 @@ class SiteController extends Controller
 				$criteria->condition = 'userDetails.user_details_gender = "0"';
 				$criteria->group = 'userDetails.user_id';
 				$criteria->order = 'userDetails.user_rank_worldwide ASC';				
-				if($_GET['l']<6){
+				if($_GET['l']<$this->cartlimit){
 					$criteria->limit=$_GET['l']; //Total No of Records
 					$criteria->offset=$_GET['l']-2; //Starts from..
 				} else{
@@ -172,7 +173,6 @@ class SiteController extends Controller
 			}
 		}
 		Yii::app()->end();
-
 	}
 
 	/**
@@ -191,11 +191,11 @@ class SiteController extends Controller
 		$criteria->select = 't.* , (SELECT COUNT( * )*(0.3) FROM log_photos_comment a WHERE a.owner_id = t.user_id AND a.log_photos_comment_date BETWEEN '.$start.' AND '.$end.' ) + (SELECT COUNT( * )*(1) FROM log_photos_hearts b WHERE b.owner_id = t.user_id AND b.log_photos_hearts_date BETWEEN '.$start.' AND '.$end.' ) + (SELECT COUNT( * )*(1.1) FROM log_photos_share c WHERE c.owner_id = t.user_id AND c.log_photos_share_date BETWEEN '.$start.' AND '.$end.' ) AS totalcount';
 		$criteria->group = 't.user_id';
 		$criteria->order = 'totalcount DESC';
-		$criteria->limit=2;
+		$criteria->limit=$this->cartlimit;
 		$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);
 		unset($criteria);
 		//Get Hash Tags Listings for sidebar, this action define in Controller class
-		$limit = (Yii::app()->user->isGuest)?9:6;		
+		$limit = (Yii::app()->user->isGuest)?9:6; //HashTag Limit			
 		$hash_tags = $this->actionHashtaglist($limit);		
 		//Inside views/site/index.php ** widget are there to Include SubHeader, TopMenu & SideBar..
 		$this->render('index', array('photos'=>$allusersphotos,'hash_tags'=>$hash_tags));		
@@ -214,11 +214,11 @@ class SiteController extends Controller
 		$criteria->group = 'user.user_id';
 		$criteria->condition = 'exists(select * from photos where user_id=t.user_id)';
 		$criteria->order = 'userDetails.user_details_created_date DESC';
-		$criteria->limit=2;		
+		$criteria->limit=$this->cartlimit;		
 		$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);		
 		unset($criteria);				
 		//Get Hash Tags Listings for sidebar, this action define in Controller class
-		$limit = (Yii::app()->user->isGuest)?9:6;		
+		$limit = (Yii::app()->user->isGuest)?9:6; //HashTag Limit	
 		$hash_tags = $this->actionHashtaglist($limit);		
 		$this->render('index', array('photos'=>$allusersphotos,'hash_tags'=>$hash_tags,'menulink'=>'newmember'));		
 	}
@@ -236,11 +236,11 @@ class SiteController extends Controller
 		$criteria->group = 'user.user_id';
 		$criteria->condition = 'exists(select * from photos where user_id=t.user_id)';
 		$criteria->order = 'userDetails.user_rank_worldwide ASC';
-		$criteria->limit=2;		
+		$criteria->limit=$this->cartlimit;		
 		$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);		
 		unset($criteria);				
 		//Get Hash Tags Listings for sidebar, this action define in Controller class
-		$limit = (Yii::app()->user->isGuest)?9:6;		
+		$limit = (Yii::app()->user->isGuest)?9:6; //HashTag Limit		
 		$hash_tags = $this->actionHashtaglist($limit);
 		$this->render('index', array('photos'=>$allusersphotos,'hash_tags'=>$hash_tags,'menulink'=>'topmember'));		
 	}
@@ -263,11 +263,11 @@ class SiteController extends Controller
 		$criteria->select = 't.* , (SELECT COUNT( * )*(0.3) FROM log_photos_comment a WHERE a.owner_id = t.user_id AND a.log_photos_comment_date BETWEEN '.$start.' AND '.$end.' ) + (SELECT COUNT( * )*(1) FROM log_photos_hearts b WHERE b.owner_id = t.user_id AND b.log_photos_hearts_date BETWEEN '.$start.' AND '.$end.' ) + (SELECT COUNT( * )*(1.1) FROM log_photos_share c WHERE c.owner_id = t.user_id AND c.log_photos_share_date BETWEEN '.$start.' AND '.$end.' ) AS totalcount';
 		$criteria->group = 't.user_id';
 		$criteria->order = 'totalcount DESC';
-		$criteria->limit=2;
+		$criteria->limit=$this->cartlimit;
 		$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);
 		unset($criteria);
 		//Get Hash Tags Listings for sidebar, this action define in Controller class
-		$limit = (Yii::app()->user->isGuest)?9:6;		
+		$limit = (Yii::app()->user->isGuest)?9:6; //HashTag Limit		
 		$hash_tags = $this->actionHashtaglist($limit);		
 		$this->render('index', array('photos'=>$allusersphotos,'hash_tags'=>$hash_tags,'menulink'=>'viral'));	
 	}
@@ -305,11 +305,11 @@ class SiteController extends Controller
 		$criteria->group = 'user.user_id';
 		$criteria->condition = 'exists(select * from photos where user_id=t.user_id) AND userDetails.user_details_gender = "1"';
 		$criteria->order = 'userDetails.user_rank_worldwide ASC';
-		$criteria->limit=2;		
+		$criteria->limit=$this->cartlimit;		
 		$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);		
 		unset($criteria);				
 		//Get Hash Tags Listings for sidebar, this action define in Controller class
-		$limit = (Yii::app()->user->isGuest)?9:6;		
+		$limit = (Yii::app()->user->isGuest)?9:6; //HashTag Limit		
 		$hash_tags = $this->actionHashtaglist($limit);		
 		$this->render('index', array('photos'=>$allusersphotos,'hash_tags'=>$hash_tags));
 	}
@@ -326,11 +326,11 @@ class SiteController extends Controller
 		$criteria->group = 'user.user_id';
 		$criteria->condition = 'exists(select * from photos where user_id=t.user_id) AND userDetails.user_details_gender = "0"';
 		$criteria->order = 'userDetails.user_rank_worldwide ASC';
-		$criteria->limit=2;		
+		$criteria->limit=$this->cartlimit;		
 		$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);		
 		unset($criteria);				
 		//Get Hash Tags Listings for sidebar, this action define in Controller class
-		$limit = (Yii::app()->user->isGuest)?9:6;		
+		$limit = (Yii::app()->user->isGuest)?9:6; //HashTag Limit		
 		$hash_tags = $this->actionHashtaglist($limit);		
 		$this->render('index', array('photos'=>$allusersphotos,'hash_tags'=>$hash_tags));		
 	}
@@ -348,7 +348,7 @@ class SiteController extends Controller
 		Yii::app()->clientScript->registerCoreScript('jquery'); 
 		$criteria = new CDbCriteria();
 		$criteria->condition = "exists(select * from photos where user_id=t.user_id) and userLocation.user_location_country LIKE '%$c%'";
-		$criteria->limit=2;
+		$criteria->limit=$this->cartlimit;
 		$allusersphotos=Users::model()->with('photos','userDetails', 'userLocation')->findAll($criteria);  
 		$this->render('country', array('photos'=>$allusersphotos));
 	}
@@ -488,14 +488,15 @@ class SiteController extends Controller
 		//$token_request = urldecode($_REQUEST['token']);
 		$token_request = $_REQUEST['token'];
 		$decrypted_token = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($token_request), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
-		if ($decrypted_token && !empty($decrypted_token) && (strpos($decrypted_token, 'user') !== false) && $decrypted_token != ''){
+		if($decrypted_token && !empty($decrypted_token) && (strpos($decrypted_token, 'user') !== false) && $decrypted_token != ''){
 			$token_array = explode("user",$decrypted_token);
 			//$user_detail_id = mysql_real_escape_string($token_array[1]);
 			$user_detail_id = $token_array[1];
 			$user_token = $model->findTokenByUserDetailId($user_detail_id);
-			if(($user_token) && ($user_token == $decrypted_token)){			
+			if(($user_token) && ($user_token == $decrypted_token))
+			{			
 				$this->layout='front_layout';
-				$limit = (Yii::app()->user->isGuest)?9:6;		
+				$limit = (Yii::app()->user->isGuest)?9:6; //HashTag Limit		
 				$hash_tags = $this->actionHashtaglist($limit);		
 				//Inside views/site/index.php ** widget are there to Include SubHeader, TopMenu & SideBar..
 				$user = array('user_detail_id'=>$user_detail_id);
@@ -503,8 +504,7 @@ class SiteController extends Controller
 			}
 			else{
 				$this->redirect(Yii::app()->homeUrl);
-			}
-			
+			}			
 		}
 		else{
 			//echo "wrong token";
@@ -643,7 +643,7 @@ Posly Team
 	{
 		$this->layout='front_layout';
 		//Get Hash Tags Listings for sidebar, this action define in Controller class
-		$limit = (Yii::app()->user->isGuest)?9:6;		
+		$limit = (Yii::app()->user->isGuest)?9:6; //HashTag Limit		
 		$hash_tags = $this->actionHashtaglist($limit);		
 		$this->render('termsofservice', array('hash_tags'=>$hash_tags));
 	}
@@ -1066,7 +1066,7 @@ Posly Team
 			$value=$time->getDate();		
 			$criteria = new CDbCriteria();			
 			$criteria->addSearchCondition('userDetails.user_details_firstname', $searchname, true);			
-			$criteria->limit=8;
+			$criteria->limit=$this->cartlimit;
 			$allusersphotos=Photos::model()->with('user','user.userDetails','photosHashtags')->findAll($criteria);	
 			unset($criteria);							
 		} else{			
@@ -1075,7 +1075,7 @@ Posly Team
 			$criteria = new CDbCriteria();			
 			//$criteria->addSearchCondition('userDetails.user_details_firstname', $searchname, true);
 			$criteria->addInCondition("photos_id", $photoidArray);
-			$criteria->limit=8;
+			$criteria->limit=$this->cartlimit;
 			$allusersphotos=Photos::model()->with('user','user.userDetails','photosHashtags')->findAll($criteria);	
 			unset($criteria);			
 		}

@@ -2,6 +2,7 @@
 
 class NewsController extends Controller
 {
+	public $cartlimit = 2; //Display No of Card
 	public function actionIndex()
 	{
 		$this->layout='newsfeed_layout';
@@ -15,11 +16,11 @@ class NewsController extends Controller
 		$criteria->condition = 'userDetails.user_unique_url = "poslyadmin"';
 		$criteria->group = 't.user_id';
 		$criteria->order = 'totalcount DESC';
-		$criteria->limit=2;
+		$criteria->limit=$this->cartlimit;
 		$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);
 		unset($criteria);
 		//Get Hash Tags Listings for sidebar, this action define in Controller class
-		$limit = (Yii::app()->user->isGuest)?9:6;		
+		$limit = (Yii::app()->user->isGuest)?9:6; //HashTag Limit		
 		$hash_tags = $this->actionHashtaglist($limit);		
 		//Inside views/site/index.php ** widget are there to Include SubHeader, TopMenu & SideBar..
 		$this->render('index', array('photos'=>$allusersphotos,'hash_tags'=>$hash_tags));				

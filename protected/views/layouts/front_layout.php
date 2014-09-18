@@ -140,7 +140,7 @@ $(window).bind('scroll', function(){ //when the user is scrolling...
 });
 
 //*** When user Scroll down, append more cart " more images "
-var present=2;
+var present=2;	//should equal to cartlimit variable in siteController
 $(window).scroll(function(){
 if($(document).height()==$(window).scrollTop()+$(window).height()){
 	present+=2;

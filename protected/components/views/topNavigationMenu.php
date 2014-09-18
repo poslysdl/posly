@@ -132,8 +132,8 @@ else
 		</ul>
 		<?php } else{ ?>
 		<ul class="dropdown-menu extended inbox">
-		<li><ul class="dropdown-menu-list scroller" style="height: 100px;">
-		<li>No Messages Yet !</li>
+		<li><ul class="dropdown-menu-list scroller" style="height: 50px;">
+		<li style="margin:2px 0px 0px 6px;">No Messages Yet !</li>
 		</ul></li>
 		</ul>
 		<?php } ?>

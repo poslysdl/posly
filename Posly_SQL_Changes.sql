@@ -134,3 +134,12 @@ CREATE TABLE IF NOT EXISTS `users_messages_reply` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf16 AUTO_INCREMENT=1 ;
 -----------------17-Septt-14----------------------------
 ALTER TABLE `users` ADD `notification_read_date` INT( 11 ) NOT NULL DEFAULT '0' ;
+
+-----------------------18-Sept-14-----------------
+CREATE TABLE IF NOT EXISTS `user_shares` (
+  `user_share_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `photos_id` int(11) NOT NULL,
+  `share_date` int(11) DEFAULT NULL,
+  PRIMARY KEY (`user_share_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 AUTO_INCREMENT=1 ;
