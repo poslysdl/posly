@@ -90,18 +90,19 @@
 			<div class="errorMessage myhide"></div>
 			</div>
 		</div>
+		<?php if(!empty($model->userDetails->user_details_password)){?>
 		<div class="form-group">
 			<label  class="col-md-3 control-label">Password <font color="red">*</font></label>
-			<div class="col-md-9">
-			<?php if(empty($model->userDetails->user_details_password)){?>
-			<input type="password" name="password" class="form-control" data-flag="y" id="password" maxlength="20">
-			<?php } else{?>
-			<p class="form-control-static-green paddless"> <a href="#">Change your Password here</a></p>
-			<input name="password" type="password" class="form-control"  placeholder="Password" data-flag="n" id="password" maxlength="20" style="display:none">
-			<?php } ?>
+			<div class="col-md-9">			
+			<input type="password" name="password" class="form-control" data-flag="y" id="password" maxlength="20" value="">			
+			<!--<p class="form-control-static-green paddless"> <a href="#">Change your Password here</a></p>
+			<input name="password" type="password" class="form-control"  placeholder="Password" data-flag="n" id="password" maxlength="20" style="display:none"> -->			
 			<div id="passerr" class="errorMessage myhide"></div>
 			</div>
 		</div>
+		<?php } else{ ?>
+		<input type="hidden" name="password" class="form-control" data-flag="y" id="password" maxlength="20" value="0">	
+		<?php } ?>
 		<div class="form-group">
 			<label  class="col-md-3 control-label">DOB <font color="red">*</font></label>
 			<div class="col-md-9">
@@ -157,19 +158,20 @@
 			<label  class="col-md-3 control-label">Country <font color="red">*</font></label>
 			<div class="col-md-9">			
 			<?php $cnty_val = (isset($model->userLocation->user_location_country))?$model->userLocation->user_location_country:''; ?>			
-			<select id="formreg_country" name="country" class="form-control custom-combify">
-			<option value="">-</option>
-			<?php foreach($country as $cnty) {
-				$selected = ($cnty_val==$cnty->country_name)?'selected':'';
+			<select id="formreg_country" name="country" class="form-control custom-combify">			
+			<?php foreach($country as $keys=>$cnty) {				
+				$cntid = ($cnty['id']=="-")?"":$cnty['id'];
+				$cvalue= ($cnty['country_name']=="-")?"":ucwords(strtolower($cnty['country_name']));
+				$selected = ($cnty_val==$cvalue)?'selected':'';
 			?>
-			<option value="<?php echo $cnty->country_name; ?>" data-id="<?php echo $cnty->id; ?>" <?php echo $selected;?>> <?php echo $cnty->country_name; ?></option>
+			<option value="<?php echo $cvalue; ?>" data-id="<?php echo $cntid; ?>" <?php echo $selected;?>> <?php echo $cnty['country_name']; ?></option>
 			<?php } ?>
 			</select>
 			<p class="cnty_error errorMessage" data-url="<?php echo Yii::app()->createUrl('registration/getcity'); ?>"></p>
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-md-3 control-label">Region</label>
+			<label class="col-md-3 control-label">Region / State</label>
 			<div class="col-md-9">
 			<?php if(isset($model->userLocation->user_location_region)) {$reg_val = $model->userLocation->user_location_region;} else $reg_val="-"; ?>
 			<select id="formreg_region" class="form-control custom-combify" name="region">
@@ -178,16 +180,16 @@
 			<p class="region_error" data-url="<?php echo Yii::app()->createUrl('registration/getcity'); ?>"></p>
 			</div>
 		</div>
-		<div class="form-group">
+		<!--<div class="form-group">
 			<label class="col-md-3 control-label">State</label>
 			<div class="col-md-9">
-			<?php if(isset($model->userLocation->user_location_state)) {$st_val = $model->userLocation->user_location_state;} else $st_val="-"; ?>
+			<?php //if(isset($model->userLocation->user_location_state)) {$st_val = $model->userLocation->user_location_state;} else $st_val="-"; ?>
 			<select id="formreg_state" class="form-control custom-combify" name="state">
-			<option value="<?php echo $st_val; ?>"><?php echo $st_val; ?></option>
+			<option value="<?php //echo $st_val; ?>"><?php //echo $st_val; ?></option>
 			</select>
-			<p class="state_error" data-url="<?php echo Yii::app()->createUrl('registration/getcity'); ?>"></p>
+			<p class="state_error" data-url="<?php //echo Yii::app()->createUrl('registration/getcity'); ?>"></p>
 			</div>
-		</div>
+		</div> -->
 		<div class="form-group">
 			<label class="col-md-3 control-label">City <font color="red">*</font></label>
 			<div class="col-md-9">

@@ -418,7 +418,9 @@ function getcountrycity(elm,targetid)
 	var countryid = $("#formreg_country option:selected").attr('data-id');
 	if(name=='country'){
 		$("#formreg_region option").remove();
-		$("#formreg_state option").remove();
+		//$("#formreg_state option").remove();
+		$("#formreg_city option").remove();
+	} else{
 		$("#formreg_city option").remove();
 	}
 	sdata = $("#"+selectid+" option:selected").attr('data-id'); //$( elm+" option:selected" ).text(); //for inner value
@@ -604,12 +606,12 @@ $(document).on('keypress', '#LoginForm_password', function(event){
 		signInByEmail();   
 	}
 });
-//Step-1# Email-SignUp page
+//Step-1# Email-SignUp page, Country, Region/States, Cities
 $(document).on('change', '#formreg_country', function(){
 	getcountrycity($(this),'formreg_region');
 });
 $(document).on('change', '#formreg_region', function(){
-	getcountrycity($(this),'formreg_state');
+	getcountrycity($(this),'formreg_city');
 });
 $(document).on('change', '#formreg_state', function(){
 	getcountrycity($(this),'formreg_city');
