@@ -6,6 +6,11 @@
 </div> <!-- #top-shadow  ENDS --->
 <!-- END HEADER -->
 <?php
+//echo "<pre>";
+//print_r($user_info);
+////echo $this->user_self;
+//echo "</pre>";
+//exit;
 $user_name = $user->user_details_firstname." ".$user->user_details_lastname;
 
 $user_gender = ($user->user_details_gender == 1) ? "M" : "F";
@@ -20,25 +25,37 @@ $user_gender = ($user->user_details_gender == 1) ? "M" : "F";
 	<div class="martop container padd head-user">
 		<div class="head-but">
 		<ul class="buton-user pull-right">
-		<li>
-		<button class="btn white messege" type="button" href="#"  data-toggle="modal">Add Friends</button>
-		</li>
-		<li>
-		<button class="btn white messege" type="button" href="#"  data-toggle="modal">Edit Profile</button>
-		</li>
-		<li class="dropdown"> <a data-close-others="true" data-toggle="dropdown" class="dropdown-toggle" href="#">
-		<button class="btn white setting" type="button"><i class="icon-gear"></i></button>
-		</a>
-		<ul class="dropdown-menu setting-acc">
-		<li><a class="gren" data-toggle="modal" href="#block-user"> Settings </a> </li>
-		<li><a class="gren" data-toggle="modal" href="#report-pin">Edit profile </a> </li>
-		<li class="divider"></li>
-		<li><a class="gren" data-toggle="modal" href="#report-pin">View As </a> </li>
-		<li class="buttcen">
-		<button type="button" class="btn meoS">log out</button>
-		</li>
-		</ul>
-		</li>
+		<?php
+		if($user_info['current_user'] == $this->user_self){
+		?>
+			<li>
+				<button class="btn white messege" type="button" href="#"  data-toggle="modal">Add Friends</button>
+			</li>
+			<li>
+				<button class="btn white messege" type="button" href="#"  data-toggle="modal">Edit Profile</button>
+			</li>
+		<?php
+		}
+		?>
+		<?php
+		if($user_info['current_user'] == $this->user_self){
+		?>
+			<li class="dropdown"> <a data-close-others="true" data-toggle="dropdown" class="dropdown-toggle" href="#">
+				<button class="btn white setting" type="button"><i class="icon-gear"></i></button>
+			</a>
+			<ul class="dropdown-menu setting-acc">
+			<li><a class="gren" data-toggle="modal" href="#block-user"> Settings </a> </li>
+			<li><a class="gren" data-toggle="modal" href="#report-pin">Edit profile </a> </li>
+			<li class="divider"></li>
+			<li><a class="gren" data-toggle="modal" href="#report-pin">View As </a> </li>
+			<li class="buttcen">
+				<button type="button" class="btn meoS">log out</button>
+			</li>
+			</ul>
+			</li>
+		<?php
+		}
+		?>		
 		<!-- END USER LOGIN DROPDOWN --> 
 		<!-- BEGIN SEARCH FROM --> 
 		<!-- BEGIN SEARCH FROM -->
@@ -83,7 +100,7 @@ $user_gender = ($user->user_details_gender == 1) ? "M" : "F";
 		<img title="Will Hatefbook" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/avanta.jpg" class="img-responsive" alt="Will Hatefbook"></a>
 		<div class="user-text">
 		<div class="bguser">
-		<h1> <a href="#"><?php echo $user_name;?> (<?php echo $user_gender;?>,<?php echo $age;?>)</a> </h1>
+		<h1> <a href="#"><?php echo $user_name;?> (<?php echo $user_gender;?>,<?php echo $user_info['age'];?>)</a> </h1>
 		<p>From Germany, Düsseldorf</p>
 		</div>
 		</div>
