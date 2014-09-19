@@ -268,7 +268,7 @@ function poslyAjaxLikecalls(ajaxurl,id,sdata)
 	});	
 }
 
-/* When at app.js line 506, handlePortletTools,
+/* When at app.js line 506, handlePortletTools, Comment Scroll
 .main-commnet event get called to Hide Unhide comments at cart
 There is a Much Gap between <ul> .CMn and div .scrollercm, to reduce this gap
 resetCommentboxHeight comes into picture
@@ -287,7 +287,7 @@ function resetCommentboxHeight(elmn){
 		var scaleheight = parentDiv1 - (heightdiff - 20);
 		$('#'+ulId).parents('div').parents('.slimScrollDiv').css("height", scaleheight);
 		$('#'+ulId).parents('.scrollercm').css("height", scaleheight);
-	}	
+	}
 }
 
 /* In Zoom image, " Person Who Like This Also Like " 
@@ -427,7 +427,7 @@ function getcountrycity(elm,targetid)
 	$.ajax({
 		type: 'POST',  
 		url: url1,
-		async: false,
+		async: true,  /* means other parrel event will carry on */
 		data:{         
 			pdata: sdata,
 			pname: name,

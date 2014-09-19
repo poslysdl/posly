@@ -504,9 +504,10 @@ $(window).bind('scroll', function(){ //when the user is scrolling...
 
     // Handles portlet tools & actions
     var handlePortletTools = function () {
-	jQuery('body').on('click', '.CMc > .main-commnet > .tools > .collapseed, .CMc .main-commnet > .tools > .expand', function (e) {      
+	//jQuery('body').on('click', '.CMc > .main-commnet > .tools > .collapseed, .CMc .main-commnet > .tools > .expand', function (e) {	
+	jQuery('body').off('click', '.CMc > .main-commnet > .tools > a').on('click', '.CMc > .main-commnet > .tools > a', function (e) {    
             e.preventDefault();
-			var totcomment = 0;
+			var totcomment = 0; 
             var el = $(this).closest(".CMc").children(".main-comment");				
             if($(this).hasClass("expand")) {
                 $(this).removeClass("expand").addClass("collapseed");
@@ -518,7 +519,8 @@ $(window).bind('scroll', function(){ //when the user is scrolling...
 				$(this).text("Hide comments");
                 el.slideDown(400);
 				resetCommentboxHeight(this); //mentioned at poslyfunctions.js
-            }			
+            }
+		return false;
         });
     }
 
