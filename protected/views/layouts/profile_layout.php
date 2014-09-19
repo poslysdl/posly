@@ -331,6 +331,69 @@ $(document).on('click', '#request_remove_friend', function(){
     removefriend();
 });
 
+$(document).on('click', '#profile_follow', function(){
+    followfriend(document.getElementById("prof_curr").value,document.getElementById("prof_othr").value);
+});
+
+$(document).on('click', '#profile_following', function(){
+    unfollowfriend(document.getElementById("prof_curr").value,document.getElementById("prof_othr").value);
+});
+
+
+function followfriend(profile_current,profile_other){
+    var returnpath = "<?php echo Yii::app()->request->url;?>";
+    var params = {'profile_current':profile_current,'profile_other':profile_other};
+    var url_friend_follow = $('#profile_follow').attr('data-url');
+    $.ajax({
+        type: 'POST',  
+        url: url_friend_follow,
+        async: false,
+        data:params,
+        success:function(data){
+            data = jQuery.parseJSON(data);
+            console.log(data);
+            if(data.status=="success"){				
+              window.location = returnpath;
+             // $("#user_follow").html = '<button id="profile_following" data-url="<?php echo Yii::app()->createUrl('/profile/followingfriend');?>" class="btn white messege" type="button" href="#"  data-toggle="modal">following</button>';
+            }
+            else{
+                window.location = returnpath;
+            }
+        },
+        error: function(data) { // if error occured
+           window.location = returnpath;
+        }
+    });	
+}
+
+
+function unfollowfriend(profile_current,profile_other){
+    var returnpath = "<?php echo Yii::app()->request->url;?>";
+    var params = {'profile_current':profile_current,'profile_other':profile_other};
+    var url_friend_follow = $('#profile_following').attr('data-url');
+    $.ajax({
+        type: 'POST',  
+        url: url_friend_follow,
+        async: false,
+        data:params,
+        success:function(data){
+            data = jQuery.parseJSON(data);
+            console.log(data);
+            if(data.status=="success"){				
+              window.location = returnpath;
+             // $("#user_follow").html = '<button id="profile_following" data-url="<?php echo Yii::app()->createUrl('/profile/followingfriend');?>" class="btn white messege" type="button" href="#"  data-toggle="modal">following</button>';
+            }
+            else{
+                window.location = returnpath;
+            }
+        },
+        error: function(data) { // if error occured
+           window.location = returnpath;
+        }
+    });	
+}
+
+
 function removefriend(){
     var profile_current = document.getElementById("prof_curr").value;
     var profile_other = document.getElementById("prof_othr").value;

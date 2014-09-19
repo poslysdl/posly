@@ -21,6 +21,15 @@ $user_gender = ($user->user_details_gender == 1) ? "M" : "F";
 	<div class="martop container padd head-user">
 		<div class="head-but">
 		<ul class="buton-user pull-right">
+			<?php
+			if($user_info['current_user'] != $this->user_guest){
+			?>				
+			<li id="user_follow">
+				<button id="profile_<?php echo $user_info['follow'];?>" data-url="<?php echo Yii::app()->createUrl('/profile/'.$user_info['follow'].'friend');?>" class="btn white messege" type="button" href="#"  data-toggle="modal"><?php echo $user_info['follow'];?></button>
+			</li>
+			<?php
+			}			
+			?>
 			<li id="user_friend_status">
 			<?php
 			if($user_info['current_user'] == $this->user_logged_vistor){

@@ -8,6 +8,8 @@ class ProfileController extends Controller {
 	public $lang = 'en';
 	public $user_request_send = "request_send";
 	public $user_request_receive = "request_receive";
+	public $user_follow = "follow";
+	public $user_following  = "following";
 	public $current_user_id;
 	public $current_profile_id;
    public function filters() {
@@ -17,7 +19,7 @@ class ProfileController extends Controller {
 	public function accessRules() {
         return array(
             array('allow',
-            	'actions'=>array('index', 'addhearts', 'following', 'followers', 'about', 'albums', 'hearts', 'ranks','catwalk','friends','userAge','profilesettings','addfriend','removefriend'),
+            	'actions'=>array('index', 'addhearts', 'following', 'followers', 'about', 'albums', 'hearts', 'ranks','catwalk','friends','userAge','profilesettings','addfriend','removefriend','followfriend','followingfriend'),
                 'users'=>array('*'),
             ),
             array('deny'),
@@ -25,6 +27,7 @@ class ProfileController extends Controller {
     }
 	
 	public function actionIndex($url) {
+		$user_additional_info['follow'] = $this->user_follow;
 		//Guest profile	 
 		if(Yii::app()->user->isGuest) {
 			$error = false;
@@ -74,6 +77,12 @@ class ProfileController extends Controller {
 				$row = UsersDetails::model()->find("user_unique_url='$profile_url'");
 				Yii::app()->session['user_id'] = $row['user_id'];
 				$check_friend = UsersFriends::model()->check_friend($id,$row['user_id']);
+				
+				$check_follow = UsersFriends::model()->check_follow($id,$row['user_id']);
+				if($check_follow){
+					$user_additional_info['follow'] = $this->user_following;
+				}				
+				
 				if(isset($row)) {
 					$user_id = $row['user_id'];
 					$this->current_profile_id = $user_id;
@@ -242,10 +251,10 @@ class ProfileController extends Controller {
 		}
 		Yii::app()->end();
 	}
+	
 	public function actionRemovefriend(){
 		$profile_current = json_decode($_POST['profile_current']);
 		$profile_other = json_decode($_POST['profile_other']);
-		//$countries = Countries::model()->get_current_nearbycountries($ip);		
 		$response = UsersFriends::model()->delete_friend($profile_current,$profile_other);
 		if($response){
 			echo CJSON::encode(array(
@@ -258,7 +267,42 @@ class ProfileController extends Controller {
 			));			
 		}
 		Yii::app()->end();
+	}
+	
+	public function actionFollowfriend(){
+		$profile_current = json_decode($_POST['profile_current']);
+		$profile_other = json_decode($_POST['profile_other']);
+		$response = UsersFriends::model()->follow_friend($profile_current,$profile_other);
+		if($response){
+			echo CJSON::encode(array(
+				'status'=>'success',
+			));
+		}
+		else{
+			echo CJSON::encode(array(
+				'status'=>'error',
+			));			
+		}
+		Yii::app()->end();		
+	}
+	
+	public function actionFollowingfriend(){
+		$profile_current = json_decode($_POST['profile_current']);
+		$profile_other = json_decode($_POST['profile_other']);
+		$response = UsersFriends::model()->following_friend($profile_current,$profile_other);
+		if($response){
+			echo CJSON::encode(array(
+				'status'=>'success',
+			));
+		}
+		else{
+			echo CJSON::encode(array(
+				'status'=>'error',
+			));			
+		}
+		Yii::app()->end();		
 	}	
+	
 
 	public function actionAddHearts() {
 		
