@@ -1,3 +1,6 @@
+<?php 
+// ** Last Modified on 19-Sept-14 
+?>
 <div id="right-slide" class="page-sidebar navbar-collapse collapse">      
 <!-- BEGIN SIDEBAR MENU -->
 <ul class="page-sidebar-menu">
@@ -33,8 +36,7 @@ if(Yii::app()->user->isGuest)
 	<h3>Posly Blog</h3>
 	</div>
 	<div class="side-tag">	
-	<!-- Flexi SLider Banner --->
-		<div class="flex-container">
+		<div class="flex-container"><!-- Flexi SLider Banner --->
 		<div class="flexslider">
 			<ul class="slides">
 			<li>
@@ -90,63 +92,18 @@ if(Yii::app()->user->isGuest)
 		<div class="panel">
 		<div class="panel-title solo"> </div>
 		<div class="scrollercm" style="height: 210px;" data-always-visible="0" data-rail-visible1="0">
-		<ul class="feeds-chat">
-			<li>
-			<div class="col1"> <img class="avatar img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar2.jpg" />
-			<div class="message"> <span class="name">Ny Nilson</span> </div>
-			</div>
+		<ul class="feeds-chat"><!-- Chat Frnd Lists -->
+			<!--<li>
+			<div class="col1"> 
+			<img class="avatar img-responsive" alt="" src="<?php //echo Yii::app()->theme->baseUrl; ?>/img/avatar2.jpg" />
+			<div class="message"> 
+			<span class="name">Ny Nilson</span> </div>
+			</div>			
 			<div class="col2">
-			<div class="status offline"> 5h<i class="icon-mobile-phone"></i> </div>
+			<div class="status offline"> 5h<i class="icon-mobile-phone"></i> 
 			</div>
-			</li>
-			<li>
-			<div class="col1"> <img class="avatar img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar2.jpg" />
-			<div class="message"> <span class="name">Komino Za</span> </div>
 			</div>
-			<div class="col2">
-			<div class="status online"> Web<i class="icon-globe"></i> </div>
-			</div>
-			</li>
-			<li>
-			<div class="col1"> <img class="avatar img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar2.jpg" />
-			<div class="message"> <span class="name">Wasabi Kizoto</span> </div>
-			</div>
-			<div class="col2">
-			<div class="status online"> Mobile<i class="icon-mobile-phone"></i> </div>
-			</div>
-			</li>
-			<li>
-			<div class="col1"> <img class="avatar img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar2.jpg" />
-			<div class="message"> <span class="name">Ny Nilson</span> </div>
-			</div>
-			<div class="col2">
-			<div class="status offline"> 5h<i class="icon-mobile-phone"></i> </div>
-			</div>
-			</li>
-			<li>
-			<div class="col1"> <img class="avatar img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar2.jpg" />
-			<div class="message"> <span class="name">Ny Nilson</span> </div>
-			</div>
-			<div class="col2">
-			<div class="status offline"> 5h<i class="icon-mobile-phone"></i> </div>
-			</div>
-			</li>
-			<li>
-			<div class="col1"> <img class="avatar img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar2.jpg" />
-			<div class="message"> <span class="name">Ny Nilson</span> </div>
-			</div>
-			<div class="col2">
-			<div class="status offline"> 5h<i class="icon-mobile-phone"></i> </div>
-			</div>
-			</li>
-			<li>
-			<div class="col1"> <img class="avatar img-responsive" alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar2.jpg" />
-			<div class="message"> <span class="name">Ny Nilson</span> </div>
-			</div>
-			<div class="col2">
-			<div class="status offline"> 5h<i class="icon-mobile-phone"></i> </div>
-			</div>
-			</li>
+			</li>-->			
 		</ul>
 		</div>
 		</div>

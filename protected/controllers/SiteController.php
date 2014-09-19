@@ -1,4 +1,5 @@
 <?php
+//** Last Modified On : 19-Sept-14
 
 class SiteController extends Controller
 {
@@ -472,8 +473,7 @@ class SiteController extends Controller
 		}
 		else{
 			$this->redirect(Yii::app()->homeUrl);
-		}	
-		
+		}		
 		Yii::app()->end();
 	}
 
@@ -668,9 +668,15 @@ Posly Team
 	*/
 	public function actionLogout()
 	{
-		 if(Yii::app()->hybridAuth->getConnectedProviders()){
+		$pk = Yii::app()->user->id;
+		if(Yii::app()->hybridAuth->getConnectedProviders()){
          Yii::app()->hybridAuth->logoutAllProviders();
-        }
+        }		
+		//Update Login Status
+		$attributes = array("user_online_flag"=>'0');
+		$condition = 'user_id = :id';
+		$params = array(':id'=>$pk);
+		Users::model()->updateByPk($pk,$attributes,$condition,$params);		
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}	
@@ -679,21 +685,20 @@ Posly Team
 	 * This user define Ajax function to get nearby country in monaco
 	 * Last Modified: 02-Sep-14
 	*/
-	public function actionGetnearbycountry(){
-		
+	public function actionGetnearbycountry(){		
 		$ip = $this->get_client_ip();
 		if($ip){
 			$countries = Countries::model()->get_current_nearbycountries($ip);
 		}
 		echo $countries;
-		Yii::app()->end();
-		
+		Yii::app()->end();		
 	}
 	/**
 	 * Test Email
 	 * Last Modified: 10-Sep-14
 	*/
-	public function actionGetmail(){
+	public function actionGetmail()
+	{
 		Yii::import('ext.yii-mail.YiiMailMessage');
 		$message = new YiiMailMessage;
 		$message->setBody('Message content here with HTML', 'text');
@@ -701,8 +706,7 @@ Posly Team
 		$message->addTo('anand.aneesh@gmail.com');
 		$message->from = Yii::app()->params['adminEmail'];
 		Yii::app()->mail->send($message);
-		Yii::app()->end();
-		
+		Yii::app()->end();		
 	}	
 	
 	/**	
@@ -824,9 +828,9 @@ Posly Team
 	Last Modified:17-Sep-14
 	*/
 	public function actionShowusersactivities()
-	{		
+	{	
 		$criteria = new CDbCriteria();
-		$criteria->limit=2;	
+		$criteria->limit=6;	
 		$uid = Yii::app()->user->id; //logged in userId
 		$activityArray = array(); //contains, all activities, Like,Dislikes,Become friends etc
 		$str='';
@@ -847,7 +851,7 @@ Posly Team
 					$msg.='<img class="img-responsive thumbimg" alt="" src="'.Yii::app()->theme->baseUrl.'/img/avatar2.jpg" />';
 					$activityArray[$v['hdate']] = array('avatar'=>$v['useravatar'],'name'=>$uname,'message'=>$msg);
 					
-					//Duplicate Testing	Data				
+					//Duplicate Testing	DUMMY Data .......
 					$activityArray['1410354280'] = array('avatar'=>$v['useravatar'],'name'=>$uname,'message'=>$msg);
 					$activityArray['1410354380'] = array('avatar'=>$v['useravatar'],'name'=>$uname,'message'=>$msg);					
 					//Duplicate Ends
@@ -867,6 +871,19 @@ Posly Team
 				}
 			}			
 			unset($friends);
+			//Now get List of Users..ie who had recently Send You Friends Request		
+			$criteria->condition = "t.friend_id='".$uid."' AND t.status=0";			
+			$friends=UsersFriends::model()->with('friend','user')->findAll($criteria);	
+			if(count($friends)>0)
+			{		
+				foreach($friends as $k=>$v)
+				{					
+					$date1 = $v['user_friend_created_date'];
+					$msg = ' Had Sent You a Friend Request';					
+					$activityArray[$date1] = array('avatar'=>$v['user']['user_details_avatar'],'name'=>$v['user']['user_details_firstname'],'message'=>$msg);
+				}
+			}			
+			unset($friends);
 			//Now get List of Friend's friends..ie your friend who had add another friend			
 			$friends=UsersFriends::model()->getActivityFriends($limit,$uid);	
 			if(count($friends)>0)
@@ -879,7 +896,7 @@ Posly Team
 				}
 			}			
 			unset($friends);
-			//Now get List of Extra Notification of Posly, only for Top-Header
+			//Now get List of Extra Notification of Posly, only for Top-Header DUMMY Data .......
 			if($flag=="header")
 			$activityArray['1410835502'] = array('avatar'=>'avatar1_small.jpg','name'=>'Posly','message'=>'There is an event to be organised at bangalore, at 1-oct-14, for Fashion ..an fasion event'); //*Duplicate Testing Data
 		}

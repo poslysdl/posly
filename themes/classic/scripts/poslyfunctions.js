@@ -152,9 +152,7 @@ function get_current_nearby_country(url){
 //alternate function to get latlong
 function showPosition(position) {
 	var poslat =  position.coords.latitude;
-	var poslong = position.coords.longitude;
-	alert(poslat);
-	alert(poslong);
+	var poslong = position.coords.longitude;	
 }
 
 /* ** This is for Reset password
@@ -552,8 +550,6 @@ $(document).on('click', '#reset_password_close', function(){
 	window.location=urlforget;	
 });
 
-
-
 $(document).on('click', '#forgetmail', function(){
 	$('#ForgetpasswordForm_email_em_').html('');
 	$('#ForgetpasswordForm_email_em_').hide();
@@ -587,7 +583,7 @@ function getAjaxreturn(url,data1){
 		success:function(data){
 			data = jQuery.parseJSON(data);
 			if(data.status=="success"){				
-				val1 = data.values		
+				val1 = data.values;		
 			}      
 		},
 		error: function(data) { // if error occured

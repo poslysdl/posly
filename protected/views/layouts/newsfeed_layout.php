@@ -261,6 +261,20 @@ function showNotifications(){
 	$('#header_notification_bar > .dropdown-toggle > .badge').text(cnt); //Notification count
 }
 
+/* ** This is used to populate SideBar Friends Chat List
+** this Ajax call fetch data from DB,
+** /controller/message/Ajaxchatfriends
+*/
+function showSidebarMessageList(){	
+	var data1='0';
+	var url='<?php echo $this->createUrl("/message/ajaxchatfriends"); ?>';
+	//$(ajax) will Not work in layout file
+	$.get(url,function(data,status){		
+		data = $.parseJSON(data);		
+		$('#right-slide .page-sidebar-menu .panel-status .feeds-chat').html(data);		
+	});	
+}
+
 //** Very Important To Initialize Plugins
 jQuery(document).ready(function() {  
  App.init(); // initlayout and core plugins
@@ -345,12 +359,14 @@ $(document).ready(function(){
 	});	
 	//** Timer to update Notification every 4min
 	setInterval(function(){showNotifications()}, 40000);
+	setInterval(function(){showSidebarMessageList()}, 60000);
    
 });
 
 <?php if(!Yii::app()->user->isGuest){ ?>
 	showUsersActivities();
-	showNotifications();
+	setTimeout(function(){showNotifications()}, 1000);
+	setTimeout(function(){showSidebarMessageList()}, 4000);
 	
 <?php } else{ //Guset Login *** ?>
 $(window).load(function() {

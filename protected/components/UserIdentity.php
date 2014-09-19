@@ -2,7 +2,7 @@
 /* An Component for User Authentication
 * is used By FB SignUp & SignIn, Email SignUp & SignIn.
 ** Posly Users SESSIONS gets started Here
-* Last Modified - 15-Sep-14
+* Last Modified - 19-Sep-14
 * http://www.yiiframework.com/doc/api/1.1/CUserIdentity
 */
 class UserIdentity extends CUserIdentity {
@@ -45,6 +45,15 @@ class UserIdentity extends CUserIdentity {
 			if(isset($user->userDetails->user_details_id))
 				$this->setState('detailid', $user->userDetails->user_details_id);
 			$this->errorCode = self::ERROR_NONE;
+			$device = "0";
+			$detect = Yii::app()->mobileDetect;
+			if($detect->isMobile())
+				$device = "1"; //LoggedIn from Mobile Device
+			//Update User login status
+			$attributes = array("user_online_flag"=>'1',"user_logged_device"=>$device);
+			$condition = 'user_id = :id';
+			$params = array(':id'=>$user->user_id);
+			Users::model()->updateByPk($user->user_id,$attributes,$condition,$params);
 		}
 		return $this->errorCode == self::ERROR_NONE;
 	}

@@ -143,3 +143,7 @@ CREATE TABLE IF NOT EXISTS `user_shares` (
   `share_date` int(11) DEFAULT NULL,
   PRIMARY KEY (`user_share_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 AUTO_INCREMENT=1 ;
+
+-----------------------19-Sept-14-----------------------
+ALTER TABLE `users` ADD `user_online_flag` TINYINT( 1 ) NOT NULL DEFAULT '0' COMMENT '0 - LogOff, 1 - Login';
+ALTER TABLE `users` ADD `user_logged_device` TINYINT NOT NULL DEFAULT '0' COMMENT '0 - web, 1 - mobile';

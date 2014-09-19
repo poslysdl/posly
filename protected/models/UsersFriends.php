@@ -110,7 +110,7 @@ class UsersFriends extends CActiveRecord
 	 * User_Define Function, to get list of friends of loggedIn user
 	 * who had recently become frnds of Others
 	 * @param numeric $limit record limit.
-	 * @param numeric $uid record limit.
+	 * @param numeric $uid userid.
 	 * @return Array of records	 
 	 */
 	public function getActivityFriends($limit = 15,$uid = null)
@@ -127,6 +127,34 @@ class UsersFriends extends CActiveRecord
 			$rawData = $command->queryAll();		
 			return $rawData;
 		}	
+	}
+	
+	/**
+	 * Name: getOnlineFriends
+	 * User_Define Function, to get list of friends of loggedIn user
+	 * who are Online for Chating
+	 * @param numeric $limit record limit.
+	 * @param numeric $uid record limit.
+	 * @return Array of records	 
+	 */
+	public function getOnlineFriends($uid,$limit=7)
+	{
+		if(!empty($uid))
+		{
+			$query="SELECT ud.user_id as userid,ud.user_details_firstname as username,udu.user_online_flag as useronline,";
+			$query.=" udu.user_logged_device as userdevice,ud.user_details_avatar as useravatar";
+			$query.=" ,fd.user_id as frndid,fd.user_details_firstname as frndname,udf.user_online_flag as frndonline,";
+			$query.=" udf.user_logged_device as frnddevice,fd.user_details_avatar as frndavatar";
+			$query.=" FROM users_friends uf LEFT JOIN users_details ud ON uf.user_id=ud.user_id";
+			$query.=" LEFT JOIN users_details fd ON uf.friend_id=fd.user_id JOIN users udu ON ud.user_id=udu.user_id";
+			$query.=" JOIN users udf ON fd.user_id=udf.user_id WHERE uf.user_id='".$uid."' OR uf.friend_id='".$uid."' AND uf.status='1'";
+			$query.=" LIMIT 0 , $limit";
+			$command= Yii::app()->db->createCommand($query);		
+			$rawData = $command->queryAll();
+			return $rawData;
+		} else{
+			return null;
+		}
 	}
 	
 }
