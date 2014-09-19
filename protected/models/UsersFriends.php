@@ -129,6 +129,7 @@ class UsersFriends extends CActiveRecord
 		}	
 	}
 	
+
 	/**
 	 * Name: getOnlineFriends
 	 * User_Define Function, to get list of friends of loggedIn user
@@ -155,6 +156,150 @@ class UsersFriends extends CActiveRecord
 		} else{
 			return null;
 		}
+	}
+	
+	  //for sending follow request
+	public function follow_friend($profile_current,$profile_other){
+		$parameters = array(":profile_current"=>$profile_current,":profile_other"=>$profile_other);
+		$query ="SELECT * FROM users_follow WHERE user_id = $profile_current AND follow_id = $profile_other";
+		$command= Yii::app()->db->createCommand($query);		
+		$rawData = $command->queryAll();
+		$rawCount = count($rawData);
+		if($rawCount<1){
+			$sql = "insert into users_follow (user_id,follow_id) values (:profile_current,:profile_other)";
+				
+			if(Yii::app()->db->createCommand($sql)->execute($parameters)){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		else{
+			return false;
+		}
+		Yii::app()->end();
+	}
+	
+	
+  //for sending friend request
+	public function send_friend_request($profile_current,$profile_other){
+		$parameters = array(":profile_current"=>$profile_current,":profile_other"=>$profile_other);
+		$query ="SELECT * FROM users_friends WHERE user_id = $profile_current AND friend_id = $profile_other";
+		$command= Yii::app()->db->createCommand($query);		
+		$rawData = $command->queryAll();
+		$rawCount = count($rawData);
+		if($rawCount<1){
+			$sql = "insert into users_friends (user_id,friend_id) values (:profile_current,:profile_other)";
+				
+			if(Yii::app()->db->createCommand($sql)->execute($parameters)){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		else{
+			return false;
+		}
+		Yii::app()->end();
+	}	
+	// check friend	
+	public function check_friend($profile_current,$profile_other){
+		$query ="SELECT * FROM users_friends WHERE (user_id = $profile_current AND friend_id = $profile_other AND status = 1)";
+		$query .="OR (user_id = $profile_other AND friend_id = $profile_current AND status = 1)";
+		$command= Yii::app()->db->createCommand($query);		
+		$rawData = $command->queryAll();
+		$rawCount = count($rawData);
+		if($rawCount>0){
+			return true;
+		}
+		else{
+			return false;
+		}
+		
+	}
+	
+	public function check_follow($profile_current,$profile_other){
+		$query ="SELECT * FROM users_follow WHERE user_id = $profile_current AND follow_id = $profile_other";
+		$command= Yii::app()->db->createCommand($query);		
+		$rawData = $command->queryAll();
+		$rawCount = count($rawData);
+		if($rawCount>0){
+			$query="DELETE FROM users_follow WHERE user_id = $profile_current AND follow_id = $profile_other";
+			$command= Yii::app()->db->createCommand($query);
+			$command->execute();
+			return true;
+		}
+		else{
+			return false;
+		}
+		
+	}
+	
+	public function check_following($profile_current,$profile_other){
+		$query ="SELECT * FROM users_follow WHERE user_id = $profile_current AND follow_id = $profile_other";
+		$command= Yii::app()->db->createCommand($query);		
+		$rawData = $command->queryAll();
+		$rawCount = count($rawData);
+		if($rawCount>0){
+			return true;
+		}
+		else{
+			return false;
+		}
+		
+	}	
+	
+	public function find_user_send_receive_request($profile_current,$profile_other,$user_request_send,$user_request_receive ){
+		//current user has send invitation
+		$query_profile_current ="SELECT * FROM users_friends WHERE user_id = $profile_current AND friend_id = $profile_other AND status = 0";
+		$command_profile_current = Yii::app()->db->createCommand($query_profile_current);		
+		$rawData_profile_current = $command_profile_current->queryAll();
+		$rawCount_profile_current = count($rawData_profile_current);
+		//profile user has send invitation
+		$query_profile_other ="SELECT * FROM users_friends WHERE user_id = $profile_other AND friend_id = $profile_current AND status = 0";
+		$command_profile_other = Yii::app()->db->createCommand($query_profile_other);		
+		$rawData_profile_other = $command_profile_other->queryAll();
+		$rawCount_profile_other = count($rawData_profile_other);
+		if($rawCount_profile_current>0){
+			return $user_request_send;
+		}
+		elseif($rawCount_profile_other>0){
+			return $user_request_receive;
+		}
+		else{
+			return false;
+		}
+		
+	}
+	
+	public function delete_friend($profile_current,$profile_other){
+		$query_profile_current ="SELECT * FROM users_friends WHERE user_id = $profile_current AND friend_id = $profile_other";
+		$command_profile_current = Yii::app()->db->createCommand($query_profile_current);		
+		$rawData_profile_current = $command_profile_current->queryAll();
+		$rawCount_profile_current = count($rawData_profile_current);
+		//profile user has invited
+		$query_profile_other ="SELECT * FROM users_friends WHERE user_id = $profile_other AND friend_id = $profile_current";
+		$command_profile_other = Yii::app()->db->createCommand($query_profile_other);		
+		$rawData_profile_other = $command_profile_other->queryAll();
+		$rawCount_profile_other = count($rawData_profile_other);
+		if($rawCount_profile_current>0){			
+			$query="DELETE FROM users_friends WHERE user_id = $profile_current AND friend_id = $profile_other";
+			$command= Yii::app()->db->createCommand($query);
+			$command->execute();
+			return true;
+		}
+		elseif($rawCount_profile_other>0){
+			echo $query="DELETE FROM users_friends WHERE user_id = $profile_other AND friend_id = $profile_current";
+			$command= Yii::app()->db->createCommand($query);
+			$command->execute();
+			return true;
+		}
+		else{
+			return false;
+		}	
+
 	}
 	
 }

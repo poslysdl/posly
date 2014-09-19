@@ -5,15 +5,21 @@ class ProfileController extends Controller {
 	public $user_self = "self";
 	public $user_logged_vistor = "logged_vistor";
 	public $user_friend = "friend";
-	 public $lang = 'en';
+	public $lang = 'en';
+	public $user_request_send = "request_send";
+	public $user_request_receive = "request_receive";
+	public $user_follow = "follow";
+	public $user_following  = "following";
+	public $current_user_id;
+	public $current_profile_id;
    public function filters() {
-        return array( 'accessControl' ); // perform access control for CRUD operations
-    }
+      return array( 'accessControl' ); // perform access control for CRUD operations
+	}
  
 	public function accessRules() {
         return array(
             array('allow',
-            	'actions'=>array('index', 'addhearts', 'following', 'followers', 'about', 'albums', 'hearts', 'ranks','catwalk','friends','userAge'),
+            	'actions'=>array('index', 'addhearts', 'following', 'followers', 'about', 'albums', 'hearts', 'ranks','catwalk','friends','userAge','profilesettings','addfriend','removefriend','followfriend','followingfriend'),
                 'users'=>array('*'),
             ),
             array('deny'),
@@ -21,7 +27,8 @@ class ProfileController extends Controller {
     }
 	
 	public function actionIndex($url) {
-		//allow user profiles who has everyone		 
+		$user_additional_info['follow'] = $this->user_follow;
+		//Guest profile	 
 		if(Yii::app()->user->isGuest) {
 			$error = false;
 			if(isset($url) && !empty($url)){
@@ -41,8 +48,7 @@ class ProfileController extends Controller {
 						$age = ($userAge) ? $userAge : "";
 						$user_additional_info['age'] = $userAge;
 						$user_additional_info['current_user'] = $this->user_guest;
-						$this->render('index',array('user'=>$row,'user_info'=>$user_additional_info));							
-
+						$this->render('index',array('user'=>$row,'user_info'=>$user_additional_info));
 					} else /* if privacy is 2 or 3 */ {
 						$error = true;
 					}
@@ -61,58 +67,59 @@ class ProfileController extends Controller {
 			
 		} 					
 		else {
-			//allow user profile accordingly everyone and followers
+			//logged in user
 			$error = false;
 			$id = Yii::app()->user->id;
-
+			$this->current_user_id = $id;
 			if(isset($url) && !empty($url)) {
 				$profile_url = $url;
 				Yii::app()->session['url'] = $profile_url;
 				$row = UsersDetails::model()->find("user_unique_url='$profile_url'");
 				Yii::app()->session['user_id'] = $row['user_id'];
+				$check_friend = UsersFriends::model()->check_friend($id,$row['user_id']);
+				
+				$check_follow = UsersFriends::model()->check_follow($id,$row['user_id']);
+				if($check_follow){
+					$user_additional_info['follow'] = $this->user_following;
+				}				
+				
 				if(isset($row)) {
 					$user_id = $row['user_id'];
+					$this->current_profile_id = $user_id;
 					$userAge = Users::model()->getUserAge($row['user_id']);
 					$age = ($userAge) ? $userAge : "";	
-					//checking logged in user (own profile)
-					if($id == $user_id) {		
-						
+					//logged in user (own profile)
+					if($id == $user_id) {						
 						$this->layout='profile_layout';
 						Yii::app()->clientScript->registerCoreScript('jquery');					
 						$user_additional_info['age'] = $userAge;
 						$user_additional_info['current_user'] = $this->user_self;
 						$this->render('index',array('user'=>$row,'user_info'=>$user_additional_info));
 					}
-					//checking logged in user (others profile)
-					else {
-						$sec_row = UsersSecurity::model()->find("user_id=$user_id");
-						$privacy = $sec_row['whocansee'];
-						if($privacy == 1) {
+					//loggedin user friend profile
+					else if($check_friend){
 							$this->layout='profile_layout';
 							Yii::app()->clientScript->registerCoreScript('jquery'); 
 							$user_additional_info['age'] = $userAge;
-							$user_additional_info['current_user'] = $this->user_logged_vistor;
+							$user_additional_info['current_user'] = $this->user_friend;
 							$this->render('index',array('user'=>$row,'user_info'=>$user_additional_info));
+					}
+					//logged in user (others profile)
+					else {						
+						$check_invitation = UsersFriends::model()->find_user_send_receive_request($id,$row['user_id'],$this->user_request_send,$this->user_request_receive );
+						if($check_invitation){
+							$user_additional_info['current_user'] = $check_invitation;
 						}
-						else if ($privacy == 2){							
-							$row = UsersFollow::model()->find("follow_id=$user_id and user_id=$id");
-								if (isset($row)) {
-									$this->layout='profile_layout';
-									Yii::app()->clientScript->registerCoreScript('jquery'); 
-									$user_additional_info['age'] = $userAge;
-									$user_additional_info['current_user'] = $this->$user_friend;
-									$this->render('index',array('user'=>$row,'user_info'=>user_additional_info));
-								} else {
-									//$this->redirect(Yii::app()->homeUrl);
-									//$this->render("error");
-									$error = true;
-								}  
+						else{
+							$user_additional_info['current_user'] = $this->user_logged_vistor;
 						}
-						else {
-							//$this->redirect(Yii::app()->homeUrl);
-							//$this->render("error");
-							$error = true;
-						}
+						//$sec_row = UsersSecurity::model()->find("user_id=$user_id");				
+						//$privacy = $sec_row['whocansee'];
+						$this->layout='profile_layout';
+						Yii::app()->clientScript->registerCoreScript('jquery'); 
+						$user_additional_info['age'] = $userAge;
+						
+						$this->render('index',array('user'=>$row,'user_info'=>$user_additional_info));
 					}
 				}
 				else /* if the user is not there with that profile id */ {
@@ -177,8 +184,7 @@ class ProfileController extends Controller {
 	}
 	
 	 
-	public function actionHearts()
-	{		 
+	public function actionHearts(){		 
 		/*$url = Yii::app()->session['url'];		 
 		if (isset($url)) {			 
 			$access_user_id = Yii::app()->session['user_id'];			 
@@ -223,7 +229,80 @@ class ProfileController extends Controller {
 		$this->layout='profile_layout';
 		$this->render('index');
 	}
-		
+	
+		/**
+	* Request friend request to the user
+	* Last Modified:19-Oct-14
+	*/	
+	public function actionAddfriend(){
+		$profile_current = json_decode($_POST['profile_current']);
+		$profile_other = json_decode($_POST['profile_other']);
+		//$countries = Countries::model()->get_current_nearbycountries($ip);		
+		$response = UsersFriends::model()->send_friend_request($profile_current,$profile_other);
+		if($response){
+			echo CJSON::encode(array(
+				'status'=>'success',
+			));
+		}
+		else{
+			echo CJSON::encode(array(
+				'status'=>'error',
+			));			
+		}
+		Yii::app()->end();
+	}
+	
+	public function actionRemovefriend(){
+		$profile_current = json_decode($_POST['profile_current']);
+		$profile_other = json_decode($_POST['profile_other']);
+		$response = UsersFriends::model()->delete_friend($profile_current,$profile_other);
+		if($response){
+			echo CJSON::encode(array(
+				'status'=>'success',
+			));
+		}
+		else{
+			echo CJSON::encode(array(
+				'status'=>'error',
+			));			
+		}
+		Yii::app()->end();
+	}
+	
+	public function actionFollowfriend(){
+		$profile_current = json_decode($_POST['profile_current']);
+		$profile_other = json_decode($_POST['profile_other']);
+		$response = UsersFriends::model()->follow_friend($profile_current,$profile_other);
+		if($response){
+			echo CJSON::encode(array(
+				'status'=>'success',
+			));
+		}
+		else{
+			echo CJSON::encode(array(
+				'status'=>'error',
+			));			
+		}
+		Yii::app()->end();		
+	}
+	
+	public function actionFollowingfriend(){
+		$profile_current = json_decode($_POST['profile_current']);
+		$profile_other = json_decode($_POST['profile_other']);
+		$response = UsersFriends::model()->following_friend($profile_current,$profile_other);
+		if($response){
+			echo CJSON::encode(array(
+				'status'=>'success',
+			));
+		}
+		else{
+			echo CJSON::encode(array(
+				'status'=>'error',
+			));			
+		}
+		Yii::app()->end();		
+	}	
+	
 
 	public function actionAddHearts() {
 		
@@ -234,23 +313,17 @@ class ProfileController extends Controller {
 			$action = $_GET['action'];
 			
 			if ($action == "heart") {
-				if (isset($url)) {
-				
-				 
-				
-				$access_user_id = Yii::app()->session['user_id'];		
+				if (isset($url)) {				
+					$access_user_id = Yii::app()->session['user_id'];				 
 					 
-				 
-				$criteria = new CDbCriteria();
-				$criteria->offset = $_GET['limit']-2;
-				$criteria->limit = 2;
-				$criteria->condition = 't.user_id ='.$access_user_id;
-				 
-				$hearts = LogPhotosHearts::model()->with('user.userDetails','photos', 'photos.logPhotosComments', 'photos.logPhotosCount')->findAll($criteria);
-					
-							
-				if (isset($hearts) && !empty($hearts)) 
-					$this->renderPartial('addhearts',array('model'=>$hearts));
+					$criteria = new CDbCriteria();
+					$criteria->offset = $_GET['limit']-2;
+					$criteria->limit = 2;
+					$criteria->condition = 't.user_id ='.$access_user_id;
+					 
+					$hearts = LogPhotosHearts::model()->with('user.userDetails','photos', 'photos.logPhotosComments', 'photos.logPhotosCount')->findAll($criteria);							
+					if (isset($hearts) && !empty($hearts)) 
+						$this->renderPartial('addhearts',array('model'=>$hearts));
 		 
 				}  
 			}

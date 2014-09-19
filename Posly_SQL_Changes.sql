@@ -135,6 +135,8 @@ CREATE TABLE IF NOT EXISTS `users_messages_reply` (
 -----------------17-Septt-14----------------------------
 ALTER TABLE `users` ADD `notification_read_date` INT( 11 ) NOT NULL DEFAULT '0' ;
 
+-----------------18-Septt-14----------------------------
+ALTER TABLE  `users_friends` CHANGE  `user_friend_created_date`  `user_friend_created_date` TIMESTAMP( 11 ) NULL DEFAULT CURRENT_TIMESTAMP
 -----------------------18-Sept-14-----------------
 CREATE TABLE IF NOT EXISTS `user_shares` (
   `user_share_id` bigint(20) NOT NULL AUTO_INCREMENT,
