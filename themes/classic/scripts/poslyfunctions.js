@@ -599,7 +599,7 @@ function getAjaxreturn(url,data1){
 //** Click, change &onkeypress Events
 $(document).on('click', '#signupmail', function(){
 	checkSignUp( $(this) );
-});
+}); 
 
 $(document).on('keypress', '#LoginForm_password', function(event){
 	if(event.which == 13){
@@ -616,3 +616,6 @@ $(document).on('change', '#formreg_region', function(){
 $(document).on('change', '#formreg_state', function(){
 	getcountrycity($(this),'formreg_city');
 });
+
+// profile page functions
+

@@ -134,3 +134,7 @@ CREATE TABLE IF NOT EXISTS `users_messages_reply` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf16 AUTO_INCREMENT=1 ;
 -----------------17-Septt-14----------------------------
 ALTER TABLE `users` ADD `notification_read_date` INT( 11 ) NOT NULL DEFAULT '0' ;
+
+-----------------18-Septt-14----------------------------
+
+ALTER TABLE  `users_friends` CHANGE  `user_friend_created_date`  `user_friend_created_date` TIMESTAMP( 11 ) NULL DEFAULT CURRENT_TIMESTAMP

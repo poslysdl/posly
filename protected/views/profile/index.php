@@ -6,11 +6,7 @@
 </div> <!-- #top-shadow  ENDS --->
 <!-- END HEADER -->
 <?php
-//echo "<pre>";
-//print_r($user_info);
-////echo $this->user_self;
-//echo "</pre>";
-//exit;
+
 $user_name = $user->user_details_firstname." ".$user->user_details_lastname;
 
 $user_gender = ($user->user_details_gender == 1) ? "M" : "F";
@@ -25,37 +21,90 @@ $user_gender = ($user->user_details_gender == 1) ? "M" : "F";
 	<div class="martop container padd head-user">
 		<div class="head-but">
 		<ul class="buton-user pull-right">
+			<li id="user_friend_status">
+			<?php
+			if($user_info['current_user'] == $this->user_logged_vistor){
+			?>				
+				<button style="display: block" id="request_add_friend"  data-url="<?php echo Yii::app()->createUrl('/profile/addfriend');?>" class="btn white messege" type="button" href="#"  data-toggle="modal">Add Friend</button>
+			<?php
+			}
+			?>
+			<?php
+			if($user_info['current_user'] == $this->user_friend){
+			?>				
+				<button id="profile_friends"  class="btn white messege" type="button" href="#"  data-toggle="modal">Friends</button>
+			<?php
+			}
+			?>
+			<?php
+			if($user_info['current_user'] == $this->user_request_send){
+			?>				
+				<button id="profile_friends_request_send"  class="btn white messege" type="button" href="#"  data-toggle="modal">Friend Request Sent</button>
+			<?php
+			}
+			?>
+			<?php
+			if($user_info['current_user'] == $this->user_request_receive){
+			?>				
+				<button id="profile_friends_request_receive"  class="btn white messege" type="button" href="#"  data-toggle="modal">Respond to Friend Request</button>
+			<?php
+			}
+			?>
+			
+			
+			
+<!--				<button style="display: none" id="request_remove_friend"  data-url="<?php echo Yii::app()->createUrl('/profile/removefriend');?>" class="btn white messege" type="button" href="#"  data-toggle="modal">Remove Friend</button>-->
+			
+			</li>		
 		<?php
 		if($user_info['current_user'] == $this->user_self){
 		?>
-			<li>
-				<button class="btn white messege" type="button" href="#"  data-toggle="modal">Add Friends</button>
-			</li>
+			
 			<li>
 				<button class="btn white messege" type="button" href="#"  data-toggle="modal">Edit Profile</button>
 			</li>
 		<?php
 		}
 		?>
-		<?php
-		if($user_info['current_user'] == $this->user_self){
-		?>
 			<li class="dropdown"> <a data-close-others="true" data-toggle="dropdown" class="dropdown-toggle" href="#">
 				<button class="btn white setting" type="button"><i class="icon-gear"></i></button>
 			</a>
 			<ul class="dropdown-menu setting-acc">
+		<?php
+		if($user_info['current_user'] == $this->user_logged_vistor){
+		?>				
 			<li><a class="gren" data-toggle="modal" href="#block-user"> Settings </a> </li>
+		<?php
+		}
+		?>
+		<?php
+		if($user_info['current_user'] == $this->user_friend){
+		?>				
+			<li><a class="gren" data-toggle="modal" href="#" id="request_remove_friend"  data-url="<?php echo Yii::app()->createUrl('/profile/removefriend');?>" > Unfriend </a> </li>
+		<?php
+		}
+		?>			
+		<?php
+		if($user_info['current_user'] == $this->user_self){
+		?>
 			<li><a class="gren" data-toggle="modal" href="#report-pin">Edit profile </a> </li>
 			<li class="divider"></li>
-			<li><a class="gren" data-toggle="modal" href="#report-pin">View As </a> </li>
+		<?php
+		}
+		?>				
+		<?php
+		if($user_info['current_user'] == $this->user_self){
+		?>			
+			<li><a class="gren" data-toggle="modal" href="#report-pin">View As </a> </li>			
 			<li class="buttcen">
 				<button type="button" class="btn meoS">log out</button>
 			</li>
-			</ul>
-			</li>
 		<?php
 		}
-		?>		
+		?>				
+			</ul>
+			</li>
+	
 		<!-- END USER LOGIN DROPDOWN --> 
 		<!-- BEGIN SEARCH FROM --> 
 		<!-- BEGIN SEARCH FROM -->
@@ -579,3 +628,5 @@ Other</label>
 	</div>
 </div>
 </div>
+<input type="hdden" value="<?php echo $this->current_user_id;?>" id="prof_curr" />
+<input type="hdden" value="<?php echo $this->current_profile_id;?>" id="prof_othr" />

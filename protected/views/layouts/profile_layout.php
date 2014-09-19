@@ -147,9 +147,9 @@
 <script>
 function initAnimscroll() {		
 	new AnimOnScroll( document.getElementById( 'grid' ), {
-		minDuration : 0.4,
-		maxDuration : 0.7,
-		viewportFactor : 0.2
+            minDuration : 0.4,
+            maxDuration : 0.7,
+            viewportFactor : 0.2
 	});
 	new AnimOnScroll( document.getElementById( 'grid-stats' ), {
 		minDuration : 0.4,
@@ -308,7 +308,7 @@ function showprofile(divid,methodname){
 	var url = $('.tab-content').attr('data-url');
 	url = url+'/'+methodname; //methodname are the controller action name
 	$.get(url,function(data,status){
-		$('#tab_2_'+divid).html(data);	
+	    $('#tab_2_'+divid).html(data);	
 	});
 	document.getElementById('tab_2_'+divid).style.display='block';
 	document.getElementById('tab_2_'+divid).style.overflow='';
@@ -319,7 +319,82 @@ function showprofile(divid,methodname){
 	setTimeout(initAnimscroll, 500);
 }
 
-showprofile('1','about');	
+showprofile('1','about');
+
+// Add friend
+
+$(document).on('click', '#request_add_friend', function(){
+    addfriend();
+});
+
+$(document).on('click', '#request_remove_friend', function(){
+    removefriend();
+});
+
+function removefriend(){
+    var profile_current = document.getElementById("prof_curr").value;
+    var profile_other = document.getElementById("prof_othr").value;
+    request_removefriend(profile_current,profile_other);
+}
+
+
+function request_removefriend(profile_current,profile_other){
+    var returnpath = "<?php echo Yii::app()->request->url;?>";
+    var params = {'profile_current':profile_current,'profile_other':profile_other};
+    var url_friend_remove = $('#request_remove_friend').attr('data-url');
+    $.ajax({
+        type: 'POST',  
+        url: url_friend_remove,
+        async: false,
+        data:params,
+        success:function(data){
+            data = jQuery.parseJSON(data);
+            console.log(data);
+            if(data.status=="success"){				
+              window.location = returnpath;           
+            }
+            else{
+               window.location = returnpath;
+            }
+        },
+        error: function(data) { // if error occured
+           window.location = returnpath;
+        }
+    });	
+}
+
+function addfriend(){
+    var profile_current = document.getElementById("prof_curr").value;
+    var profile_other = document.getElementById("prof_othr").value;
+    request_addfriend(profile_current,profile_other);
+}
+
+function request_addfriend(profile_current,profile_other){
+    var returnpath = "<?php echo Yii::app()->request->url;?>";
+    var params = {'profile_current':profile_current,'profile_other':profile_other};
+    var url_friend_request = $('#request_add_friend').attr('data-url');
+    $.ajax({
+        type: 'POST',  
+        url: url_friend_request,
+        async: false,
+        data:params,
+        success:function(data){
+            data = jQuery.parseJSON(data);
+            console.log(data);
+            if(data.status=="success"){				
+              $("#user_friend_status").html('<button id="profile_friends_request_send"  class="btn white messege" type="button" href="#"  data-toggle="modal">Friend Request Sent</button>');              
+            }
+            else{
+                window.location = returnpath;
+            }
+        },
+        error: function(data) { // if error occured
+           window.location = returnpath;
+        }
+    });	
+}
+
+
 </script> 
 
 <!--<script src="<?php //echo Yii::app()->theme->baseUrl; ?>/scripts/poslyfunctions.js"></script> -->

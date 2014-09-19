@@ -143,8 +143,8 @@ class Users extends CActiveRecord
 		}
 		
 		exit;
-	}  
-   
+	}   
+ 
  
    // for social user login
    public function findByAuthSocial($provider, $identifier){
