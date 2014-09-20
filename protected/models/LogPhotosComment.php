@@ -82,20 +82,21 @@ class LogPhotosComment extends CActiveRecord
 	 * based on the search/filter conditions.
 	 */
 	public function search()
-	{
-		// @todo Please modify the following code to remove attributes that should not be searched.
+	{	// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
-
 		$criteria->compare('log_photos_comment_id',$this->log_photos_comment_id);
 		$criteria->compare('photos_id',$this->photos_id);
 		$criteria->compare('user_id',$this->user_id);
-		$criteria->compare('log_photos_comment_description',$this->log_photos_comment_description,true);
-		$criteria->compare('log_photos_comment_hide',$this->log_photos_comment_hide);
+		//$criteria->compare('log_photos_comment_description',$this->log_photos_comment_description,true);
+		//$criteria->compare('log_photos_comment_hide',$this->log_photos_comment_hide);
 		$criteria->compare('log_photos_comment_date',$this->log_photos_comment_date);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+			 'sort' => array(
+				'defaultOrder' => 'log_photos_comment_date DESC', 
+			),
 		));
 	}
 

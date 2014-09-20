@@ -27,11 +27,69 @@ $(function () {
 	*/
 });
 
-// on click of image in carousel in Cart, show related comments & likes
-function showcartComments(elmn){
+/* on click of image in carousel in Cart, show related comments & likes
+** app.js Line-506 contains collapseed & expand class
+*/
+function showcartComments(elmn){	
 	photoid = $(elmn).attr('photo_id');
 	$(elmn).parents('.portlet-body').parents('.portlet').children('.portlet-body').children('.divcomments').hide();	
-	$('#cart-data'+photoid).show();	
+	$('#cart-data'+photoid).show();
+	$('.main-img-user').children('.owl-carousel').children('.owl-controls').css("bottom",0);
+	adjustOwlCarouselHeight(photoid); //Adjust carousel black strip position
+}
+
+//Re-arrange height of owl-carousel Black Strip height/Position wrt various img height..	
+function adjustOwlCarouselHeight(photoid){	
+	var owldivheight = $(".main-img-user .owl-carousel .owl-height").height();
+	var activeImgheight = $("#owl"+photoid).height();
+	var maximgheight=0;
+	var heightdiff=0;
+	if(activeImgheight<owldivheight)
+	{		
+		$("#owl"+photoid).parents(".owl-stage").children('div').each(function(){
+			if($(this).hasClass("owl-item"))
+			{
+				imgheight = $(this).height();
+				if($(this).height()>maximgheight)
+				maximgheight = $(this).height();
+			}
+		});
+		if(activeImgheight<maximgheight){
+			heightdiff = maximgheight-activeImgheight;
+		}			
+		//$('.main-img-user .owl-controls').css("bottom",heightdiff);		
+		$('.main-img-user .owl-controls').animate({
+			bottom: heightdiff	
+		}, 200);		
+	}
+}
+
+//Re-arrange height of owl-carousel Black Strip in ZOOM Images
+function adjustZoomCarouselHeight(photoid){	
+	//$("#zoomowl"+photoid).click();
+	//var owldivheight = $(".main-img-user .owl-carousel .owl-stage-outer").height();
+	//var activeImgheight = $("#zoomowl"+photoid).height();
+	//var maximgheight=0;
+	//var heightdiff=0;	
+	/*if(activeImgheight<owldivheight)
+	{		
+		$("#zoomowl"+photoid).parents(".owl-stage").children('div').each(function(){
+			if($(this).hasClass("owl-item"))
+			{	
+				imgheight = $(this).height(); console.log(imgheight);
+				if($(this).height()>maximgheight)
+				maximgheight = $(this).height();
+			}
+		});
+		console.log(photoid+' '+owldivheight+' '+maximgheight);
+		if(activeImgheight<maximgheight){
+			heightdiff = maximgheight-activeImgheight;
+		}			
+		//$('.main-img-user .owl-controls').css("bottom",heightdiff);		
+		$('.main-img-user .owl-controls').animate({
+			bottom: heightdiff	
+		}, 200);		
+	} */
 }
 
 /* Image Zoom function
@@ -42,8 +100,7 @@ $(document).on('click', '.img-zoom', function(){
 	var pid=$(this).attr('dphoto_id');
 	$('.czoomimage').hide();
 	var cartuserid = $(this).attr('data-userid');	
-	$('#zoomimage'+cartuserid).show();
-
+	$('#zoomimage'+cartuserid).show();	
 	//unhide comments,like for this Zoom image,
 	activephotoid = $('#zoomimage'+cartuserid+' .active > .article-image').attr('dphoto_id'); 
 	setTimeout('', 100); //timer to delay the execution for 100milisec, to aviod any ambiguity
@@ -51,11 +108,12 @@ $(document).on('click', '.img-zoom', function(){
 	$('#zoomimage'+cartuserid+' .zoomdivcomments').hide(); //first hide all comments for this Cart
 	$('#zoomcart-data'+activephotoid).show(); //show only tags of active image
 	$('#zoomtag'+activephotoid).show();
-	setTimeout(showWhoAlsoLike(pid), 100);	
+//adjustZoomCarouselHeight(pid); //Adjust carousel black strip position
+	setTimeout(showWhoAlsoLike(pid), 1000);	
 });
 
 /* Hide/Unhide comments,tags in Zoom Image
-	when click on Zoom Image,in carousel in Zoom Image Cart, 
+	when click on any image in Black strip carousel in Zoom Image Cart, 
 	show related comments & likes 
 */
 function showZoomcartComments(elmn){
@@ -63,8 +121,8 @@ function showZoomcartComments(elmn){
 	$('#share-pic .zoomdivcomments').hide();
 	$('#share-pic .tagcloud').hide();	
 	$('#zoomcart-data'+activephotoid).show();	
-	$('#zoomtag'+activephotoid).show();
-	setTimeout(showWhoAlsoLike(activephotoid), 100);
+	$('#zoomtag'+activephotoid).show();	
+	setTimeout(showWhoAlsoLike(activephotoid), 1000);	
 }
 
 /* Add Comments Box
@@ -602,6 +660,19 @@ $(document).on('keypress', '#LoginForm_password', function(event){
 		signInByEmail();   
 	}
 });
+
+//click on owl-carousel Black Strip slot images, will show respective Comments
+$(document).on('click', '.owl-controls .img-responsive', function(){
+	showcartComments($(this));
+});
+
+//Re-Adjust Height of Owl-Carousel Black Strip uponimage at Mouse hover
+$(document).on('hover', '.main-img-user', function(){
+	$(this).children(".owl-carousel").children(".owl-controls").css("bottom",0);
+	var photoid = $(this).children(".owl-carousel").children(".owl-height").children(".owl-stage").children(".active").children(".article-image").children(".hover-zomm").children(".lazyOwl").attr('dphoto_id');
+	adjustOwlCarouselHeight(photoid);
+});
+
 //Step-1# Email-SignUp page, Country, Region/States, Cities
 $(document).on('change', '#formreg_country', function(){
 	getcountrycity($(this),'formreg_region');

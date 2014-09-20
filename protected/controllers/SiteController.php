@@ -46,7 +46,7 @@ class SiteController extends Controller
 				$criteria->group = 't.user_id';
 				$criteria->order = 'totalcount DESC';
 				
-				if($_GET['l']<$this->cartlimit){
+				if($_GET['l']<6){
 					$criteria->limit=$_GET['l']; //Total No of Records
 					$criteria->offset=$_GET['l']-2; //Starts from..
 				} else{
@@ -67,7 +67,7 @@ class SiteController extends Controller
 				$criteria->group = 't.user_id';
 				$criteria->order = 'totalcount DESC';
 				
-				if($_GET['l']<$this->cartlimit){
+				if($_GET['l']<6){
 					$criteria->limit=$_GET['l']; //Total No of Records
 					$criteria->offset=$_GET['l']-2; //Starts from..
 				} else{
@@ -83,7 +83,7 @@ class SiteController extends Controller
 				$criteria = new CDbCriteria();				
 				$criteria->group = 'userDetails.user_id';
 				$criteria->order = 'userDetails.user_details_created_date DESC';				
-				if($_GET['l']<$this->cartlimit){
+				if($_GET['l']<6){
 					$criteria->limit=$_GET['l']; //Total No of Records
 					$criteria->offset=$_GET['l']-2; //Starts from..
 				} else{
@@ -98,7 +98,7 @@ class SiteController extends Controller
 				$criteria = new CDbCriteria();				
 				$criteria->group = 'userDetails.user_id';
 				$criteria->order = 'userDetails.user_rank_worldwide ASC';				
-				if($_GET['l']<$this->cartlimit){
+				if($_GET['l']<6){
 					$criteria->limit=$_GET['l']; //Total No of Records
 					$criteria->offset=$_GET['l']-2; //Starts from..
 				} else{
@@ -114,7 +114,7 @@ class SiteController extends Controller
 				$criteria->condition = 'userDetails.user_details_gender = "1"';
 				$criteria->group = 'userDetails.user_id';
 				$criteria->order = 'userDetails.user_rank_worldwide ASC';				
-				if($_GET['l']<$this->cartlimit){
+				if($_GET['l']<6){
 					$criteria->limit=$_GET['l']; //Total No of Records
 					$criteria->offset=$_GET['l']-2; //Starts from..
 				} else{
@@ -130,7 +130,7 @@ class SiteController extends Controller
 				$criteria->condition = 'userDetails.user_details_gender = "0"';
 				$criteria->group = 'userDetails.user_id';
 				$criteria->order = 'userDetails.user_rank_worldwide ASC';				
-				if($_GET['l']<$this->cartlimit){
+				if($_GET['l']<6){
 					$criteria->limit=$_GET['l']; //Total No of Records
 					$criteria->offset=$_GET['l']-2; //Starts from..
 				} else{
@@ -197,7 +197,7 @@ class SiteController extends Controller
 		unset($criteria);
 		//Get Hash Tags Listings for sidebar, this action define in Controller class
 		$limit = (Yii::app()->user->isGuest)?9:6; //HashTag Limit			
-		$hash_tags = $this->actionHashtaglist($limit);		
+		$hash_tags = $this->actionHashtaglist($limit);	 // actionHashtaglist in Main Controller	
 		//Inside views/site/index.php ** widget are there to Include SubHeader, TopMenu & SideBar..
 		$this->render('index', array('photos'=>$allusersphotos,'hash_tags'=>$hash_tags));		
 	}	

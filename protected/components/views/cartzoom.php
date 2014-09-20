@@ -64,7 +64,7 @@
 					<li>
 					<button type="button" class="btn faceS" >Facebook</button>
 					</li>
-					<li>
+					<!--<li>
 					<button type="button" class="btn twistS" >Twitter</button>
 					</li>
 					<li>
@@ -72,13 +72,13 @@
 					</li>
 					<li>
 					<button type="button" class="btn pinter" >Pinterest</button>
-					</li>
+					</li>-->
 					<li>
 					<button type="button" class="btn insta" >Instagram</button>
 					</li>
-					<li>
+					<!--<li>
 					<button type="button" class="btn googlep" >Google +</button>
-					</li>
+					</li>-->
 					<li class="endles">
 					<button type="button" class="btn meoS" data-toggle="modal" href="#sign-up">Email</button>
 					</li>
@@ -102,10 +102,10 @@
 					if(!empty($uid))
 					$dlike = LogPhotosHearts::model()->find("user_id=$uid and photos_id=$photo_id"); 				
 					?>
-					<div class="article-image" data-dot="<img class='img-responsive' src='<?php echo $photo_src;?>' photo_id='<?php echo $photo_id;?>' onclick='showZoomcartComments(this);'>" dphoto_id='<?php echo $photo_id;?>'> 
+					<div class="article-image" data-dot="<img class='img-responsive' src='<?php echo $photo_src;?>' photo_id='<?php echo $photo_id;?>' onclick='showZoomcartComments(this);' id='zoomowl<?php echo $photo_id;?>' >" dphoto_id='<?php echo $photo_id;?>' > 
 					<!-- ***** above div data-dot image to be shown in carousel**** --> 
 					<a class="hover-zomm" href="#share-pic"  data-toggle="modal" >
-					<img src="<?php echo $photo_src;?>" data-src="<?php echo $photo_src;?>" class="lazyOwl img-responsive img-zoom"  alt="">
+					<img src="<?php echo $photo_src;?>" data-src="<?php echo $photo_src;?>" class="lazyOwl img-responsive img-zoom" alt="">
 					</a>				
 					<div class="mask"> 
 					<?php  

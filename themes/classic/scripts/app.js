@@ -502,7 +502,7 @@ $(window).bind('scroll', function(){ //when the user is scrolling...
         });
     }
 
-    // Handles portlet tools & actions
+    // Handles portlet tools & actions, Card Comments section
     var handlePortletTools = function () {
 	//jQuery('body').on('click', '.CMc > .main-commnet > .tools > .collapseed, .CMc .main-commnet > .tools > .expand', function (e) {	
 	jQuery('body').off('click', '.CMc > .main-commnet > .tools > a').on('click', '.CMc > .main-commnet > .tools > a', function (e) {    
@@ -513,12 +513,14 @@ $(window).bind('scroll', function(){ //when the user is scrolling...
                 $(this).removeClass("expand").addClass("collapseed");
 				totcomment = $(this).attr('data-src');
 				$(this).text(totcomment+" comments");
+				$(this).closest(".CMc").children(".main-comment2").show();				
                 el.slideUp(400);
             } else {
                 $(this).removeClass("collapseed").addClass("expand");
 				$(this).text("Hide comments");
+				$(this).closest(".CMc").children(".main-comment2").hide();
                 el.slideDown(400);
-				resetCommentboxHeight(this); //mentioned at poslyfunctions.js
+				resetCommentboxHeight(this); //mentioned at poslyfunctions.js.. SDL
             }
 		return false;
         });

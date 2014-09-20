@@ -149,3 +149,14 @@ CREATE TABLE IF NOT EXISTS `user_shares` (
 -----------------------19-Sept-14-----------------------
 ALTER TABLE `users` ADD `user_online_flag` TINYINT( 1 ) NOT NULL DEFAULT '0' COMMENT '0 - LogOff, 1 - Login';
 ALTER TABLE `users` ADD `user_logged_device` TINYINT NOT NULL DEFAULT '0' COMMENT '0 - web, 1 - mobile';
+
+---------------------------20-Sept-14 --------------------------------
+ALTER TABLE `log_photos_comment` ADD `likecount` INT( 11 ) NOT NULL DEFAULT '0';
+
+CREATE TABLE IF NOT EXISTS `log_comment_likes` (
+  `log_photos_comment_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `like_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1 - Like, 0 - dislike'
+) ENGINE=InnoDB DEFAULT CHARSET=utf16;
+
+-------------------------------------------------------------------

@@ -99,10 +99,10 @@
 				if(!empty($uid))
 				$dlike = LogPhotosHearts::model()->find("user_id=$uid and photos_id=$photo_id"); 				
 			?>
-				<div class="article-image" data-dot="<img class='img-responsive' src='<?php echo $photo_src;?>' photo_id='<?php echo $photo_id;?>' onclick='showcartComments(this);'>"> 
+				<div class="article-image" data-dot="<img class='img-responsive' src='<?php echo $photo_src;?>' photo_id='<?php echo $photo_id;?>' >"> 
 				<!-- ***** above div data-dot image to be shown in carousel**** --> 
 				<a class="hover-zomm" href="#share-pic"  data-toggle="modal" >
-				<img src="<?php echo $photo_src;?>" data-src="<?php echo $photo_src;?>" class="lazyOwl img-responsive img-zoom"  alt="" data-userid="<?php echo $cart_userId;?>"  dphoto_id='<?php echo $photo_id;?>' >
+				<img src="<?php echo $photo_src;?>" data-src="<?php echo $photo_src;?>" class="lazyOwl img-responsive img-zoom"  alt="" data-userid="<?php echo $cart_userId;?>"  dphoto_id='<?php echo $photo_id;?>' id="owl<?php echo $photo_id;?>">
 				</a>				
 				<div class="mask"> 
 					<?php  
@@ -218,7 +218,7 @@
 					$cnt = count($commentsArray);
 					if($cnt>1)
 					{
-						for($i=0;$i<$cnt-1;$i++){
+						for($i=0;$i<$cnt;$i++){
 						?>    
 							<li class="in"> 
 							<img class="avatar img-responsive" alt="" src="<?php echo $commentsArray[$i]['useravatar'];?>" />					
