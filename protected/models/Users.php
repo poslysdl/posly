@@ -143,7 +143,17 @@ class Users extends CActiveRecord
 		}
 		
 		exit;
-	}   
+	}
+	
+	public function getUserInfo($userId){
+	//	$data = array();
+		$query = "SELECT ud.* FROM `users_details` ud JOIN `users` u ON u.user_details_id = ud.user_details_id";
+		$query.=" WHERE u.user_id = :userId ";
+		$command= Yii::app()->db->createCommand($query);
+		$command->bindParam(":userId", $userId);
+		$rawData = $command->queryAll();
+		return $rawData[0];			
+	}  	
  
  
    // for social user login
@@ -264,45 +274,17 @@ class Users extends CActiveRecord
 		$command->execute();
 	}
 	
-	//get user country
 	
-	function get_profile_country($userId){
-		$query = "SELECT UL.user_location_country AS country FROM users U JOIN users_location UL ON U.user_location_id = UL.user_location_id WHERE U.user_id = :userId";
+		//get user location
+	
+	function get_profile_location($userId){
+		$query = "SELECT UL.user_location_id as locationId, UL.user_location_country AS country, UL.user_location_region AS region, UL.user_location_city AS city   FROM users U JOIN users_location UL ON U.user_location_id = UL.user_location_id WHERE U.user_id = :userId";
 		$command = yii::app()->db->createCommand($query);
 		$command->bindparam(":userId",$userId);
 		$rawData = $command->queryAll();
-		foreach($rawData as $raw){
-			$country = $raw['country'];
-		}
-		return $country;
-	}
-	
-	//get user city
-	
-	function get_profile_city($userId){
-		$query = "SELECT UL.user_location_city AS city FROM users U JOIN users_location UL ON U.user_location_id = UL.user_location_id WHERE U.user_id = :userId";
-		$command = yii::app()->db->createCommand($query);
-		$command->bindparam(":userId",$userId);
-		$rawData = $command->queryAll();
-		foreach($rawData as $raw){
-			$city = $raw['city'];
-		}
-		return $city;
-	}
-		
-	
-	//get user region
-	
-	function get_profile_region($userId){
-		$query = "SELECT UL.user_location_region AS region FROM users U JOIN users_location UL ON U.user_location_id = UL.user_location_id WHERE U.user_id = :userId";
-		$command = yii::app()->db->createCommand($query);
-		$command->bindparam(":userId",$userId);
-		$rawData = $command->queryAll();
-		foreach($rawData as $raw){
-			$region = $raw['region'];
-		}
-		return $region;
+		return $rawData[0];
 	}	
+
 	
 	
 	//get hearts count

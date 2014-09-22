@@ -7,7 +7,7 @@
 <!-- END HEADER -->
 <?php
 //echo "<pre>";
-//print_r($user);
+//print_r($user_info);
 //echo "</pre>";
 //exit;
 $user_name = $user->user_details_firstname." ".$user->user_details_lastname;
@@ -162,7 +162,7 @@ $user_gender = ($user->user_details_gender == 1) ? "M" : "F";
 		<div class="user-text">
 		<div class="bguser">
 		<h1> <a href="#"><?php echo $user_name;?> (<?php echo $user_gender;?>,<?php echo $user_info['age'];?>)</a> </h1>
-		<p>From <?php echo $user_info['profile_country'];?> , <?php echo $user_info['profile_city'];?></p>
+		<p>From <?php echo $user_info['profile_location']['country'];?> , <?php echo $user_info['profile_location']['city'];?></p>
 		</div>
 		</div>
 	</div>
