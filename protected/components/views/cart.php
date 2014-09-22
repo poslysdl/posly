@@ -40,6 +40,7 @@
 	$cartuser_lastname = $p->user->userDetails->user_details_lastname;
 	$cartuser_url = $p->user->userDetails->user_unique_url;
 	$cart_userId = $p->user_id;
+	$likeConPath= urlencode(Yii::app()->createUrl("/comments/commentlike"));
 ?>
 <div class="portlet box blue boxshadown bRd">
 	<div class="portlet-title">
@@ -146,8 +147,7 @@
 			$lcount = $likescount;
 			$likehtml = '';
 			if(!empty($uid))
-				$likehtml = LogPhotosHearts::model()->createLikeCountHtml($photo_id,$likescount);
-			
+				$likehtml = LogPhotosHearts::model()->createLikeCountHtml($photo_id,$likescount);			
 		?>
 		<!--divcomments contains,total likes, comments,comment Post etc -->
 		<div class="divcomments" id="cart-data<?php echo $firstId; ?>" style="<?php echo $displayClass;?>">
@@ -195,7 +195,7 @@
 				<div class="main-comment display-hide">
 					<div class="scrollercm" style="height: 300px;" data-always-visible="1" data-rail-visible1="0">
 					<ul class="CMn" id="cart-data-comments<?php echo $firstId; ?>">
-					<?php // List of Comments
+					<?php // List of Comments ******
 					$commentsArray = array();
 					if(isset($com))
 					{					
@@ -207,10 +207,10 @@
 							else
 								$useravatar = Yii::app()->baseUrl.'/profiles/'.$c->user->userDetails->user_details_avatar;
 							$uname = $c->user->userDetails->user_details_firstname.' '.$c->user->userDetails->user_details_lastname;
-							$commentDate = $this->get_time_ago($c->log_photos_comment_date); //Comment Date
+							$commentDate = $this->get_commenttime($c->log_photos_comment_date); //Comment Date
 							$commentDesc = $c->log_photos_comment_description;
-							$commentsArray[] = array('useravatar'=>$useravatar,'uname'=>$uname,
-							'commentDate'=>$commentDate,'commentDesc'=>$commentDesc);
+							$commentsArray[] = array('useravatar'=>$useravatar,'uname'=>$uname,'id'=>$c->log_photos_comment_id,
+							'commentDate'=>$commentDate,'commentDesc'=>$commentDesc,'commentcount'=> $c->likecount);
 						}
 					}
 					$cnt = 0;
@@ -219,12 +219,24 @@
 					if($cnt>1)
 					{
 						for($i=0;$i<$cnt;$i++){
+						$cdate = $commentsArray[$i]['commentDate'];
+						$commentcnt =($commentsArray[$cnt-1]['commentcount']==0)?'':$commentsArray[$cnt-1]['commentcount'];
+						$like='Like';
 						?>    
 							<li class="in"> 
 							<img class="avatar img-responsive" alt="" src="<?php echo $commentsArray[$i]['useravatar'];?>" />					
-							<div class="message"> <a href="#" class="name"><?php echo $commentsArray[$i]['uname'];?></a> 
-							<span class="datetime">@ <?php echo $commentsArray[$i]['commentDate'];?></span> 
-							<span class="body"> <?php echo $commentsArray[$i]['commentDesc']; ?> </span> 
+							<div class="message"> <a href="#" class="name"><?php echo $commentsArray[$i]['uname'];?></a> 							
+							<span class="body"> <?php echo $commentsArray[$i]['commentDesc']; ?> </span>							
+							<span class="likebox">
+								<span class="datetime"><?php echo $cdate;?></span>
+								<?php if(!empty($uid)){ ?>
+								<span class="like">
+									<a class="commentlike" data-id="<?php echo $commentsArray[$i]['id'];?>" data-url="<?php echo $likeConPath;?>"><?php echo $like;?></a>
+								</span>
+								<?php } ?>
+								<span class="limg"></span>
+								<span class="lcnt"><?php echo $commentcnt; ?></span>
+							<span>							
 							</div>					
 							</li>
 						<?php 
@@ -237,14 +249,27 @@
 				</div>
 				<div class="main-comment2"> <!--Main Comments -->
 					<div>
-					<?php if(isset($cnt) && $cnt>1){  ?>
+					<?php if(isset($cnt) && $cnt>1){ 
+						$cdate = $commentsArray[$cnt-1]['commentDate'];
+						$commentcnt =($commentsArray[$cnt-1]['commentcount']==0)?'':$commentsArray[$cnt-1]['commentcount'];
+						$like='Like';
+					?>
 					<ul class="CMn" id="cart-data-maincomments<?php echo $firstId; ?>">
 					<li class="in"> 
 					<img class="avatar img-responsive" alt="" src="<?php echo $commentsArray[$cnt-1]['useravatar']; ?>" />
 					<div class="message"> 
-					<a href="#" class="name"><?php echo $commentsArray[$cnt-1]['uname']; ?></a> 
-					<span class="datetime">@ <?php echo $commentsArray[$cnt-1]['commentDate']; ?></span> 
-					<span class="body"> <?php echo $commentsArray[$cnt-1]['commentDesc']; ?></span> 
+					<a href="#" class="name"><?php echo $commentsArray[$cnt-1]['uname']; ?></a>					 
+					<span class="body"> <?php echo $commentsArray[$cnt-1]['commentDesc']; ?></span>					
+					<span class="likebox" data-url="<?php echo $likeConPath;?>">
+						<span class="datetime"><?php echo $cdate; ?></span>
+						<?php if(!empty($uid)){ ?>
+						<span class="like">
+						<a class="commentlike" data-id="<?php echo $commentsArray[$cnt-1]['id'];?>" data-url="<?php echo $likeConPath;?>"><?php echo $like;?></a>
+						</span>
+						<?php } ?>
+						<span class="limg"></span>
+						<span class="lcnt"><?php echo $commentcnt; ?></span>
+					<span>
 					</div>
 					</li>
 					</ul>

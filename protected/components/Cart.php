@@ -89,6 +89,60 @@ class Cart extends CWidget {
 			return $time_units . ' ' . $time_unit . 's ago';
 		}
 	}
+	
+	public function get_commenttime($time_stamp) 
+	{
+		$time_difference = strtotime('now') - $time_stamp;
+		if($time_difference >= 60 * 60 * 24 * 365.242199)
+		{
+			/* 60 seconds/minute * 60 minutes/hour * 24 hours/day * 365.242199 days/year
+			 * This means that the time difference is 1 year or more
+			*/
+			if($time_difference >60 * 60 * 24 * 365.242199)
+				return date('F j y',$time_stamp).' at '.date('g:i a',$time_stamp);
+			else
+				return date('F j',$time_stamp).' at '.date('g:i a',$time_stamp);
+		}
+		elseif($time_difference >= 60 * 60 * 24 * 30.4368499)
+		{
+			/* 60 seconds/minute * 60 minutes/hour * 24 hours/day * 30.4368499 days/month
+			 * This means that the time difference is 1 month or more
+			 */
+			return date('F j',$time_stamp).' at '.date('g:i a',$time_stamp);
+		}
+		elseif($time_difference >= 60 * 60 * 24 * 7)
+		{
+			/* 60 seconds/minute * 60 minutes/hour * 24 hours/day * 7 days/week
+			 * This means that the time difference is 1 week or more
+			 */
+			return date('F j',$time_stamp).' at '.date('g:i a',$time_stamp);
+		}
+		elseif($time_difference >= 60 * 60 * 24)
+		{
+			/* 60 seconds/minute * 60 minutes/hour * 24 hours/day
+			 * This means that the time difference is 1 day or more
+			 */
+			return date('F j',$time_stamp).' at '.date('g:i a',$time_stamp);
+		}
+		elseif($time_difference >= 60 * 60)
+		{
+			/* 60 seconds/minute * 60 minutes/hour
+			 * This means that the time difference is 1 hour or more
+			 */	
+			$temp = ceil($time_difference/3600);
+			$temp = ($time_difference==3600)?'1 hr ago':$temp.' hrs ago';
+			return $temp;
+		}
+		else
+		{
+			/* 60 seconds/minute
+			 * This means that the time difference is a matter of minutes
+			 */
+			$temp = ceil($time_difference/60);
+			$temp = ($time_difference==60)?'1 min ago':$temp.' mins ago';
+			return $temp;			
+		}		
+	}
  
 }
 

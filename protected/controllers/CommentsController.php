@@ -22,7 +22,7 @@ class CommentsController extends Controller
 	{
 		return array(
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('addcomment'),
+				'actions'=>array('addcomment','commentlike'),
 				'users'=>array('@'),
 			),
 			array('deny',  // deny all users
@@ -62,6 +62,34 @@ class CommentsController extends Controller
 	 		}
 	 	}
 		Yii::app()->end();
+	}
+	
+	/**
+	* This user define Ajax function Comment Like & Dislike 
+	* When User Clicks on LIKE link of a comment in Card
+	* Last Modified:22-Sep-14
+	*/
+	public function actionCommentlike()
+	{
+		$cnt=0;
+		$status='error';
+		$uid = Yii::app()->user->id;
+		if(isset($_POST['pdata']))
+		{	
+			$comment_id = $_POST['pdata'];
+			$flag = $_POST['flag'];
+			if($flag=="Like"){
+				$cnt=LogPhotosComment::model()->UpdateLikeCount($uid,$comment_id,$flag);
+			} else{
+				$cnt=LogPhotosComment::model()->UpdateLikeCount($uid,$comment_id,$flag);
+			}
+			$status='success';
+		}
+		echo CJSON::encode(array(
+			  'status'=>$status,
+			  'values'=>$cnt
+		));
+		Yii::app()->end();		
 	}
 	
 }

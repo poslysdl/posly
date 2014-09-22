@@ -110,4 +110,23 @@ class LogPhotosComment extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	
+	/**
+	 * Name: UpdateLikeCount
+	 * User_Define Function, update comment Like count	
+	 * @param numeric $uid User Id.
+	 * @param numeric $comment_id commentId.
+	 * @param numeric $flag Flag Like/Dislike.
+	 * @return commentLike count INT value	 
+	 */
+	public function UpdateLikeCount($uid,$comment_id,$flag)
+	{
+		$likecount = 0;
+		
+		
+		return $likecount;
+	
+	}
+	
+	
 }
