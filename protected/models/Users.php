@@ -143,7 +143,17 @@ class Users extends CActiveRecord
 		}
 		
 		exit;
-	}   
+	}
+	
+	public function getUserInfo($userId){
+	//	$data = array();
+		$query = "SELECT ud.* FROM `users_details` ud JOIN `users` u ON u.user_details_id = ud.user_details_id";
+		$query.=" WHERE u.user_id = :userId ";
+		$command= Yii::app()->db->createCommand($query);
+		$command->bindParam(":userId", $userId);
+		$rawData = $command->queryAll();
+		return $rawData[0];			
+	}  	
  
  
    // for social user login
@@ -233,8 +243,7 @@ class Users extends CActiveRecord
 	 * @param string $provider, Int $identifier .
 	 * @return true or false 
 	 */
-	public function checkSocialAuth($provider, $identifier)
-	{	
+	public function checkSocialAuth($provider, $identifier){	
 		$query = "SELECT count(*) as cnt FROM `users_socialmedia` WHERE `user_socialmedia_provider` = :provider AND `user_socialmedia_identifier` = :identifier";		
 		$command= Yii::app()->db->createCommand($query);
 		$command->bindParam(":provider", $provider);
@@ -264,5 +273,73 @@ class Users extends CActiveRecord
 		$command= Yii::app()->db->createCommand($query);
 		$command->execute();
 	}
+	
+	
+		//get user location
+	
+	function get_profile_location($userId){
+		$query = "SELECT UL.user_location_id as locationId, UL.user_location_country AS country, UL.user_location_region AS region, UL.user_location_city AS city   FROM users U JOIN users_location UL ON U.user_location_id = UL.user_location_id WHERE U.user_id = :userId";
+		$command = yii::app()->db->createCommand($query);
+		$command->bindparam(":userId",$userId);
+		$rawData = $command->queryAll();
+		return $rawData[0];
+	}	
+
+	
+	
+	//get hearts count
+	
+	function get_profile_hearts_count($userId){
+		$query = "SELECT count(user_id) AS total FROM `log_photos_hearts` WHERE  `owner_id` = :userId";
+		$command = yii::app()->db->createCommand($query);
+		$command->bindparam(":userId",$userId);
+		$rawData = $command->queryAll();
+		foreach($rawData as $raw){
+			$count = $raw['total'];
+		}
+		return $count;
+	}
+	
+	//get friends count
+	
+	function get_profile_friends_count($userId){
+		
+		$query = "
+			SELECT
+				 (SELECT count(*) FROM `users_friends` WHERE user_id = :userId AND `status` = 1 )
+				 +
+				 (SELECT count(*) FROM `users_friends` WHERE `friend_id` = :userId AND `status` = 1)
+			AS `total`		
+		";
+		$command = yii::app()->db->createCommand($query);		
+		$command->bindparam(":userId",$userId);
+		$rawData = $command->queryAll();
+		foreach($rawData as $raw){
+			$count = $raw['total'];
+		}
+		return $count;		
+	}
+	
+	function get_profile_following_count($userId){
+		$query = "SELECT count(user_id) AS total FROM `users_follow` WHERE  `user_id` = :userId";
+		$command = yii::app()->db->createCommand($query);
+		$command->bindparam(":userId",$userId);
+		$rawData = $command->queryAll();
+		foreach($rawData as $raw){
+			$count = $raw['total'];
+		}
+		return $count;
+	}
+	
+	function get_profile_follower_count($userId){
+		$query = "SELECT count(user_id) AS total FROM `users_follow` WHERE  `follow_id` = :follow_id";
+		$command = yii::app()->db->createCommand($query);
+		$command->bindparam(":follow_id",$userId);
+		$rawData = $command->queryAll();
+		foreach($rawData as $raw){
+			$count = $raw['total'];
+		}
+		return $count;
+	}	
 	
 }

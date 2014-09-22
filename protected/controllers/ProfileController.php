@@ -12,6 +12,14 @@ class ProfileController extends Controller {
 	public $user_following  = "following";
 	public $current_user_id;
 	public $current_profile_id;
+	public $profile_hearts_count;
+	public $profile_friends_count;
+	public $profile_follower_count;
+	public $profile_following_count;
+	public $profile_country;
+	public $profile_region;
+	public $profile_city;
+	public $profile_location;
    public function filters() {
       return array( 'accessControl' ); // perform access control for CRUD operations
 	}
@@ -37,7 +45,18 @@ class ProfileController extends Controller {
 				Yii::app()->session['url'] = $profile_url;
 				$row = UsersDetails::model()->find("user_unique_url='$profile_url'");
 				Yii::app()->session['user_id'] = $row['user_id'];				
-				if (isset($row)) {	
+				if (isset($row)) {
+					$this->profile_hearts_count = Users::model()->get_profile_hearts_count($row['user_id']);
+					$this->profile_friends_count = Users::model()->get_profile_friends_count($row['user_id']);
+					$this->profile_follower_count = Users::model()->get_profile_follower_count($row['user_id']);					
+					$this->profile_following_count = Users::model()->get_profile_following_count($row['user_id']);
+					$this->profile_location = Users::model()->get_profile_location($row['user_id']); 
+					
+					$user_additional_info['profile_hearts_count'] = $this->profile_hearts_count;
+					$user_additional_info['profile_friends_count'] = $this->profile_friends_count;
+					$user_additional_info['profile_follower_count'] = $this->profile_follower_count;
+					$user_additional_info['profile_following_count'] = $this->profile_following_count;					
+					$user_additional_info['profile_location'] = $this->profile_location;
 					$user_id = $row['user_id'];					
 					$sec_row = UsersSecurity::model()->find("user_id=$user_id");
 					$privacy = $sec_row['whocansee'];					
@@ -45,6 +64,8 @@ class ProfileController extends Controller {
 						$this->layout='profile_layout';	
 						Yii::app()->clientScript->registerCoreScript('jquery'); 
 						$userAge = Users::model()->getUserAge($row['user_id']);
+						$userInfo = Users::model()->getUserInfo($row['user_id']);
+						$user_additional_info['users_details'] = $userInfo;
 						$age = ($userAge) ? $userAge : "";
 						$user_additional_info['age'] = $userAge;
 						$user_additional_info['current_user'] = $this->user_guest;
@@ -76,33 +97,47 @@ class ProfileController extends Controller {
 				Yii::app()->session['url'] = $profile_url;
 				$row = UsersDetails::model()->find("user_unique_url='$profile_url'");
 				Yii::app()->session['user_id'] = $row['user_id'];
-				$check_friend = UsersFriends::model()->check_friend($id,$row['user_id']);
-				
-				$check_follow = UsersFriends::model()->check_follow($id,$row['user_id']);
-				if($check_follow){
-					$user_additional_info['follow'] = $this->user_following;
-				}				
-				
+
 				if(isset($row)) {
+					$check_friend = UsersFriends::model()->check_friend($id,$row['user_id']);
+					
+					$check_follow = UsersFollow::model()->check_follow($id,$row['user_id']);
+					if($check_follow){
+						$user_additional_info['follow'] = $this->user_following;
+					}					
 					$user_id = $row['user_id'];
+					$this->profile_hearts_count = Users::model()->get_profile_hearts_count($row['user_id']);
+					$this->profile_friends_count = Users::model()->get_profile_friends_count($row['user_id']);
+					$this->profile_follower_count = Users::model()->get_profile_follower_count($row['user_id']);					
+					$this->profile_following_count = Users::model()->get_profile_following_count($row['user_id']);
+					$this->profile_location = Users::model()->get_profile_location($row['user_id']); 
+					
+					$user_additional_info['profile_hearts_count'] = $this->profile_hearts_count;
+					$user_additional_info['profile_friends_count'] = $this->profile_friends_count;
+					$user_additional_info['profile_follower_count'] = $this->profile_follower_count;
+					$user_additional_info['profile_following_count'] = $this->profile_following_count;					
+					$user_additional_info['profile_location'] = $this->profile_location;
+					
+					$userInfo = Users::model()->getUserInfo($row['user_id']);
+					$user_additional_info['users_details'] = $userInfo;					
 					$this->current_profile_id = $user_id;
 					$userAge = Users::model()->getUserAge($row['user_id']);
 					$age = ($userAge) ? $userAge : "";	
 					//logged in user (own profile)
 					if($id == $user_id) {						
 						$this->layout='profile_layout';
-						Yii::app()->clientScript->registerCoreScript('jquery');					
+						Yii::app()->clientScript->registerCoreScript('jquery');	
 						$user_additional_info['age'] = $userAge;
 						$user_additional_info['current_user'] = $this->user_self;
 						$this->render('index',array('user'=>$row,'user_info'=>$user_additional_info));
 					}
 					//loggedin user friend profile
 					else if($check_friend){
-							$this->layout='profile_layout';
-							Yii::app()->clientScript->registerCoreScript('jquery'); 
-							$user_additional_info['age'] = $userAge;
-							$user_additional_info['current_user'] = $this->user_friend;
-							$this->render('index',array('user'=>$row,'user_info'=>$user_additional_info));
+						$this->layout='profile_layout';
+						Yii::app()->clientScript->registerCoreScript('jquery'); 
+						$user_additional_info['age'] = $userAge;
+						$user_additional_info['current_user'] = $this->user_friend;
+						$this->render('index',array('user'=>$row,'user_info'=>$user_additional_info));
 					}
 					//logged in user (others profile)
 					else {						
@@ -272,7 +307,7 @@ class ProfileController extends Controller {
 	public function actionFollowfriend(){
 		$profile_current = json_decode($_POST['profile_current']);
 		$profile_other = json_decode($_POST['profile_other']);
-		$response = UsersFriends::model()->follow_friend($profile_current,$profile_other);
+		$response = UsersFollow::model()->follow_friend($profile_current,$profile_other);
 		if($response){
 			echo CJSON::encode(array(
 				'status'=>'success',
@@ -289,7 +324,7 @@ class ProfileController extends Controller {
 	public function actionFollowingfriend(){
 		$profile_current = json_decode($_POST['profile_current']);
 		$profile_other = json_decode($_POST['profile_other']);
-		$response = UsersFriends::model()->following_friend($profile_current,$profile_other);
+		$response = UsersFollow::model()->following_friend($profile_current,$profile_other);
 		if($response){
 			echo CJSON::encode(array(
 				'status'=>'success',

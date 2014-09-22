@@ -102,4 +102,77 @@ class UsersFollow extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	
+	
+	
+	  //for process follow request
+	public function follow_friend($profile_current,$profile_other){
+		$parameters = array(":profile_current"=>$profile_current,":profile_other"=>$profile_other);
+		$query ="SELECT * FROM users_follow WHERE user_id = $profile_current AND follow_id = $profile_other";
+		$command= Yii::app()->db->createCommand($query);		
+		$rawData = $command->queryAll();
+		$rawCount = count($rawData);
+		if($rawCount==0){
+			$sql = "insert into users_follow (user_id,follow_id) values (:profile_current,:profile_other)";				
+			if(Yii::app()->db->createCommand($sql)->execute($parameters)){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		else{
+			return false;
+		}
+		Yii::app()->end();
+	}
+	
+	// For removing follow request
+	
+	
+	public function following_friend($profile_current,$profile_other){
+		$parameters = array(":profile_current"=>$profile_current,":profile_other"=>$profile_other);
+		$query ="SELECT * FROM users_follow WHERE user_id = $profile_current AND follow_id = $profile_other";
+		$command= Yii::app()->db->createCommand($query);		
+		$rawData = $command->queryAll();
+		$rawCount = count($rawData);
+		if($rawCount>0){
+			$query="DELETE FROM users_follow WHERE user_id = $profile_current AND follow_id = $profile_other";
+			$command= Yii::app()->db->createCommand($query);
+			$command->execute();
+			return true;			
+		}
+		else{
+			return false;
+		}
+	}
+	
+	public function check_follow($profile_current,$profile_other){
+		$query ="SELECT * FROM users_follow WHERE user_id = $profile_current AND follow_id = $profile_other";
+		$command= Yii::app()->db->createCommand($query);		
+		$rawData = $command->queryAll();
+		$rawCount = count($rawData);
+		if($rawCount>0){
+			return true;
+		}
+		else{
+			return false;
+		}
+		
+	}
+	
+	//public function check_following($profile_current,$profile_other){
+	//	$query ="SELECT * FROM users_follow WHERE user_id = $profile_current AND follow_id = $profile_other";
+	//	$command= Yii::app()->db->createCommand($query);		
+	//	$rawData = $command->queryAll();
+	//	$rawCount = count($rawData);
+	//	if($rawCount>0){
+	//		return true;
+	//	}
+	//	else{
+	//		return false;
+	//	}
+	//	
+	//}		
+	
 }

@@ -6,7 +6,10 @@
 </div> <!-- #top-shadow  ENDS --->
 <!-- END HEADER -->
 <?php
-
+//echo "<pre>";
+//print_r($user_info);
+//echo "</pre>";
+//exit;
 $user_name = $user->user_details_firstname." ".$user->user_details_lastname;
 
 $user_gender = ($user->user_details_gender == 1) ? "M" : "F";
@@ -23,7 +26,7 @@ $user_gender = ($user->user_details_gender == 1) ? "M" : "F";
 		<ul class="buton-user pull-right">
 			<?php
 			if($user_info['current_user'] != $this->user_guest){
-			?>				
+			?>
 			<li id="user_follow">
 				<button id="profile_<?php echo $user_info['follow'];?>" data-url="<?php echo Yii::app()->createUrl('/profile/'.$user_info['follow'].'friend');?>" class="btn white messege" type="button" href="#"  data-toggle="modal"><?php echo $user_info['follow'];?></button>
 			</li>
@@ -159,7 +162,7 @@ $user_gender = ($user->user_details_gender == 1) ? "M" : "F";
 		<div class="user-text">
 		<div class="bguser">
 		<h1> <a href="#"><?php echo $user_name;?> (<?php echo $user_gender;?>,<?php echo $user_info['age'];?>)</a> </h1>
-		<p>From Germany, Düsseldorf</p>
+		<p>From <?php echo $user_info['profile_location']['country'];?> , <?php echo $user_info['profile_location']['city'];?></p>
 		</div>
 		</div>
 	</div>
@@ -177,16 +180,61 @@ $user_gender = ($user->user_details_gender == 1) ? "M" : "F";
 			<a href="#tab_2_3" data-toggle="tab" class="eletab" onclick="showprofile('3','ranks');">Stats</a>
 		</li>
 		<li class="menu ctr-left">
-			<a href="#tab_2_4" data-toggle="tab" class="eletab" onclick="showprofile('4','hearts');"><b>23</b> Hearts</a>
+			<a href="#tab_2_4" data-toggle="tab" class="eletab" onclick="showprofile('4','hearts');"><b><?php echo $user_info['profile_hearts_count']; ?></b>
+			<?php
+			if($user_info['profile_hearts_count']>1){
+			?>
+				Hearts
+			<?php
+			}
+			else{
+			?>
+				Heart
+			<?php
+			}
+			?>				
+
+			</a>
 		</li>
 		<li class="menu ctr-right">
-			<a href="#tab_2_7" data-toggle="tab" class="eletab" onclick="showprofile('7','following');"><b>300</b> Following</a>
+			<a href="#tab_2_7" data-toggle="tab" class="eletab" onclick="showprofile('7','following');"><b><?php echo $user_info['profile_following_count']; ?></b>
+				Following</a>
 		</li>  
 		<li class="menu ctr-right">
-			<a href="#tab_2_6" data-toggle="tab" class="eletab" onclick="showprofile('6','followers');"><b>505k</b> Followers</a>
+			<a href="#tab_2_6" data-toggle="tab" class="eletab" onclick="showprofile('6','followers');"><b><?php echo $user_info['profile_follower_count']; ?></b>
+				
+			<?php
+			if($user_info['profile_follower_count']>1){
+			?>
+				Followers
+			<?php
+			}
+			else{
+			?>
+				Follower
+			<?php
+			}
+			?>	
+				
+			
+			</a>
 		</li>        
 		<li class="menu ctr-right">
-			<a href="#tab_2_5" data-toggle="tab" class="eletab" onclick="showprofile('5','friends');"><b>23</b> Friends </a>
+			<a href="#tab_2_5" data-toggle="tab" class="eletab" onclick="showprofile('5','friends');"><b><?php echo $user_info['profile_friends_count'];?></b>
+				<?php
+				if($user_info['profile_friends_count']>1){
+				?>
+				Friends
+				<?php
+				}
+				else{
+				?>
+				Friend
+				<?php
+				}
+				?>
+			
+			</a>
 		</li>
 		</ul>
 		</div>
