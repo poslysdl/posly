@@ -233,8 +233,7 @@ class Users extends CActiveRecord
 	 * @param string $provider, Int $identifier .
 	 * @return true or false 
 	 */
-	public function checkSocialAuth($provider, $identifier)
-	{	
+	public function checkSocialAuth($provider, $identifier){	
 		$query = "SELECT count(*) as cnt FROM `users_socialmedia` WHERE `user_socialmedia_provider` = :provider AND `user_socialmedia_identifier` = :identifier";		
 		$command= Yii::app()->db->createCommand($query);
 		$command->bindParam(":provider", $provider);
@@ -263,6 +262,46 @@ class Users extends CActiveRecord
 		$query="UPDATE users SET notification_read_date='".$time."' WHERE user_id='".$uid."'";
 		$command= Yii::app()->db->createCommand($query);
 		$command->execute();
+	}
+	
+	//get hearts count
+	
+	function get_profile_hearts_count($userId){
+		$query = "SELECT count(user_id) AS total FROM `log_photos_hearts` WHERE  `owner_id` = :userId";
+		$command = yii::app()->db->createCommand($query);
+		$command->bindparam(":userId",$userId);
+		$rawData = $command->queryAll();
+		foreach($rawData as $raw){
+			$count = $raw['total'];
+		}
+		return $count;
+	}
+	
+	//get friends count
+	
+	function get_profile_friends_count($userId){
+		
+		$query = "
+			SELECT
+				 (SELECT count(*) FROM `users_friends` WHERE user_id = :userId AND `status` = 1 )
+				 +
+				 (SELECT count(*) FROM `users_friends` WHERE `friend_id` = :userId AND `status` = 1)
+			AS `total`		
+		";
+		$command = yii::app()->db->createCommand($query);		
+		$command->bindparam(":userId",$userId);
+		$rawData = $command->queryAll();
+		foreach($rawData as $raw){
+			$count = $raw['total'];
+		}
+		return $count;		
+	}
+	
+	function get_profile_follower_count($userId){
+		$query = "
+		
+		
+		";
 	}
 	
 }
