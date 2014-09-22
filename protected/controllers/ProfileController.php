@@ -15,7 +15,10 @@ class ProfileController extends Controller {
 	public $profile_hearts_count;
 	public $profile_friends_count;
 	public $profile_follower_count;
-	public $profile_following_count;	
+	public $profile_following_count;
+	public $profile_country;
+	public $profile_region;
+	public $profile_city;
    public function filters() {
       return array( 'accessControl' ); // perform access control for CRUD operations
 	}
@@ -46,10 +49,17 @@ class ProfileController extends Controller {
 					$this->profile_friends_count = Users::model()->get_profile_friends_count($row['user_id']);
 					$this->profile_follower_count = Users::model()->get_profile_follower_count($row['user_id']);					
 					$this->profile_following_count = Users::model()->get_profile_following_count($row['user_id']);
+					$this->profile_country = Users::model()->get_profile_country($row['user_id']);
+					$this->profile_region = Users::model()->get_profile_region($row['user_id']);
+					$this->profile_city = Users::model()->get_profile_city($row['user_id']);
+					
 					$user_additional_info['profile_hearts_count'] = $this->profile_hearts_count;
 					$user_additional_info['profile_friends_count'] = $this->profile_friends_count;
 					$user_additional_info['profile_follower_count'] = $this->profile_follower_count;
-					$user_additional_info['profile_following_count'] = $this->profile_following_count;
+					$user_additional_info['profile_following_count'] = $this->profile_following_count;					
+					$user_additional_info['profile_country'] = $this->profile_country;
+					$user_additional_info['profile_region'] = $this->profile_region;
+					$user_additional_info['profile_city'] = $this->profile_city;	
 					$user_id = $row['user_id'];					
 					$sec_row = UsersSecurity::model()->find("user_id=$user_id");
 					$privacy = $sec_row['whocansee'];					
@@ -101,10 +111,18 @@ class ProfileController extends Controller {
 					$this->profile_friends_count = Users::model()->get_profile_friends_count($row['user_id']);
 					$this->profile_follower_count = Users::model()->get_profile_follower_count($row['user_id']);					
 					$this->profile_following_count = Users::model()->get_profile_following_count($row['user_id']);
+					$this->profile_country = Users::model()->get_profile_country($row['user_id']);
+					$this->profile_region = Users::model()->get_profile_region($row['user_id']);
+					$this->profile_city = Users::model()->get_profile_city($row['user_id']);
+					
 					$user_additional_info['profile_hearts_count'] = $this->profile_hearts_count;
 					$user_additional_info['profile_friends_count'] = $this->profile_friends_count;
 					$user_additional_info['profile_follower_count'] = $this->profile_follower_count;
-					$user_additional_info['profile_following_count'] = $this->profile_following_count;
+					$user_additional_info['profile_following_count'] = $this->profile_following_count;					
+					$user_additional_info['profile_country'] = $this->profile_country;
+					$user_additional_info['profile_region'] = $this->profile_region;
+					$user_additional_info['profile_city'] = $this->profile_city;					
+					
 					$this->current_profile_id = $user_id;
 					$userAge = Users::model()->getUserAge($row['user_id']);
 					$age = ($userAge) ? $userAge : "";	

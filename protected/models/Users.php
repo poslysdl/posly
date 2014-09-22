@@ -264,6 +264,47 @@ class Users extends CActiveRecord
 		$command->execute();
 	}
 	
+	//get user country
+	
+	function get_profile_country($userId){
+		$query = "SELECT UL.user_location_country AS country FROM users U JOIN users_location UL ON U.user_location_id = UL.user_location_id WHERE U.user_id = :userId";
+		$command = yii::app()->db->createCommand($query);
+		$command->bindparam(":userId",$userId);
+		$rawData = $command->queryAll();
+		foreach($rawData as $raw){
+			$country = $raw['country'];
+		}
+		return $country;
+	}
+	
+	//get user city
+	
+	function get_profile_city($userId){
+		$query = "SELECT UL.user_location_city AS city FROM users U JOIN users_location UL ON U.user_location_id = UL.user_location_id WHERE U.user_id = :userId";
+		$command = yii::app()->db->createCommand($query);
+		$command->bindparam(":userId",$userId);
+		$rawData = $command->queryAll();
+		foreach($rawData as $raw){
+			$city = $raw['city'];
+		}
+		return $city;
+	}
+		
+	
+	//get user region
+	
+	function get_profile_region($userId){
+		$query = "SELECT UL.user_location_region AS region FROM users U JOIN users_location UL ON U.user_location_id = UL.user_location_id WHERE U.user_id = :userId";
+		$command = yii::app()->db->createCommand($query);
+		$command->bindparam(":userId",$userId);
+		$rawData = $command->queryAll();
+		foreach($rawData as $raw){
+			$region = $raw['region'];
+		}
+		return $region;
+	}	
+	
+	
 	//get hearts count
 	
 	function get_profile_hearts_count($userId){
