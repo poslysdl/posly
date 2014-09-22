@@ -194,10 +194,27 @@ $user_gender = ($user->user_details_gender == 1) ? "M" : "F";
 			</a>
 		</li>
 		<li class="menu ctr-right">
-			<a href="#tab_2_7" data-toggle="tab" class="eletab" onclick="showprofile('7','following');"><b>300</b> Following</a>
+			<a href="#tab_2_7" data-toggle="tab" class="eletab" onclick="showprofile('7','following');"><b><?php echo $user_info['profile_following_count']; ?></b>
+				Following</a>
 		</li>  
 		<li class="menu ctr-right">
-			<a href="#tab_2_6" data-toggle="tab" class="eletab" onclick="showprofile('6','followers');"><b>505k</b> Followers</a>
+			<a href="#tab_2_6" data-toggle="tab" class="eletab" onclick="showprofile('6','followers');"><b><?php echo $user_info['profile_follower_count']; ?></b>
+				
+			<?php
+			if($user_info['profile_follower_count']>1){
+			?>
+				Followers
+			<?php
+			}
+			else{
+			?>
+				Follower
+			<?php
+			}
+			?>	
+				
+			
+			</a>
 		</li>        
 		<li class="menu ctr-right">
 			<a href="#tab_2_5" data-toggle="tab" class="eletab" onclick="showprofile('5','friends');"><b><?php echo $user_info['profile_friends_count'];?></b>

@@ -297,11 +297,26 @@ class Users extends CActiveRecord
 		return $count;		
 	}
 	
-	function get_profile_follower_count($userId){
-		$query = "
-		
-		
-		";
+	function get_profile_following_count($userId){
+		$query = "SELECT count(user_id) AS total FROM `users_follow` WHERE  `user_id` = :userId";
+		$command = yii::app()->db->createCommand($query);
+		$command->bindparam(":userId",$userId);
+		$rawData = $command->queryAll();
+		foreach($rawData as $raw){
+			$count = $raw['total'];
+		}
+		return $count;
 	}
+	
+	function get_profile_follower_count($userId){
+		$query = "SELECT count(user_id) AS total FROM `users_follow` WHERE  `follow_id` = :follow_id";
+		$command = yii::app()->db->createCommand($query);
+		$command->bindparam(":follow_id",$userId);
+		$rawData = $command->queryAll();
+		foreach($rawData as $raw){
+			$count = $raw['total'];
+		}
+		return $count;
+	}	
 	
 }

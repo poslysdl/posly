@@ -44,8 +44,12 @@ class ProfileController extends Controller {
 				if (isset($row)) {
 					$this->profile_hearts_count = Users::model()->get_profile_hearts_count($row['user_id']);
 					$this->profile_friends_count = Users::model()->get_profile_friends_count($row['user_id']);
+					$this->profile_follower_count = Users::model()->get_profile_follower_count($row['user_id']);					
+					$this->profile_following_count = Users::model()->get_profile_following_count($row['user_id']);
 					$user_additional_info['profile_hearts_count'] = $this->profile_hearts_count;
 					$user_additional_info['profile_friends_count'] = $this->profile_friends_count;
+					$user_additional_info['profile_follower_count'] = $this->profile_follower_count;
+					$user_additional_info['profile_following_count'] = $this->profile_following_count;
 					$user_id = $row['user_id'];					
 					$sec_row = UsersSecurity::model()->find("user_id=$user_id");
 					$privacy = $sec_row['whocansee'];					
@@ -95,9 +99,12 @@ class ProfileController extends Controller {
 					$user_id = $row['user_id'];
 					$this->profile_hearts_count = Users::model()->get_profile_hearts_count($row['user_id']);
 					$this->profile_friends_count = Users::model()->get_profile_friends_count($row['user_id']);
-					$this->profile_follower_count = Users::model()->get_profile_follower_count($row['user_id']);
+					$this->profile_follower_count = Users::model()->get_profile_follower_count($row['user_id']);					
+					$this->profile_following_count = Users::model()->get_profile_following_count($row['user_id']);
 					$user_additional_info['profile_hearts_count'] = $this->profile_hearts_count;
 					$user_additional_info['profile_friends_count'] = $this->profile_friends_count;
+					$user_additional_info['profile_follower_count'] = $this->profile_follower_count;
+					$user_additional_info['profile_following_count'] = $this->profile_following_count;
 					$this->current_profile_id = $user_id;
 					$userAge = Users::model()->getUserAge($row['user_id']);
 					$age = ($userAge) ? $userAge : "";	
