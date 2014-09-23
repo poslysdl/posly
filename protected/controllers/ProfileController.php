@@ -17,7 +17,6 @@ class ProfileController extends Controller {
 	public $profile_friends_count;
 	public $profile_follower_count;
 	public $profile_following_count;
-	public $profile_location;
 	public $profile_details;
 	public $avatar;
 	public $gender;
@@ -26,6 +25,10 @@ class ProfileController extends Controller {
 	public $user_shops_hashtag;
 	public $user_styleIcons_hashtag;
 	public $user_myStyle_hashtag;
+	public $users_following;
+	public $profile_follow_userdetails;
+	public $profile_follow_location;
+	
    public function filters() {
       return array( 'accessControl' ); // perform access control for CRUD operations
 	}
@@ -56,13 +59,11 @@ class ProfileController extends Controller {
 					$this->profile_friends_count = Users::model()->get_profile_friends_count($row['user_id']);
 					$this->profile_follower_count = Users::model()->get_profile_follower_count($row['user_id']);					
 					$this->profile_following_count = Users::model()->get_profile_following_count($row['user_id']);
-					$this->profile_location = Users::model()->get_profile_location($row['user_id']); 
 					
 					$user_additional_info['profile_hearts_count'] = $this->profile_hearts_count;
 					$user_additional_info['profile_friends_count'] = $this->profile_friends_count;
 					$user_additional_info['profile_follower_count'] = $this->profile_follower_count;
 					$user_additional_info['profile_following_count'] = $this->profile_following_count;					
-					$user_additional_info['profile_location'] = $this->profile_location;
 					$user_id = $row['user_id'];					
 					$sec_row = UsersSecurity::model()->find("user_id=$user_id");
 					$privacy = $sec_row['whocansee'];					
@@ -124,14 +125,12 @@ class ProfileController extends Controller {
 					$this->profile_friends_count = Users::model()->get_profile_friends_count($row['user_id']);
 					$this->profile_follower_count = Users::model()->get_profile_follower_count($row['user_id']);					
 					$this->profile_following_count = Users::model()->get_profile_following_count($row['user_id']);
-					$this->profile_location = Users::model()->get_profile_location($row['user_id']); 
-					
+				
 					$user_additional_info['profile_hearts_count'] = $this->profile_hearts_count;
 					$user_additional_info['profile_friends_count'] = $this->profile_friends_count;
 					$user_additional_info['profile_follower_count'] = $this->profile_follower_count;
 					$user_additional_info['profile_following_count'] = $this->profile_following_count;					
-					$user_additional_info['profile_location'] = $this->profile_location;
-					
+				
 					$this->profile_details = Users::model()->getUserInfo($row['user_id']);
 					$user_additional_info['users_details'] = $this->profile_details;					
 					$this->current_profile_id = $user_id;
@@ -298,11 +297,74 @@ class ProfileController extends Controller {
 	}
 
 	public function actionFollowing(){
-		$this->renderPartial('following');
+		$folllow_users =array();
+		$folllow_users_odd = array();
+		$folllow_users_even = array();
+		$profile_url = $_REQUEST['param'];
+		$id = Yii::app()->user->id;
+		$user_about_info = array();
+		$row = UsersDetails::model()->find("user_unique_url='$profile_url'");
+		$this->profile_details = Users::model()->getUserInfo($row['user_id']);
+		$user_additional_info['users_details'] = $this->profile_details;			
+		if(Yii::app()->user->isGuest) {
+			$user_additional_info['current_user'] = $this->user_guest;
+		}		
+		elseif($id == $row['user_id']){
+			$user_additional_info['current_user'] = $this->user_self;
+		}
+		else{
+			$user_additional_info['current_user'] = $this->user_logged_vistor;
+		}
+		$this->users_following = Users::model()->get_profile_following_users($row['user_id']);
+		if($this->users_following){
+			foreach($this->users_following as $user_follow){
+				$this->profile_follow_userdetails = Users::model()->getUserInfo($user_follow['follow_id']);
+				$this->profile_follower_count = Users::model()->get_profile_follower_count($user_follow['follow_id']);
+				$this->profile_follow_userdetails['followerCount'] = $this->profile_follower_count;
+				$this->avatar = $this->profile_follow_userdetails['user_details_avatar'];
+				$fromurl = strstr($this->avatar, '://', true);
+				if($fromurl=='http' || $fromurl=='https')
+					$user_follow_avatar = $this->avatar; 
+				elseif(!empty($this->avatar))
+					$user_follow_avatar = Yii::app()->baseUrl.'/profiles/'.$this->avatar;
+				else	
+					$user_follow_avatar = Yii::app()->baseUrl.'/profiles/noimage.jpg';				
+				$this->profile_follow_userdetails['avatar'] = $user_follow_avatar;
+				$folllow_users[] = $this->profile_follow_userdetails;				
+			}
+		}
+		// seprate odd, even users
+		foreach( $folllow_users as $key => $value ) {
+			if( 0 === $key%2) { //Even
+				$folllow_users_even[] = $value;
+			}
+			else {
+				$folllow_users_odd[] = $value;
+			}
+		}		
+		$user_additional_info['users_following_odd'] = $folllow_users_odd;
+		$user_additional_info['users_following_even'] = $folllow_users_even;
+		$this->renderPartial('following', array('user_info' => $user_additional_info));
 	}
 
 	public function actionFollowers(){
-		$this->renderPartial('followers');
+		$profile_url = $_REQUEST['param'];
+		$id = Yii::app()->user->id;
+		$user_about_info = array();
+		$row = UsersDetails::model()->find("user_unique_url='$profile_url'");
+		$this->profile_details = Users::model()->getUserInfo($row['user_id']);
+		$user_additional_info['users_details'] = $this->profile_details;			
+		if(Yii::app()->user->isGuest) {
+			$user_additional_info['current_user'] = $this->user_guest;
+		}		
+		elseif($id == $row['user_id']){
+			$user_additional_info['current_user'] = $this->user_self;
+		}
+		else{
+			$user_additional_info['current_user'] = $this->user_logged_vistor;
+		}
+
+		$this->renderPartial('followers', array('user_info' => $user_additional_info));
 	}
 
 	public function actionCatwalk(){
