@@ -2,11 +2,10 @@
 if(!isset($menulink)){
 	$menulink = 'viral';
 	if(Yii::app()->user->isGuest)
-		$menulink = 'topmember';
+	$menulink = 'topmember';
 }
-
+$pageflag = (isset($pageflag))?$pageflag:'';
 ?>
-
 <!-- BEGIN TOP NAVIGATION MENU -->
 	<?php $this->widget('application.components.TopNavigationMenu', array(
 	'navigationmenu' => array('menu'=>'data_tobe_render_in_menus'))); ?>
@@ -38,7 +37,7 @@ if(!isset($menulink)){
 	<div class="container sp">
 	<div class="row ">
 	<div class="col-md-6 col-sm-6">
-	<?php
+	<?php	
 	if(isset($photos)) 
 	{	
 		$i=1;
@@ -46,7 +45,8 @@ if(!isset($menulink)){
 		{
 			if($i%2!=0)
 			{
-				$this->widget('application.components.Cart', array('cartinfo' => array('data'=>$p,'i'=>$i))); //Main Image CART Display Here
+				$this->widget('application.components.Cart', array('cartinfo' => array('data'=>$p,'i'=>$i,'pageflag'=>$pageflag))); 
+				//Main Image CART Display Here
 			}
 			$i++;
 		}
@@ -62,7 +62,8 @@ if(!isset($menulink)){
 		{
 			if($i%2==0)
 			{
-				$this->widget('application.components.Cart', array('cartinfo' => array('data'=>$p,'i'=>$i))); //Main Image CART Display Here
+				$this->widget('application.components.Cart', array('cartinfo' => array('data'=>$p,'i'=>$i,'pageflag'=>$pageflag))); 
+				//Main Image CART Display Here
 			}
 			$i++;
 		}
@@ -85,7 +86,8 @@ if(!isset($menulink)){
 		foreach($photos as $p)
 		{
 			
-			$this->widget('application.components.CartZoom', array('cartinfo' => array('data'=>$p,'i'=>$i))); //ZOOM Image Cart			
+			$this->widget('application.components.CartZoom', array('cartinfo' => array('data'=>$p,'i'=>$i,'pageflag'=>$pageflag))); 
+			//ZOOM Image Cart			
 			$i++;
 		}
 	}

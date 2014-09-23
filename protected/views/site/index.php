@@ -4,7 +4,7 @@ if(!isset($menulink)){
 	if(Yii::app()->user->isGuest)
 		$menulink = 'topmember';
 }
-
+$pageflag = (isset($pageflag))?$pageflag:'';
 ?>
 
 <!-- BEGIN TOP NAVIGATION MENU -->
@@ -40,7 +40,8 @@ if(!isset($menulink)){
 						$i=1;
 						foreach($photos as $p){
 							if($i%2!=0){
-								$this->widget('application.components.Cart', array('cartinfo' => array('data'=>$p,'i'=>$i))); //Main Image CART Display Here
+								$this->widget('application.components.Cart', array('cartinfo' => array('data'=>$p,'i'=>$i,'pageflag'=>$pageflag))); 
+								//Main Image CART Display Here
 							}
 							$i++;
 						}
@@ -53,7 +54,8 @@ if(!isset($menulink)){
 						$i=1;
 						foreach($photos as $p){
 							if($i%2==0){
-								$this->widget('application.components.Cart', array('cartinfo' => array('data'=>$p,'i'=>$i))); //Main Image CART Display Here
+								$this->widget('application.components.Cart', array('cartinfo' => array('data'=>$p,'i'=>$i,'pageflag'=>$pageflag))); 
+								//Main Image CART Display Here
 							}
 							$i++;
 						}
@@ -71,7 +73,8 @@ if(!isset($menulink)){
 				if(isset($photos)){	
 					$i=1;
 					foreach($photos as $p){				
-						$this->widget('application.components.CartZoom', array('cartinfo' => array('data'=>$p,'i'=>$i))); //ZOOM Image Cart			
+						$this->widget('application.components.CartZoom', array('cartinfo' => array('data'=>$p,'i'=>$i,'pageflag'=>$pageflag))); 
+						//ZOOM Image Cart			
 						$i++;
 					}
 				}

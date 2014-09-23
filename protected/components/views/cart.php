@@ -5,6 +5,7 @@
 */
 $p = $this->cartinfo['data'];
 $i = $this->cartinfo['i'];
+$pageflag = $this->cartinfo['pageflag'];
 $avatar = '';
 $userPhotos = array();
 $fromurl=strstr($p->user->userDetails->user_details_avatar, '://', true);
@@ -25,7 +26,10 @@ $firstId=0;
 $likescount=0;
 //***fetch Card Photos of respective user..and Slot 1,2,3 only
 $criteria=new CDbCriteria;
-$criteria->condition = "t.user_id='$p->user_id' AND t.photos_slotno<>0";
+if($pageflag=='newsfeed')
+	$criteria->condition = "t.user_id='$p->user_id' AND t.photos_share_count<>0";
+else
+	$criteria->condition = "t.user_id='$p->user_id' AND t.photos_slotno<>0";
 $criteria->order = 't.photos_slotno';
 $userPhotos=Photos::model()->findAll($criteria);
 unset($criteria);

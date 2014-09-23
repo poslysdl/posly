@@ -1,6 +1,7 @@
 <?php
 /* @var $this SiteController */
 $this->pageTitle=Yii::app()->name;
+$pageflag = (isset($pageflag))?$pageflag:'';
 ?> 
 
 <div id="leftside">
@@ -13,7 +14,7 @@ $this->pageTitle=Yii::app()->name;
 		{
 			if($i%2!=0)
 			{
-				$this->widget('application.components.Cart', array('cartinfo' => array('data'=>$p,'i'=>$i)));			
+				$this->widget('application.components.Cart', array('cartinfo' => array('data'=>$p,'i'=>$i,'pageflag'=>$pageflag)));			
 			}
 			$i++;
 			$k+=2;
@@ -32,7 +33,7 @@ $this->pageTitle=Yii::app()->name;
 		{
 			if($i%2==0)
 			{	
-				$this->widget('application.components.Cart', array('cartinfo' => array('data'=>$p,'i'=>$i)));
+				$this->widget('application.components.Cart', array('cartinfo' => array('data'=>$p,'i'=>$i,'pageflag'=>$pageflag)));
 			}
 			$i++;
 			$k+=2;
@@ -50,7 +51,7 @@ if(isset($photos))
 	foreach($photos as $p)
 	{
 		
-		$this->widget('application.components.CartZoom', array('cartinfo' => array('data'=>$p,'i'=>$i))); //ZOOM Image Cart			
+		$this->widget('application.components.CartZoom', array('cartinfo' => array('data'=>$p,'i'=>$i,'pageflag'=>$pageflag))); //ZOOM Image Cart			
 		$i++;
 	}
 }
