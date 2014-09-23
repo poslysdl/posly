@@ -17,13 +17,13 @@ if($poslyIP=='127.0.0.1'){
 	$INSTARAM_REDIRECTURL = "http://localhost/projects/posly_v2/posly/index.php/site/instagramauth";
 }else if($poslyIP=='172.31.7.97'){
 	//AWS server
-	$FB_APPId = '1482379155345539'; //LocalPosly FBApp
+	$FB_APPId = '1482379155345539'; //LocalPosly FBApp 
 	$FB_SECRETKey = "44eb95e1a9a3eac850c1383d4eab1b8a";
 	$DB_USERNAME = 'root';
 	$DB_PASSWORD = 'root';
 	$Base_URL = 'http://54.255.144.92/posly/index.php/user/hybridauth/endpoint';
-	$INSTAGRAM_CLIENTID = "d1b24c4e53364af880b33c5561ce12f4";
-	$INSTAGRAM_KEY = "6eae2cbe86a24929beec86437bc58c7f";
+	$INSTAGRAM_CLIENTID = "a9e30b61950343b7ae8301803e2dc858"; //poslysdl
+	$INSTAGRAM_KEY = "0e091399d56e4771a3d249d1f7e80086";
 	$INSTARAM_REDIRECTURL = "http://54.255.144.92/posly/index.php/site/instagramauth";
 } else{
 	//nothing
