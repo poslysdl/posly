@@ -47,7 +47,6 @@
 </head>
 <!-- END HEAD -->
 <!-- BEGIN BODY -->
-
 <body class="page-header-fixed page-boxed page-quick-sidebar-push-content page-quick-sidebar-full-height">
 <!-- BEGIN HEADER -->
 <div id="top-shadow" class="header navbar navbar-inverse navbar-fixed-top"> 
@@ -301,12 +300,19 @@ function show4(){
 * user profile index page - Status,Catwalk,aboutus, followers etc options
 */
 function showprofile(divid,methodname){
+    
+        <?php
+            $url_param = $_SERVER['PATH_INFO'];
+            $url_param = ltrim ($url_param, '/');
+        ?>    
+        var profile_id = "<?php echo $url_param;?>";
 	$('.tab-content > .tab-pane').hide(); 
 	$('.tab-content > .tab-pane').height('0');
 	$('.tab-content > .tab-pane').removeClass('active in');
 	$('.tab-content > .tab-pane').css('overflow', 'hidden');
 	var url = $('.tab-content').attr('data-url');
 	url = url+'/'+methodname; //methodname are the controller action name
+        url = url+"?param="+profile_id;
 	$.get(url,function(data,status){
 	    $('#tab_2_'+divid).html(data);	
 	});
