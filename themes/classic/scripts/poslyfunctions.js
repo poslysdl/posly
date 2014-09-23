@@ -631,13 +631,16 @@ $(document).on('click', '#forgetmail', function(){
 url - controller Path
 data1 - single string variable
 */
-function getAjaxreturn(url,data1){
+function getAjaxreturn(url,data1,id=''){
 	var val1;
 	$.ajax({
 		type: 'POST',  
 		url: url,
 		async: false,
-		data:data1,
+		data:{         
+			pdata: data1,
+			pid: id			
+		},
 		success:function(data){
 			data = jQuery.parseJSON(data);
 			if(data.status=="success"){				
@@ -692,6 +695,15 @@ $(document).on('click', '.commentlike', function(event){
 	if(val1==0)
 	val1='';
 	$(this).parent('.like').parent('.likebox').children('.lcnt').html(val1);
+});
+
+$(document).on('click', '.shareposly', function(event){
+	//** Share Pic into Posly Feeds
+	var sharecnt=0;
+	var url = $(this).attr('data-url');
+	url = decodeURIComponent(url);
+	var photoid = $(this).attr('data-id'); 
+	sharecnt=getAjaxreturn(url,photoid,'1');
 });
 
 //click on owl-carousel Black Strip slot images, will show respective Comments

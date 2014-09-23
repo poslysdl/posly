@@ -46,6 +46,7 @@ $cartuser_lastname = $p->user->userDetails->user_details_lastname;
 $cartuser_url = $p->user->userDetails->user_unique_url;
 $cart_userId = $p->user_id;
 $likeConPath= urlencode(Yii::app()->createUrl("/comments/commentlike"));
+$shareConPath= urlencode(Yii::app()->createUrl("/photo/sharepicposly"));
 ?>
 <!-- ** The image comes as Modal PopUp with large size when click on Cart image ** -->
 
@@ -89,7 +90,7 @@ $likeConPath= urlencode(Yii::app()->createUrl("/comments/commentlike"));
 					<button type="button" class="btn googlep" >Google +</button>
 					</li>-->
 					<li class="endles">
-					<button type="button" class="btn meoS" data-toggle="modal" href="#sign-up">Email</button>
+					<button type="button" class="btn meoS shareposly" data-id="24" data-url="<?php echo $shareConPath;?>" data-toggle="modal" href="#sign-up">Email</button>
 					</li>
 					</ul>
 				</div>

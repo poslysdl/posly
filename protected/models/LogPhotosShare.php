@@ -105,4 +105,27 @@ class LogPhotosShare extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	
+	/**
+	 * Name: checkDuplicateShare
+	 * User_Define Function, to check duplicate record, If Exists
+	 * @param numeric $photoid, $userid.
+	 * @return true or false 
+	 */
+	public function checkDuplicateShare($photoid,$userid){
+		$query = "SELECT count(*) as cnt FROM `log_photos_share` WHERE `photos_id` = :photoid AND `user_id` = :userid";	
+		$command= Yii::app()->db->createCommand($query);
+		$command->bindParam(":photoid", $photoid,PDO::PARAM_INT);
+		$command->bindParam(":userid", $userid,PDO::PARAM_INT);		
+		$rawData = $command->queryAll();		
+		if(!empty($rawData) && isset($rawData[0]['cnt'])){
+			if($rawData[0]['cnt']==1)
+				return true;
+			else
+				return false;
+		} else{
+			return false;
+		}	
+	}
+	
 }

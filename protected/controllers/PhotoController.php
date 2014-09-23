@@ -11,7 +11,7 @@ class PhotoController extends Controller
     {
         return array(
         	array('allow',
-            	'actions'=>array('changetags', 'changecomments', 'changelikes', 'wholiked'),
+            	'actions'=>array('changetags', 'changecomments', 'changelikes', 'wholiked', 'sharepicposly'),
                 'users'=>array('*'),
             ),
             array('allow',
@@ -150,4 +150,48 @@ class PhotoController extends Controller
 		Yii::app()->end();
 	}
 	
+	/* This is a User define Ajax function for Sharing
+	* any card photo into Posly, which will then showUp at Feeds
+	* Parameter is Photo_id Integer
+	* @return Share Count
+	* Last Modified On : 23-Sept-14
+	*/
+	public function actionSharepicposly()
+	{
+		$cnt=0;
+		$status='error';
+		$uid = Yii::app()->user->id;
+		if(isset($_POST['pdata']))
+		{	
+			$photoid = $_POST['pdata'];
+			$flagcnt=LogPhotosShare::model()->checkDuplicateShare($photoid,$uid);
+			if($flagcnt===false)
+			{
+				$ph=Photos::model()->findByPk($photoid);
+				$ownerid = $ph->user_id;
+				$c=new LogPhotosShare;
+				$time=new CTimestamp;
+				$value=$time->getDate();		
+				$c->user_id=$uid;
+				$c->photos_id=$photoid;
+				$c->owner_id = $ownerid;	 		
+				$c->log_photos_share_date=$value[0];
+				if($c->save())
+				{	//Update photo count
+					$count=Photos::model()->findByPk($photoid);
+					$count->photos_share_count+=1;
+					$count->save();
+					$cnt=$count->photos_hearts_count;
+					$status='success';
+				}
+			}
+		}
+		echo CJSON::encode(array(
+			  'status'=>$status,
+			  'values'=>$cnt
+		));
+		Yii::app()->end();
+	}
+	
+//END	
 }
