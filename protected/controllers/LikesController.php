@@ -40,8 +40,7 @@ class LikesController extends Controller
 		$uid=Yii::app()->user->id;
 		$count=Photos::model()->findByPk($id);
 		$count->photos_hearts_count+=1;
-		$count->save();
-		
+		$count->save();		
 		$likes= new LogPhotosHearts;
 		$likes->user_id= $uid;
 		$likes->owner_id=$count->user_id;
@@ -50,6 +49,7 @@ class LikesController extends Controller
 		$value=$time->getDate();
 		$likes->log_photos_hearts_date=$value[0];
 		$likes->save();
+		$this->actionUpdaterank('add',$count->user_id); //Rank
 		echo $count->photos_hearts_count;
 		Yii::app()->end();
 	}
@@ -61,12 +61,12 @@ class LikesController extends Controller
 		$count=Photos::model()->findByPk($id);
 		if($count->photos_hearts_count>0)
 		{
-				$count->photos_hearts_count-=1;
-				$count->save();
+			$count->photos_hearts_count-=1;
+			$count->save();
 		}
-
 		$dlike=LogPhotosHearts::model()->find("user_id=$uid and photos_id=$id");
 		$dlike->delete();
+		$this->actionUpdaterank('sub',$count->user_id); //Rank
 		echo $count->photos_hearts_count;		
 		Yii::app()->end();
 	}
@@ -84,5 +84,40 @@ class LikesController extends Controller
 		Yii::app()->end();		
 	}
 	
-
+	/* This user define function is used to to increase
+	*  or decrease ranking fields city,regin,country
+	*  Last Modified:23-Sep-14
+	*/
+	public function actionUpdaterank($flag,$uid)
+	{
+		$users = Users::model()->getUserInfo($uid);
+		$id = $users['user_details_id'];
+		if($flag=="add"){
+			//increase the Rank
+			$count=UsersDetails::model()->findByPk($id);
+			$count->user_rank_incity+=1;
+			$count->user_rank_inregion+=1;
+			$count->user_rank_incountry+=1;
+			$count->user_rank_worldwide+=1;
+			$count->save();		
+		} else{
+			//decrease the Rank
+			$count=UsersDetails::model()->findByPk($id);
+			if($count->user_rank_incity>0){
+				$count->user_rank_incity-=1;			
+			}
+			if($count->user_rank_inregion>0){
+				$count->user_rank_inregion-=1;			
+			}
+			if($count->user_rank_incountry>0){
+				$count->user_rank_incountry-=1;			
+			}
+			if($count->user_rank_worldwide>0){
+				$count->user_rank_worldwide-=1;			
+			}
+			$count->save();
+		}
+	}
+	
+//END	
 }

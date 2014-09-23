@@ -120,7 +120,7 @@ class UsersMessages extends CActiveRecord
 		$command->bindValue(':limit', $limit);
 		$command->bindValue(':uid', $uid);
 		$command->bindValue(':uidd', $uid);
-		$rawData = $command->queryAll();	//echo "<pre>"; print_r($rawData); exit;	
+		$rawData = $command->queryAll();
 		return $rawData;
 	}
 }

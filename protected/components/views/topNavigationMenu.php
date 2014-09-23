@@ -11,7 +11,8 @@
 if(Yii::app()->user->isGuest)
 { ?>
 	<!-- BEGIN SIGNIN DROPDOWN -->
-	<li class="dropdown" > <a href="#" class="dropdown-toggle sign-inhead" data-toggle="dropdown" data-hover="dropdown"
+	<li class="dropdown" > 
+	<a href="#" class="dropdown-toggle sign-inhead" data-toggle="dropdown" data-hover="dropdown"
 	data-close-others="true"> Sign in</a>
 	<ul class="dropdown-menu signup">
 	<li><span>Sign in with</span></li>
@@ -29,9 +30,8 @@ if(Yii::app()->user->isGuest)
 	</li>
 	<!-- END SIGNIN DROPDOWN --> 
 	<!-- BEGIN SIGN UP DROPDOWN -->
-	<li class="dropdown user"> 
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-	<button type="button" class="btn meoS" data-toggle="modal" href="#sign-up">Sign Up</button>		
+	<li class="dropdown"> 
+	<a href="#" class="dropdown-toggle sign-inhead" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">Sign Up	
 	</a>
 	<ul class="dropdown-menu signup">
 	<li><span>Sign Up with</span></li>
@@ -176,17 +176,10 @@ else
 	<span class="username"></span><i class="icon-caret-down"></i> 
 	</a>
 	<ul class="dropdown-menu">		
-		<li><?php echo CHtml::link('My profile',array('profile/index', 'url'=>$a->user_unique_url), array('class'=>'gren  first')); ?> </li>	
-		<!--<li><a class="gren first" href="#">Your rank</a></li>
-		<li><a class="gren" href="#">your albums</a></li>
-		<li><a class="gren" href="#">your like</a></li>-->
-		<!--<li class="divider"></li>
-		<li><a class="gren" href="#">find friends</a></li>
-		<li><a class="gren" href="#">language</a></li>-->
+		<li><?php echo CHtml::link('My profile',array('profile/index', 'url'=>$a->user_unique_url), array('class'=>'gren  first')); ?> </li>		
 		<li><a class="gren" href="<?php echo Yii::app()->createUrl('/profile/profilesettings'); ?>">settings</a></li>
-		<li class="divider"></li>
-		<!--<li><a class="gren center" href="#">report a problem</a> </li>-->
-		<li> <!--class="buttcen" class=btn meoS-->
+		<li class="divider"></li>		
+		<li> 
 		<?php echo CHtml::link('Logout',array('site/logout'), array('class'=>'gren  first')); ?>
 		</li>
 		

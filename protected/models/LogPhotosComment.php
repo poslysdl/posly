@@ -109,6 +109,31 @@ class LogPhotosComment extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}	
+	
+	/**
+	 * Name: commentsYouLike
+	 * User_Define Function, to find the list of comments
+	 * Like by logged in user
+	 * @param numeric $uid User Id.
+	 * @param numeric $photo_id PhotoId.	
+	 * @return Array of CommentId	 
+	 */
+	public function commentsYouLike($uid,$photo_id)
+	{
+		$commentIdArray = array();		
+		$query="SELECT c.log_photos_comment_id as commentid FROM log_photos_comment c";
+		$query.=" JOIN log_comment_likes l ON c.log_photos_comment_id=l.log_photos_comment_id";
+		$query.=" WHERE l.user_id = :uid AND c.photos_id = :photoid";
+		$command= Yii::app()->db->createCommand($query);		
+		$command->bindValue(':uid', $uid);
+		$command->bindValue(':photoid', $photo_id);
+		$rawData = $command->queryAll();
+		if(isset($rawData) && count($rawData)){
+		foreach($rawData as $keys=>$values)
+			$commentIdArray[]=$values['commentid'];
+		}		
+		return $commentIdArray;	
 	}
 	
 	/**
@@ -122,10 +147,31 @@ class LogPhotosComment extends CActiveRecord
 	public function UpdateLikeCount($uid,$comment_id,$flag)
 	{
 		$likecount = 0;
-		
-		
-		return $likecount;
-	
+		if($flag=="Like"){
+			//Increment the likecount
+			$query="UPDATE log_photos_comment SET likecount=likecount+1 WHERE log_photos_comment_id='".$comment_id."'";
+			$command= Yii::app()->db->createCommand($query);
+			$command->execute();
+			$query="INSERT INTO log_comment_likes SET log_photos_comment_id='".$comment_id."',user_id='".$uid."',like_status='1'";
+			$command= Yii::app()->db->createCommand($query);
+			$command->execute();
+		} else{
+			$query="UPDATE log_photos_comment SET likecount=likecount-1 WHERE log_photos_comment_id='".$comment_id."'";
+			$command= Yii::app()->db->createCommand($query);
+			$command->execute();
+			$query="DELETE FROM log_comment_likes WHERE log_photos_comment_id='".$comment_id."' AND user_id='".$uid."'";
+			$command= Yii::app()->db->createCommand($query);
+			$command->execute();
+		}
+		//Fetch new count
+		$query="SELECT likecount FROM log_photos_comment WHERE log_photos_comment_id='".$comment_id."'";		
+		$command= Yii::app()->db->createCommand($query);		
+		$rawData = $command->queryAll();
+		if(isset($rawData) && count($rawData)){
+		foreach($rawData as $keys=>$values)
+			$likecount=$values['likecount'];
+		}		
+		return $likecount;	
 	}
 	
 	

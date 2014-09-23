@@ -1,44 +1,51 @@
 <?php  
-	/*
-		This Widget Creates an Modal Zoom Image of main cart image on click
-	*/
-	$p = $this->cartinfo['data'];
-	$i = $this->cartinfo['i'];
-	$avatar = '';
-	$userPhotos = array();
-	$fromurl=strstr($p->user->userDetails->user_details_avatar, '://', true);
+/* This Widget Creates an Modal Zoom Image of main cart image on click
+* used in Catwalk,Posly,goingViral,Topmembers...
+* Last Modified: 23-Sep-14
+*/
+$p = $this->cartinfo['data'];
+$i = $this->cartinfo['i'];
+$avatar = '';
+$userPhotos = array();
+$fromurl=strstr($p->user->userDetails->user_details_avatar, '://', true);
+if($fromurl=='http' || $fromurl=='https')
+	$avatar = $p->user->userDetails->user_details_avatar; 
+else
+	$avatar = Yii::app()->baseUrl.'/profiles/'.$p->user->userDetails->user_details_avatar;
+
+if(isset($p->user->userLocation->user_location_country) && isset($p->user->userLocation->user_location_city))
+	$location = $p->user->userLocation->user_location_country.', '.$p->user->userLocation->user_location_city;
+elseif(isset($p->user->userLocation->user_location_country))
+	$location = $p->user->userLocation->user_location_country;
+else
+	$location = '';
+$uid = Yii::app()->user->id; //logged in userId
+$firsttime=true;
+$firstId=0;
+$likescount=0;
+//***fetch Card Photos of respective user..and Slot 1,2,3 only
+$criteria=new CDbCriteria;
+$criteria->condition = "t.user_id='$p->user_id' AND t.photos_slotno<>0";
+$criteria->order = 't.photos_slotno';
+$userPhotos=Photos::model()->findAll($criteria);
+unset($criteria);
+$loggedIn_UserAvatar = '';
+if(!empty($uid))
+{
+	$CommentAvatar=UsersDetails::model()->find("user_id=".$uid);
+	if(isset($CommentAvatar)) {
+	$fromurl=strstr($CommentAvatar['user_details_avatar'], '://', true);
 	if($fromurl=='http' || $fromurl=='https')
-		$avatar = $p->user->userDetails->user_details_avatar; 
+		$loggedIn_UserAvatar = $CommentAvatar->user_details_avatar; 
 	else
-		$avatar = Yii::app()->baseUrl.'/profiles/'.$p->user->userDetails->user_details_avatar;
-	
-	if(isset($p->user->userLocation->user_location_country) && isset($p->user->userLocation->user_location_city))
-		$location = $p->user->userLocation->user_location_country.', '.$p->user->userLocation->user_location_city;
-	elseif(isset($p->user->userLocation->user_location_country))
-		$location = $p->user->userLocation->user_location_country;
-	else
-		$location = '';
-	$uid = Yii::app()->user->id; //logged in userId
-	$firsttime=true;
-	$firstId=0;
-	$likescount=0;
-	$userPhotos=Photos::model()->findAll("user_id=$p->user_id"); 
-	$loggedIn_UserAvatar = '';
-	if(!empty($uid))
-	{
-		$CommentAvatar=UsersDetails::model()->find("user_id=".$uid);
-		if(isset($CommentAvatar)) {
-		$fromurl=strstr($CommentAvatar['user_details_avatar'], '://', true);
-		if($fromurl=='http' || $fromurl=='https')
-			$loggedIn_UserAvatar = $CommentAvatar->user_details_avatar; 
-		else
-			$loggedIn_UserAvatar = Yii::app()->baseUrl.'/profiles/'.$CommentAvatar['user_details_avatar'];		
-		}
+		$loggedIn_UserAvatar = Yii::app()->baseUrl.'/profiles/'.$CommentAvatar['user_details_avatar'];		
 	}
-	$cartuser_firstname = $p->user->userDetails->user_details_firstname;
-	$cartuser_lastname = $p->user->userDetails->user_details_lastname;
-	$cartuser_url = $p->user->userDetails->user_unique_url;
-	$cart_userId = $p->user_id;
+}
+$cartuser_firstname = $p->user->userDetails->user_details_firstname;
+$cartuser_lastname = $p->user->userDetails->user_details_lastname;
+$cartuser_url = $p->user->userDetails->user_unique_url;
+$cart_userId = $p->user_id;
+$likeConPath= urlencode(Yii::app()->createUrl("/comments/commentlike"));
 ?>
 <!-- ** The image comes as Modal PopUp with large size when click on Cart image ** -->
 
@@ -49,8 +56,10 @@
 	<div class="modal-body">
 		<div class="portlet box blue">
 			<div class="portlet-title">
-				<div class="caption"><!--Avatar & name,country here ZOOM (A) -->		
-				<img src="<?php echo $avatar;?>" alt="" class="avatar-user-l img-responsive">			
+				<div class="caption"><!--Avatar & name,country here ZOOM (A) -->	
+				<a href="<?php echo Yii::app()->createUrl('profile/index', array('url' => $cartuser_url )); ?>">
+				<img src="<?php echo $avatar;?>" alt="" class="avatar-user-l img-responsive">
+				</a>						
 				<div class="cap1"> 
 				<?php echo CHtml::link($cartuser_firstname.' '.$cartuser_lastname, array('profile/index', 'url'=>$cartuser_url), array('class'=>'username')); ?>					
 				<span class="user-locaion"><?php echo $location;?></span> 
@@ -134,8 +143,7 @@
 				}
 				?>
 				</div> 
-				</div>	
-				
+				</div>				
 				<div class="panel-title">
 				<h3>Tagged with</h3>
 				</div>
@@ -172,6 +180,7 @@
 		$firstphoto = true; //to track first image in Cart
 		foreach($userPhotos as $sp)
 		{
+			$commentYouLike = array();
 			$firstId = $sp->photos_id;
 			$likescount = $sp->photos_hearts_count;		
 			$photo_id = $sp->photos_id;
@@ -180,8 +189,10 @@
 			$total_comments = count($com);
 			$lcount = $likescount;
 			$likehtml = '';
-			if(!empty($uid))
+			if(!empty($uid)){
 				$likehtml = LogPhotosHearts::model()->createLikeCountHtml($photo_id,$likescount);
+				$commentYouLike = LogPhotosComment::model()->commentsYouLike($uid,$photo_id);
+			}
 			
 		?>
 		<div class="zoomdivcomments" id="zoomcart-data<?php echo $firstId; ?>" style="<?php echo $displayClass;?>">		
@@ -214,21 +225,41 @@
 							else
 								$useravatar = Yii::app()->baseUrl.'/profiles/'.$c->user->userDetails->user_details_avatar;
 							$uname = $c->user->userDetails->user_details_firstname.' '.$c->user->userDetails->user_details_lastname;
-							$commentDate = $this->get_time_ago($c->log_photos_comment_date); //Comment Date
+							$commentDate = $this->get_commenttime($c->log_photos_comment_date); //Comment Date
 							$commentDesc = $c->log_photos_comment_description;
-							$commentsArray[] = array('useravatar'=>$useravatar,'uname'=>$uname,
-							'commentDate'=>$commentDate,'commentDesc'=>$commentDesc);
+							$commentsArray[] = array('useravatar'=>$useravatar,'uname'=>$uname,'id'=>$c->log_photos_comment_id,
+							'commentDate'=>$commentDate,'commentDesc'=>$commentDesc,'commentcount'=> $c->likecount);
 						}
 					}
 					if(count($commentsArray)>0){
 					$cnt = count($commentsArray);
 					for($i=0;$i<$cnt;$i++){
+					$comment_id = $commentsArray[$i]['id'];
+					$cdate = $commentsArray[$i]['commentDate'];
+					$commentcnt =($commentsArray[$i]['commentcount']==0)?'':$commentsArray[$i]['commentcount'];				
+					if(array_search($comment_id,$commentYouLike)===false)
+						$like='Like';
+					else
+						$like='UnLike'; //already Like the comment
+					$commentbyname = $commentsArray[$i]['uname'];
+					$commentbyavatar = $commentsArray[$i]['useravatar'];
+					$commentdesc = $commentsArray[$i]['commentDesc'];
 					?>    
 						<li class="in"> 
-						<img class="avatar img-responsive" alt="" src="<?php echo $commentsArray[$i]['useravatar'];?>" />					
-						<div class="message"> <a href="#" class="name"><?php echo $commentsArray[$i]['uname'];?></a> 
-						<span class="datetime">@ <?php echo $commentsArray[$i]['commentDate'];?></span> 
-						<span class="body"> <?php echo $commentsArray[$i]['commentDesc']; ?> </span> 
+						<img class="avatar img-responsive" alt="" src="<?php echo $commentbyavatar;?>" />					
+						<div class="message"> 
+						<a href="#" class="name"><?php echo $commentbyname;?></a> 							
+						<span class="body"> <?php echo $commentdesc; ?> </span>							
+						<span class="likebox">
+						<span class="datetime"><?php echo $cdate;?></span>
+						<?php if(!empty($uid)){ ?>
+						<span class="like">
+						<a class="commentlike" data-id="<?php echo $comment_id;?>" data-url="<?php echo $likeConPath;?>"><?php echo $like;?></a>
+						</span>
+						<?php } ?>
+						<span class="limg"></span>
+						<span class="lcnt"><?php echo $commentcnt; ?></span>
+						<span>							
 						</div>					
 						</li>
 					<?php 

@@ -77,7 +77,7 @@ class CommentsController extends Controller
 		if(isset($_POST['pdata']))
 		{	
 			$comment_id = $_POST['pdata'];
-			$flag = $_POST['flag'];
+			$flag = $_POST['pflag'];
 			if($flag=="Like"){
 				$cnt=LogPhotosComment::model()->UpdateLikeCount($uid,$comment_id,$flag);
 			} else{
