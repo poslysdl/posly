@@ -1,6 +1,7 @@
 <?php
 class ProfileController extends Controller {
 	
+	public $user_additional_info;
 	public $user_guest = "guest";
 	public $user_self = "self";
 	public $user_logged_vistor = "logged_vistor";
@@ -16,10 +17,10 @@ class ProfileController extends Controller {
 	public $profile_friends_count;
 	public $profile_follower_count;
 	public $profile_following_count;
-	public $profile_country;
-	public $profile_region;
-	public $profile_city;
 	public $profile_location;
+	public $profile_details;
+	public $avatar;
+	public $gender;
    public function filters() {
       return array( 'accessControl' ); // perform access control for CRUD operations
 	}
@@ -64,11 +65,17 @@ class ProfileController extends Controller {
 						$this->layout='profile_layout';	
 						Yii::app()->clientScript->registerCoreScript('jquery'); 
 						$userAge = Users::model()->getUserAge($row['user_id']);
-						$userInfo = Users::model()->getUserInfo($row['user_id']);
-						$user_additional_info['users_details'] = $userInfo;
+						$this->profile_details = Users::model()->getUserInfo($row['user_id']);
+						$user_additional_info['users_details'] = $this->profile_details;
 						$age = ($userAge) ? $userAge : "";
 						$user_additional_info['age'] = $userAge;
 						$user_additional_info['current_user'] = $this->user_guest;
+						$this->avatar = $this->profile_details['user_details_avatar'];
+						$fromurl = strstr($this->avatar, '://', true);
+						if($fromurl=='http' || $fromurl=='https')
+							$user_additional_info['avatar'] = $this->avatar; 
+						else
+						$user_additional_info['avatar'] = Yii::app()->baseUrl.'/profiles/'.$this->avatar;
 						$this->render('index',array('user'=>$row,'user_info'=>$user_additional_info));
 					} else /* if privacy is 2 or 3 */ {
 						$error = true;
@@ -118,26 +125,25 @@ class ProfileController extends Controller {
 					$user_additional_info['profile_following_count'] = $this->profile_following_count;					
 					$user_additional_info['profile_location'] = $this->profile_location;
 					
-					$userInfo = Users::model()->getUserInfo($row['user_id']);
-					$user_additional_info['users_details'] = $userInfo;					
+					$this->profile_details = Users::model()->getUserInfo($row['user_id']);
+					$user_additional_info['users_details'] = $this->profile_details;					
 					$this->current_profile_id = $user_id;
 					$userAge = Users::model()->getUserAge($row['user_id']);
-					$age = ($userAge) ? $userAge : "";	
+					$age = ($userAge) ? $userAge : "";
+					$user_additional_info['age'] = $userAge;
+					$this->layout='profile_layout';
+					Yii::app()->clientScript->registerCoreScript('jquery');						
 					//logged in user (own profile)
-					if($id == $user_id) {						
-						$this->layout='profile_layout';
-						Yii::app()->clientScript->registerCoreScript('jquery');	
+					if($id == $user_id) {
 						$user_additional_info['age'] = $userAge;
 						$user_additional_info['current_user'] = $this->user_self;
-						$this->render('index',array('user'=>$row,'user_info'=>$user_additional_info));
+						//$this->render('index',array('user'=>$row,'user_info'=>$user_additional_info));
 					}
 					//loggedin user friend profile
 					else if($check_friend){
-						$this->layout='profile_layout';
-						Yii::app()->clientScript->registerCoreScript('jquery'); 
 						$user_additional_info['age'] = $userAge;
 						$user_additional_info['current_user'] = $this->user_friend;
-						$this->render('index',array('user'=>$row,'user_info'=>$user_additional_info));
+						//$this->render('index',array('user'=>$row,'user_info'=>$user_additional_info));
 					}
 					//logged in user (others profile)
 					else {						
@@ -150,12 +156,16 @@ class ProfileController extends Controller {
 						}
 						//$sec_row = UsersSecurity::model()->find("user_id=$user_id");				
 						//$privacy = $sec_row['whocansee'];
-						$this->layout='profile_layout';
-						Yii::app()->clientScript->registerCoreScript('jquery'); 
-						$user_additional_info['age'] = $userAge;
-						
-						$this->render('index',array('user'=>$row,'user_info'=>$user_additional_info));
+						//$this->render('index',array('user'=>$row,'user_info'=>$user_additional_info));
 					}
+					$this->avatar = $this->profile_details['user_details_avatar'];
+					$fromurl = strstr($this->avatar, '://', true);
+					if($fromurl=='http' || $fromurl=='https')
+						$user_additional_info['avatar'] = $this->avatar; 
+					else
+						$user_additional_info['avatar'] = Yii::app()->baseUrl.'/profiles/'.$this->avatar;
+						
+					$this->render('index',array('user'=>$row,'user_info'=>$user_additional_info));	
 				}
 				else /* if the user is not there with that profile id */ {
 					$error = true;
@@ -171,24 +181,38 @@ class ProfileController extends Controller {
 		}		 
 	}
 	
-	public function actionAbout() 
-	{		   
-		/*$url = Yii::app()->session['url'];		 
-		if(isset($url)) {			 
-		$user = Yii::app()->session['user_id'];		  
-		$mag_tags = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->findAll("hashtagsCategory.hashtags_category_name='Magzine' and t.user_id=$user");		
-		$design_tags = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->findAll("hashtagsCategory.hashtags_category_name='Design' and t.user_id=$user");
-		$shops_tags = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->findAll("hashtagsCategory.hashtags_category_name='Shops' and t.user_id=$user");
-		$styles_tags = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->findAll("hashtagsCategory.hashtags_category_name='StyleIcons' and t.user_id=$user");
-		$mtstyle_tags = UsersHashtags::model()->with('hashtags', 'hashtags.hashtagsCategory')->findAll("hashtagsCategory.hashtags_category_name='MyStyle' and t.user_id=$user");			
-		$this->renderPartial('about', array('mag_tags'=>$mag_tags, 'design_tags'=>$design_tags,
-		'shops_tags'=>$shops_tags, 'styles_tags'=>$styles_tags, 'mtstyle_tags'=>$mtstyle_tags));			
-		} else{			 
-			 echo CJSON::encode(array('status'=>'failure','redirect'=>Yii::app()->homeUrl));
-					// Yii::app()->end();
-			//$this->redirect(Yii::app()->homeUrl);	
-		} */		
-		$this->renderPartial('about');
+	public function actionAbout(){
+		$profile_url = $_REQUEST['param'];
+		$id = Yii::app()->user->id;
+		$user_about_info = array();
+		$row = UsersDetails::model()->find("user_unique_url='$profile_url'");
+		$this->profile_details = Users::model()->getUserInfo($row['user_id']);
+		$user_additional_info['users_details'] = $this->profile_details;			
+		if(Yii::app()->user->isGuest) {
+			$user_additional_info['current_user'] = $this->user_guest;
+		}		
+		elseif($id == $row['user_id']){
+			$user_additional_info['current_user'] = $this->user_self;
+		}
+		else{
+			$user_additional_info['current_user'] = $this->user_logged_vistor;
+		}
+		$userAge = Users::model()->getUserAge($row['user_id']);
+		$user_additional_info['age'] = $userAge;
+		$this->avatar = $this->profile_details['user_details_avatar'];
+		$fromurl = strstr($this->avatar, '://', true);
+		if($fromurl=='http' || $fromurl=='https')
+			$user_additional_info['avatar'] = $this->avatar; 
+		else
+		$user_additional_info['avatar'] = Yii::app()->baseUrl.'/profiles/'.$this->avatar;
+		if($this->profile_details['user_details_gender'] == 1){
+			$this->gender = "Male";			
+		}
+		else{
+			$this->gender = "female";
+		}
+		$user_additional_info['avatar'] = $this->gender; 
+		$this->renderPartial('about', array('user_info' => $user_additional_info));
 			
 	}	  
 	

@@ -11,10 +11,9 @@
 //echo "</pre>";
 //exit;
 $user_name = $user->user_details_firstname." ".$user->user_details_lastname;
-
 $user_gender = ($user->user_details_gender == 1) ? "M" : "F";
-
 ?>
+
 <div class="clearfix"></div>
 
 <!-- BEGIN CONTAINER -->
@@ -25,7 +24,7 @@ $user_gender = ($user->user_details_gender == 1) ? "M" : "F";
 		<div class="head-but">
 		<ul class="buton-user pull-right">
 			<?php
-			if($user_info['current_user'] != $this->user_guest){
+			if(($user_info['current_user'] != $this->user_guest)&&($user_info['current_user'] != $this->user_self)){
 			?>
 			<li id="user_follow">
 				<button id="profile_<?php echo $user_info['follow'];?>" data-url="<?php echo Yii::app()->createUrl('/profile/'.$user_info['follow'].'friend');?>" class="btn white messege" type="button" href="#"  data-toggle="modal"><?php echo $user_info['follow'];?></button>
@@ -155,10 +154,11 @@ $user_gender = ($user->user_details_gender == 1) ? "M" : "F";
 		</div>
 		</div>
 	</div>	
-	<!--user-->	
+	<!--user-->
+
 	<div class="head-info"> 
 		<a class="avatar" href="/will_hatefbook">
-		<img title="Will Hatefbook" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/avanta.jpg" class="img-responsive" alt="Will Hatefbook"></a>
+		<img title="Will Hatefbook" src="<?php echo $user_info['avatar'];?>" class="img-responsive" alt="Will Hatefbook"></a>
 		<div class="user-text">
 		<div class="bguser">
 		<h1> <a href="#"><?php echo $user_name;?> (<?php echo $user_gender;?>,<?php echo $user_info['age'];?>)</a> </h1>

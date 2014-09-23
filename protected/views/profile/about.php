@@ -1,3 +1,8 @@
+<?php
+//echo "<pre>";
+//    print_r($user_info);
+//echo "</pre>";    
+?>
 <div class="portlet-body about">
 <div class="row">
 <div class="col-md-6">
