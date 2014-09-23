@@ -21,6 +21,11 @@ class ProfileController extends Controller {
 	public $profile_details;
 	public $avatar;
 	public $gender;
+	public $user_magzine_hashtag;
+	public $user_design_hashtag;
+	public $user_shops_hashtag;
+	public $user_styleIcons_hashtag;
+	public $user_myStyle_hashtag;
    public function filters() {
       return array( 'accessControl' ); // perform access control for CRUD operations
 	}
@@ -211,7 +216,28 @@ class ProfileController extends Controller {
 		else{
 			$this->gender = "female";
 		}
-		$user_additional_info['avatar'] = $this->gender; 
+		//get magazine hash tag
+		$this->user_magzine_hashtag = Users::model()->get_user_hashtag("6",$row['user_id']);
+		$user_additional_info['user_magzine_hashtag'] = $this->user_magzine_hashtag;
+		
+		//get Design hash tag
+		$this->user_design_hashtag = Users::model()->get_user_hashtag("7",$row['user_id']);
+		$user_additional_info['user_design_hashtag'] = $this->user_design_hashtag;
+		
+		//get Shops hash tag
+		$this->user_shops_hashtag = Users::model()->get_user_hashtag("8",$row['user_id']);
+		$user_additional_info['user_shops_hashtag'] = $this->user_shops_hashtag;
+		
+		//get StyleIcons hash tag
+		$this->user_styleIcons_hashtag = Users::model()->get_user_hashtag("9",$row['user_id']);
+		$user_additional_info['user_styleIcons_hashtag'] = $this->user_styleIcons_hashtag;
+		
+		//get MyStyle hash tag
+		$this->user_myStyle_hashtag = Users::model()->get_user_hashtag("10",$row['user_id']);
+		$user_additional_info['user_myStyle_hashtag'] = $this->user_myStyle_hashtag;	
+
+		
+		$user_additional_info['gender'] = $this->gender; 
 		$this->renderPartial('about', array('user_info' => $user_additional_info));
 			
 	}	  

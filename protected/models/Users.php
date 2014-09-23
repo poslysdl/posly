@@ -319,7 +319,7 @@ class Users extends CActiveRecord
 		}
 		return $count;		
 	}
-	
+	// get profile following count
 	function get_profile_following_count($userId){
 		$query = "SELECT count(user_id) AS total FROM `users_follow` WHERE  `user_id` = :userId";
 		$command = yii::app()->db->createCommand($query);
@@ -330,6 +330,7 @@ class Users extends CActiveRecord
 		}
 		return $count;
 	}
+	// get profile follower count	
 	
 	function get_profile_follower_count($userId){
 		$query = "SELECT count(user_id) AS total FROM `users_follow` WHERE  `follow_id` = :follow_id";
@@ -340,6 +341,27 @@ class Users extends CActiveRecord
 			$count = $raw['total'];
 		}
 		return $count;
-	}	
+	}
+	
+	// get user hash tags
+	
+	function get_user_hashtag($hash_cat_id,$userId){
+		 $query = "SELECT H.hashtags_name FROM hashtags H 
+						JOIN hashtags_category HC ON H.hashtags_category_id = HC.hashtags_category_id 
+					JOIN users_hashtags UH ON UH.hashtags_id = H.hashtags_id
+						WHERE HC.hashtags_category_id = :hash_cat_id AND UH.user_id = :userId
+		";
+		$command = yii::app()->db->createCommand($query);
+		$command->bindparam(":userId",$userId);
+		$command->bindparam(":hash_cat_id",$hash_cat_id);
+		$rawData = $command->queryAll();
+		$rawCount = count($rawData);
+		if($rawCount>0){
+			return($rawData[0]);			
+		}
+		else{
+			return false;
+		}
+	}
 	
 }
