@@ -376,7 +376,10 @@ $(window).load(function() {
   });
 });
 <?php } ?>
-
+//Location filter
+$(window).load(function() {
+   get_current_nearby_country("<?php echo $this->createUrl('/site/getnearbycountry'); ?>"); 
+});
 </script>
 
 <!-- END JAVASCRIPTS -->

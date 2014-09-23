@@ -1,87 +1,66 @@
 <?php  
-	/*
-		This Widget Creates an Single Cart container with main ,Carousel Images,
-		comments, likes and Hearts...
-	*/
-	$p = $this->cartinfo['data'];
-	$i = $this->cartinfo['i'];
-	$avatar = '';
-	$userPhotos = array();
-	$fromurl=strstr($p->user->userDetails->user_details_avatar, '://', true);
+/* This Widget Creates an Single Cart container with main ,Carousel Images,
+* comments, likes and Hearts...for Catwalk,Posly,goingViral,Topmembers...
+* Last Modified: 23-Sep-14
+*/
+$p = $this->cartinfo['data'];
+$i = $this->cartinfo['i'];
+$avatar = '';
+$userPhotos = array();
+$fromurl=strstr($p->user->userDetails->user_details_avatar, '://', true);
+if($fromurl=='http' || $fromurl=='https')
+	$avatar = $p->user->userDetails->user_details_avatar; 
+else
+	$avatar = Yii::app()->baseUrl.'/profiles/'.$p->user->userDetails->user_details_avatar;
+
+if(isset($p->user->userLocation->user_location_country) && isset($p->user->userLocation->user_location_city))
+	$location = $p->user->userLocation->user_location_country.', '.$p->user->userLocation->user_location_city;
+elseif(isset($p->user->userLocation->user_location_country))
+	$location = $p->user->userLocation->user_location_country;
+else
+	$location = '';
+$uid = Yii::app()->user->id; //logged in userId
+$firsttime=true;
+$firstId=0;
+$likescount=0;
+//***fetch Card Photos of respective user..and Slot 1,2,3 only
+$criteria=new CDbCriteria;
+$criteria->condition = "t.user_id='$p->user_id' AND t.photos_slotno<>0";
+$criteria->order = 't.photos_slotno';
+$userPhotos=Photos::model()->findAll($criteria);
+unset($criteria);
+$loggedIn_UserAvatar = '';
+if(!empty($uid))
+{
+	$CommentAvatar=UsersDetails::model()->find("user_id=".$uid);
+	if(isset($CommentAvatar)) {
+	$fromurl=strstr($CommentAvatar['user_details_avatar'], '://', true);
 	if($fromurl=='http' || $fromurl=='https')
-		$avatar = $p->user->userDetails->user_details_avatar; 
+		$loggedIn_UserAvatar = $CommentAvatar->user_details_avatar; 
 	else
-		$avatar = Yii::app()->baseUrl.'/profiles/'.$p->user->userDetails->user_details_avatar;
-	
-	if(isset($p->user->userLocation->user_location_country) && isset($p->user->userLocation->user_location_city))
-		$location = $p->user->userLocation->user_location_country.', '.$p->user->userLocation->user_location_city;
-	elseif(isset($p->user->userLocation->user_location_country))
-		$location = $p->user->userLocation->user_location_country;
-	else
-		$location = '';
-	$uid = Yii::app()->user->id; //logged in userId
-	$firsttime=true;
-	$firstId=0;
-	$likescount=0;
-	$userPhotos=Photos::model()->findAll("user_id=$p->user_id"); 
-	$loggedIn_UserAvatar = '';
-	if(!empty($uid))
-	{
-		$CommentAvatar=UsersDetails::model()->find("user_id=".$uid);
-		if(isset($CommentAvatar)) {
-		$fromurl=strstr($CommentAvatar['user_details_avatar'], '://', true);
-		if($fromurl=='http' || $fromurl=='https')
-			$loggedIn_UserAvatar = $CommentAvatar->user_details_avatar; 
-		else
-			$loggedIn_UserAvatar = Yii::app()->baseUrl.'/profiles/'.$CommentAvatar['user_details_avatar'];		
-		}
+		$loggedIn_UserAvatar = Yii::app()->baseUrl.'/profiles/'.$CommentAvatar['user_details_avatar'];		
 	}
-	$cartuser_firstname = $p->user->userDetails->user_details_firstname;
-	$cartuser_lastname = $p->user->userDetails->user_details_lastname;
-	$cartuser_url = $p->user->userDetails->user_unique_url;
-	$cart_userId = $p->user_id;
-	$likeConPath= urlencode(Yii::app()->createUrl("/comments/commentlike"));
+}
+$cartuser_firstname = $p->user->userDetails->user_details_firstname;
+$cartuser_lastname = $p->user->userDetails->user_details_lastname;
+$cartuser_url = $p->user->userDetails->user_unique_url;
+$cart_userId = $p->user_id;
+$likeConPath= urlencode(Yii::app()->createUrl("/comments/commentlike"));
 ?>
 <div class="portlet box blue boxshadown bRd">
 	<div class="portlet-title">
 	<div class="caption"> 
+		<a href="<?php echo Yii::app()->createUrl('profile/index', array('url' => $cartuser_url )); ?>">
 		<img src="<?php echo $avatar;?>" alt="" class="avatar-user-l img-responsive">
-		<div class="cap1"> 
-		<a class="username" href="#">
-		<?php echo CHtml::link($cartuser_firstname.' '.$cartuser_lastname, array('profile/index', 'url'=>$cartuser_url), array('class'=>'username')); ?>
 		</a>
+		<div class="cap1">		
+		<?php echo CHtml::link($cartuser_firstname.' '.$cartuser_lastname, array('profile/index', 'url'=>$cartuser_url), array('class'=>'username')); ?>	
 		<span class="user-locaion"><?php echo $location;?></span> 
 		</div>
 	</div>
 	<div class="rank">
-		<div class="share-on"> 
-			<a href="#" class="dropdown-toggle"  data-toggle="dropdown" data-close-others="true"><i class="icon-retweet"></i></a>
-			<div class="dropdown-menu share-pic">
-			<div><span>Share now on</span></div>
-			<div>
-			<button type="button" class="btn faceS" >Facebook</button>
-			</div>
-			<!--<div>
-			<button type="button" class="btn twistS" >Twitter</button>
-			</div>
-			<div>
-			<button type="button" class="btn vkS" >VK</button>
-			</div>
-			<div>
-			<button type="button" class="btn pinter" >Pinterest</button>
-			</div>-->
-			<div>
-			<button type="button" class="btn insta" >Instagram</button>
-			</div>
-			<!--<div>
-			<button type="button" class="btn googlep" >Google +</button>
-			</div>-->
-			<div>
-			<button type="button" class="btn meoS" data-toggle="modal" href="#sign-up">Email</button>
-			</div>
-			<div class="endles text"> <span><a href="#">Mark as spam</a></span> </div>
-			</div>
-		</div>
+		<!--<div class="share-on"> 			
+		</div>-->
 	<h2> #<?php echo $p->user->userDetails->user_rank_worldwide; ?> Rank </h2>
 	<span class="arrow"> </span> 
 	</div>
@@ -93,7 +72,7 @@
 			<?php			
 			foreach($userPhotos as $sp)
 			{
-				$firsttime=true;	
+				$firsttime=true;
 				$firstId = $sp->photos_id;						
 				$photo_src = Yii::app()->baseUrl.'/files/'.$sp->user_id.'/medium/'.$sp->photos_name;
 				$photo_id = $sp->photos_id;				
@@ -137,17 +116,24 @@
 		$firstphoto = true; //to track first image in Cart
 		foreach($userPhotos as $sp)
 		{
+			$commentYouLike = array();
 			$firstId = $sp->photos_id;
 			$likescount = $sp->photos_hearts_count;		
 			$photo_id = $sp->photos_id;
 			$displayClass = ($firstphoto)?'display:block':'display:none';
-			$com=LogPhotosComment::model()->with('user.userDetails')->findAll("photos_id=$firstId");
+			$criteria=new CDbCriteria; 
+			$criteria->condition = "t.photos_id ='$firstId'"; //Like Counts
+			$criteria->order = "t.likecount DESC";
+			$com=LogPhotosComment::model()->with('user.userDetails')->findAll($criteria);
+			unset($criteria);
 			$phototags = PhotosHashtags::model()->with('hashtags')->findAll("photos_id=$firstId");
 			$total_comments = count($com);
 			$lcount = $likescount;
 			$likehtml = '';
-			if(!empty($uid))
-				$likehtml = LogPhotosHearts::model()->createLikeCountHtml($photo_id,$likescount);			
+			if(!empty($uid)){
+				$likehtml = LogPhotosHearts::model()->createLikeCountHtml($photo_id,$likescount);
+				$commentYouLike = LogPhotosComment::model()->commentsYouLike($uid,$photo_id);
+			}
 		?>
 		<!--divcomments contains,total likes, comments,comment Post etc -->
 		<div class="divcomments" id="cart-data<?php echo $firstId; ?>" style="<?php echo $displayClass;?>">
@@ -177,6 +163,13 @@
 			} ?>
 			</div>
 			
+			<?php if($sp->photos_share_count>0){?>
+			<div class="main-name"> <!--SHARE Count -->
+			<img src="<?php echo Yii::app()->theme->baseUrl;?>/img/shareico.jpg">
+			&nbsp;&nbsp;<?php echo $sp->photos_share_count; ?> Shares
+			</div>	
+			<?php } ?>
+			
 			<div class="CMc">			
 				<div class="main-commnet" id="cart-data-topcomments<?php echo $firstId; ?>">
 					<div class="tools">
@@ -184,11 +177,12 @@
 					<?php echo $total_comments;?> comments </a> <!--app.js Handle this --->
 					</div>
 					<div class="oCM">
-					<div class="sort"> <a href="javascript(void);" class="dropdown-toggle" data-toggle="dropdown">Top comment</a>
-					<ul class="dropdown-menu" role="menu" >
-					<li> <a class="slect" href="#">Top comment </a> </li>
-					<li> <a href="#">Recent activity</a> </li>
-					</ul>
+					<div class="sort"> 
+						<a href="javascript(void);" class="dropdown-toggle" data-toggle="dropdown">Top comment</a>
+						<ul class="dropdown-menu" role="menu" >
+						<li><a class="slect" href="javascript(void);">Top comment</a></li>
+						<li><a href="javascript(void);">Recent activity</a></li>
+						</ul>
 					</div>
 					</div>
 				</div>
@@ -213,32 +207,42 @@
 							'commentDate'=>$commentDate,'commentDesc'=>$commentDesc,'commentcount'=> $c->likecount);
 						}
 					}
+				
 					$cnt = 0;
 					if(isset($commentsArray) && count($commentsArray)>0){	
 					$cnt = count($commentsArray);
 					if($cnt>1)
-					{
-						for($i=0;$i<$cnt;$i++){
+					{	
+						for($i=0;$i<$cnt;$i++)
+						{
+						$comment_id = $commentsArray[$i]['id'];
 						$cdate = $commentsArray[$i]['commentDate'];
-						$commentcnt =($commentsArray[$cnt-1]['commentcount']==0)?'':$commentsArray[$cnt-1]['commentcount'];
-						$like='Like';
+						$commentcnt =($commentsArray[$i]['commentcount']==0)?'':$commentsArray[$i]['commentcount'];				
+						if(array_search($comment_id,$commentYouLike)===false)
+							$like='Like';
+						else
+							$like='UnLike'; //already Like the comment
+						$commentbyname = $commentsArray[$i]['uname'];
+						$commentbyavatar = $commentsArray[$i]['useravatar'];
+						$commentdesc = $commentsArray[$i]['commentDesc'];
 						?>    
-							<li class="in"> 
-							<img class="avatar img-responsive" alt="" src="<?php echo $commentsArray[$i]['useravatar'];?>" />					
-							<div class="message"> <a href="#" class="name"><?php echo $commentsArray[$i]['uname'];?></a> 							
-							<span class="body"> <?php echo $commentsArray[$i]['commentDesc']; ?> </span>							
-							<span class="likebox">
-								<span class="datetime"><?php echo $cdate;?></span>
-								<?php if(!empty($uid)){ ?>
-								<span class="like">
-									<a class="commentlike" data-id="<?php echo $commentsArray[$i]['id'];?>" data-url="<?php echo $likeConPath;?>"><?php echo $like;?></a>
-								</span>
-								<?php } ?>
-								<span class="limg"></span>
-								<span class="lcnt"><?php echo $commentcnt; ?></span>
-							<span>							
-							</div>					
-							</li>
+						<li class="in"> 
+						<img class="avatar img-responsive" alt="" src="<?php echo $commentbyavatar;?>" />					
+						<div class="message"> 
+						<a href="#" class="name"><?php echo $commentbyname;?></a> 							
+						<span class="body"> <?php echo $commentdesc; ?> </span>							
+						<span class="likebox">
+						<span class="datetime"><?php echo $cdate;?></span>
+						<?php if(!empty($uid)){ ?>
+						<span class="like">
+						<a class="commentlike" data-id="<?php echo $comment_id;?>" data-url="<?php echo $likeConPath;?>"><?php echo $like;?></a>
+						</span>
+						<?php } ?>
+						<span class="limg"></span>
+						<span class="lcnt"><?php echo $commentcnt; ?></span>
+						<span>							
+						</div>					
+						</li>
 						<?php 
 						}
 					}
@@ -249,22 +253,31 @@
 				</div>
 				<div class="main-comment2"> <!--Main Comments -->
 					<div>
-					<?php if(isset($cnt) && $cnt>1){ 
-						$cdate = $commentsArray[$cnt-1]['commentDate'];
-						$commentcnt =($commentsArray[$cnt-1]['commentcount']==0)?'':$commentsArray[$cnt-1]['commentcount'];
-						$like='Like';
+					<?php if(isset($cnt) && $cnt>1){
+						$i=0; //show top-comment ie max-no-of-likecount
+						//$i=$cnt-1;
+						$comment_id = $commentsArray[$i]['id'];
+						$cdate = $commentsArray[$i]['commentDate'];
+						$commentcnt =($commentsArray[$i]['commentcount']==0)?'':$commentsArray[$i]['commentcount'];
+						$commentdesc = $commentsArray[$i]['commentDesc'];
+						if(array_search($comment_id,$commentYouLike)===false)
+							$like='Like';
+						else
+							$like='UnLike'; //already Like the comment
+						$commentbyname = $commentsArray[$i]['uname'];
+						$commentbyavatar = $commentsArray[$i]['useravatar'];
 					?>
 					<ul class="CMn" id="cart-data-maincomments<?php echo $firstId; ?>">
 					<li class="in"> 
-					<img class="avatar img-responsive" alt="" src="<?php echo $commentsArray[$cnt-1]['useravatar']; ?>" />
+					<img class="avatar img-responsive" alt="" src="<?php echo $commentbyavatar; ?>" />
 					<div class="message"> 
-					<a href="#" class="name"><?php echo $commentsArray[$cnt-1]['uname']; ?></a>					 
-					<span class="body"> <?php echo $commentsArray[$cnt-1]['commentDesc']; ?></span>					
-					<span class="likebox" data-url="<?php echo $likeConPath;?>">
+					<a href="#" class="name"><?php echo $commentbyname; ?></a>					 
+					<span class="body"> <?php echo $commentdesc; ?></span>					
+					<span class="likebox">
 						<span class="datetime"><?php echo $cdate; ?></span>
 						<?php if(!empty($uid)){ ?>
 						<span class="like">
-						<a class="commentlike" data-id="<?php echo $commentsArray[$cnt-1]['id'];?>" data-url="<?php echo $likeConPath;?>"><?php echo $like;?></a>
+						<a class="commentlike" data-id="<?php echo $comment_id;?>" data-url="<?php echo $likeConPath;?>"><?php echo $like;?></a>
 						</span>
 						<?php } ?>
 						<span class="limg"></span>

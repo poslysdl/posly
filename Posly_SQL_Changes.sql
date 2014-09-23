@@ -137,15 +137,6 @@ ALTER TABLE `users` ADD `notification_read_date` INT( 11 ) NOT NULL DEFAULT '0' 
 
 -----------------18-Septt-14----------------------------
 ALTER TABLE  `users_friends` CHANGE  `user_friend_created_date`  `user_friend_created_date` TIMESTAMP( 11 ) NULL DEFAULT CURRENT_TIMESTAMP
------------------------18-Sept-14-----------------
-CREATE TABLE IF NOT EXISTS `user_shares` (
-  `user_share_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `photos_id` int(11) NOT NULL,
-  `share_date` int(11) DEFAULT NULL,
-  PRIMARY KEY (`user_share_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf16 AUTO_INCREMENT=1 ;
-
 -----------------------19-Sept-14-----------------------
 ALTER TABLE `users` ADD `user_online_flag` TINYINT( 1 ) NOT NULL DEFAULT '0' COMMENT '0 - LogOff, 1 - Login';
 ALTER TABLE `users` ADD `user_logged_device` TINYINT NOT NULL DEFAULT '0' COMMENT '0 - web, 1 - mobile';
@@ -159,4 +150,11 @@ CREATE TABLE IF NOT EXISTS `log_comment_likes` (
   `like_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1 - Like, 0 - dislike'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16;
 
--------------------------------------------------------------------
+ALTER TABLE `users_details` CHANGE `user_details_slogan` `user_details_slogan` TEXT CHARACTER SET utf16 COLLATE utf16_general_ci NULL DEFAULT NULL COMMENT 'About Us';
+----------------------------------23-Sept-14-----------------------------
+
+ALTER TABLE `photos` ADD `photos_slotno` SMALLINT( 2 ) NOT NULL DEFAULT '0' AFTER `photos_hearts_count` ;
+ALTER TABLE `photos` ADD `photos_share_count` INT( 11 ) NOT NULL DEFAULT '0' AFTER `photos_slotno` ;
+
+---------------------------------------------------------------------------
+
