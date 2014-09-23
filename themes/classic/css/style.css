@@ -4826,10 +4826,40 @@ Comment
 	font-weight:bold;
 	font-size: 12px;
 }
-.CMn li .datetime {
+.CMn li .likebox {
+	display:block;
+	width:80%;	
+}
+.CMn li .likebox .datetime {
 	color: #aaa;
 	font-size: 12px;
 	font-weight: 400;
+	float: left;
+}
+.CMn li .likebox .like {    
+	float: left;
+	margin-left:6px;	
+}
+.CMn li .likebox .like a{
+	/*color: #a7cf5f;  Green*/
+	color: #0d638f;
+    font-size: 12px;
+    font-weight: normal;
+	cursor: pointer;
+}
+.CMn li .likebox .limg {	
+	width: 17px;
+	height: 17px;
+	display:block;
+	background-image: url("../img/like-icon.png");
+	background-repeat: no-repeat;
+	float: left;
+	margin-left:6px;
+	margin-top: -2px;
+}
+.CMn li .likebox .lcnt {	
+	clear:both;
+	margin-left:6px;
 }
 .CMn li.out img.avatar {
 	float: right;

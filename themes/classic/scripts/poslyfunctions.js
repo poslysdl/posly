@@ -661,6 +661,39 @@ $(document).on('keypress', '#LoginForm_password', function(event){
 	}
 });
 
+$(document).on('click', '.commentlike', function(event){
+	//** Comment Like & Dislike Call
+	var sdata = $(this).attr('data-id');
+	var flag = $(this).text();
+	var url = $(this).attr('data-url');
+	var val1 = '';
+	url = decodeURIComponent(url);
+	if(flag=="Like")
+		$(this).text("UnLike");
+	else
+		$(this).text("Like");
+	$.ajax({
+		type: 'POST',  
+		url: url,
+		async: false,
+		data:{         
+			pdata: sdata,
+			pflag: flag			
+		},
+		success:function(data){
+			data = $.parseJSON(data);
+			if(data.status=="success"){				
+				val1 = data.values;		
+			}      
+		},
+		error: function(data) { // if error occured
+		}
+	});	
+	if(val1==0)
+	val1='';
+	$(this).parent('.like').parent('.likebox').children('.lcnt').html(val1);
+});
+
 //click on owl-carousel Black Strip slot images, will show respective Comments
 $(document).on('click', '.owl-controls .img-responsive', function(){
 	showcartComments($(this));

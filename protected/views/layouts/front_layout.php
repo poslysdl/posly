@@ -203,8 +203,10 @@ $(document).on('click', '.like', function(){
 		 and #loginModal in href, will show the Modal window for signIn
 		*/
 	<?php } ?>
+	var n;
 	var temp=$(this).find('i').attr('class');
-	var n = temp.indexOf("checkAuth");
+	if(typeof temp != 'undefined')
+	n = temp.indexOf("checkAuth");
 	if(n!=-1)
 	{
 		$('.userAuthCheck').click();
