@@ -162,7 +162,7 @@ $user_gender = ($user->user_details_gender == 1) ? "M" : "F";
 		<div class="user-text">
 		<div class="bguser">
 		<h1> <a href="#"><?php echo $user_name;?> (<?php echo $user_gender;?>,<?php echo $user_info['age'];?>)</a> </h1>
-		<p>From <?php echo $user_info['profile_location']['country'];?> , <?php echo $user_info['profile_location']['city'];?></p>
+		<p>From <?php echo $user_info['users_details']['user_location_country'];?> , <?php echo $user_info['users_details']['user_location_city'];?></p>
 		</div>
 		</div>
 	</div>

@@ -147,8 +147,11 @@ class Users extends CActiveRecord
 	
 	public function getUserInfo($userId){
 	//	$data = array();
-		$query = "SELECT ud.* FROM `users_details` ud JOIN `users` u ON u.user_details_id = ud.user_details_id";
-		$query.=" WHERE u.user_id = :userId ";
+		 $query = "SELECT UD.*,UL.* FROM users_details UD
+						JOIN users U ON U.user_details_id = UD.user_details_id 
+					JOIN users_location UL ON U.user_location_id = UL.user_location_id
+						WHERE U.user_id = :userId
+		";
 		$command= Yii::app()->db->createCommand($query);
 		$command->bindParam(":userId", $userId);
 		$rawData = $command->queryAll();
@@ -330,6 +333,22 @@ class Users extends CActiveRecord
 		}
 		return $count;
 	}
+	
+	// get profile following users list
+	function get_profile_following_users($userId){
+		$query = "SELECT follow_id FROM `users_follow` WHERE  `user_id` = :userId";
+		$command = yii::app()->db->createCommand($query);
+		$command->bindparam(":userId",$userId);
+		$rawData = $command->queryAll();
+		$rawCount = count($rawData);
+		if($rawCount>0){
+			return $rawData;
+		}
+		else{
+			return false;
+		}
+	}
+	
 	// get profile follower count	
 	
 	function get_profile_follower_count($userId){
