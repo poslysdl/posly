@@ -9,17 +9,17 @@ $users_following_even = $user_info['users_following_even'];
    <div class="row">
       <div class="col-md-6">
          <?php
-         if(count($users_following_odd)>0){
-         foreach ($users_following_odd as $users_odd){
+         if(count($users_following_even)>0){
+         foreach ($users_following_even as $users_even){
          ?>
          <div class="following boxshadown white-bgf bRd">
          
             <div class="title">
-               <div class="caption"> <img src="<?php echo $users_odd['avatar']; ?>" alt="" class="avatar-user-l img-responsive">
-                  <div class="cap1"> <a class="username" href="#"><?php echo $users_odd['user_details_firstname']; ?> <?php echo $users_odd['user_details_lastname']; ?></a><span class="user-locaion">#1 Rank - <?php echo $users_odd['followerCount']; ?>
+               <div class="caption"> <img src="<?php echo $users_even['avatar']; ?>" alt="" class="avatar-user-l img-responsive">
+                  <div class="cap1"> <a class="username" href="#"><?php echo $users_even['user_details_firstname']; ?> <?php echo $users_even['user_details_lastname']; ?></a><span class="user-locaion">#1 Rank - <?php echo $users_even['followerCount']; ?>
                   
                   <?php
-                  if($users_odd['followerCount']>1){
+                  if($users_even['followerCount']>1){
                   ?>
                      Followers
                   <?php
@@ -31,7 +31,7 @@ $users_following_even = $user_info['users_following_even'];
                   }
                   ?>                                           
                   
-                  - from <?php echo $users_odd['user_location_country']; ?>, <?php echo $users_odd['user_location_city']; ?></span> </div>
+                  - from <?php echo $users_even['user_location_country']; ?>, <?php echo $users_even['user_location_city']; ?></span> </div>
                </div>
                
                <div class="Fl">
@@ -59,18 +59,18 @@ $users_following_even = $user_info['users_following_even'];
       <!--Second column-->
       <div class="col-md-6">
          <?php
-         if(count($users_following_even)>0){
-         foreach ($users_following_even as $users_even){
+         if(count($users_following_odd)>0){
+         foreach ($users_following_odd as $users_odd){
          ?>
          
          <div class="following boxshadown white-bgf bRd">         
             <div class="title">
-               <div class="caption"> <img src="<?php echo $users_even['avatar']; ?>" alt="" class="avatar-user-l img-responsive">
-                  <div class="cap1"> <a class="username" href="#"><?php echo $users_even['user_details_firstname']; ?> <?php echo $users_even['user_details_lastname']; ?></a><span class="user-locaion">#1 Rank - <?php echo $users_even['followerCount']; ?>
+               <div class="caption"> <img src="<?php echo $users_odd['avatar']; ?>" alt="" class="avatar-user-l img-responsive">
+                  <div class="cap1"> <a class="username" href="#"><?php echo $users_odd['user_details_firstname']; ?> <?php echo $users_odd['user_details_lastname']; ?></a><span class="user-locaion">#1 Rank - <?php echo $users_odd['followerCount']; ?>
                   
                   
                   <?php
-                  if($users_even['followerCount']>1){
+                  if($users_odd['followerCount']>1){
                   ?>
                      Followers
                   <?php
@@ -83,7 +83,7 @@ $users_following_even = $user_info['users_following_even'];
                   ?>                   
                   
                   
-                  - from <?php echo $users_even['user_location_country']; ?>, <?php echo $users_even['user_location_city']; ?></span> </div>
+                  - from <?php echo $users_odd['user_location_country']; ?>, <?php echo $users_odd['user_location_city']; ?></span> </div>
                </div>               
                <div class="Fl">
                   <button type="button" class="btn cyan active">Unfollow</button>
