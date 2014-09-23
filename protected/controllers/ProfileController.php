@@ -79,8 +79,10 @@ class ProfileController extends Controller {
 						$fromurl = strstr($this->avatar, '://', true);
 						if($fromurl=='http' || $fromurl=='https')
 							$user_additional_info['avatar'] = $this->avatar; 
-						else
-						$user_additional_info['avatar'] = Yii::app()->baseUrl.'/profiles/'.$this->avatar;
+						elseif(!empty($this->avatar))
+							$user_additional_info['avatar'] = Yii::app()->baseUrl.'/profiles/'.$this->avatar;
+						else	
+							$user_additional_info['avatar'] = Yii::app()->baseUrl.'/profiles/noimage.jpg';
 						$this->render('index',array('user'=>$row,'user_info'=>$user_additional_info));
 					} else /* if privacy is 2 or 3 */ {
 						$error = true;
@@ -167,8 +169,10 @@ class ProfileController extends Controller {
 					$fromurl = strstr($this->avatar, '://', true);
 					if($fromurl=='http' || $fromurl=='https')
 						$user_additional_info['avatar'] = $this->avatar; 
-					else
+					elseif(!empty($this->avatar))
 						$user_additional_info['avatar'] = Yii::app()->baseUrl.'/profiles/'.$this->avatar;
+					else	
+						$user_additional_info['avatar'] = Yii::app()->baseUrl.'/profiles/noimage.jpg';
 						
 					$this->render('index',array('user'=>$row,'user_info'=>$user_additional_info));	
 				}
@@ -208,8 +212,11 @@ class ProfileController extends Controller {
 		$fromurl = strstr($this->avatar, '://', true);
 		if($fromurl=='http' || $fromurl=='https')
 			$user_additional_info['avatar'] = $this->avatar; 
-		else
-		$user_additional_info['avatar'] = Yii::app()->baseUrl.'/profiles/'.$this->avatar;
+		elseif(!empty($this->avatar))
+			$user_additional_info['avatar'] = Yii::app()->baseUrl.'/profiles/'.$this->avatar;
+		else	
+			$user_additional_info['avatar'] = Yii::app()->baseUrl.'/profiles/noimage.jpg';
+			
 		if($this->profile_details['user_details_gender'] == 1){
 			$this->gender = "Male";			
 		}
