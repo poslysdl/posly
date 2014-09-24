@@ -259,7 +259,7 @@ function showNotifications(){
 	$.get(url,function(data,status){
 		$('#header_notification_bar .scroller').html(data); //Top-Header		
 	});
-	var cnt = getAjaxreturn('<?php echo $this->createUrl("/site/getnotifycount"); ?>','');	
+	var cnt = getAjaxreturn('<?php echo $this->createUrl("/site/getnotifycount"); ?>','','');	
 	$('#header_notification_bar > .dropdown-toggle > .badge').text(cnt); //Top Header Notification count
 }
 
@@ -356,7 +356,7 @@ $(document).ready(function(){
 	//**Remove Notify count, after user opens the Notification Box & Read The Notifications
 	$(document).on('hover', '#header_notification_bar .scroller', function(){
 		$('#header_notification_bar > .dropdown-toggle > .badge').text(''); //Top Header Notification count
-		var cnt = getAjaxreturn('<?php echo $this->createUrl("/site/removenotifycount"); ?>','');
+		var cnt = getAjaxreturn('<?php echo $this->createUrl("/site/removenotifycount"); ?>','','');
 	});
 	//** Timer to update Notification every 4min
 	setInterval(function(){showNotifications()}, 40000);

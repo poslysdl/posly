@@ -631,7 +631,7 @@ $(document).on('click', '#forgetmail', function(){
 url - controller Path
 data1 - single string variable
 */
-function getAjaxreturn(url,data1,id=''){
+function getAjaxreturn(url,data1,id){
 	var val1;
 	$.ajax({
 		type: 'POST',  

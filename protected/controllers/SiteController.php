@@ -358,20 +358,44 @@ class SiteController extends Controller
 	}
 	
 	/**
-	* Display details of Hash tags
-	* Last Modified: 27-July-14
+	* Display Card wrt to HashTag
+	* When use selects any hashtag from trending tag list
+	* Last Modified: 24-Sept-14
 	*/
 	public function actionHashtags($hid)
-	{
+	{	
 		$this->layout='front_layout';
 		Yii::app()->clientScript->registerCoreScript('jquery'); 
 		Yii::app()->request->cookies['presentH']=new CHttpCookie('presentH', $hid);
-		$criteria = new CDbCriteria();
+		/*$criteria = new CDbCriteria();
 		$criteria->group="photos.user_id";
 		$criteria->condition = "t.hashtags_id=$hid";
 		$criteria->limit=2;
 		$allusersphotos=PhotosHashtags::model()->with('photos','photos.user', 'photos.user.userDetails', 'photos.user.userLocation')->findAll($criteria);  
 		$this->render('hashtags', array('photos'=>$allusersphotos));
+		*/		
+		
+		$criteria = new CDbCriteria();
+		$criteria->condition = "t.hashtags_id=$hid";
+		$criteria->order = 'totalcount DESC';
+		$criteria->limit=$this->cartlimit;
+		$allusersphotos=Photos::model()->with('user', 'user.userDetails','photosHashtags')->findAll($criteria);
+//echo "<pre>"; print_r($allusersphotos); exit;
+		unset($criteria);
+		//Get Hash Tags Listings for sidebar, this action define in Controller class
+		$limit = (Yii::app()->user->isGuest)?9:6; //HashTag Limit			
+		$hash_tags = $this->actionHashtaglist($limit);	 // actionHashtaglist in Main Controller	
+		//Inside views/site/index.php ** widget are there to Include SubHeader, TopMenu & SideBar..
+		
+		
+		$this->render('index', array('photos'=>$allusersphotos,'hash_tags'=>$hash_tags));	
+		
+		
+		
+		
+		
+		
+		
 	}
 	/**
 	* This is the action to handle external exceptions.

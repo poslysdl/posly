@@ -26,7 +26,7 @@ $firstId=0;
 $likescount=0;
 //***fetch Card Photos of respective user..and Slot 1,2,3 only
 $criteria=new CDbCriteria;
-if($pageflag=='newsfeed')
+if($pageflag=='newsfeed' && $p->user->userDetails->user_details_firstname!="posly")
 	$criteria->condition = "t.user_id='$p->user_id' AND t.photos_share_count<>0";
 else
 	$criteria->condition = "t.user_id='$p->user_id' AND t.photos_slotno<>0";

@@ -78,8 +78,7 @@ class PhotoController extends Controller
 	{
 		$p=Photos::model()->findByPk($_POST['id']);
 		if(isset($p))
-		{
-			
+		{			
 			$share= new LogPhotosShare;
 			$share->log_photos_share_media_id=$_POST['shareid'];
 			$share->photos_id=$p->photos_id;
