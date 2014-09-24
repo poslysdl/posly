@@ -362,6 +362,23 @@ class Users extends CActiveRecord
 		return $count;
 	}
 	
+	
+	// get profile follower users list	
+	
+	function get_profile_follower_users($userId){
+		$query = "SELECT user_id FROM `users_follow` WHERE  `follow_id` = :follow_id";
+		$command = yii::app()->db->createCommand($query);
+		$command->bindparam(":follow_id",$userId);
+		$rawData = $command->queryAll();
+		$rawCount = count($rawData);
+		if($rawCount>0){
+			return $rawData;
+		}
+		else{
+			return false;
+		}
+	}	
+	
 	// get user hash tags
 	
 	function get_user_hashtag($hash_cat_id,$userId){
