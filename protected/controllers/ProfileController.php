@@ -26,7 +26,9 @@ class ProfileController extends Controller {
 	public $user_styleIcons_hashtag;
 	public $user_myStyle_hashtag;
 	public $users_following;
+	public $users_folllower;
 	public $profile_follow_userdetails;
+	public $profile_follower_userdetails;
 	public $profile_follow_location;
 	
    public function filters() {
@@ -295,7 +297,7 @@ class ProfileController extends Controller {
 		}*/
 		$this->renderPartial('hearts');		
 	}
-
+//done
 	public function actionFollowing(){
 		$folllow_users =array();
 		$folllow_users_odd = array();
@@ -348,6 +350,9 @@ class ProfileController extends Controller {
 	}
 
 	public function actionFollowers(){
+		$folllower_users =array();
+		$folllower_users_odd = array();
+		$folllower_users_even = array();
 		$profile_url = $_REQUEST['param'];
 		$id = Yii::app()->user->id;
 		$user_about_info = array();
@@ -363,6 +368,36 @@ class ProfileController extends Controller {
 		else{
 			$user_additional_info['current_user'] = $this->user_logged_vistor;
 		}
+		$this->users_folllower = Users::model()->get_profile_follower_users($row['user_id']);
+
+		if($this->users_folllower){
+			foreach($this->users_folllower as $user_follower){		
+				$this->profile_follower_userdetails = Users::model()->getUserInfo($user_follower['user_id']);
+				$this->profile_follower_count = Users::model()->get_profile_follower_count($user_follower['user_id']);
+				$this->profile_follower_userdetails['followerCount'] = $this->profile_follower_count;
+				$this->avatar = $this->profile_follower_userdetails['user_details_avatar'];
+				$fromurl = strstr($this->avatar, '://', true);
+				if($fromurl=='http' || $fromurl=='https')
+					$user_follower_avatar = $this->avatar; 
+				elseif(!empty($this->avatar))
+					$user_follower_avatar = Yii::app()->baseUrl.'/profiles/'.$this->avatar;
+				else	
+					$user_follower_avatar = Yii::app()->baseUrl.'/profiles/noimage.jpg';				
+				$this->profile_follower_userdetails['avatar'] = $user_follower_avatar;
+				$folllower_users[] = $this->profile_follower_userdetails;				
+			}
+		}
+		// seprate odd, even users
+		foreach( $folllower_users as $key => $value ) {
+			if( 0 === $key%2) { //Even
+				$folllower_users_even[] = $value;
+			}
+			else {
+				$folllower_users_odd[] = $value;
+			}
+		}		
+		$user_additional_info['users_follower_odd'] = $folllower_users_odd;
+		$user_additional_info['users_follower_even'] = $folllower_users_even;
 
 		$this->renderPartial('followers', array('user_info' => $user_additional_info));
 	}

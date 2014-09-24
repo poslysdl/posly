@@ -1,6 +1,6 @@
 <?php
-$users_following_odd = $user_info['users_following_odd'];
 $users_following_even = $user_info['users_following_even'];
+$users_following_odd = $user_info['users_following_odd'];
 //echo "<pre>";
 //    print_r($users_following_odd);
 //echo "</pre>";    
@@ -67,8 +67,6 @@ $users_following_even = $user_info['users_following_even'];
             <div class="title">
                <div class="caption"> <img src="<?php echo $users_odd['avatar']; ?>" alt="" class="avatar-user-l img-responsive">
                   <div class="cap1"> <a class="username" href="#"><?php echo $users_odd['user_details_firstname']; ?> <?php echo $users_odd['user_details_lastname']; ?></a><span class="user-locaion">#1 Rank - <?php echo $users_odd['followerCount']; ?>
-                  
-                  
                   <?php
                   if($users_odd['followerCount']>1){
                   ?>
@@ -80,9 +78,7 @@ $users_following_even = $user_info['users_following_even'];
                      Follower
                   <?php
                   }
-                  ?>                   
-                  
-                  
+                  ?> 
                   - from <?php echo $users_odd['user_location_country']; ?>, <?php echo $users_odd['user_location_city']; ?></span> </div>
                </div>               
                <div class="Fl">
