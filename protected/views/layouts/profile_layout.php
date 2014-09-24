@@ -345,6 +345,15 @@ $(document).on('click', '#profile_following', function(){
     unfollowfriend(document.getElementById("prof_curr").value,document.getElementById("prof_othr").value);
 });
 
+$("#profile_following").on({
+    mouseenter: function () {
+       $(this).text('Unfollow');
+    },
+    mouseleave: function () {
+        $(this).text('Following');
+    }
+});
+
 
 function followfriend(profile_current,profile_other){
     var returnpath = "<?php echo Yii::app()->request->url;?>";
