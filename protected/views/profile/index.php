@@ -1,6 +1,5 @@
 <!-- BEGIN TOP NAVIGATION MENU -->
-	<?php //$this->widget('application.components.TopNavigationMenu', array(
-	//'navigationmenu' => array('menu'=>'data_tobe_render_in_menus'))); ?>
+	<?php $this->widget('application.components.TopNavigationMenu', array('navigationmenu' => array('menu'=>'data_tobe_render_in_menus'))); ?>
 <!-- END TOP NAVIGATION MENU -->
 </div>	
 </div> <!-- #top-shadow  ENDS --->
@@ -124,40 +123,40 @@ $user_gender = ($user->user_details_gender == 1) ? "M" : "F";
 	<div class="tilesp">
 		<div class="tilep biggroup hidden-320 hidden-600">
 		<div class="tilep imagechanh selected">
-		<div class="tile-body view-first"> <img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/aoki.jpg" alt=""> </div>
+		<div class="tile-body"> <img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/aoki.jpg" alt=""> </div>
 		</div>
 		<div class="tilep imagechanh selected ">
-		<div class="tile-body view-first"> <img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/masculina7.jpg" alt=""> </div>
+		<div class="tile-body"> <img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/masculina7.jpg" alt=""> </div>
 		</div>
 		<div class="tilep imagechanh selected hidden-620">
-		<div class="tile-body view-first"> <img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/141.jpg" alt=""> </div>
+		<div class="tile-body"> <img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/141.jpg" alt=""> </div>
 		</div>
 		<div class="tilep imagechanh selected hidden-620">
-		<div class="tile-body view-first"> <img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/bearb.jpg" alt=""> </div>
+		<div class="tile-body"> <img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/bearb.jpg" alt=""> </div>
 		</div>
 		</div>
 		<div class="tilep imageny selected">
-		<div class="tile-body view-first"> <img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/man.jpg" alt=""> </div>
+		<div class="tile-body "> <img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/man.jpg" alt=""> </div>
 		</div>
 		<div class="tilep biggroup hide-768 hidden-320 hidden-600 hidden-620">
 		<div class="tilep imagechanh selected">
-		<div class="tile-body view-first"> <img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/76719.jpg" alt=""> </div>
+		<div class="tile-body "> <img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/76719.jpg" alt=""> </div>
 		</div>
 		<div class="tilep imagechanh enma selected">
-		<div class="tile-body view-first"> <img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/050037.jpg" alt=""> </div>
+		<div class="tile-body "> <img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/050037.jpg" alt=""> </div>
 		</div>
 		<div class="tilep imagechanh selected">
-		<div class="tile-body view-first"> <img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/262.jpg" alt=""> </div>
+		<div class="tile-body "> <img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/262.jpg" alt=""> </div>
 		</div>
 		<div class="tilep imagechanh enma selected">
-		<div class="tile-body view-first"> <img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/728.jpg" alt=""> </div>
+		<div class="tile-body "> <img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/gallery/728.jpg" alt=""> </div>
 		</div>
 		</div>
 	</div>	
 	<!--user-->
 
 	<div class="head-info"> 
-		<a class="avatar" href="/will_hatefbook">
+		<a class="avatar" href="#">
 		<img title="Will Hatefbook" src="<?php echo $user_info['avatar'];?>" class="img-responsive" alt="Will Hatefbook"></a>
 		<div class="user-text">
 		<div class="bguser">

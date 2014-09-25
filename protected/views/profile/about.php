@@ -59,9 +59,10 @@
 <div class="tagcloud">
     <?php
     if($user_info['user_magzine_hashtag']){
-        foreach($user_info['user_magzine_hashtag'] as $hash_name){?>
+        $magzine_hashtag = $user_info['user_magzine_hashtag'];
+        foreach($user_info['user_magzine_hashtag'] as $hash_tag){?>
 
-    <a href="#"><?php echo $hash_name; ?></a>
+    <a href="#"><?php echo $hash_tag['hashtags_name']; ?></a>
     
     <?php }}?>
 </div>
@@ -71,8 +72,8 @@
 <div class="tagcloud">
     <?php
     if($user_info['user_design_hashtag']){  
-        foreach($user_info['user_design_hashtag'] as $hash_name){?>
-    <a href="#"><?php echo $hash_name; ?></a>    
+        foreach($user_info['user_design_hashtag'] as $hash_tag){?>
+    <a href="#"><?php echo $hash_tag['hashtags_name']; ?></a>    
     <?php }}?>
 </div>
 <div class="divider"></div>
@@ -80,8 +81,8 @@
 <div class="tagcloud">
     <?php
     if($user_info['user_shops_hashtag']){     
-        foreach($user_info['user_shops_hashtag'] as $hash_name){?>
-    <a href="#"><?php echo $hash_name; ?></a>    
+        foreach($user_info['user_shops_hashtag'] as $hash_tag){?>
+    <a href="#"><?php echo $hash_tag['hashtags_name']; ?></a>    
     <?php }}?>
 </div>
 <div class="divider"></div>
@@ -89,8 +90,8 @@
 <div class="tagcloud">
     <?php
     if($user_info['user_styleIcons_hashtag']){    
-    foreach($user_info['user_styleIcons_hashtag'] as $hash_name){?>
-    <a href="#"><?php echo $hash_name; ?></a>    
+    foreach($user_info['user_styleIcons_hashtag'] as $hash_tag){?>
+    <a href="#"><?php echo $hash_tag['hashtags_name']; ?></a>    
     <?php }}?>
 </div>
 <div class="divider"></div>
@@ -98,8 +99,8 @@
 <div class="tagcloud">
     <?php
     if($user_info['user_myStyle_hashtag']){
-    foreach($user_info['user_myStyle_hashtag'] as $hash_name){?>
-    <a href="#"><?php echo $hash_name; ?></a>    
+    foreach($user_info['user_myStyle_hashtag'] as $hash_tag){?>
+    <a href="#"><?php echo $hash_tag['hashtags_name']; ?></a>    
     <?php }}?>
 </div>
 

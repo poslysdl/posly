@@ -345,6 +345,14 @@ $(document).on('click', '#profile_following', function(){
     unfollowfriend(document.getElementById("prof_curr").value,document.getElementById("prof_othr").value);
 });
 
+//profile following page id="profile_following"
+
+$(document).on('click', '#user_following', function(e){
+    var followingId = $(this).attr('rel');
+    var current = $(this);
+    unfollow_bulkfriend(document.getElementById("prof_curr").value,followingId,current);
+});
+
 $(document).on('mouseenter', '#profile_following', function(){
     $(this).text('Unfollow');
 });
@@ -405,6 +413,36 @@ function unfollowfriend(profile_current,profile_other){
         }
     });	
 }
+//for bulk user ajax
+
+function unfollow_bulkfriend(profile_current,profile_other,current){
+    //var returnpath = "<?php echo Yii::app()->request->url;?>";
+    var params = {'profile_current':profile_current,'profile_other':profile_other};
+    console.log(params);
+    //var url_friend_follow = $('#profile_following').attr('data-url');
+    //$.ajax({
+    //    type: 'POST',  
+    //    url: url_friend_follow,
+    //    async: false,
+    //    data:params,
+    //    success:function(data){
+    //        data = jQuery.parseJSON(data);
+    //        console.log(data);
+    //        if(data.status=="success"){				
+    //          window.location = returnpath;
+                //current.text('Following');
+    //         // $("#user_follow").html = '<button id="profile_following" data-url="<?php echo Yii::app()->createUrl('/profile/followingfriend');?>" class="btn white messege" type="button" href="#"  data-toggle="modal">following</button>';
+    //        }
+    //        else{
+    //            window.location = returnpath;
+    //        }
+    //    },
+    //    error: function(data) { // if error occured
+    //       window.location = returnpath;
+    //    }
+    //});	
+}
+
 
 
 function removefriend(){
