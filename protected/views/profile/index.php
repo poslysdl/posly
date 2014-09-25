@@ -1,6 +1,5 @@
 <!-- BEGIN TOP NAVIGATION MENU -->
-	<?php //$this->widget('application.components.TopNavigationMenu', array(
-	//'navigationmenu' => array('menu'=>'data_tobe_render_in_menus'))); ?>
+	<?php $this->widget('application.components.TopNavigationMenu', array('navigationmenu' => array('menu'=>'data_tobe_render_in_menus'))); ?>
 <!-- END TOP NAVIGATION MENU -->
 </div>	
 </div> <!-- #top-shadow  ENDS --->
