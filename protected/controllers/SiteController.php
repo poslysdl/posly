@@ -155,7 +155,7 @@ class SiteController extends Controller
 			}
 			elseif($_GET['act']=='hashtags')
 			{
-				$criteria = new CDbCriteria();
+				/*$criteria = new CDbCriteria();
 				$hid=Yii::app()->request->cookies['presentH']->value;
 				$criteria = new CDbCriteria();
 				$criteria->group="photos.user_id";
@@ -164,6 +164,35 @@ class SiteController extends Controller
 				$criteria->offset=$_GET['l']-2;
 				$allusersphotos=PhotosHashtags::model()->with('photos','photos.user', 'photos.user.userDetails', 'photos.user.userLocation')->findAll($criteria); 
 				$this->render('somemorehashtags', array('photos'=>$allusersphotos));
+				*/
+				//To show Card wrt to selected HashTags..a Kind of Filter
+				$photoidArray = array();
+				$allusersphotos = '';
+				$hid=Yii::app()->request->cookies['presentH']->value;
+				$criteria = new CDbCriteria();
+				$criteria->condition = "t.hashtags_id=$hid";		
+				$photos=PhotosHashtags::model()->findAll($criteria);
+				if(isset($photos) && count($photos)>0){
+					foreach($photos as $sp)
+					$photoidArray[]=$sp->photos_id;
+				}
+				unset($photos);
+				unset($criteria);
+				if(count($photoidArray)>0)
+				{
+					$criteria = new CDbCriteria();
+					$criteria->addInCondition('t.photos_id',$photoidArray);
+					$criteria->group = 't.user_id';
+					if($_GET['l']<6){
+						$criteria->limit=$_GET['l']; //Total No of Records
+						$criteria->offset=$_GET['l']-2; //Starts from..
+					} else{
+						$criteria->limit = $_GET['l']-2;
+						$criteria->offset = $_GET['l'];
+					}				
+					$allusersphotos=Photos::model()->with('user','user.userDetails')->findAll($criteria);
+				}
+				$this->renderPartial('somemore', array('photos'=>$allusersphotos,'pageflag'=>'hashtag','pageflagid'=>$photoidArray));				
 			}
 			elseif($_GET['act']=='following')
 			{
@@ -364,39 +393,33 @@ class SiteController extends Controller
 	*/
 	public function actionHashtags($hid)
 	{	
-		$this->layout='front_layout';
+		$photoidArray = array();
+		$allusersphotos = '';		
 		Yii::app()->clientScript->registerCoreScript('jquery'); 
-		Yii::app()->request->cookies['presentH']=new CHttpCookie('presentH', $hid);
-		/*$criteria = new CDbCriteria();
-		$criteria->group="photos.user_id";
-		$criteria->condition = "t.hashtags_id=$hid";
-		$criteria->limit=2;
-		$allusersphotos=PhotosHashtags::model()->with('photos','photos.user', 'photos.user.userDetails', 'photos.user.userLocation')->findAll($criteria);  
-		$this->render('hashtags', array('photos'=>$allusersphotos));
-		*/		
-		
-		$criteria = new CDbCriteria();
-		$criteria->condition = "t.hashtags_id=$hid";
-		$criteria->order = 'totalcount DESC';
-		$criteria->limit=$this->cartlimit;
-		$allusersphotos=Photos::model()->with('user', 'user.userDetails','photosHashtags')->findAll($criteria);
-//echo "<pre>"; print_r($allusersphotos); exit;
-		unset($criteria);
-		//Get Hash Tags Listings for sidebar, this action define in Controller class
+		Yii::app()->request->cookies['presentH']=new CHttpCookie('presentH', $hid);		
+		$criteria = new CDbCriteria();		
+		$criteria->condition = "t.hashtags_id=$hid";		
+		$photos=PhotosHashtags::model()->findAll($criteria);
+		if(isset($photos) && count($photos)>0){
+			foreach($photos as $sp)
+			$photoidArray[]=$sp->photos_id;
+		}
+		unset($photos);		
+		if(count($photoidArray)>0){		
+			$criteria = new CDbCriteria();		
+			$criteria->addInCondition('t.photos_id',$photoidArray);
+			$criteria->group = 't.user_id';
+			$criteria->limit=$this->cartlimit;
+			$allusersphotos=Photos::model()->with('user','user.userDetails')->findAll($criteria);	
+			unset($criteria);
+		}
+//echo "<pre>"; print_r($allusersphotos); exit;		
 		$limit = (Yii::app()->user->isGuest)?9:6; //HashTag Limit			
-		$hash_tags = $this->actionHashtaglist($limit);	 // actionHashtaglist in Main Controller	
-		//Inside views/site/index.php ** widget are there to Include SubHeader, TopMenu & SideBar..
-		
-		
-		$this->render('index', array('photos'=>$allusersphotos,'hash_tags'=>$hash_tags));	
-		
-		
-		
-		
-		
-		
-		
+		$hash_tags = $this->actionHashtaglist($limit);
+		$this->layout='front_layout';
+		$this->render('index', array('photos'=>$allusersphotos,'hash_tags'=>$hash_tags,'pageflag'=>'hashtag','pageflagid'=>$photoidArray));		
 	}
+	
 	/**
 	* This is the action to handle external exceptions.
 	*/

@@ -110,4 +110,115 @@ class UsersDetails extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	
+	/**
+	* Name: getMaxRank
+	* User_Define Function To get MaxRank wrt All Users of city,region,country & world	
+	* @return Array of ranks
+	* Last Modified:24-Sep-14
+	*/
+	public function getMaxRank($userid,$userdetailid)
+	{
+		$maxrankArray=array('city'=>0,'region'=>0,'country'=>0,'world'=>0,'cityid'=>0,'regionid'=>0,'countryid'=>0);
+		if(!empty($userid) && !empty($userdetailid))
+		{
+			//Get this user Locations
+			$query="SELECT l.* FROM users_location l JOIN users u ON u.user_location_id=l.user_location_id";
+			$query.=" WHERE u.user_id='".$userid."'";
+			$command= Yii::app()->db->createCommand($query);
+			$rawData = $command->queryAll();
+			if(isset($rawData) && count($rawData)>0){
+				$city = $rawData[0]['user_location_city'];
+				$region = $rawData[0]['user_location_region'];
+				$country = $rawData[0]['user_location_country'];
+			}
+			unset($rawData);
+			//Now for this user country Get Max Country Rank
+			if(isset($country) && !empty($country)){
+				$maxrankArray['countryid']=$country;
+				$query="SELECT max(ud.user_rank_incountry) as maxcountry FROM users_details ud JOIN users u";
+				$query.=" ON u.user_id=ud.user_id JOIN users_location ul ON u.user_location_id=ul.user_location_id";
+				$query.=" WHERE ul.user_location_country='".$country."'";
+				$command= Yii::app()->db->createCommand($query);		
+				$rawData = $command->queryAll();
+				if(isset($rawData) && count($rawData)>0)
+					$maxrankArray['country']=$rawData[0]['maxcountry'];	
+				unset($rawData);
+			}
+			//Now for this user city Get Max City Rank
+			if(isset($city) && !empty($city)){
+				$maxrankArray['cityid']=$city;
+				$query="SELECT max(ud.user_rank_incity) as maxcity FROM users_details ud JOIN users u";
+				$query.=" ON u.user_id=ud.user_id JOIN users_location ul ON u.user_location_id=ul.user_location_id";
+				$query.=" WHERE ul.user_location_city='".$city."'";
+				$command= Yii::app()->db->createCommand($query);		
+				$rawData = $command->queryAll();
+				if(isset($rawData) && count($rawData)>0)
+					$maxrankArray['city']=$rawData[0]['maxcity'];	
+				unset($rawData);
+			}
+			//Now for this user region Get Max Region Rank
+			if(isset($region) && !empty($region)){
+				$maxrankArray['regionid']=$region;
+				$query="SELECT max(ud.user_rank_inregion) as maxregion FROM users_details ud JOIN users u";
+				$query.=" ON u.user_id=ud.user_id JOIN users_location ul ON u.user_location_id=ul.user_location_id";
+				$query.=" WHERE ul.user_location_region='".$region."'";
+				$command= Yii::app()->db->createCommand($query);		
+				$rawData = $command->queryAll();
+				if(isset($rawData) && count($rawData)>0)
+					$maxrankArray['region']=$rawData[0]['maxregion'];	
+				unset($rawData);
+			}
+			//Now total World Wide Rank
+			$query="SELECT max(user_rank_worldwide) as maxworld FROM users_details";		
+			$command= Yii::app()->db->createCommand($query);		
+			$rawData = $command->queryAll();
+			if(isset($rawData) && count($rawData)>0){
+				$maxrankArray['world']=$rawData[0]['maxworld'];
+			}
+		}
+		return $maxrankArray;
+	}
+	
+	/**
+	* Name: updateOthersRank
+	* User_Define Function To Replace Other User's Rank with 
+	* This user's Old Rank, as This user gets new top Rank.	
+	* Last Modified:24-Sep-14
+	*/
+	public function updateOthersRank($flag,$existingValue,$newValue,$flagid,$userdetailid)
+	{
+		if($flag=="city"){
+			$query="UPDATE users_details ud JOIN users u ON ud.user_id=u.user_id";	
+			$query.=" JOIN users_location l ON l.user_location_id=u.user_location_id";
+			$query.=" SET ud.user_rank_incity='".$newValue."' WHERE l.user_location_city='".$flagid."'";
+			$query.=" AND ud.user_rank_incity='".$existingValue."' AND ud.user_details_id<>'".$userdetailid."'";
+			$command= Yii::app()->db->createCommand($query);
+			$command->execute();
+		}
+		if($flag=="region"){
+			$query="UPDATE users_details ud JOIN users u ON ud.user_id=u.user_id";	
+			$query.=" JOIN users_location l ON l.user_location_id=u.user_location_id";
+			$query.=" SET ud.user_rank_inregion='".$newValue."' WHERE l.user_location_region='".$flagid."'";
+			$query.=" AND ud.user_rank_inregion='".$existingValue."' AND ud.user_details_id<>'".$userdetailid."'";
+			$command= Yii::app()->db->createCommand($query);
+			$command->execute();
+		}
+		if($flag=="country"){
+			$query="UPDATE users_details ud JOIN users u ON ud.user_id=u.user_id";	
+			$query.=" JOIN users_location l ON l.user_location_id=u.user_location_id";
+			$query.=" SET ud.user_rank_incountry='".$newValue."' WHERE l.user_location_country='".$flagid."'";
+			$query.=" AND ud.user_rank_incountry='".$existingValue."' AND ud.user_details_id<>'".$userdetailid."'";
+			$command= Yii::app()->db->createCommand($query);
+			$command->execute();
+		}
+		if($flag=="world"){
+			$query="UPDATE users_details ud SET ud.user_rank_worldwide='".$newValue."'";
+			$query.=" WHERE ud.user_rank_worldwide='".$existingValue."' AND ud.user_details_id<>'".$userdetailid."'";
+			$command= Yii::app()->db->createCommand($query);
+			$command->execute();
+		}
+		return null;
+	}	
+	
 }
