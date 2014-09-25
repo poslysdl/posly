@@ -21,6 +21,7 @@ chanhny tách user profile tối ưu load nhanh
 	-moz-border-radius: 50% !important;
 	border-radius: 50% !important;
     left: 40px;
+    bottom: 10px;
     
 }
 
@@ -28,11 +29,13 @@ chanhny tách user profile tối ưu load nhanh
 .head-user .bguser { background: rgba(167, 207, 95, .8); padding-left: 240px;}
 
 .head-user .avatar img { 
-    width: 200px;height: 200px;
+    width: 150px;height: 150px;
 	-webkit-border-radius: 50% !important;
 	-moz-border-radius: 50% !important;
 	border-radius: 50% !important;
-    position: static;}
+    position: relative;   
+    
+    }
 	
 .head-user .user-text {
 	

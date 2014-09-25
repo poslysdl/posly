@@ -156,7 +156,7 @@ $user_gender = ($user->user_details_gender == 1) ? "M" : "F";
 	<!--user-->
 
 	<div class="head-info"> 
-		<a class="avatar" href="/will_hatefbook">
+		<a class="avatar" href="#">
 		<img title="Will Hatefbook" src="<?php echo $user_info['avatar'];?>" class="img-responsive" alt="Will Hatefbook"></a>
 		<div class="user-text">
 		<div class="bguser">
