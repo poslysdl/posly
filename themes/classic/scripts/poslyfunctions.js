@@ -29,17 +29,22 @@ $(function () {
 
 /* on click of image in carousel in Cart, show related comments & likes
 ** app.js Line-506 contains collapseed & expand class
+* Last Modified: 25-Sep-14
 */
 function showcartComments(elmn){	
 	photoid = $(elmn).attr('photo_id');
 	$(elmn).parents('.portlet-body').parents('.portlet').children('.portlet-body').children('.divcomments').hide();	
 	$('#cart-data'+photoid).show();
 	$('.main-img-user').children('.owl-carousel').children('.owl-controls').css("bottom",0);
-	adjustOwlCarouselHeight(photoid); //Adjust carousel black strip position
+	//adjustOwlCarouselHeight(photoid); //Adjust carousel black strip position	
+	setTimeout(function(){adjustOwlCommentBoxHeight(elmn,'show')}, 1000);	
 }
 
-//Re-arrange height of owl-carousel Black Strip height/Position wrt various img height..	
+/* Re-arrange height of owl-carousel Black Strip height/Position wrt various img height..	
+* Last Modified: 25-Sep-14
+*/
 function adjustOwlCarouselHeight(photoid){	
+	return false; //NOT IN USE ****** Now 25-Sep-14 *******
 	var owldivheight = $(".main-img-user .owl-carousel .owl-height").height();
 	var activeImgheight = $("#owl"+photoid).height();
 	var maximgheight=0;
@@ -64,14 +69,17 @@ function adjustOwlCarouselHeight(photoid){
 	}
 }
 
-//Re-arrange height of owl-carousel Black Strip in ZOOM Images
-function adjustZoomCarouselHeight(photoid){	
-	//$("#zoomowl"+photoid).click();
-	//var owldivheight = $(".main-img-user .owl-carousel .owl-stage-outer").height();
-	//var activeImgheight = $("#zoomowl"+photoid).height();
-	//var maximgheight=0;
-	//var heightdiff=0;	
-	/*if(activeImgheight<owldivheight)
+/* Re-arrange height of owl-carousel Black Strip in ZOOM Images
+* Last Modified: 25-Sep-14
+*/
+function adjustZoomCarouselHeight(photoid){
+	return false; //NOT IN USE **** Now 25-Sep-14 ********
+	$("#zoomowl"+photoid).click();
+	var owldivheight = $(".main-img-user .owl-carousel .owl-stage-outer").height();
+	var activeImgheight = $("#zoomowl"+photoid).height();
+	var maximgheight=0;
+	var heightdiff=0;	
+	if(activeImgheight<owldivheight)
 	{		
 		$("#zoomowl"+photoid).parents(".owl-stage").children('div').each(function(){
 			if($(this).hasClass("owl-item"))
@@ -89,7 +97,53 @@ function adjustZoomCarouselHeight(photoid){
 		$('.main-img-user .owl-controls').animate({
 			bottom: heightdiff	
 		}, 200);		
-	} */
+	}
+}
+
+/* Re-arrange height of owl-carousel Comment div "divcomments"
+* Logic is that , find the smallest height of images from 3-slots
+* then apply that height to ".owl-height" div so that all images in slots 
+* maintains an equal height, hence the comment div will get top align and reduce in betwn space
+* Last Modified: 25-Sep-14
+*/
+function adjustOwlCommentBoxHeight(obj,showhide)
+{	
+	var elmn;
+	var minimgheight;	
+	var imgheight;	
+	if(showhide=='hide')
+	{	
+		//Appy for all Cards ..Hide Cards At First Page Load						
+		$(".main-img-user").each(function(){
+			elmn = $(this); //elm - Parent .main-img-user
+			minimgheight = 90000;
+			imgheight = 0;			
+			$(elmn).children('.owl-carousel').children('.owl-height').children('div').children('div').each(function(){
+				//$(this) is the DIV class - owl-item, owl-item cloned, owl-item active
+				$(this).css("overflow","hidden");
+				imgheight = $(this).height();
+				$(this).attr("data-min",imgheight);	//Keep record of each Image height			
+				if(imgheight<minimgheight){
+					minimgheight = imgheight; //Min Height Image
+				}				
+				if(minimgheight>0){
+					//Apply img height which in lowest level, to ".owl-height" div, 
+					//so that all the images under owl-height div gets hidden to overflow..
+					$(elmn).children('.owl-carousel').children('.owl-height').css("height",minimgheight);
+					$(elmn).children('.owl-carousel').children('.owl-height').attr("data-minheight",minimgheight);
+				}				
+				//console.log($(this).attr("class"));				
+			});		
+		});		
+	} 
+	else{
+		//Show specific card, on click of an carousel-blackStrip img 
+		elmn = $(obj).parent('.owl-dot').parent('.owl-dots').parent('.owl-controls').parent('.owl-carousel').children('.owl-height');
+		//obj is object of class="owl-dot" <img>, ie carousel-blackStrip img 
+		minimgheight = $(elmn).attr("data-minheight");
+		imgheight = $(elmn).children('div').children('.active').attr("data-min"); //Get Active Image Height & apply to owl-height		
+		$(elmn).css("height",imgheight);
+	}
 }
 
 /* Image Zoom function
@@ -108,7 +162,7 @@ $(document).on('click', '.img-zoom', function(){
 	$('#zoomimage'+cartuserid+' .zoomdivcomments').hide(); //first hide all comments for this Cart
 	$('#zoomcart-data'+activephotoid).show(); //show only tags of active image
 	$('#zoomtag'+activephotoid).show();
-//adjustZoomCarouselHeight(pid); //Adjust carousel black strip position
+	//adjustZoomCarouselHeight(pid); //Adjust carousel black strip position
 	setTimeout(showWhoAlsoLike(pid), 1000);	
 });
 
@@ -328,8 +382,10 @@ function poslyAjaxLikecalls(ajaxurl,id,sdata)
 .main-commnet event get called to Hide Unhide comments at cart
 There is a Much Gap between <ul> .CMn and div .scrollercm, to reduce this gap
 resetCommentboxHeight comes into picture
+Last Modified: 25-Sep-14
 */
 function resetCommentboxHeight(elmn){
+	return false; //**** NOT IN USE 25-Sept-14, as Scroll disappear in Chrome due to this fun****
 	var datacnt = $(elmn).attr('data-src'); //elmn is the hyper-Link
 	var ulId = $(elmn).parents('.main-commnet').parents('.divcomments').children('.CMc').children('.display-hide').children('.slimScrollDiv').children('.scrollercm').children('ul').attr('id');
 	var ulheight = $('#'+ulId).height();
@@ -630,6 +686,7 @@ $(document).on('click', '#forgetmail', function(){
 /*A common Ajax function 
 url - controller Path
 data1 - single string variable
+Last Modified: 22-Sep-14
 */
 function getAjaxreturn(url,data1,id){
 	var val1;
@@ -715,7 +772,7 @@ $(document).on('click', '.owl-controls .img-responsive', function(){
 $(document).on('hover', '.main-img-user', function(){
 	$(this).children(".owl-carousel").children(".owl-controls").css("bottom",0);
 	var photoid = $(this).children(".owl-carousel").children(".owl-height").children(".owl-stage").children(".active").children(".article-image").children(".hover-zomm").children(".lazyOwl").attr('dphoto_id');
-	adjustOwlCarouselHeight(photoid);
+	//adjustOwlCarouselHeight(photoid);
 });
 
 //Step-1# Email-SignUp page, Country, Region/States, Cities

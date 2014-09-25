@@ -180,7 +180,7 @@ if($(document).height()==$(window).scrollTop()+$(window).height()){
 			App.init(); // initlayout and core plugins
 			App.initOWL();
 			QuickSidebar.init();
-			
+			setTimeout(function(){adjustOwlCommentBoxHeight('','hide')}, 5000);				
 		}
 	});	
 }
@@ -378,7 +378,9 @@ $(window).load(function() {
 <?php } ?>
 //Location filter
 $(window).load(function() {
-   get_current_nearby_country("<?php echo $this->createUrl('/site/getnearbycountry'); ?>"); 
+   get_current_nearby_country("<?php echo $this->createUrl('/site/getnearbycountry'); ?>");
+   //in poslyfunctions.js - to Hide big carousel img
+	adjustOwlCommentBoxHeight('','hide'); 
 });
 </script>
 

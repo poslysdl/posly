@@ -174,12 +174,12 @@ if($(document).height()==$(window).scrollTop()+$(window).height()){
 			$('.page-content-wrapper > .page-content > .container > .row > .col-md-6:first-child').append(left);
 			$('.page-content-wrapper > .page-content > .container > .row > .col-md-6:last-child').append(right);
 			$('#share-pic').append(zoomimg);	
-			
+			//**** "No More Images"
 			//$(".owl-carousel").owlCarousel();
 			App.init(); // initlayout and core plugins
 			App.initOWL();
-			QuickSidebar.init();
-			
+			QuickSidebar.init();			
+			setTimeout(function(){adjustOwlCommentBoxHeight('','hide')}, 5000);			
 		}
 	});	
 }
@@ -361,11 +361,12 @@ $(document).ready(function(){
 	//** Timer to update Notification every 4min
 	setInterval(function(){showNotifications()}, 40000);
 	setInterval(function(){showSidebarMessageList()}, 60000);
+	
 });
 
 <?php if(!Yii::app()->user->isGuest){ ?>
 	showUsersActivities();	
-	setTimeout(function(){showNotifications()}, 1000);
+	setTimeout(function(){showNotifications()}, 1000); //Only Once executed after 1min
 	setTimeout(function(){showSidebarMessageList()}, 4000);
 	
 <?php } else{ //Guest Login *** ?>
@@ -378,7 +379,9 @@ $(window).load(function() {
 <?php } ?>
 //Location filter
 $(window).load(function() {
-   get_current_nearby_country("<?php echo $this->createUrl('/site/getnearbycountry'); ?>"); 
+	get_current_nearby_country("<?php echo $this->createUrl('/site/getnearbycountry'); ?>"); 
+	//in poslyfunctions.js - to Hide big carousel img
+	adjustOwlCommentBoxHeight('','hide'); 
 });
 </script>
 
