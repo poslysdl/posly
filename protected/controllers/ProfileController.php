@@ -1,6 +1,5 @@
 <?php
-class ProfileController extends Controller {
-	
+class ProfileController extends Controller {	
 	public $user_additional_info;
 	public $user_guest = "guest";
 	public $user_self = "self";
@@ -47,111 +46,33 @@ class ProfileController extends Controller {
 	
 	public function actionIndex($url) {
 		$user_additional_info['follow'] = $this->user_follow;
-		//Guest profile	 
-		if(Yii::app()->user->isGuest) {
-			$error = false;
-			if(isset($url) && !empty($url)){
-				$user_additional_info = array();	
-				$profile_url = $url;
-				Yii::app()->session['url'] = $profile_url;
-				$row = UsersDetails::model()->find("user_unique_url='$profile_url'");
-				Yii::app()->session['user_id'] = $row['user_id'];				
-				if (isset($row)) {
-					$this->profile_hearts_count = Users::model()->get_profile_hearts_count($row['user_id']);
-					$this->profile_friends_count = Users::model()->get_profile_friends_count($row['user_id']);
-					$this->profile_follower_count = Users::model()->get_profile_follower_count($row['user_id']);					
-					$this->profile_following_count = Users::model()->get_profile_following_count($row['user_id']);
-					
-					$user_additional_info['profile_hearts_count'] = $this->profile_hearts_count;
-					$user_additional_info['profile_friends_count'] = $this->profile_friends_count;
-					$user_additional_info['profile_follower_count'] = $this->profile_follower_count;
-					$user_additional_info['profile_following_count'] = $this->profile_following_count;					
-					$user_id = $row['user_id'];					
-					$sec_row = UsersSecurity::model()->find("user_id=$user_id");
-					$privacy = $sec_row['whocansee'];					
-					if ($privacy == 1) {	
-						$this->layout='profile_layout';	
-						Yii::app()->clientScript->registerCoreScript('jquery'); 
-						$userAge = Users::model()->getUserAge($row['user_id']);
-						$this->profile_details = Users::model()->getUserInfo($row['user_id']);
-						$user_additional_info['users_details'] = $this->profile_details;
-						$age = ($userAge) ? $userAge : "";
-						$user_additional_info['age'] = $userAge;
-						$user_additional_info['current_user'] = $this->user_guest;
-						$this->avatar = $this->profile_details['user_details_avatar'];
-						$fromurl = strstr($this->avatar, '://', true);
-						if($fromurl=='http' || $fromurl=='https')
-							$user_additional_info['avatar'] = $this->avatar; 
-						elseif(!empty($this->avatar))
-							$user_additional_info['avatar'] = Yii::app()->baseUrl.'/profiles/'.$this->avatar;
-						else	
-							$user_additional_info['avatar'] = Yii::app()->baseUrl.'/profiles/noimage.jpg';
-						$this->render('index',array('user'=>$row,'user_info'=>$user_additional_info));
-					} else /* if privacy is 2 or 3 */ {
-						$error = true;
-					}
-					
-				} else {
-					//if the user with that profile name is not there redirect or sent error message
-					$error = true;
+		$error = false;
+		if(isset($url) && !empty($url)) {
+			$profile_url = $url;
+			Yii::app()->session['url'] = $profile_url;
+			$row = UsersDetails::model()->find("user_unique_url='$profile_url'");
+			Yii::app()->session['user_id'] = $row['user_id'];
+			if(isset($row)) {			
+				//Guest profile	 
+				if(Yii::app()->user->isGuest) {
+					$user_additional_info['current_user'] = $this->user_guest;
 				}
-				
-			} else {
-				//redirect to the return url or get some error message
-				$error = true;
-			}
-			if($error)
-				$this->redirect(Yii::app()->homeUrl);
-			
-		} 					
-		else {
-			//logged in user
-			$error = false;
-			$id = Yii::app()->user->id;
-			$this->current_user_id = $id;
-			if(isset($url) && !empty($url)) {
-				$profile_url = $url;
-				Yii::app()->session['url'] = $profile_url;
-				$row = UsersDetails::model()->find("user_unique_url='$profile_url'");
-				Yii::app()->session['user_id'] = $row['user_id'];
-
-				if(isset($row)) {
-					$check_friend = UsersFriends::model()->check_friend($id,$row['user_id']);
-					
-					$check_follow = UsersFollow::model()->check_follow($id,$row['user_id']);
+				else{
+					//Logged in profile
+					$id = Yii::app()->user->id;
+					$this->current_user_id = $id;					
+					$check_friend = UsersFriends::model()->check_friend($id,$row['user_id']);					
+					$check_follow = UsersFollow::model()->check_follow($id,$row['user_id']);										
 					if($check_follow){
 						$user_additional_info['follow'] = $this->user_following;
-					}					
-					$user_id = $row['user_id'];
-					$this->profile_hearts_count = Users::model()->get_profile_hearts_count($row['user_id']);
-					$this->profile_friends_count = Users::model()->get_profile_friends_count($row['user_id']);
-					$this->profile_follower_count = Users::model()->get_profile_follower_count($row['user_id']);					
-					$this->profile_following_count = Users::model()->get_profile_following_count($row['user_id']);
-				
-					$user_additional_info['profile_hearts_count'] = $this->profile_hearts_count;
-					$user_additional_info['profile_friends_count'] = $this->profile_friends_count;
-					$user_additional_info['profile_follower_count'] = $this->profile_follower_count;
-					$user_additional_info['profile_following_count'] = $this->profile_following_count;					
-				
-					$this->profile_details = Users::model()->getUserInfo($row['user_id']);
-					$user_additional_info['users_details'] = $this->profile_details;					
-					$this->current_profile_id = $user_id;
-					$userAge = Users::model()->getUserAge($row['user_id']);
-					$age = ($userAge) ? $userAge : "";
-					$user_additional_info['age'] = $userAge;
-					$this->layout='profile_layout';
-					Yii::app()->clientScript->registerCoreScript('jquery');						
+					}
 					//logged in user (own profile)
-					if($id == $user_id) {
-						$user_additional_info['age'] = $userAge;
+					if($id == $row['user_id']) {
 						$user_additional_info['current_user'] = $this->user_self;
-						//$this->render('index',array('user'=>$row,'user_info'=>$user_additional_info));
 					}
 					//loggedin user friend profile
-					else if($check_friend){
-						$user_additional_info['age'] = $userAge;
+					elseif($check_friend){
 						$user_additional_info['current_user'] = $this->user_friend;
-						//$this->render('index',array('user'=>$row,'user_info'=>$user_additional_info));
 					}
 					//logged in user (others profile)
 					else {						
@@ -162,34 +83,46 @@ class ProfileController extends Controller {
 						else{
 							$user_additional_info['current_user'] = $this->user_logged_vistor;
 						}
-						//$sec_row = UsersSecurity::model()->find("user_id=$user_id");				
-						//$privacy = $sec_row['whocansee'];
-						//$this->render('index',array('user'=>$row,'user_info'=>$user_additional_info));
 					}
-					$this->avatar = $this->profile_details['user_details_avatar'];
-					$fromurl = strstr($this->avatar, '://', true);
-					if($fromurl=='http' || $fromurl=='https')
-						$user_additional_info['avatar'] = $this->avatar; 
-					elseif(!empty($this->avatar))
-						$user_additional_info['avatar'] = Yii::app()->baseUrl.'/profiles/'.$this->avatar;
-					else	
-						$user_additional_info['avatar'] = Yii::app()->baseUrl.'/profiles/noimage.jpg';
-						
-					$this->render('index',array('user'=>$row,'user_info'=>$user_additional_info));	
 				}
-				else /* if the user is not there with that profile id */ {
-					$error = true;
-				}
-			
+				$userAge = Users::model()->getUserAge($row['user_id']);
+				$age = ($userAge) ? $userAge : "";
+            $user_additional_info['age'] = $userAge;				
+				$this->profile_hearts_count = Users::model()->get_profile_hearts_count($row['user_id']);
+				$this->profile_friends_count = Users::model()->get_profile_friends_count($row['user_id']);
+				$this->profile_follower_count = Users::model()->get_profile_follower_count($row['user_id']);					
+				$this->profile_following_count = Users::model()->get_profile_following_count($row['user_id']);				
+				$user_additional_info['profile_hearts_count'] = $this->profile_hearts_count;
+				$user_additional_info['profile_friends_count'] = $this->profile_friends_count;
+				$user_additional_info['profile_follower_count'] = $this->profile_follower_count;
+				$user_additional_info['profile_following_count'] = $this->profile_following_count;
+				$this->profile_details = Users::model()->getUserInfo($row['user_id']);
+				$user_additional_info['users_details'] = $this->profile_details;					
+				$this->current_profile_id = $row['user_id'];
+				$this->layout='profile_layout';
+				Yii::app()->clientScript->registerCoreScript('jquery');
+				$this->avatar = $this->profile_details['user_details_avatar'];
+				$fromurl = strstr($this->avatar, '://', true);
+				if($fromurl=='http' || $fromurl=='https')
+					$user_additional_info['avatar'] = $this->avatar; 
+				elseif(!empty($this->avatar))
+					$user_additional_info['avatar'] = Yii::app()->baseUrl.'/profiles/'.$this->avatar;
+				else	
+					$user_additional_info['avatar'] = Yii::app()->baseUrl.'/profiles/noimage.jpg';
+					
+				$this->render('index',array('user'=>$row,'user_info'=>$user_additional_info));	
 			}
-			else /* if the url is not set */{
+			else /* if the user is not there with that profile id */ {
 				$error = true;
-			}			
-			if($error){
-				$this->redirect(Yii::app()->homeUrl);
-			}
-		}		 
-	}
+			}		
+		}
+		else /* if the url is not set */{
+			$error = true;
+		}			
+		if($error){
+			$this->redirect(Yii::app()->homeUrl);
+		}
+	}		 
 	
 	public function actionAbout(){
 		$profile_url = $_REQUEST['param'];

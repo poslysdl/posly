@@ -1,530 +1,108 @@
 <?php
 $users_following_even = $user_info['users_following_even'];
 $users_following_odd = $user_info['users_following_odd'];
-//echo "<pre>";
-//    print_r($user_info);
-//echo "</pre>";    
+echo "<pre>";
+   print_r($user_info);
+echo "</pre>";    
 ?>
 <div class="portlet-body follow">
-<div class="row">
-<div class="col-md-6">
-<div class="following boxshadown white-bgf bRd">
-
-<div class="title">
-<div class="caption"> <img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg" alt="" class="avatar-user-l img-responsive">
-<div class="cap1"> <a class="username" href="#">Jame Brown</a><span class="user-locaion">#1 Rank - 505k Followers - from UK, London</span> </div>
+   <div class="row">
+      <div class="col-md-6">
+         <?php
+         if(count($users_following_even)>0){
+         foreach ($users_following_even as $users_even){
+         ?>
+         <div class="following boxshadown white-bgf bRd">
+         
+            <div class="title">
+               <div class="caption"> <img src="<?php echo $users_even['avatar']; ?>" alt="" class="avatar-user-l img-responsive">
+                  <div class="cap1"> <a class="username" href="#"><?php echo $users_even['user_details_firstname']; ?> <?php echo $users_even['user_details_lastname']; ?></a><span class="user-locaion">#1 Rank - <?php echo $users_even['followerCount']; ?>
+                  
+                  <?php
+                  if($users_even['followerCount']>1){
+                  ?>
+                     Followers
+                  <?php
+                  }
+                  else{
+                  ?>
+                     Follower
+                  <?php
+                  }
+                  ?>                                           
+                  
+                  - from <?php echo $users_even['user_location_country']; ?>, <?php echo $users_even['user_location_city']; ?></span> </div>
+               </div>
+               
+               <div class="Fl">
+                  <button type="button" id="user_following" class="btn cyan active" rel="<?php echo $users_even['user_details_id']; ?>">Unfollow</button>
+               </div>
+            </div>
+            
+            <div class="bd">
+               <ul class="list-inline fL-images">
+                  <li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
+                     <a href="#">
+                        <img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/2.jpg" alt="">
+                     </a>
+                  </li>
+               </ul>
+            </div>           
+         
+         </div>
+         <?php
+         }
+         }
+         ?>
+      </div>
+      
+      <!--Second column-->
+      <div class="col-md-6">
+         <?php
+         if(count($users_following_odd)>0){
+         foreach ($users_following_odd as $users_odd){
+         ?>
+         
+         <div class="following boxshadown white-bgf bRd">         
+            <div class="title">
+               <div class="caption"> <img src="<?php echo $users_odd['avatar']; ?>" alt="" class="avatar-user-l img-responsive">
+                  <div class="cap1"> <a class="username" href="#"><?php echo $users_odd['user_details_firstname']; ?> <?php echo $users_odd['user_details_lastname']; ?></a><span class="user-locaion">#1 Rank - <?php echo $users_odd['followerCount']; ?>
+                  <?php
+                  if($users_odd['followerCount']>1){
+                  ?>
+                     Followers
+                  <?php
+                  }
+                  else{
+                  ?>
+                     Follower
+                  <?php
+                  }
+                  ?> 
+                  - from <?php echo $users_odd['user_location_country']; ?>, <?php echo $users_odd['user_location_city']; ?></span> </div>
+               </div>               
+               <div class="Fl">
+                  <button id="user_following" type="button" class="btn cyan active" rel="<?php echo $users_odd['user_details_id']; ?>">Unfollow</button>
+               </div>
+            </div>
+            
+            <div class="bd">
+               <ul class="list-inline fL-images">
+                  <li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
+                     <a href="#">
+                        <img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/2.jpg" alt="">
+                     </a>
+                  </li>
+      
+               </ul>
+            </div>        
+         
+         </div>
+      <?php
+        }
+      }
+      ?>
+         
+      </div>
+   </div>
 </div>
-
-<div class="Fl">
-<button type="button" class="btn cyan active">Unfollow</button></div>
-</div>
-
-<div class="bd">
-<ul class="list-inline fL-images">
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/2.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/13.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img  class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/16.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/18.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/17.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/1.jpg" alt="">
-</a>
-</li>
-
-
-
-</ul>
-</div>
-
-
-</div>
-
-<div class="following boxshadown white-bgf bRd">
-
-<div class="title">
-<div class="caption"> <img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg" alt="" class="avatar-user-l img-responsive">
-<div class="cap1"> <a class="username" href="#">Jame Brown</a><span class="user-locaion">#1 Rank - 505k Followers - from UK, London</span> </div>
-</div>
-
-<div class="Fl">
-<button type="button" class="btn cyan active">Unfollow</button></div>
-</div>
-
-<div class="bd">
-<ul class="list-inline fL-images">
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/2.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/13.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img  class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/16.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/18.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/17.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/1.jpg" alt="">
-</a>
-</li>
-
-
-
-</ul>
-</div>
-
-
-</div>
-
-<div class="following boxshadown white-bgf bRd">
-
-<div class="title">
-<div class="caption"> <img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg" alt="" class="avatar-user-l img-responsive">
-<div class="cap1"> <a class="username" href="#">Jame Brown</a><span class="user-locaion">#1 Rank - 505k Followers - from UK, London</span> </div>
-</div>
-
-<div class="Fl">
-<button type="button" class="btn cyan active">Unfollow</button></div>
-</div>
-
-<div class="bd">
-<ul class="list-inline fL-images">
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/2.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/13.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img  class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/16.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/18.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/17.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/1.jpg" alt="">
-</a>
-</li>
-
-
-
-</ul>
-</div>
-
-
-</div>
-
-<div class="following boxshadown white-bgf bRd">
-
-<div class="title">
-<div class="caption"> <img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg" alt="" class="avatar-user-l img-responsive">
-<div class="cap1"> <a class="username" href="#">Jame Brown</a><span class="user-locaion">#1 Rank - 505k Followers - from UK, London</span> </div>
-</div>
-
-<div class="Fl">
-<button type="button" class="btn cyan active">Unfollow</button></div>
-</div>
-
-<div class="bd">
-<ul class="list-inline fL-images">
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/2.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/13.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img  class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/16.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/18.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/17.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/1.jpg" alt="">
-</a>
-</li>
-
-
-
-</ul>
-</div>
-
-
-</div>
-
-<div class="following boxshadown white-bgf bRd">
-
-<div class="title">
-<div class="caption"> <img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg" alt="" class="avatar-user-l img-responsive">
-<div class="cap1"> <a class="username" href="#">Jame Brown</a><span class="user-locaion">#1 Rank - 505k Followers - from UK, London</span> </div>
-</div>
-
-<div class="Fl">
-<button type="button" class="btn cyan active">Unfollow</button></div>
-</div>
-
-<div class="bd">
-<ul class="list-inline fL-images">
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/2.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/13.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img  class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/16.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/18.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/17.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/1.jpg" alt="">
-</a>
-</li>
-
-
-
-</ul>
-</div>
-
-
-</div>
-
-
-</div>
-<div class="col-md-6">
-<div class="following boxshadown white-bgf bRd">
-
-<div class="title">
-<div class="caption"> <img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg" alt="" class="avatar-user-l img-responsive">
-<div class="cap1"> <a class="username" href="#">Jame Brown</a><span class="user-locaion">#1 Rank - 505k Followers - from UK, London</span> </div>
-</div>
-
-<div class="Fl">
-<button type="button" class="btn cyan active">Unfollow</button></div>
-</div>
-
-<div class="bd">
-<ul class="list-inline fL-images">
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/2.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/13.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img  class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/16.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/18.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/17.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/1.jpg" alt="">
-</a>
-</li>
-
-
-
-</ul>
-</div>
-
-
-</div>
-
-<div class="following boxshadown white-bgf bRd">
-
-<div class="title">
-<div class="caption"> <img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg" alt="" class="avatar-user-l img-responsive">
-<div class="cap1"> <a class="username" href="#">Jame Brown</a><span class="user-locaion">#1 Rank - 505k Followers - from UK, London</span> </div>
-</div>
-
-<div class="Fl">
-<button type="button" class="btn cyan active">Unfollow</button></div>
-</div>
-
-<div class="bd">
-<ul class="list-inline fL-images">
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/2.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/13.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img  class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/16.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/18.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/17.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/1.jpg" alt="">
-</a>
-</li>
-
-
-
-</ul>
-</div>
-
-
-</div>
-
-<div class="following boxshadown white-bgf bRd">
-
-<div class="title">
-<div class="caption"> <img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg" alt="" class="avatar-user-l img-responsive">
-<div class="cap1"> <a class="username" href="#">Jame Brown</a><span class="user-locaion">#1 Rank - 505k Followers - from UK, London</span> </div>
-</div>
-
-<div class="Fl">
-<button type="button" class="btn cyan active">Unfollow</button></div>
-</div>
-
-<div class="bd">
-<ul class="list-inline fL-images">
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/2.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/13.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img  class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/16.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/18.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/17.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/1.jpg" alt="">
-</a>
-</li>
-
-
-
-</ul>
-</div>
-
-
-</div>
-
-<div class="following boxshadown white-bgf bRd">
-
-<div class="title">
-<div class="caption"> <img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg" alt="" class="avatar-user-l img-responsive">
-<div class="cap1"> <a class="username" href="#">Jame Brown</a><span class="user-locaion">#1 Rank - 505k Followers - from UK, London</span> </div>
-</div>
-
-<div class="Fl">
-<button type="button" class="btn cyan active">Unfollow</button></div>
-</div>
-
-<div class="bd">
-<ul class="list-inline fL-images">
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/2.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/13.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img  class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/16.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/18.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/17.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/1.jpg" alt="">
-</a>
-</li>
-
-
-
-</ul>
-</div>
-
-
-</div>
-
-<div class="following boxshadown white-bgf bRd">
-
-<div class="title">
-<div class="caption"> <img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/avatar1_small.jpg" alt="" class="avatar-user-l img-responsive">
-<div class="cap1"> <a class="username" href="#">Jame Brown</a><span class="user-locaion">#1 Rank - 505k Followers - from UK, London</span> </div>
-</div>
-
-<div class="Fl">
-<button type="button" class="btn cyan active">Unfollow</button></div>
-</div>
-
-<div class="bd">
-<ul class="list-inline fL-images">
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/2.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/13.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img  class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/16.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/18.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/17.jpg" alt="">
-</a>
-</li>
-<li class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-<a href="#">
-<img class="img-responsive" src="<?php echo Yii::app()->theme->baseUrl; ?>/img/blog/1.jpg" alt="">
-</a>
-</li>
-</ul>
-</div>
-</div> 
-</div>
-</div>
-</div>  
