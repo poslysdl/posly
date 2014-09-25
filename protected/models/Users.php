@@ -393,7 +393,7 @@ class Users extends CActiveRecord
 		$rawData = $command->queryAll();
 		$rawCount = count($rawData);
 		if($rawCount>0){
-			return($rawData[0]);			
+			return($rawData);			
 		}
 		else{
 			return false;
