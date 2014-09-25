@@ -22,8 +22,8 @@ if($poslyIP=='127.0.0.1'){
 	$DB_USERNAME = 'root';
 	$DB_PASSWORD = 'root';
 	$Base_URL = 'http://54.255.144.92/posly/index.php/user/hybridauth/endpoint';
-	$INSTAGRAM_CLIENTID = "a9e30b61950343b7ae8301803e2dc858"; //poslysdl
-	$INSTAGRAM_KEY = "0e091399d56e4771a3d249d1f7e80086";
+	$INSTAGRAM_CLIENTID = "fae94142d971460f866b1924eff1e5fa";
+	$INSTAGRAM_KEY = "da19bf7e26f44e579a1311165378210a";
 	$INSTARAM_REDIRECTURL = "http://54.255.144.92/posly/index.php/site/instagramauth";
 } else{
 	//nothing

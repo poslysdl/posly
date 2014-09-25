@@ -5,6 +5,7 @@ if(!isset($menulink)){
 		$menulink = 'topmember';
 }
 $pageflag = (isset($pageflag))?$pageflag:'';
+$pageflagid = (isset($pageflagid))?$pageflagid:'';
 ?>
 
 <!-- BEGIN TOP NAVIGATION MENU -->
@@ -36,11 +37,11 @@ $pageflag = (isset($pageflag))?$pageflag:'';
 				<div class="row ">
 					<div class="col-md-6 col-sm-6">
 					<?php
-					if(isset($photos)){	
+					if(isset($photos) && count($photos)>0){	
 						$i=1;
 						foreach($photos as $p){
 							if($i%2!=0){
-								$this->widget('application.components.Cart', array('cartinfo' => array('data'=>$p,'i'=>$i,'pageflag'=>$pageflag))); 
+								$this->widget('application.components.Cart', array('cartinfo' => array('data'=>$p,'i'=>$i,'pageflag'=>$pageflag,'pageflagid'=>$pageflagid))); 
 								//Main Image CART Display Here
 							}
 							$i++;
@@ -50,11 +51,11 @@ $pageflag = (isset($pageflag))?$pageflag:'';
 				</div>
 				<div class="col-md-6 col-sm-6"> 
 					<?php
-					if(isset($photos)){	
+					if(isset($photos) && count($photos)>0){		
 						$i=1;
 						foreach($photos as $p){
 							if($i%2==0){
-								$this->widget('application.components.Cart', array('cartinfo' => array('data'=>$p,'i'=>$i,'pageflag'=>$pageflag))); 
+								$this->widget('application.components.Cart', array('cartinfo' => array('data'=>$p,'i'=>$i,'pageflag'=>$pageflag,'pageflagid'=>$pageflagid))); 
 								//Main Image CART Display Here
 							}
 							$i++;
@@ -70,10 +71,10 @@ $pageflag = (isset($pageflag))?$pageflag:'';
 			<!-- Modal Box img-zoom ZOOM IMAGE ------->
 			<div id="share-pic" class="modal  modal-scroll share-image" tabindex="-1" data-replace="true">
 				<?php
-				if(isset($photos)){	
+				if(isset($photos) && count($photos)>0){		
 					$i=1;
 					foreach($photos as $p){				
-						$this->widget('application.components.CartZoom', array('cartinfo' => array('data'=>$p,'i'=>$i,'pageflag'=>$pageflag))); 
+						$this->widget('application.components.CartZoom', array('cartinfo' => array('data'=>$p,'i'=>$i,'pageflag'=>$pageflag,'pageflagid'=>$pageflagid))); 
 						//ZOOM Image Cart			
 						$i++;
 					}
