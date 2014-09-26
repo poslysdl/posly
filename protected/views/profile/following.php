@@ -1,6 +1,9 @@
 <?php
-$users_following_even = $user_info['users_following_even'];
-$users_following_odd = $user_info['users_following_odd'];  
+   $users_following_even = $user_info['users_following_even'];
+   $users_following_odd = $user_info['users_following_odd'];
+   //echo "<pre>";
+   //print_r($user_info);
+   //echo "</pre>";
 ?>
 <div class="portlet-body follow">
    <div class="row">
@@ -30,9 +33,11 @@ $users_following_odd = $user_info['users_following_odd'];
                   
                   - from <?php echo $users_even['user_location_country']; ?>, <?php echo $users_even['user_location_city']; ?></span> </div>
                </div>
+               <?php if(!empty($users_even['follow'])) { ?>               
                <div class="Fl">
                   <button type="button" id="user_following" class="btn cyan active <?php echo $users_even['follow'];?>" rel="<?php echo $users_even['profile_user_id']; ?>"><?php echo $users_even['follow'];?></button>
                </div>
+               <?php } ?>
             </div>
             
             <div class="bd">
@@ -76,10 +81,12 @@ $users_following_odd = $user_info['users_following_odd'];
                   }
                   ?> 
                   - from <?php echo $users_odd['user_location_country']; ?>, <?php echo $users_odd['user_location_city']; ?></span> </div>
-               </div>               
-               <div class="Fl">
-                  <button id="user_following" type="button" class="btn cyan active <?php echo $users_even['follow'];?>" rel="<?php echo $users_odd['profile_user_id']; ?>"><?php echo $users_even['follow'];?></button> 
                </div>
+               <?php if(!empty($users_odd['follow'])) { ?>
+               <div class="Fl">
+                  <button id="user_following" type="button" class="btn cyan active <?php echo $users_odd['follow'];?>" rel="<?php echo $users_odd['profile_user_id']; ?>"><?php echo $users_odd['follow'];?></button> 
+               </div>
+               <?php } ?>
             </div>
             
             <div class="bd">

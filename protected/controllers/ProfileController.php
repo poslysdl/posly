@@ -260,12 +260,15 @@ class ProfileController extends Controller {
 				$this->profile_follow_userdetails['followerCount'] = $this->profile_follower_count;
 				$this->profile_user_id = $this->profile_user_id;
 				$this->avatar = $this->profile_follow_userdetails['user_details_avatar'];
-				$check_follow = UsersFollow::model()->check_follow($id,$user_follow['follow_id']);										
-				if($check_follow){
-					$this->profile_follow_userdetails['follow'] = $this->user_following;
-				}
-				else{
-					$this->profile_follow_userdetails['follow'] = $this->user_follow;
+				$this->profile_follow_userdetails['follow'] = '';
+				if(($id)&& isset($id) && !empty($id)){
+					$check_follow = UsersFollow::model()->check_follow($id,$user_follow['follow_id']);										
+					if($check_follow){
+						$this->profile_follow_userdetails['follow'] = $this->user_following;
+					}
+					else{
+						$this->profile_follow_userdetails['follow'] = $this->user_follow;
+					}
 				}
 				$fromurl = strstr($this->avatar, '://', true);
 				if($fromurl=='http' || $fromurl=='https')
