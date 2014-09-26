@@ -195,8 +195,9 @@ $user_gender = ($user->user_details_gender == 1) ? "M" : "F";
 
 			</a>
 		</li>
+		<input type="hidden" id="txt_following_count" value="<?php echo $user_info['profile_following_count']; ?>"/>
 		<li class="menu ctr-right">
-			<a href="#tab_2_7" data-toggle="tab" class="eletab" onclick="showprofile('7','following');"><b><?php echo $user_info['profile_following_count']; ?></b>
+			<a href="#tab_2_7" data-toggle="tab" class="eletab" onclick="showprofile('7','following');"><b><span id="display_following_count"><?php echo $user_info['profile_following_count']; ?></span></b>
 				Following</a>
 		</li>  
 		<li class="menu ctr-right">

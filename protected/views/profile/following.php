@@ -1,9 +1,6 @@
 <?php
 $users_following_even = $user_info['users_following_even'];
-$users_following_odd = $user_info['users_following_odd'];
-echo "<pre>";
-   print_r($user_info);
-echo "</pre>";    
+$users_following_odd = $user_info['users_following_odd'];  
 ?>
 <div class="portlet-body follow">
    <div class="row">
@@ -33,9 +30,8 @@ echo "</pre>";
                   
                   - from <?php echo $users_even['user_location_country']; ?>, <?php echo $users_even['user_location_city']; ?></span> </div>
                </div>
-               
                <div class="Fl">
-                  <button type="button" id="user_following" class="btn cyan active" rel="<?php echo $users_even['user_details_id']; ?>">Unfollow</button>
+                  <button type="button" id="user_following" class="btn cyan active <?php echo $users_even['follow'];?>" rel="<?php echo $users_even['profile_user_id']; ?>"><?php echo $users_even['follow'];?></button>
                </div>
             </div>
             
@@ -82,7 +78,7 @@ echo "</pre>";
                   - from <?php echo $users_odd['user_location_country']; ?>, <?php echo $users_odd['user_location_city']; ?></span> </div>
                </div>               
                <div class="Fl">
-                  <button id="user_following" type="button" class="btn cyan active" rel="<?php echo $users_odd['user_details_id']; ?>">Unfollow</button>
+                  <button id="user_following" type="button" class="btn cyan active <?php echo $users_even['follow'];?>" rel="<?php echo $users_odd['profile_user_id']; ?>"><?php echo $users_even['follow'];?></button> 
                </div>
             </div>
             

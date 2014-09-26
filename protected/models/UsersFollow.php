@@ -148,8 +148,7 @@ class UsersFollow extends CActiveRecord
 	}
 	
 	public function check_follow($profile_current,$profile_other){
-		echo $query ="SELECT * FROM users_follow WHERE user_id = $profile_current AND follow_id = $profile_other";
-		echo "<br />";
+		$query ="SELECT * FROM users_follow WHERE user_id = $profile_current AND follow_id = $profile_other";
 		$command= Yii::app()->db->createCommand($query);		
 		$rawData = $command->queryAll();
 		$rawCount = count($rawData);

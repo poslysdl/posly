@@ -29,7 +29,7 @@ class ProfileController extends Controller {
 	public $profile_follow_userdetails;
 	public $profile_follower_userdetails;
 	public $profile_follow_location;
-	public $profile_current_follow;
+	public $profile_user_id;
 	
    public function filters() {
       return array( 'accessControl' ); // perform access control for CRUD operations
@@ -254,11 +254,13 @@ class ProfileController extends Controller {
 		$this->users_following = Users::model()->get_profile_following_users($row['user_id']);
 		if($this->users_following){
 			foreach($this->users_following as $user_follow){
+				$this->profile_user_id = $user_follow;
 				$this->profile_follow_userdetails = Users::model()->getUserInfo($user_follow['follow_id']);
 				$this->profile_follower_count = Users::model()->get_profile_follower_count($user_follow['follow_id']);
 				$this->profile_follow_userdetails['followerCount'] = $this->profile_follower_count;
+				$this->profile_user_id = $this->profile_user_id;
 				$this->avatar = $this->profile_follow_userdetails['user_details_avatar'];
-				$check_follow = UsersFollow::model()->check_follow($id,$this->profile_follow_userdetails['user_details_id']);										
+				$check_follow = UsersFollow::model()->check_follow($id,$user_follow['follow_id']);										
 				if($check_follow){
 					$this->profile_follow_userdetails['follow'] = $this->user_following;
 				}
@@ -273,6 +275,7 @@ class ProfileController extends Controller {
 				else	
 					$user_follow_avatar = Yii::app()->baseUrl.'/profiles/noimage.jpg';				
 				$this->profile_follow_userdetails['avatar'] = $user_follow_avatar;
+				$this->profile_follow_userdetails['profile_user_id'] = $this->profile_user_id['follow_id'];
 				$folllow_users[] = $this->profile_follow_userdetails;				
 			}
 		}
