@@ -29,6 +29,7 @@ class ProfileController extends Controller {
 	public $profile_follow_userdetails;
 	public $profile_follower_userdetails;
 	public $profile_follow_location;
+	public $profile_current_follow;
 	
    public function filters() {
       return array( 'accessControl' ); // perform access control for CRUD operations
@@ -257,6 +258,13 @@ class ProfileController extends Controller {
 				$this->profile_follower_count = Users::model()->get_profile_follower_count($user_follow['follow_id']);
 				$this->profile_follow_userdetails['followerCount'] = $this->profile_follower_count;
 				$this->avatar = $this->profile_follow_userdetails['user_details_avatar'];
+				$check_follow = UsersFollow::model()->check_follow($id,$this->profile_follow_userdetails['user_details_id']);										
+				if($check_follow){
+					$this->profile_follow_userdetails['follow'] = $this->user_following;
+				}
+				else{
+					$this->profile_follow_userdetails['follow'] = $this->user_follow;
+				}
 				$fromurl = strstr($this->avatar, '://', true);
 				if($fromurl=='http' || $fromurl=='https')
 					$user_follow_avatar = $this->avatar; 

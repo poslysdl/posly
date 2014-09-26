@@ -335,8 +335,9 @@ class Users extends CActiveRecord
 	}
 	
 	// get profile following users list
-	function get_profile_following_users($userId){
-		$query = "SELECT follow_id FROM `users_follow` WHERE  `user_id` = :userId";
+	function get_profile_following_users($userId){   		
+		echo $query = "SELECT follow_id FROM `users_follow` WHERE  `user_id` = :userId";
+		echo "<br /> --------------------------$userId-------------------------------------<br />";
 		$command = yii::app()->db->createCommand($query);
 		$command->bindparam(":userId",$userId);
 		$rawData = $command->queryAll();
