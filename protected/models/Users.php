@@ -74,17 +74,14 @@ class Users extends CActiveRecord
 			'userSecurity' => array(self::BELONGS_TO, 'UsersSecurity', 'user_security_id'),
 			'userDetails' => array(self::BELONGS_TO, 'UsersDetails', 'user_details_id'),
 			'userLocation' => array(self::BELONGS_TO, 'UsersLocation', 'user_location_id'),
-			'userSocialmedia' => array(self::BELONGS_TO, 'UsersSocialmedia', 'user_socialmedia_id'),
-			//'userHashtags' => array(self::BELONGS_TO, 'UsersHashtags', 'user_hashtags_id'),
+			'userSocialmedia' => array(self::BELONGS_TO, 'UsersSocialmedia', 'user_socialmedia_id'),			
 			'userNotification' => array(self::BELONGS_TO, 'UsersNotification', 'user_notification_id'),
 			'userLanguage' => array(self::BELONGS_TO, 'UsersLanguage', 'user_language_id'),
 			'userEthnicity' => array(self::BELONGS_TO, 'UsersEthnicity', 'user_ethnicity_id'),
-			'userSocialPrivacy' => array(self::BELONGS_TO, 'UserSocialPrivacy', 'user_social_privacy_id'),
-			//'usersDetails' => array(self::HAS_MANY, 'UsersDetails', 'user_id'),
+			'userSocialPrivacy' => array(self::BELONGS_TO, 'UserSocialPrivacy', 'user_social_privacy_id'),			
 			'usersFollows' => array(self::HAS_MANY, 'UsersFollow', 'follow_id'),
 			'usersFollows1' => array(self::HAS_MANY, 'UsersFollow', 'user_id'),
-			'usersHashtags' => array(self::HAS_MANY, 'UsersHashtags', 'user_id'),
-			//'usersSecurities' => array(self::HAS_MANY, 'UsersSecurity', 'user_id'),
+			'usersHashtags' => array(self::HAS_MANY, 'UsersHashtags', 'user_id'),			
 		);
 	}
 

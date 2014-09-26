@@ -54,6 +54,24 @@ class UserIdentity extends CUserIdentity {
 			$condition = 'user_id = :id';
 			$params = array(':id'=>$user->user_id);
 			Users::model()->updateByPk($user->user_id,$attributes,$condition,$params);
+			//Update User's Locations ..			
+			$temp = UsersLocation::model()->findByPK($user->user_location_id);
+			$user_city = $temp->user_location_city;
+			$user_country = $temp->user_location_country;
+			$user_region = $temp->user_location_region;
+			$this->setState('usercity', $user_city);
+			$this->setState('usercountry', $user_country);
+			$this->setState('userregion', $user_region);
+			/* To show #Rank in Card wrt country or city or worldwide,
+				will Show All Cards of Only Those Users who in same Country of LoggedIn User
+				Default is LoggedIn User's Registered Country
+			*/
+			$this->setState('showrank', 'country');			
+			unset($temp);
+			unset($user_city);
+			unset($user_country);
+			unset($user_region);
+			unset($user);
 		}
 		return $this->errorCode == self::ERROR_NONE;
 	}
