@@ -17,11 +17,11 @@ chanhny tách user profile tối ưu load nhanh
 	bottom: -80px;
     display: block;
     border: 4px solid #FFFFFF !important;
-    	-webkit-border-radius: 50% !important;
-	-moz-border-radius: 50% !important;
-	border-radius: 50% !important;
+    -webkit-border-radius: 50% !important;
+    -moz-border-radius: 50% !important;
+    border-radius: 50% !important;
     left: 40px;
-    bottom: 10px;
+    bottom: -6px;
     
 }
 

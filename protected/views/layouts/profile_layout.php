@@ -20,6 +20,7 @@
 <link href="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/2prettyicon/style.css" rel="stylesheet" type="text/css"/>
 <link href="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 <link href="<?php echo Yii::app()->theme->baseUrl; ?>/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+<link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/custom.css" rel="stylesheet" type="text/css"/>
 <!-- END GLOBAL MANDATORY STYLES -->
 
 <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
@@ -299,8 +300,7 @@ function show4(){
 * This function is used to hide, unhide & render data in
 * user profile index page - Status,Catwalk,aboutus, followers etc options
 */
-function showprofile(divid,methodname){
-    
+function showprofile(divid,methodname){    
         <?php
             $url_param = $_SERVER['PATH_INFO'];
             $url_param = ltrim ($url_param, '/');
@@ -352,6 +352,19 @@ $(document).on('click', '#user_following', function(e){
     var current = $(this);
     unfollow_bulkfriend(document.getElementById("prof_curr").value,followingId,current);
 });
+
+$(document).on('mouseenter', '#user_following', function(){    
+    if($(this).hasClass('following')){
+        $(this).text('Unfollow');
+    }
+});
+
+$(document).on('mouseleave', '#user_following', function(){
+    if($(this).hasClass('following')){    
+        $(this).text('Following');
+    }
+});
+
 
 $(document).on('mouseenter', '#profile_following', function(){
     $(this).text('Unfollow');
@@ -416,31 +429,56 @@ function unfollowfriend(profile_current,profile_other){
 //for bulk user ajax
 
 function unfollow_bulkfriend(profile_current,profile_other,current){
-    //var returnpath = "<?php echo Yii::app()->request->url;?>";
+    var following_count = parseInt($('#txt_following_count').val());
+    var returnpath = "<?php echo Yii::app()->request->url;?>";
     var params = {'profile_current':profile_current,'profile_other':profile_other};
-    console.log(params);
-    //var url_friend_follow = $('#profile_following').attr('data-url');
-    //$.ajax({
-    //    type: 'POST',  
-    //    url: url_friend_follow,
-    //    async: false,
-    //    data:params,
-    //    success:function(data){
-    //        data = jQuery.parseJSON(data);
-    //        console.log(data);
-    //        if(data.status=="success"){				
-    //          window.location = returnpath;
-                //current.text('Following');
-    //         // $("#user_follow").html = '<button id="profile_following" data-url="<?php echo Yii::app()->createUrl('/profile/followingfriend');?>" class="btn white messege" type="button" href="#"  data-toggle="modal">following</button>';
-    //        }
-    //        else{
-    //            window.location = returnpath;
-    //        }
-    //    },
-    //    error: function(data) { // if error occured
-    //       window.location = returnpath;
-    //    }
-    //});	
+    if(current.hasClass('following')){
+        var url_friend_follow = "<?php echo Yii::app()->createUrl('/profile/followingfriend');?>";
+        //Do Unfollow
+        $.ajax({
+            type: 'POST',  
+            url: url_friend_follow,
+            data:params,
+            success:function(data){
+                data = jQuery.parseJSON(data);
+                if(data.status=="success"){
+                    $('#txt_following_count').val(following_count-1)
+                    $('#display_following_count').html(following_count-1);
+                    current.removeClass('following');
+                    current.text('Follow');
+                }
+                else{
+                    window.location = returnpath;
+                }
+            },
+            error: function(data) { // if error occured
+               window.location = returnpath;
+            }
+        });        
+
+    } else {
+        var url_friend_follow = "<?php echo Yii::app()->createUrl('/profile/followfriend');?>";        
+        $.ajax({
+            type: 'POST',  
+            url: url_friend_follow,
+            data:params,
+            success:function(data){
+                data = jQuery.parseJSON(data);
+                if(data.status=="success"){
+                    $('#txt_following_count').val(following_count + 1)
+                    $('#display_following_count').html(following_count+1);                    
+                    current.addClass('following');
+                    current.text('Following');
+                }
+                else{
+                    window.location = returnpath;
+                }
+            },
+            error: function(data) { // if error occured
+               window.location = returnpath;
+            }
+        }); 
+    }
 }
 
 
