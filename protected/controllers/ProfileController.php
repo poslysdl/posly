@@ -254,11 +254,9 @@ class ProfileController extends Controller {
 		$this->users_following = Users::model()->get_profile_following_users($row['user_id']);
 		if($this->users_following){
 			foreach($this->users_following as $user_follow){
-				$this->profile_user_id = $user_follow;
 				$this->profile_follow_userdetails = Users::model()->getUserInfo($user_follow['follow_id']);
 				$this->profile_follower_count = Users::model()->get_profile_follower_count($user_follow['follow_id']);
 				$this->profile_follow_userdetails['followerCount'] = $this->profile_follower_count;
-				$this->profile_user_id = $this->profile_user_id;
 				$this->avatar = $this->profile_follow_userdetails['user_details_avatar'];
 				$this->profile_follow_userdetails['follow'] = '';
 				if(($id)&& isset($id) && !empty($id)){
@@ -278,7 +276,7 @@ class ProfileController extends Controller {
 				else	
 					$user_follow_avatar = Yii::app()->baseUrl.'/profiles/noimage.jpg';				
 				$this->profile_follow_userdetails['avatar'] = $user_follow_avatar;
-				$this->profile_follow_userdetails['profile_user_id'] = $this->profile_user_id['follow_id'];
+				$this->profile_follow_userdetails['profile_user_id'] = $user_follow['follow_id'];
 				$folllow_users[] = $this->profile_follow_userdetails;				
 			}
 		}
@@ -316,12 +314,21 @@ class ProfileController extends Controller {
 			$user_additional_info['current_user'] = $this->user_logged_vistor;
 		}
 		$this->users_folllower = Users::model()->get_profile_follower_users($row['user_id']);
-
 		if($this->users_folllower){
-			foreach($this->users_folllower as $user_follower){		
-				$this->profile_follower_userdetails = Users::model()->getUserInfo($user_follower['user_id']);
+			foreach($this->users_folllower as $user_follower){
+				$this->profile_follower_userdetails = Users::model()->getUserInfo($user_follower['user_id']);			
 				$this->profile_follower_count = Users::model()->get_profile_follower_count($user_follower['user_id']);
 				$this->profile_follower_userdetails['followerCount'] = $this->profile_follower_count;
+				$this->profile_follower_userdetails['follow'] = '';
+				if(($id)&& isset($id) && !empty($id)){
+					$check_follow = UsersFollow::model()->check_follow($id,$user_follower['user_id']);										
+					if($check_follow){
+						$this->profile_follower_userdetails['follow'] = $this->user_following;
+					}
+					else{
+						$this->profile_follower_userdetails['follow'] = $this->user_follow;
+					}
+				}				
 				$this->avatar = $this->profile_follower_userdetails['user_details_avatar'];
 				$fromurl = strstr($this->avatar, '://', true);
 				if($fromurl=='http' || $fromurl=='https')
@@ -331,6 +338,7 @@ class ProfileController extends Controller {
 				else	
 					$user_follower_avatar = Yii::app()->baseUrl.'/profiles/noimage.jpg';				
 				$this->profile_follower_userdetails['avatar'] = $user_follower_avatar;
+				$this->profile_follower_userdetails['profile_user_id'] = $user_follower['user_id'];
 				$folllower_users[] = $this->profile_follower_userdetails;				
 			}
 		}
