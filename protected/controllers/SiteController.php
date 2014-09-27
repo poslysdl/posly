@@ -1,5 +1,5 @@
 <?php
-//** Last Modified On : 26-Sept-14
+//** Last Modified On : 27-Sept-14
 
 class SiteController extends Controller
 {
@@ -65,11 +65,12 @@ class SiteController extends Controller
 				$value=$time->getDate();
 				$end= $value[0];
 				$start= $end-86400000;
+				$allusersphotos = array();
+				$country = Yii::app()->user->getState('usercountry');
 				$criteria = new CDbCriteria();
 				$criteria->select = 't.* , (SELECT COUNT( * )*(0.3) FROM log_photos_comment a WHERE a.owner_id = t.user_id AND a.log_photos_comment_date BETWEEN '.$start.' AND '.$end.' ) + (SELECT COUNT( * )*(1) FROM log_photos_hearts b WHERE b.owner_id = t.user_id AND b.log_photos_hearts_date BETWEEN '.$start.' AND '.$end.' ) + (SELECT COUNT( * )*(1.1) FROM log_photos_share c WHERE c.owner_id = t.user_id AND c.log_photos_share_date BETWEEN '.$start.' AND '.$end.' ) AS totalcount';
 				$criteria->group = 't.user_id';
-				$criteria->order = 'totalcount DESC';
-				
+				$criteria->order = 'totalcount DESC';				
 				if($_GET['l']<6){
 					$criteria->limit=$_GET['l']; //Total No of Records
 					$criteria->offset=$_GET['l']-2; //Starts from..
@@ -77,9 +78,15 @@ class SiteController extends Controller
 					$criteria->limit = $_GET['l']-2;
 					$criteria->offset = $_GET['l'];
 				}
-				
-				$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);		
+				if(!empty($country)){
+					//Show Only User's Country
+					$criteria->condition = "userLocation.user_location_country='$country'";								
+					$allusersphotos=Photos::model()->with('user', 'user.userDetails','user.userLocation')->findAll($criteria);
+				} else{
+					$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);
+				}						
 				$this->renderPartial('somemore', array('photos'=>$allusersphotos));
+				unset($criteria);
 			}
 			elseif($_GET['act']=='newmembers')
 			{				
@@ -99,13 +106,16 @@ class SiteController extends Controller
 				}
 				$criteria->order = 'userDetails.user_details_created_date DESC';								
 				$allusersphotos=Photos::model()->with('user', 'user.userDetails','user.userLocation')->findAll($criteria);		
-				$this->renderPartial('somemore', array('photos'=>$allusersphotos));				
+				$this->renderPartial('somemore', array('photos'=>$allusersphotos));
+				unset($criteria);
 			}
 			elseif($_GET['act']=='topmembers')
 			{							
 				$allusersphotos = array();
 				$criteria = new CDbCriteria();				
-				$criteria->group = 'userDetails.user_id';
+				$criteria->select = 't.* , (SELECT COUNT(*) FROM log_photos_hearts b WHERE b.owner_id = t.user_id) AS totalcount';
+				$criteria->group = 't.user_id';
+				$criteria->order = 'totalcount DESC';	
 				if($_GET['l']<6){
 					$criteria->limit=$_GET['l']; //Total No of Records
 					$criteria->offset=$_GET['l']-2; //Starts from..
@@ -116,18 +126,16 @@ class SiteController extends Controller
 				$country = Yii::app()->user->getState('usercountry');
 				if(!empty($country)){
 					//Show Only User's Country
-					$criteria->condition = "userLocation.user_location_country='$country'";
-					$criteria->order = 'userDetails.user_rank_incountry ASC';							
+					$criteria->condition = "userLocation.user_location_country='$country'";								
 					$allusersphotos=Photos::model()->with('user', 'user.userDetails','user.userLocation')->findAll($criteria);
 				}
 				else{
 					//If Not, Show World Wide
-					$criteria->condition = 'exists(select * from photos where user_id=t.user_id)';
-					$criteria->order = 'userDetails.user_rank_worldwide ASC';								
+					$criteria->condition = 'exists(select * from photos where user_id=t.user_id)';									
 					$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);
 				}		
 				unset($criteria);		
-				$this->renderPartial('somemore', array('photos'=>$allusersphotos));			
+				$this->renderPartial('somemore', array('photos'=>$allusersphotos));		
 			}
 			elseif($_GET['act']=='males')
 			{
@@ -172,17 +180,7 @@ class SiteController extends Controller
 				$this->render('somemorenewmembers', array('photos'=>$allusersphotos));
 			}
 			elseif($_GET['act']=='hashtags')
-			{
-				/*$criteria = new CDbCriteria();
-				$hid=Yii::app()->request->cookies['presentH']->value;
-				$criteria = new CDbCriteria();
-				$criteria->group="photos.user_id";
-				$criteria->condition = "t.hashtags_id=$hid";
-				$criteria->limit=$_GET['l'];
-				$criteria->offset=$_GET['l']-2;
-				$allusersphotos=PhotosHashtags::model()->with('photos','photos.user', 'photos.user.userDetails', 'photos.user.userLocation')->findAll($criteria); 
-				$this->render('somemorehashtags', array('photos'=>$allusersphotos));
-				*/
+			{				
 				//To show Card wrt to selected HashTags..a Kind of Filter
 				$photoidArray = array();
 				$allusersphotos = '';
@@ -238,12 +236,22 @@ class SiteController extends Controller
 		$value=$time->getDate();
 		$end= $value[0];
 		$start= $end-86400000;
+		$allusersphotos = array();
+		$country = Yii::app()->user->getState('usercountry');
 		$criteria = new CDbCriteria();
 		$criteria->select = 't.* , (SELECT COUNT( * )*(0.3) FROM log_photos_comment a WHERE a.owner_id = t.user_id AND a.log_photos_comment_date BETWEEN '.$start.' AND '.$end.' ) + (SELECT COUNT( * )*(1) FROM log_photos_hearts b WHERE b.owner_id = t.user_id AND b.log_photos_hearts_date BETWEEN '.$start.' AND '.$end.' ) + (SELECT COUNT( * )*(1.1) FROM log_photos_share c WHERE c.owner_id = t.user_id AND c.log_photos_share_date BETWEEN '.$start.' AND '.$end.' ) AS totalcount';
 		$criteria->group = 't.user_id';
 		$criteria->order = 'totalcount DESC';
 		$criteria->limit=$this->cartlimit;
-		$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);
+		if(!empty($country)){
+			//Show Only User's Country
+			$criteria->condition = "userLocation.user_location_country='$country'";								
+			$allusersphotos=Photos::model()->with('user', 'user.userDetails','user.userLocation')->findAll($criteria);
+		}
+		else{
+			//If Not, Show World Wide											
+			$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);
+		}		
 		unset($criteria);
 		//Get Hash Tags Listings for sidebar, this action define in Controller class
 		$limit = (Yii::app()->user->isGuest)?9:6; //HashTag Limit			
@@ -295,21 +303,20 @@ class SiteController extends Controller
 		$this->layout='front_layout';
 		Yii::app()->clientScript->registerCoreScript('jquery');		
 		$allusersphotos = array();
-		$criteria = new CDbCriteria();		
-		$criteria->group = 'user.user_id';
+		$criteria = new CDbCriteria();
+		$criteria->select = 't.* , (SELECT COUNT(*) FROM log_photos_hearts b WHERE b.owner_id = t.user_id) AS totalcount';
+		$criteria->group = 't.user_id';
+		$criteria->order = 'totalcount DESC';
+		$criteria->limit=$this->cartlimit;		
 		$country = Yii::app()->user->getState('usercountry');
 		if(!empty($country)){
 			//Show Only User's Country
 			$criteria->condition = "userLocation.user_location_country='$country'";			
-			$criteria->order = 'userDetails.user_rank_incountry ASC';
-			$criteria->limit=$this->cartlimit;
 			$allusersphotos=Photos::model()->with('user', 'user.userDetails','user.userLocation')->findAll($criteria);
 		}		
 		else{
 			//If Not, Show World Wide
-			$criteria->condition = 'exists(select * from photos where user_id=t.user_id)';
-			$criteria->order = 'userDetails.user_rank_worldwide ASC';
-			$criteria->limit=$this->cartlimit;
+			$criteria->condition = 'exists(select * from photos where user_id=t.user_id)';			
 			$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);
 		}	
 		unset($criteria);				
@@ -329,16 +336,24 @@ class SiteController extends Controller
 	{		
 		$this->layout='front_layout';
 		Yii::app()->clientScript->registerCoreScript('jquery'); 
+		$allusersphotos = array();
 		$time=new CTimestamp;
 		$value=$time->getDate();
 		$end= $value[0];
 		$start= $end-86400000;
+		$country = Yii::app()->user->getState('usercountry');
 		$criteria = new CDbCriteria();
 		$criteria->select = 't.* , (SELECT COUNT( * )*(0.3) FROM log_photos_comment a WHERE a.owner_id = t.user_id AND a.log_photos_comment_date BETWEEN '.$start.' AND '.$end.' ) + (SELECT COUNT( * )*(1) FROM log_photos_hearts b WHERE b.owner_id = t.user_id AND b.log_photos_hearts_date BETWEEN '.$start.' AND '.$end.' ) + (SELECT COUNT( * )*(1.1) FROM log_photos_share c WHERE c.owner_id = t.user_id AND c.log_photos_share_date BETWEEN '.$start.' AND '.$end.' ) AS totalcount';
 		$criteria->group = 't.user_id';
 		$criteria->order = 'totalcount DESC';
 		$criteria->limit=$this->cartlimit;
-		$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);
+		if(!empty($country)){
+			//Show Only User's Country
+			$criteria->condition = "userLocation.user_location_country='$country'";								
+			$allusersphotos=Photos::model()->with('user', 'user.userDetails','user.userLocation')->findAll($criteria);
+		} else{
+			$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);
+		}		
 		unset($criteria);
 		//Get Hash Tags Listings for sidebar, this action define in Controller class
 		$limit = (Yii::app()->user->isGuest)?9:6; //HashTag Limit		

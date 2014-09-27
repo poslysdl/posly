@@ -65,7 +65,11 @@ $pageflagid = (isset($pageflagid))?$pageflagid:'';
 				</div>
 				</div>
 			</div>
-			<div class="clearfix"></div>			
+			<div class="clearfix"></div>
+			<?php if(isset($photos) && count($photos)==0){	?>
+				<div class="nocardmsg">No Card exists for this region</div>
+				<div class="clearfix"></div>
+			<?php } ?>
 			<!--*-->       
 			<!-- Modals-->			
 			<!-- Modal Box img-zoom ZOOM IMAGE ------->
