@@ -1,7 +1,7 @@
 <?php  
 /* This Widget Creates an Single Cart container with main ,Carousel Images,
 * comments, likes and Hearts...for Catwalk,Posly,goingViral,Topmembers...
-* Last Modified: 26-Sep-14
+* Last Modified: 29-Sep-14
 */
 $p = $this->cartinfo['data'];
 $i = $this->cartinfo['i'];

@@ -17,10 +17,10 @@ class LikesController extends Controller
 	}
 
 	/**
-	 * Specifies the access control rules., Only for Methods Called from Site
-	 * This method is used by the 'accessControl' filter.
-	 * @return array access control rules
-	 */
+	* Specifies the access control rules., Only for Methods Called from Site
+	* This method is used by the 'accessControl' filter.
+	* @return array access control rules
+	*/
 	public function accessRules()
 	{
 		return array(
@@ -104,7 +104,7 @@ class LikesController extends Controller
 	{		
 		$users = Users::model()->getUserInfo($uid);
 		$userdetailid = $users['user_details_id'];
-		$maxrankArray = UsersDetails::model()->getMaxRank($uid,$userdetailid);
+		$minrankArray = UsersDetails::model()->getMinRank($uid,$userdetailid);
 		if(!empty($userdetailid))
 		{	
 			$count=UsersDetails::model()->findByPk($userdetailid);						
@@ -113,19 +113,19 @@ class LikesController extends Controller
 			$region=$count->user_rank_inregion;
 			$country=$count->user_rank_incountry;
 			$world=$count->user_rank_worldwide;			
-			$count->user_rank_incity=$this->GetNewrank($city,$flag,$maxrankArray['city']);
-			$count->user_rank_inregion=$this->GetNewrank($region,$flag,$maxrankArray['region']);
-			$count->user_rank_incountry=$this->GetNewrank($country,$flag,$maxrankArray['country']);
-			$count->user_rank_worldwide=$this->GetNewrank($world,$flag,$maxrankArray['world']);	
+			$count->user_rank_incity=$this->GetNewrank($city,$flag,$minrankArray['city']);
+			$count->user_rank_inregion=$this->GetNewrank($region,$flag,$minrankArray['region']);
+			$count->user_rank_incountry=$this->GetNewrank($country,$flag,$minrankArray['country']);
+			$count->user_rank_worldwide=$this->GetNewrank($world,$flag,$minrankArray['world']);	
 			$count->save();
-			unset($count);
-			$this->RevisedOthersRank($city,$region,$country,$world,$uid,$userdetailid,$flag,$maxrankArray);
-			unset($maxrankArray);
+			unset($count);			
+			//$this->RevisedOthersRank($city,$region,$country,$world,$uid,$userdetailid,$flag,$minrankArray);
+			unset($minrankArray);
 		}		
 	}
 	
 	/* This user define function used to calculate rank	
-	* Last Modified:24-Sep-14
+	* Last Modified:29-Sep-14
 	* As This Method is use within the Class, therefore No Action keyword & accessRule require
 	*/
 	public function GetNewrank($value,$flag,$maxrank)
@@ -134,13 +134,13 @@ class LikesController extends Controller
 			if($value==0){
 				$value = $maxrank+1;
 			} else{
-				($maxrank<2)?1:$maxrank-1;			
+				$value = ($maxrank<2)?1:$maxrank-1;			
 			}
 		} else{
 			if($value==0){
 				$value = 0;
 			} else{
-				($maxrank<2)?0:$maxrank+1;			
+				$value = ($maxrank<2)?0:$maxrank+1;			
 			}
 		}
 		return $value;

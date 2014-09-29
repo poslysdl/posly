@@ -112,6 +112,75 @@ class UsersDetails extends CActiveRecord
 	}
 	
 	/**
+	* Name: getMinRank
+	* User_Define Function To get MinRank wrt All Users of city,region,country & world	
+	* @return Array of ranks
+	* Last Modified:20-Sep-14
+	*/
+	public function getMinRank($userid,$userdetailid)
+	{
+		$minrankArray=array('city'=>0,'region'=>0,'country'=>0,'world'=>0,'cityid'=>0,'regionid'=>0,'countryid'=>0);
+		if(!empty($userid) && !empty($userdetailid))
+		{
+			//Get this user Locations
+			$query="SELECT l.* FROM users_location l JOIN users u ON u.user_location_id=l.user_location_id";
+			$query.=" WHERE u.user_id='".$userid."'";
+			$command= Yii::app()->db->createCommand($query);
+			$rawData = $command->queryAll();
+			if(isset($rawData) && count($rawData)>0){
+				$city = $rawData[0]['user_location_city'];
+				$region = $rawData[0]['user_location_region'];
+				$country = $rawData[0]['user_location_country'];
+			}
+			unset($rawData);
+			//Now for this user country Get Min Country Rank
+			if(isset($country) && !empty($country)){
+				$minrankArray['countryid']=$country;
+				$query="SELECT min(ud.user_rank_incountry) as mincountry FROM users_details ud JOIN users u";
+				$query.=" ON u.user_id=ud.user_id JOIN users_location ul ON u.user_location_id=ul.user_location_id";
+				$query.=" WHERE ul.user_location_country='".$country."'";
+				$command= Yii::app()->db->createCommand($query);		
+				$rawData = $command->queryAll();
+				if(isset($rawData) && count($rawData)>0)
+					$minrankArray['country']=$rawData[0]['mincountry'];	
+				unset($rawData);
+			}
+			//Now for this user city Get Min City Rank
+			if(isset($city) && !empty($city)){
+				$minrankArray['cityid']=$city;
+				$query="SELECT min(ud.user_rank_incity) as mincity FROM users_details ud JOIN users u";
+				$query.=" ON u.user_id=ud.user_id JOIN users_location ul ON u.user_location_id=ul.user_location_id";
+				$query.=" WHERE ul.user_location_city='".$city."'";
+				$command= Yii::app()->db->createCommand($query);		
+				$rawData = $command->queryAll();
+				if(isset($rawData) && count($rawData)>0)
+					$minrankArray['city']=$rawData[0]['mincity'];	
+				unset($rawData);
+			}
+			//Now for this user region Get Min Region Rank
+			if(isset($region) && !empty($region)){
+				$minrankArray['regionid']=$region;
+				$query="SELECT min(ud.user_rank_inregion) as minregion FROM users_details ud JOIN users u";
+				$query.=" ON u.user_id=ud.user_id JOIN users_location ul ON u.user_location_id=ul.user_location_id";
+				$query.=" WHERE ul.user_location_region='".$region."'";
+				$command= Yii::app()->db->createCommand($query);		
+				$rawData = $command->queryAll();
+				if(isset($rawData) && count($rawData)>0)
+					$minrankArray['region']=$rawData[0]['minregion'];	
+				unset($rawData);
+			}
+			//Now Min total World Wide Rank
+			$query="SELECT min(user_rank_worldwide) as minworld FROM users_details";		
+			$command= Yii::app()->db->createCommand($query);		
+			$rawData = $command->queryAll();
+			if(isset($rawData) && count($rawData)>0){
+				$minrankArray['world']=$rawData[0]['minworld'];
+			}
+		}
+		return $minrankArray;
+	}
+	
+	/**
 	* Name: getMaxRank
 	* User_Define Function To get MaxRank wrt All Users of city,region,country & world	
 	* @return Array of ranks

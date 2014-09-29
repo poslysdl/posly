@@ -701,7 +701,7 @@ background: #d4ecf5;
 	float: left;
 	height: 135px;
 	width: 135px !important;
-	cursor: pointer;
+	/*cursor: pointer;*/
 	text-decoration: none;
 	color: #ffffff;
 	position: relative;
