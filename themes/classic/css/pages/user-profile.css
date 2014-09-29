@@ -17,12 +17,11 @@ chanhny tách user profile tối ưu load nhanh
 	bottom: -80px;
     display: block;
     border: 4px solid #FFFFFF !important;
-    -webkit-border-radius: 50% !important;
-    -moz-border-radius: 50% !important;
-    border-radius: 50% !important;
+    	-webkit-border-radius: 50% !important;
+	-moz-border-radius: 50% !important;
+	border-radius: 50% !important;
     left: 40px;
-    bottom: -6px;
-    
+        bottom: -6px;
 }
 
 
@@ -33,9 +32,7 @@ chanhny tách user profile tối ưu load nhanh
 	-webkit-border-radius: 50% !important;
 	-moz-border-radius: 50% !important;
 	border-radius: 50% !important;
-    position: relative;   
-    
-    }
+    position: static;}
 	
 .head-user .user-text {
 	
@@ -238,6 +235,145 @@ text-transform:uppercase;
 
 
 .head-tabhead .portlet .tab-content .portlet-body .tag { padding:20px; margin-left:-5px; margin-right:-5px; margin-bottom:20px;}
+
+/*follow*/
+.head-tabhead .portlet .tab-content .portlet-body.follow {padding: 10px 0 0;}
+.head-tabhead .portlet .tab-content .portlet-body.follow .following {margin-bottom: 20px;
+    margin-left: -5px;
+	overflow:hidden;
+    margin-right: -5px;
+    padding: 15px;}
+	
+
+
+/*search*/
+.head-tabhead .portlet .tab-content .portlet-body.follow .following.Fr .friend-search {
+	padding: 0;
+	margin: 0;
+}
+.head-tabhead .portlet .tab-content .portlet-body.follow .following.Fr .friend-search .form-container {
+	margin: 6px 0px 6px 0px;
+	overflow: hidden;
+}
+.head-tabhead .portlet .tab-content .portlet-body.follow .following.Fr .friend-search .form-container .submit {
+	display: block;
+	float: left;
+	border: 1px solid #DDDDDD;
+	border-left: none !important;
+	box-shadow: none !important;
+	font-size: 18px !important;
+	font-weight: normal;
+	margin: 0;
+	padding: 0px 4px;
+	background: #fff;
+	height: 30px;
+}
+.head-tabhead .portlet .tab-content .portlet-body.follow .following.Fr .friend-search .form-container input[type="text"] {
+	border: 1px solid #DDDDDD;
+	border-right: none;
+	box-shadow: none !important;
+	font-size: 14px !important;
+	font-weight: normal;
+	margin: 0;
+	padding: 4px;
+	float: left;
+	width: 200px;
+	height: 30px;
+}
+
+.head-tabhead .portlet .tab-content .portlet-body.follow .following.Fr .friend-search .form-container .submit {
+	font-family: 'icomoon';
+	-webkit-font-smoothing: antialiased;
+	content: "\e058";
+	color: #767474 !important;
+}
+.head-tabhead .portlet .tab-content .portlet-body.follow .following.Fr .friend-search .form-container input[type="text"]:focus {
+	outline: none !important;
+}
+/**/
+	
+.head-tabhead .portlet .tab-content .portlet-body.follow .following .title:after {
+    clear: both;
+}
+.head-tabhead .portlet .tab-content .portlet-body.follow .following .title:before {
+    content: "";
+    display: table;
+    line-height: 0;
+}
+
+.head-tabhead .portlet .tab-content .portlet-body.follow .following .bd{
+    clear: both;
+	padding-top:10px;
+}
+.head-tabhead .portlet .tab-content .portlet-body.follow  .btn.cyan {padding: 7px 20px;}
+.head-tabhead .portlet .tab-content .portlet-body.follow .following .Fl	{float: right;
+    margin-right: 0x;
+    margin-top: 6px;
+    position: relative;}
+
+.head-tabhead .portlet .tab-content .portlet-body.follow .following.Fr .Fl2	{float: right;
+    margin-right: 0x;
+    margin-top: 30px;
+    position: relative;}
+.head-tabhead .portlet .tab-content .portlet-body.follow .following.Fr .Fl2 button span { margin-right:5px; color:#DB9500}	
+	
+		
+.head-tabhead .portlet .tab-content .portlet-body.follow .following.Fr .Fl	{float: right;
+    margin-right: 0x;
+    margin-top: 3x;
+    position: relative;}
+	
+.head-tabhead .portlet .tab-content .portlet-body.follow .following .caption {display: inline-block;
+float:left;   
+    font-size: 18px;
+    line-height: 18px;
+    margin: 0;
+    padding: 0;}
+	
+.head-tabhead .portlet .tab-content .portlet-body.follow .following .caption .avatar-user-l {border-radius: 50% !important;
+    float: left;
+    height: 60px;
+    margin-right: 8px;
+    width: 60px;}	
+	
+.head-tabhead .portlet .tab-content .portlet-body.follow .following.Fr .caption .avatar-user-l {border-radius: 0% !important;
+-webkit-border-radius: 0% !important;
+-ms-border-radius: 0% !important;
+    float: left;
+    height: 90px;
+    margin-right: 8px;
+    width: 90px;}	
+	
+.head-tabhead .portlet .tab-content .portlet-body.follow .following .caption .cap1 {margin-left: 60px;
+    text-align: left;}
+	
+.head-tabhead .portlet .tab-content .portlet-body.follow .following.Fr .caption .cap1 {margin-left: 90px;
+    text-align: left;}	
+.head-tabhead .portlet .tab-content .portlet-body.follow .following .caption .cap1 .username	{color: #222;
+    font-size: 16px;
+	display:inline-block;
+	line-height:1.2em;
+	margin-top:10px;
+    font-weight: bold;
+    text-decoration: none;}
+	
+	
+.head-tabhead .portlet .tab-content .portlet-body.follow .following.Fr .caption .cap1 .username	{color: #222;
+    font-size: 16px;
+	display:inline-block;
+	line-height:1.2em;
+	margin-top:25px;
+    font-weight: bold;
+    text-decoration: none;}
+	
+		
+.head-tabhead .portlet .tab-content .portlet-body.follow .following .caption .cap1 .user-locaion {color: #767474;
+display:inline-block;
+    font-size: 12px;
+    font-weight: 100;}
+	
+/**/
+
 .head-tabhead .portlet .tab-content .portlet-body .about-me { padding:20px; margin-left:-5px; margin-right:-5px; margin-bottom:20px;}
 .head-tabhead .portlet .tab-content .portlet-body .about-me p { margin-bottom:25px;}
 .head-tabhead .portlet .tab-content .portlet-body .about-me h3 { margin-top:0px; margin-bottom:15px; font-size:18px; color:#767474;  text-transform:uppercase;}
@@ -565,6 +701,7 @@ background: #d4ecf5;
 	float: left;
 	height: 135px;
 	width: 135px !important;
+	cursor: pointer;
 	text-decoration: none;
 	color: #ffffff;
 	position: relative;
@@ -589,6 +726,12 @@ background: #d4ecf5;
 .tilep:active, .tile.selected {
 	
 }
+
+
+
+
+
+
 
 .tilep.selected .corner:after {
 	content: "";
@@ -1139,6 +1282,13 @@ cursor:-moz-zoom-in; overflow:hidden;}
     text-align: center;}
 	
 .head-tabhead .portlet .tab-content .portlet-body.single-image .pro-image .portlet-body.si-img .bot-icon .col-lg-4 { padding:0 !important;}
+.whiteico { color:#fff;}
+.head-tabhead .portlet .tab-content .portlet-body.single-image .pro-image .portlet-body.si-img .bot-icon .col-lg-4 i {
+    display: inline-block !important;
+    float: left;
+    font-size: 16px;
+    margin-right: 4px;
+	margin-left: 10px;}
 .head-tabhead .portlet .tab-content .portlet-body.single-image .pro-image .portlet-body.si-img .bot-icon .col-lg-4 i.icon-heart { color: #F30A7F;
     display: inline-block !important;
     float: left;
@@ -1175,6 +1325,19 @@ float:left;
     margin-left: 7px;
     position: absolute;
     z-index: 15;}
+	
+.head-tabhead .portlet .tab-content .portlet-body.single-image .pro-image .portlet-body.si-img .mask-topa.heart {
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0.4);
+    top: 0;
+	padding: 10px;
+    left: 0;
+	text-align:left;
+    margin-left: 0px;
+    position: absolute;
+    z-index: 15;}	
+.head-tabhead .portlet .tab-content .portlet-body.single-image .pro-image .portlet-body.si-img .mask-topa.heart i { float:left; color:#fff; background:none;}
+.head-tabhead .portlet .tab-content .portlet-body.single-image .pro-image .portlet-body.si-img .mask-topa.heart span { float:left; margin-left:10px; color:#fff; font-size:14px; font-weight:bold;}
+	
 .head-tabhead .portlet .tab-content .portlet-body.single-image .pro-image .portlet-body.si-img .mask-topa a:hover, .head-tabhead .portlet .tab-content .portlet-body.single-image .pro-image .portlet-body.si-img .mask-topa a:focus { text-decoration:none;}	
 .head-tabhead .portlet .tab-content .portlet-body.single-image .pro-image .portlet-body.si-img .mask-topa i { color: #6FC0DF;
     font-size: 26px;
@@ -1186,6 +1349,9 @@ float:left;
      -moz-border-radius:50% !important;
 	
 	}
+	
+.head-tabhead .portlet .tab-content .portlet-body.single-image .pro-image .portlet-body.si-img .mask-topa .grey  {background: none repeat scroll 0 0 rgba(0, 0, 0, 0.4);
+    color: #fff; height:30px; width:30px; padding-left:10px; padding-right:10px; padding-top:5px; padding-bottom:5px; font-weight:bold; font-size:14px;}	
 	
 .head-tabhead .portlet .tab-content .portlet-body.single-image .pro-image .portlet-body.si-img .mask-topb {
     top: 0;
@@ -1321,8 +1487,8 @@ line-height:25px;
 
 .head-tabhead .portlet .tab-content .portlet-body.single-image .pro-image .portlet-body.si-img .mask-topb i.icon-pencil {background: none repeat scroll 0 0 rgba(255, 255, 255, 0.9);
     color: #767474;
-    font-size: 16px;
-    height: 25px;
+    font-size: 18px;
+    height: 30px;
     margin-right: 5px;
     padding: 5px;
     text-align: center;
@@ -2016,9 +2182,13 @@ line-height:25px;
     margin-right: 0 !important;
 }
 
+
+
 .modal-add-image .modal-body .portlet-body .usepic {
     border: 2px solid #FFF;
     margin-bottom: 10px;
+	width:260px;
+	height:254px;
 }
 
 .modal-add-image .modal-body .portlet-body.edit .main-img-user .mask .change {
@@ -2080,6 +2250,30 @@ line-height:25px;
     resize: none;
 }
 
+.modal-add-image .modal-body .portlet-body.edit .up-data { border-top:1px solid #e5e5e5;}
+.modal-add-image .modal-body .portlet-body.edit .up-data a i {
+   font-size: 60px;
+   font-weight: 300;
+      
+   text-shadow:none;
+    padding: 25px;
+	width:110px;
+	height:110px;
+	margin-top:20px;
+	margin-bottom:20px;
+    text-align: center;
+    vertical-align: middle;
+   -webkit-border-radius: 50% !important;
+      -moz-border-radius: 50% !important;
+           border-radius: 50% !important;}
+		   
+		   
+.modal-add-image .modal-body .portlet-body.edit .up-data .pc-up {text-align:center;}
+.modal-add-image .modal-body .portlet-body.edit .up-data .pc-up i { background-color: #767474; color:#fff;}
+.modal-add-image .modal-body .portlet-body.edit .up-data .fb-up { border-right:1px solid #e5e5e5;  border-left:1px solid #e5e5e5; text-align:center;}
+.modal-add-image .modal-body .portlet-body.edit .up-data .fb-up i {background-color: #4a66a0; color:#fff;}
+.modal-add-image .modal-body .portlet-body.edit .up-data .inst-up {text-align:center;}
+.modal-add-image .modal-body .portlet-body.edit .up-data .inst-up i {background-color:#bdb8a5; color:#fff;}
 .modal-add-image .modal-body .portlet-body.edit .form-actions {
     background: none repeat scroll 0 0 rgba(0, 0, 0, 0) !important;
     border-top: medium none;
