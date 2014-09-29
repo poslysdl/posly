@@ -256,7 +256,7 @@ else
 						</span>
 						<?php } ?>
 						<!--<span class="limg"></span>-->
-						<i class="icon-heart" style="color:#f30a7f;"></i>
+						<i class="icon-heart" style="color:#f30a7f;margin-right:0px;"></i>
 						<span class="lcnt"><?php echo $commentcnt; ?></span>
 						<span>							
 						</div>					
@@ -298,7 +298,7 @@ else
 						<a class="commentlike" data-id="<?php echo $comment_id;?>" data-url="<?php echo $likeConPath;?>"><?php echo $like;?></a>
 						</span>
 						<?php } ?>
-						<i class="icon-heart" style="color:#f30a7f;"></i>
+						<i class="icon-heart" style="color:#f30a7f;margin-right:0px;"></i>
 						<span class="lcnt"><?php echo $commentcnt; ?></span>
 					<span>
 					</div>
