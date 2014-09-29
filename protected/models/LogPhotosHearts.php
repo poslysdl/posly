@@ -250,7 +250,7 @@ class LogPhotosHearts extends CActiveRecord
 			(";
 				//get list of users who had like your photos
 				$query.= "SELECT p.photos_id,p.album_id,p.photos_name,pl.log_photos_hearts_date as hdate,pl.user_id as userid,
-				u.user_details_firstname as username,u.user_details_avatar as useravatar,pl.owner_id,'yours' as ownername,
+				u.user_details_firstname as username,u.user_details_avatar as useravatar,pl.owner_id,'your' as ownername,
 				p.user_id as photouserid,p.photos_name as photoname 
 				FROM log_photos_hearts pl JOIN photos p ON pl.photos_id=p.photos_id JOIN users_details u ON pl.user_id=u.user_id
 				WHERE pl.owner_id=".$uid;

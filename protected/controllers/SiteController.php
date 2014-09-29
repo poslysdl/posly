@@ -1,5 +1,5 @@
 <?php
-//** Last Modified On : 27-Sept-14
+//** Last Modified On : 29-Sept-14
 
 class SiteController extends Controller
 {
@@ -32,20 +32,28 @@ class SiteController extends Controller
 		if(isset($_GET['act']))
 		{
 			if($_GET['act']=='index')
-			{	
+			{
 				$time=new CTimestamp;
 				$value=$time->getDate();
 				$end= $value[0];
 				$start= $end-86400000;
+				$allusersphotos = array();
+				$country = Yii::app()->user->getState('usercountry');
 				$criteria = new CDbCriteria();
 				$criteria->select = 't.* , (SELECT COUNT( * )*(0.3) FROM log_photos_comment a WHERE a.owner_id = t.user_id AND a.log_photos_comment_date BETWEEN '.$start.' AND '.$end.' ) + (SELECT COUNT( * )*(1) FROM log_photos_hearts b WHERE b.owner_id = t.user_id AND b.log_photos_hearts_date BETWEEN '.$start.' AND '.$end.' ) + (SELECT COUNT( * )*(1.1) FROM log_photos_share c WHERE c.owner_id = t.user_id AND c.log_photos_share_date BETWEEN '.$start.' AND '.$end.' ) AS totalcount';
-				$pageflag='';
-				//if(Yii::app()->user->isGuest){
-					if(isset($_GET['pg']) && $_GET['pg']=="newsfeed"){
+				$pageflag='';				
+				if(isset($_GET['pg']) && $_GET['pg']=="newsfeed"){
+					//NewFeed Page Only
 					$criteria->condition = 'userDetails.user_unique_url = "poslyadmin" OR t.photos_share_count>0';
 					$pageflag='newsfeed';
-					}
-				//}
+				} else{				
+					if(!empty($country)){
+						//Show Only User's Country
+						$criteria->condition = 'userLocation.user_location_country="'.$country.'" AND userDetails.user_unique_url<>"poslyadmin"';			
+					} else{
+						$criteria->condition = 'userDetails.user_unique_url<>"poslyadmin"';					
+					}				
+				}
 				$criteria->group = 't.user_id';
 				$criteria->order = 'totalcount DESC';
 				
@@ -55,8 +63,11 @@ class SiteController extends Controller
 				} else{
 					$criteria->limit = $_GET['l']-2;
 					$criteria->offset = $_GET['l'];
-				}				
-				$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);		
+				}
+				if(!empty($country))
+					$allusersphotos=Photos::model()->with('user', 'user.userDetails','user.userLocation')->findAll($criteria);
+				else
+					$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);		
 				$this->renderPartial('somemore', array('photos'=>$allusersphotos,'pageflag'=>$pageflag));
 			}
 			if($_GET['act']=='viral')
@@ -80,9 +91,10 @@ class SiteController extends Controller
 				}
 				if(!empty($country)){
 					//Show Only User's Country
-					$criteria->condition = "userLocation.user_location_country='$country'";								
+					$criteria->condition = "userLocation.user_location_country='$country' AND userDetails.user_unique_url<>'poslyadmin'";					
 					$allusersphotos=Photos::model()->with('user', 'user.userDetails','user.userLocation')->findAll($criteria);
 				} else{
+					$criteria->condition = "userDetails.user_unique_url<>'poslyadmin'";
 					$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);
 				}						
 				$this->renderPartial('somemore', array('photos'=>$allusersphotos));
@@ -102,7 +114,9 @@ class SiteController extends Controller
 				$country = Yii::app()->user->getState('usercountry');
 				if(!empty($country)){
 					//Show Only User's Country
-					$criteria->condition = "userLocation.user_location_country='$country'";
+					$criteria->condition = 'userLocation.user_location_country="$country"';
+				}else{
+					$criteria->condition = 'userDetails.user_unique_url<>"poslyadmin"';
 				}
 				$criteria->order = 'userDetails.user_details_created_date DESC';								
 				$allusersphotos=Photos::model()->with('user', 'user.userDetails','user.userLocation')->findAll($criteria);		
@@ -126,12 +140,12 @@ class SiteController extends Controller
 				$country = Yii::app()->user->getState('usercountry');
 				if(!empty($country)){
 					//Show Only User's Country
-					$criteria->condition = "userLocation.user_location_country='$country'";								
+					$criteria->condition = "userLocation.user_location_country='$country' AND userDetails.user_unique_url<>'poslyadmin'";					
 					$allusersphotos=Photos::model()->with('user', 'user.userDetails','user.userLocation')->findAll($criteria);
 				}
 				else{
 					//If Not, Show World Wide
-					$criteria->condition = 'exists(select * from photos where user_id=t.user_id)';									
+					$criteria->condition = 'exists(select * from photos where user_id=t.user_id) AND userDetails.user_unique_url<>"poslyadmin"';			
 					$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);
 				}		
 				unset($criteria);		
@@ -245,11 +259,12 @@ class SiteController extends Controller
 		$criteria->limit=$this->cartlimit;
 		if(!empty($country)){
 			//Show Only User's Country
-			$criteria->condition = "userLocation.user_location_country='$country'";								
+			$criteria->condition = "userLocation.user_location_country='$country' AND userDetails.user_unique_url<>'poslyadmin'";							
 			$allusersphotos=Photos::model()->with('user', 'user.userDetails','user.userLocation')->findAll($criteria);
 		}
 		else{
-			//If Not, Show World Wide											
+			//If Not, Show World Wide
+			$criteria->condition = "userDetails.user_unique_url<>'poslyadmin'";	
 			$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);
 		}		
 		unset($criteria);
@@ -275,12 +290,12 @@ class SiteController extends Controller
 		$criteria->group = 'user.user_id';			
 		if(!empty($country)){
 			//Show Only User's Country
-			$criteria->condition = "userLocation.user_location_country='$country'";			
+			$criteria->condition = "userLocation.user_location_country='$country' AND userDetails.user_unique_url<>'poslyadmin'";			
 			$criteria->order = 'userDetails.user_details_created_date DESC';
 			$criteria->limit=$this->cartlimit;
 			$allusersphotos=Photos::model()->with('user', 'user.userDetails','user.userLocation')->findAll($criteria);
 		} else{
-			$criteria->condition = 'exists(select * from photos where user_id=t.user_id)';
+			$criteria->condition = 'exists(select * from photos where user_id=t.user_id) AND userDetails.user_unique_url<>"poslyadmin"';
 			$criteria->order = 'userDetails.user_details_created_date DESC';
 			$criteria->limit=$this->cartlimit;
 			$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);				
@@ -311,12 +326,12 @@ class SiteController extends Controller
 		$country = Yii::app()->user->getState('usercountry');
 		if(!empty($country)){
 			//Show Only User's Country
-			$criteria->condition = "userLocation.user_location_country='$country'";			
+			$criteria->condition = "userLocation.user_location_country='$country' AND userDetails.user_unique_url<>'poslyadmin'";			
 			$allusersphotos=Photos::model()->with('user', 'user.userDetails','user.userLocation')->findAll($criteria);
 		}		
 		else{
 			//If Not, Show World Wide
-			$criteria->condition = 'exists(select * from photos where user_id=t.user_id)';			
+			$criteria->condition = 'exists(select * from photos where user_id=t.user_id) AND userDetails.user_unique_url<>"poslyadmin"';			
 			$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);
 		}	
 		unset($criteria);				
@@ -349,9 +364,10 @@ class SiteController extends Controller
 		$criteria->limit=$this->cartlimit;
 		if(!empty($country)){
 			//Show Only User's Country
-			$criteria->condition = "userLocation.user_location_country='$country'";								
+			$criteria->condition = "userLocation.user_location_country='$country' AND userDetails.user_unique_url<>'poslyadmin'";							
 			$allusersphotos=Photos::model()->with('user', 'user.userDetails','user.userLocation')->findAll($criteria);
 		} else{
+			$criteria->condition = "userDetails.user_unique_url<>'poslyadmin'";
 			$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);
 		}		
 		unset($criteria);
@@ -436,7 +452,9 @@ class SiteController extends Controller
 		$this->layout='front_layout';
 		Yii::app()->clientScript->registerCoreScript('jquery'); 
 		$criteria = new CDbCriteria();
-		$criteria->condition = "exists(select * from photos where user_id=t.user_id) and userLocation.user_location_country LIKE '%$c%'";
+		$con="exists(select * from photos where user_id=t.user_id) and userLocation.user_location_country LIKE '%$c%'";
+		$con.=" AND userDetails.user_unique_url<>'poslyadmin'";
+		$criteria->condition = $con;
 		$criteria->limit=$this->cartlimit;
 		$allusersphotos=Users::model()->with('photos','userDetails', 'userLocation')->findAll($criteria);  
 		$this->render('country', array('photos'=>$allusersphotos));
@@ -468,8 +486,7 @@ class SiteController extends Controller
 			$criteria->limit=$this->cartlimit;
 			$allusersphotos=Photos::model()->with('user','user.userDetails')->findAll($criteria);	
 			unset($criteria);
-		}
-//echo "<pre>"; print_r($allusersphotos); exit;		
+		}		
 		$limit = (Yii::app()->user->isGuest)?9:6; //HashTag Limit			
 		$hash_tags = $this->actionHashtaglist($limit);
 		$this->layout='front_layout';
