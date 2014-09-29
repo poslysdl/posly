@@ -247,7 +247,7 @@ $(window).bind('scroll', function(){ //when the user is scrolling...
 	}	
 	else {$("#top-shadow").addClass("topsha");  }
 	posWas = pos;	
-})
+});
  
 </script>
 

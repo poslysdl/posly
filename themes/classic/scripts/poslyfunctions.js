@@ -539,7 +539,7 @@ function getcountrycity(elm,targetid)
 	$.ajax({
 		type: 'POST',  
 		url: url1,
-		async: true,  /* means other parrel event will carry on */
+		async: false,  /* async - means other parrel event will carry on */
 		data:{         
 			pdata: sdata,
 			pname: name,
@@ -558,6 +558,7 @@ function getcountrycity(elm,targetid)
 		error: function(data) { // if error occured
 		}
 	});
+	$('#'+targetid).removeAttr('disabled');
 }
 
 //** Registration process Step- #1
@@ -777,13 +778,16 @@ $(document).on('hover', '.main-img-user', function(){
 
 //Step-1# Email-SignUp page, Country, Region/States, Cities
 $(document).on('change', '#formreg_country', function(){
+	$('#formreg_region').attr('disabled', 'true');
 	getcountrycity($(this),'formreg_region');
 });
 $(document).on('change', '#formreg_region', function(){
+	$('#formreg_city').attr('disabled', 'true');
 	getcountrycity($(this),'formreg_city');
 });
 $(document).on('change', '#formreg_state', function(){
-	getcountrycity($(this),'formreg_city');
+	$('#formreg_city').attr('disabled', 'true');
+	//getcountrycity($(this),'formreg_city');
 });
 
 // profile page functions

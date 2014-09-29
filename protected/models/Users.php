@@ -243,7 +243,8 @@ class Users extends CActiveRecord
 	 * @param string $provider, Int $identifier .
 	 * @return true or false 
 	 */
-	public function checkSocialAuth($provider, $identifier){	
+	public function checkSocialAuth($provider, $identifier)
+	{	
 		$query = "SELECT count(*) as cnt FROM `users_socialmedia` WHERE `user_socialmedia_provider` = :provider AND `user_socialmedia_identifier` = :identifier";		
 		$command= Yii::app()->db->createCommand($query);
 		$command->bindParam(":provider", $provider);
@@ -272,11 +273,23 @@ class Users extends CActiveRecord
 		$query="UPDATE users SET notification_read_date='".$time."' WHERE user_id='".$uid."'";
 		$command= Yii::app()->db->createCommand($query);
 		$command->execute();
+	}	
+	
+	/**
+	* Name: getRegistrationStep
+	* User_Define Function To Get registration Step value	
+	* Last Modified:27-Sep-14
+	*/
+	public function getRegistrationStep($userid)
+	{
+		$query = "SELECT user_registration_steps FROM users WHERE user_id = :userId";
+		$command = yii::app()->db->createCommand($query);
+		$command->bindparam(":userId",$userid);
+		$rawData = $command->queryAll();
+		return $rawData[0]['user_registration_steps'];
 	}
 	
-	
-		//get user location
-	
+	//get user location	
 	function get_profile_location($userId){
 		$query = "SELECT UL.user_location_id as locationId, UL.user_location_country AS country, UL.user_location_region AS region, UL.user_location_city AS city   FROM users U JOIN users_location UL ON U.user_location_id = UL.user_location_id WHERE U.user_id = :userId";
 		$command = yii::app()->db->createCommand($query);
@@ -284,11 +297,8 @@ class Users extends CActiveRecord
 		$rawData = $command->queryAll();
 		return $rawData[0];
 	}	
-
 	
-	
-	//get hearts count
-	
+	//get hearts count	
 	function get_profile_hearts_count($userId){
 		$query = "SELECT count(user_id) AS total FROM `log_photos_hearts` WHERE  `owner_id` = :userId";
 		$command = yii::app()->db->createCommand($query);
@@ -300,10 +310,8 @@ class Users extends CActiveRecord
 		return $count;
 	}
 	
-	//get friends count
-	
-	function get_profile_friends_count($userId){
-		
+	//get friends count	
+	function get_profile_friends_count($userId){		
 		$query = "
 			SELECT
 				 (SELECT count(*) FROM `users_friends` WHERE user_id = :userId AND `status` = 1 )
@@ -319,6 +327,7 @@ class Users extends CActiveRecord
 		}
 		return $count;		
 	}
+	
 	// get profile following count
 	function get_profile_following_count($userId){
 		$query = "SELECT count(user_id) AS total FROM `users_follow` WHERE  `user_id` = :userId";
@@ -347,7 +356,6 @@ class Users extends CActiveRecord
 	}
 	
 	// get profile follower count	
-	
 	function get_profile_follower_count($userId){
 		$query = "SELECT count(user_id) AS total FROM `users_follow` WHERE  `follow_id` = :follow_id";
 		$command = yii::app()->db->createCommand($query);
@@ -357,11 +365,9 @@ class Users extends CActiveRecord
 			$count = $raw['total'];
 		}
 		return $count;
-	}
-	
+	}	
 	
 	// get profile follower users list	
-	
 	function get_profile_follower_users($userId){
 		$query = "SELECT user_id FROM `users_follow` WHERE  `follow_id` = :follow_id";
 		$command = yii::app()->db->createCommand($query);
@@ -376,9 +382,9 @@ class Users extends CActiveRecord
 		}
 	}	
 	
-	// get user hash tags
-	
-	function get_user_hashtag($hash_cat_id,$userId){
+	// get user hash tags	
+	function get_user_hashtag($hash_cat_id,$userId)
+	{
 		 $query = "SELECT H.hashtags_name FROM hashtags H 
 						JOIN hashtags_category HC ON H.hashtags_category_id = HC.hashtags_category_id 
 					JOIN users_hashtags UH ON UH.hashtags_id = H.hashtags_id

@@ -55,17 +55,26 @@ else
 	<?php
 		$id=Yii::app()->user->id; 
 		$userDetailId = Yii::app()->user->detailid;
-		$msglist=UsersMessages::model()->getLatestmsg($id,$userDetailId);
+		$user_regstep = Users::model()->getRegistrationStep($id);
+		if($user_regstep<6){
+			$msglist = array(); //If user didn't complete Reg steps, don't Show Icons
+			$msgHideclass = 'style="display:none;"';
+		} else{
+			$msglist=UsersMessages::model()->getLatestmsg($id,$userDetailId);
+			$msgHideclass = '';
+		}
 		$unreadcnt = '';
+		if(!empty($msglist) && count($msglist)>0){
 		foreach($msglist as $k1=>$v1){
 			if($v1['reply_detailid']!=$userDetailId && $v1['rplystatus']==0)
 			$unreadcnt++;
 		}
+		}
 	?>
-	<li class="dropdown" id="header_inbox_bar"> 
+	<li class="dropdown" id="header_inbox_bar" <?php echo $msgHideclass; ?>>	
 	<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">		
 	<i class="icon-envelope"></i><span class="badge"><?php echo $unreadcnt; ?></span>
-	</a>
+	</a>	
 		<?php if(isset($msglist) && count($msglist)>0){ ?>
 		<ul class="dropdown-menu extended inbox">
 		<li>
@@ -141,7 +150,7 @@ else
 	<!-- END INBOX DROPDOWN --> 
       
 	<!-- BEGIN NOTIFICATION DROPDOWN -->
-	<li class="dropdown" id="header_notification_bar">
+	<li class="dropdown" id="header_notification_bar" <?php echo $msgHideclass; ?>>
 	<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"  data-close-others="true"> 
 	<i class="icon-megaphone"></i><span class="badge"><!--notify count(6)--></span>
 	</a>
