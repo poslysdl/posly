@@ -49,7 +49,7 @@ class LikesController extends Controller
 	
 	/* This user define Ajax function
 	*  for increase the like count.
-	*  Last Modified:24-Sep-14
+	*  Last Modified:29-Sep-14
 	*/	
 	public function actionCincrease()
 	{
@@ -65,8 +65,9 @@ class LikesController extends Controller
 		$time=new CTimestamp;
 		$value=$time->getDate();
 		$likes->log_photos_hearts_date=$value[0];
-		$likes->save();	
-		//$this->Updaterank('add',$count->user_id); //Update User Ranking		
+		$likes->save();
+		//Update the Rankings...
+		$this->Updaterank('add',$count->user_id); //Rank
 		echo $count->photos_hearts_count;
 		Yii::app()->end();
 	}
@@ -87,6 +88,7 @@ class LikesController extends Controller
 		}
 		$dlike=LogPhotosHearts::model()->find("user_id=$uid and photos_id=$id");
 		$dlike->delete();
+		//Update the Rankings...
 		$this->Updaterank('sub',$count->user_id); //Rank
 		echo $count->photos_hearts_count;		
 		Yii::app()->end();
@@ -94,7 +96,7 @@ class LikesController extends Controller
 	
 	/* This user define function is used to to increase
 	* or decrease ranking fields city,regin,country wrt to Heart Like
-	* Last Modified:24-Sep-14
+	* Last Modified:29-Sep-14
 	* As This Method is use within the Class, therefore No Action keyword & accessRule require
 	*/
 	public function Updaterank($flag,$uid)
@@ -103,13 +105,13 @@ class LikesController extends Controller
 		$userdetailid = $users['user_details_id'];
 		$maxrankArray = UsersDetails::model()->getMaxRank($uid,$userdetailid);
 		if(!empty($userdetailid))
-		{			
+		{	
 			$count=UsersDetails::model()->findByPk($userdetailid);						
 			//set ranks
 			$city=$count->user_rank_incity;
 			$region=$count->user_rank_inregion;
 			$country=$count->user_rank_incountry;
-			$world=$count->user_rank_worldwide;
+			$world=$count->user_rank_worldwide;			
 			$count->user_rank_incity=$this->GetNewrank($city,$flag,$maxrankArray['city']);
 			$count->user_rank_inregion=$this->GetNewrank($region,$flag,$maxrankArray['region']);
 			$count->user_rank_incountry=$this->GetNewrank($country,$flag,$maxrankArray['country']);
@@ -118,7 +120,7 @@ class LikesController extends Controller
 			unset($count);
 			$this->RevisedOthersRank($city,$region,$country,$world,$uid,$userdetailid,$flag,$maxrankArray);
 			unset($maxrankArray);
-		}
+		}		
 	}
 	
 	/* This user define function used to calculate rank	
@@ -145,7 +147,7 @@ class LikesController extends Controller
 	
 	/* This user define function
 	* used to Update other User Rank, whose Place This user has Acquire
-	* Last Modified:24-Sep-14
+	* Last Modified:29-Sep-14
 	* As This Method is use within the Class, therefore No Action keyword & accessRule require
 	*/
 	public function RevisedOthersRank($prevcity,$prevregion,$prevcountry,$prevworld,$uid,$userdetailid,$flag,$maxrankArray)
@@ -154,22 +156,22 @@ class LikesController extends Controller
 		{	//Revised the other User Rank, Whose Rank This user Had Acquire
 			$cityid = $maxrankArray['cityid'];
 			if(!empty($cityid)){
-				$thisUserNewRank = GetNewrank($prevcity,$flag,$maxrankArray['city']);
+				$thisUserNewRank = $this->GetNewrank($prevcity,$flag,$maxrankArray['city']);
 				UsersDetails::model()->updateOthersRank('city',$thisUserNewRank,$prevcity,$cityid,$userdetailid);
 			}
 			$regionid = $maxrankArray['regionid'];
 			if(!empty($regionid)){
-				$thisUserNewRank = GetNewrank($prevregion,$flag,$maxrankArray['region']);
+				$thisUserNewRank = $this->GetNewrank($prevregion,$flag,$maxrankArray['region']);
 				UsersDetails::model()->updateOthersRank('region',$thisUserNewRank,$prevregion,$regionid,$userdetailid);
 			}
 			$countryid = $maxrankArray['countryid'];
 			if(!empty($countryid)){
-				$thisUserNewRank = GetNewrank($prevcountry,$flag,$maxrankArray['country']);
+				$thisUserNewRank = $this->GetNewrank($prevcountry,$flag,$maxrankArray['country']);
 				UsersDetails::model()->updateOthersRank('country',$thisUserNewRank,$prevcountry,$countryid,$userdetailid);
 			}
 			//World
 			if($prevworld!=""){
-				$thisUserNewRank = GetNewrank($prevworld,$flag,$maxrankArray['world']);
+				$thisUserNewRank = $this->GetNewrank($prevworld,$flag,$maxrankArray['world']);
 				UsersDetails::model()->updateOthersRank('world',$thisUserNewRank,$prevworld,'',$userdetailid);
 			}
 		}

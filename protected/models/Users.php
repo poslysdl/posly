@@ -201,6 +201,19 @@ class Users extends CActiveRecord
 		return false;	  
 	}
 	
+	/* this function is used to find user id from userEmail
+	* Last modified: 29-Sep-14
+	*/
+	public function findIdByEmail($username)
+	{
+		$email=strtolower($username);	 
+		$user=$this->with(array('userDetails'=>array('select'=>'user_details_id,user_id')))->find("userDetails.user_details_email='$email'");	 
+		if(is_object($user) && isset($user->user_id))
+			return $user->user_id;
+		else
+			return NULL;	  
+	}
+	
 	/* this function is used to check , if user already registered
 	* using FB emailId through SignUp with Emailid steps.
 	* Then if emailid exits and social_media didn't then go for Update

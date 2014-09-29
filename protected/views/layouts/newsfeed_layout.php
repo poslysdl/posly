@@ -357,9 +357,12 @@ $(document).ready(function(){
 		$('#header_notification_bar > .dropdown-toggle > .badge').text(''); //Top Header Notification count
 		var cnt = getAjaxreturn('<?php echo $this->createUrl("/site/removenotifycount"); ?>','','');
 	});	
-	//** Timer to update Notification every 4min
-	setInterval(function(){showNotifications()}, 240000); // 240000 ms = 4min
-	setInterval(function(){showSidebarMessageList()}, 300000); //1000 ms = 1 second, 60000 ms = 1min
+	
+	<?php if(!Yii::app()->user->isGuest){ ?>
+	//** Timer to Show Notification every 6min in notify icon at Site-Header
+	//setInterval(function(){showNotifications()}, 240000); // 240000 ms = 4min
+	//setInterval(function(){showSidebarMessageList()}, 300000); //1000 ms = 1 second, 60000 ms = 1min
+	<?php } ?>
    
 });
 

@@ -2,7 +2,7 @@
 /* An Component for User Authentication
 * is used By FB SignUp & SignIn, Email SignUp & SignIn.
 ** Posly Users SESSIONS gets started Here
-* Last Modified - 19-Sep-14
+* Last Modified - 29-Sep-14
 * http://www.yiiframework.com/doc/api/1.1/CUserIdentity
 */
 class UserIdentity extends CUserIdentity {
@@ -55,10 +55,16 @@ class UserIdentity extends CUserIdentity {
 			$params = array(':id'=>$user->user_id);
 			Users::model()->updateByPk($user->user_id,$attributes,$condition,$params);
 			//Update User's Locations ..			
-			$temp = UsersLocation::model()->findByPK($user->user_location_id);
-			$user_city = $temp->user_location_city;
-			$user_country = $temp->user_location_country;
-			$user_region = $temp->user_location_region;
+			$temp = UsersLocation::model()->findByPK($user->user_location_id);	
+			if(isset($temp) && count($temp)>0){
+				$user_city = $temp->user_location_city;
+				$user_country = $temp->user_location_country;
+				$user_region = $temp->user_location_region;
+			} else{
+				$user_city = '0';
+				$user_country = '0';
+				$user_region = '0';
+			}			
 			$this->setState('usercity', $user_city);
 			$this->setState('usercountry', $user_country);
 			$this->setState('userregion', $user_region);

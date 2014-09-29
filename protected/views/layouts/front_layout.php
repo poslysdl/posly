@@ -223,8 +223,8 @@ $(document).on('click', '.like', function(){
 		if(temp=='icon-heart-empty')
 		{
 			$.get(u,function(data,status){ 
-				var data = parseInt(data);					
-				poslyAjaxLikecalls(ajaxurl,id,data);				
+				var data = parseInt(data);
+				setTimeout(function(){poslyAjaxLikecalls(ajaxurl,id,data)}, 2000);								
 			});
 			$(this).find('i').removeAttr('class').attr('class', 'icon-heart');
 		}
@@ -233,7 +233,7 @@ $(document).on('click', '.like', function(){
 			u= u.replace('cincrease', 'cdecrease');
 			$.get(u,function(data,status){
 				var data = parseInt(data);					
-				poslyAjaxLikecalls(ajaxurl,id,data);				
+				setTimeout(function(){poslyAjaxLikecalls(ajaxurl,id,data)}, 2000);				
 			});
 			$(this).find('i').removeAttr('class').attr('class', 'icon-heart-empty');
 		} 
@@ -358,9 +358,12 @@ $(document).ready(function(){
 		$('#header_notification_bar > .dropdown-toggle > .badge').text(''); //Top Header Notification count
 		var cnt = getAjaxreturn('<?php echo $this->createUrl("/site/removenotifycount"); ?>','','');
 	});
-	//** Timer to update Notification every 6min
-	setInterval(function(){showNotifications()}, 240000); // 240000 ms = 4min
-	setInterval(function(){showSidebarMessageList()}, 300000); //1000 ms = 1 second, 60000 ms = 1min
+	
+	<?php if(!Yii::app()->user->isGuest){ ?>
+	//** Timer to Show Notification every 6min in notify icon at Site-Header
+	//setInterval(function(){showNotifications()}, 240000); // 240000 ms = 4min
+	//setInterval(function(){showSidebarMessageList()}, 300000); //1000 ms = 1 second, 60000 ms = 1min
+	<?php } ?>
 	
 });
 

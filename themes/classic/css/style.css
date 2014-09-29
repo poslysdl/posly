@@ -18,13 +18,8 @@ body {
     overflow-x: hidden;
     overflow-y: scroll;
     position: relative;
-	-webkit-font-smoothing: antialiased;	
-	
-
-
+	-webkit-font-smoothing: antialiased;
 }
-
-
 
 /*
 Internet Explorer 10 doesn't differentiate device width from viewport width, and thus doesn't 
@@ -4859,7 +4854,7 @@ Comment
 }
 .CMn li .likebox .lcnt {	
 	clear:both;
-	margin-left:6px;
+	margin-left:3px;
 }
 .CMn li.out img.avatar {
 	float: right;

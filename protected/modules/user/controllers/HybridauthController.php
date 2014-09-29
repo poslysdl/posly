@@ -4,7 +4,7 @@
 *will get data for FB here itself from \extensions\widgets\hybridAuth\CHybridAuth.php
 *Will Save FB profileImage, Email, Name to Users record in Posly
 *Will be Useing Widgets/HybridAuth (Yii::app()->hybridAuth) No need to CHANGE any code there..
-*Last Modified - 08-Sept-14
+*Last Modified - 29-Sept-14
 */
 class HybridauthController extends Controller{
  
@@ -35,8 +35,8 @@ class HybridauthController extends Controller{
             Yii::app()->hybridAuth->showError=true;
  
         if(Yii::app()->hybridAuth->isAdapterUserConnected($provider))
-		{
-            $socialUser = Yii::app()->hybridAuth->getAdapterUserProfile($provider);						
+		{	
+            $socialUser = Yii::app()->hybridAuth->getAdapterUserProfile($provider);			
             if(isset($socialUser))
 			{	
 				$this->authSocialIdentifier = $socialUser->identifier;
@@ -45,13 +45,15 @@ class HybridauthController extends Controller{
 				if($user===true){
 					$flagemail='y';	
 				}			
-				unset($user);
-				if($flagemail=='y'){
-					$this->actionAlreadyemail($provider,$socialUser); //Dual signUp with FB & EmailId
-				}			
-                // find user from db model with social user info, Both at timeof SignIn & SignUp process
-                $user = Users::model()->findBySocial($provider,$this->authSocialIdentifier,$socialUser->email);	
-				
+				unset($user);				
+				if($flagemail=='y')
+				{	//Dual signUp with FB & EmailId..If Already SignUp using EmailId
+					//and then comming to SignUp Through FB					
+					$this->actionAlreadyemail($provider,$socialUser);
+					$user='1';
+				}
+				// find user from db model with social user info, Both at timeof SignIn & SignUp process
+				$user = Users::model()->findBySocial($provider,$this->authSocialIdentifier,$socialUser->email);					
                 if(empty($user))
 				{	
 					//..New, SignUp
@@ -101,9 +103,9 @@ class HybridauthController extends Controller{
                 } else{
 					//..Already Registerd with Posly by means of a Social Media
 					$this->authSocialIdentifier = $user->userSocialmedia->user_socialmedia_identifier;					
-				}
+				}	
                 if($user)
-				{
+				{	//Login & start session process	
                 	$identity = new UserIdentity($provider, $socialUser->identifier); 
 					$identity->setsocialdata($provider,$this->authSocialIdentifier);
                     $identity->authenticate('social');
@@ -134,61 +136,67 @@ class HybridauthController extends Controller{
 	* This function is a Dual signUp with FB & EmailId, comes from Step-#1 - Social Sharing
 	* User first SignUp with Email, then if also want to connect with their FB Account
 	* Update users details, Users with FB data and only Insert in social media table
-	* Last Modified: 09-Sept-14
+	* Last Modified: 29-Sept-14
 	*/	
     public function actionAlreadyemail($provider,$socialUser)
 	{	
-		$userid = Yii::app()->user->id;
 		$socialid = $socialUser->identifier;
-		$FBusername = NULL; //$socialUser->profileURL;
+		$FBusername = NULL; 
+		//$socialUser->profileURL;
 		//if(!empty($FBusername)){
 			//$FBusername = explode("/",$FBusername);
 			//$FBusername = $FBusername[3];
 		//}
 		$FBgender = ($socialUser->gender=="male")?'1':'0';
 		$FBDob = Null;
-		if(isset($socialUser->birthYear) && isset($socialUser->birthMonth) && isset($socialUser->birthDay))
+		if(isset($socialUser->birthYear) && isset($socialUser->birthMonth) && isset($socialUser->birthDay)){
 			$FBDob = $socialUser->birthYear.'-'.$socialUser->birthMonth.'-'.$socialUser->birthDay;
+		}
 		if(Users::model()->findByEmailId($socialUser->email))
-		{
+		{	
+			$userid = Users::model()->findIdByEmail($socialUser->email);
 			//FB emailId and Posly SignUp with emailId is same
 			$criteria = new CDbCriteria();		
 			$criteria->condition = "user_socialmedia_provider='Facebook' AND user_socialmedia_identifier=$socialid";		
 			$usersocials=UsersSocialmedia::model()->findAll($criteria);
 			if(!isset($usersocials) || count($usersocials)==0)
-			{	//Insert Social Identifier into social media records
-				$user_socialmedia=new UsersSocialmedia;
-				$user_socialmedia->user_socialmedia_provider=$provider;
-				$user_socialmedia->user_socialmedia_identifier=$this->authSocialIdentifier;
-				if($user_socialmedia->save())
-				{ 				
-					//Update User Table data..					
-					$condition = 'user_id = :userid';
-					$params = array(':userid'=>$userid);
-					$attributes = array('user_socialmedia_id'=>$user_socialmedia->user_socialmedia_id);
-					$row = Users::model()->updateByPk($userid,$attributes,$condition,$params);
-					//Update users details
-					$condition = 'user_id = :userid';
-					$params = array(':userid'=>$userid);
-					$attributes = array('user_unique_url'=>$FBusername,'user_details_gender'=>$FBgender,
-					'user_details_avatar'=>$socialUser->photoURL,'user_details_dob'=>$FBDob);
-					$row = UsersDetails::model()->updateAll($attributes,$condition,$params);
+			{	 //Insert Social Identifier into social media records			
+				if(!empty($userid))
+				{
+					$user_socialmedia=new UsersSocialmedia;
+					$user_socialmedia->user_socialmedia_provider=$provider;
+					$user_socialmedia->user_socialmedia_identifier=$this->authSocialIdentifier;
+					if($user_socialmedia->save())
+					{ 				
+						//Update User Table data..					
+						$condition = 'user_id = :userid';
+						$params = array(':userid'=>$userid);
+						$attributes = array('user_socialmedia_id'=>$user_socialmedia->user_socialmedia_id);
+						$row = Users::model()->updateByPk($userid,$attributes,$condition,$params);
+						//Update users details
+						$condition = 'user_id = :userid';
+						$params = array(':userid'=>$userid);
+						$attributes = array('user_unique_url'=>$FBusername,'user_details_gender'=>$FBgender,
+						'user_details_avatar'=>$socialUser->photoURL,'user_details_dob'=>$FBDob);
+						$row = UsersDetails::model()->updateAll($attributes,$condition,$params);
+					}
 				}
 			}
 		}
-		//Login & start session process
+		/*
+		//Login & start session process	
 		$identity = new UserIdentity($provider, $socialUser->identifier); 
 		$identity->setsocialdata($provider,$this->authSocialIdentifier);
-		$identity->authenticate('social');
-		unset($socialUser);
+		//$identity->authenticate('social');	
 		switch($identity->errorCode)
 		{
 			case UserIdentity::ERROR_NONE:
 			Yii::app()->user->login($identity);			
 			break;
-		}			
+		}	
 		$this->redirect(Yii::app()->createUrl('/registration/settings'));
 		Yii::app()->end();	
+		*/
 	}	
 }
 

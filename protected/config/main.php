@@ -4,11 +4,13 @@
 
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here. 
+//$FB_APPId = '647620848638998'; //2pretty.in FBApp
+//$FB_SECRETKey = "4855626d478b8c2280db3ef8a5ead448"; //2pretty.in FBApp
 
 $poslyIP = $_SERVER['SERVER_ADDR'];
 if($poslyIP=='127.0.0.1'){
-	$FB_APPId = '647620848638998'; //2pretty.in FBApp
-	$FB_SECRETKey = "4855626d478b8c2280db3ef8a5ead448";
+	$FB_APPId = '700050163417521';
+	$FB_SECRETKey = "eab105dbac0bb08dc5cd174350de318f";
 	$DB_USERNAME = 'root';
 	$DB_PASSWORD = 'sdl123';
 	$Base_URL = 'http://localhost/projects/posly_v2/posly/index.php/user/hybridauth/endpoint';
