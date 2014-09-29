@@ -144,7 +144,7 @@ class Users extends CActiveRecord
 	
 	public function getUserInfo($userId){
 	//	$data = array();
-		 $query = "SELECT UD.*,UL.* FROM users_details UD
+		 $query = "SELECT U.user_id AS user_id, UD.*,UL.* FROM users_details UD
 						JOIN users U ON U.user_details_id = UD.user_details_id 
 					JOIN users_location UL ON U.user_location_id = UL.user_location_id
 						WHERE U.user_id = :userId

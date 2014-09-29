@@ -276,7 +276,7 @@ class ProfileController extends Controller {
 				else	
 					$user_follow_avatar = Yii::app()->baseUrl.'/profiles/noimage.jpg';				
 				$this->profile_follow_userdetails['avatar'] = $user_follow_avatar;
-				$this->profile_follow_userdetails['profile_user_id'] = $user_follow['follow_id'];
+				//$this->profile_follow_userdetails['profile_user_id'] = $user_follow['follow_id'];
 				$folllow_users[] = $this->profile_follow_userdetails;				
 			}
 		}
@@ -338,7 +338,7 @@ class ProfileController extends Controller {
 				else	
 					$user_follower_avatar = Yii::app()->baseUrl.'/profiles/noimage.jpg';				
 				$this->profile_follower_userdetails['avatar'] = $user_follower_avatar;
-				$this->profile_follower_userdetails['profile_user_id'] = $user_follower['user_id'];
+				//$this->profile_follower_userdetails['profile_user_id'] = $user_follower['user_id'];
 				$folllower_users[] = $this->profile_follower_userdetails;				
 			}
 		}

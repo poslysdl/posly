@@ -33,7 +33,7 @@ $users_follower_odd = $user_info['users_follower_odd'];
                </div>               
                <?php if(!empty($users_even['follow'])) { ?>               
                <div class="Fl">
-                  <button type="button" id="user_following" class="btn cyan active <?php echo $users_even['follow'];?>" rel="<?php echo $users_even['profile_user_id']; ?>"><?php echo $users_even['follow'];?></button>
+                  <button type="button" id="user_following" class="btn cyan active <?php echo $users_even['follow'];?>" rel="<?php echo $users_even['user_id']; ?>"><?php echo $users_even['follow'];?></button>
                </div>
                <?php } ?>
             </div>            
@@ -75,7 +75,7 @@ $users_follower_odd = $user_info['users_follower_odd'];
                </div>         
                <?php if(!empty($users_odd['follow'])) { ?>
                <div class="Fl">
-                  <button id="user_following" type="button" class="btn cyan active <?php echo $users_odd['follow'];?>" rel="<?php echo $users_odd['profile_user_id']; ?>"><?php echo $users_odd['follow'];?></button> 
+                  <button id="user_following" type="button" class="btn cyan active <?php echo $users_odd['follow'];?>" rel="<?php echo $users_odd['user_id']; ?>"><?php echo $users_odd['follow'];?></button> 
                </div>
                <?php } ?>
             </div>         
