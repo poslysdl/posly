@@ -1,5 +1,5 @@
 <?php
-//** Last Modified On : 19-Sept-14
+//** Last Modified On : 27-Sept-14
 
 class SiteController extends Controller
 {
@@ -65,11 +65,12 @@ class SiteController extends Controller
 				$value=$time->getDate();
 				$end= $value[0];
 				$start= $end-86400000;
+				$allusersphotos = array();
+				$country = Yii::app()->user->getState('usercountry');
 				$criteria = new CDbCriteria();
 				$criteria->select = 't.* , (SELECT COUNT( * )*(0.3) FROM log_photos_comment a WHERE a.owner_id = t.user_id AND a.log_photos_comment_date BETWEEN '.$start.' AND '.$end.' ) + (SELECT COUNT( * )*(1) FROM log_photos_hearts b WHERE b.owner_id = t.user_id AND b.log_photos_hearts_date BETWEEN '.$start.' AND '.$end.' ) + (SELECT COUNT( * )*(1.1) FROM log_photos_share c WHERE c.owner_id = t.user_id AND c.log_photos_share_date BETWEEN '.$start.' AND '.$end.' ) AS totalcount';
 				$criteria->group = 't.user_id';
-				$criteria->order = 'totalcount DESC';
-				
+				$criteria->order = 'totalcount DESC';				
 				if($_GET['l']<6){
 					$criteria->limit=$_GET['l']; //Total No of Records
 					$criteria->offset=$_GET['l']-2; //Starts from..
@@ -77,39 +78,64 @@ class SiteController extends Controller
 					$criteria->limit = $_GET['l']-2;
 					$criteria->offset = $_GET['l'];
 				}
-				
-				$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);		
+				if(!empty($country)){
+					//Show Only User's Country
+					$criteria->condition = "userLocation.user_location_country='$country'";								
+					$allusersphotos=Photos::model()->with('user', 'user.userDetails','user.userLocation')->findAll($criteria);
+				} else{
+					$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);
+				}						
 				$this->renderPartial('somemore', array('photos'=>$allusersphotos));
+				unset($criteria);
 			}
 			elseif($_GET['act']=='newmembers')
 			{				
 				$criteria = new CDbCriteria();				
 				$criteria->group = 'userDetails.user_id';
-				$criteria->order = 'userDetails.user_details_created_date DESC';				
 				if($_GET['l']<6){
 					$criteria->limit=$_GET['l']; //Total No of Records
 					$criteria->offset=$_GET['l']-2; //Starts from..
 				} else{
 					$criteria->limit = $_GET['l']-2;
 					$criteria->offset = $_GET['l'];
-				}				
-				$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);		
-				$this->renderPartial('somemore', array('photos'=>$allusersphotos));				
+				}
+				$country = Yii::app()->user->getState('usercountry');
+				if(!empty($country)){
+					//Show Only User's Country
+					$criteria->condition = "userLocation.user_location_country='$country'";
+				}
+				$criteria->order = 'userDetails.user_details_created_date DESC';								
+				$allusersphotos=Photos::model()->with('user', 'user.userDetails','user.userLocation')->findAll($criteria);		
+				$this->renderPartial('somemore', array('photos'=>$allusersphotos));
+				unset($criteria);
 			}
 			elseif($_GET['act']=='topmembers')
 			{							
+				$allusersphotos = array();
 				$criteria = new CDbCriteria();				
-				$criteria->group = 'userDetails.user_id';
-				$criteria->order = 'userDetails.user_rank_worldwide ASC';				
+				$criteria->select = 't.* , (SELECT COUNT(*) FROM log_photos_hearts b WHERE b.owner_id = t.user_id) AS totalcount';
+				$criteria->group = 't.user_id';
+				$criteria->order = 'totalcount DESC';	
 				if($_GET['l']<6){
 					$criteria->limit=$_GET['l']; //Total No of Records
 					$criteria->offset=$_GET['l']-2; //Starts from..
 				} else{
 					$criteria->limit = $_GET['l']-2;
 					$criteria->offset = $_GET['l'];
-				}				
-				$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);		
-				$this->renderPartial('somemore', array('photos'=>$allusersphotos));			
+				}	
+				$country = Yii::app()->user->getState('usercountry');
+				if(!empty($country)){
+					//Show Only User's Country
+					$criteria->condition = "userLocation.user_location_country='$country'";								
+					$allusersphotos=Photos::model()->with('user', 'user.userDetails','user.userLocation')->findAll($criteria);
+				}
+				else{
+					//If Not, Show World Wide
+					$criteria->condition = 'exists(select * from photos where user_id=t.user_id)';									
+					$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);
+				}		
+				unset($criteria);		
+				$this->renderPartial('somemore', array('photos'=>$allusersphotos));		
 			}
 			elseif($_GET['act']=='males')
 			{
@@ -154,17 +180,7 @@ class SiteController extends Controller
 				$this->render('somemorenewmembers', array('photos'=>$allusersphotos));
 			}
 			elseif($_GET['act']=='hashtags')
-			{
-				/*$criteria = new CDbCriteria();
-				$hid=Yii::app()->request->cookies['presentH']->value;
-				$criteria = new CDbCriteria();
-				$criteria->group="photos.user_id";
-				$criteria->condition = "t.hashtags_id=$hid";
-				$criteria->limit=$_GET['l'];
-				$criteria->offset=$_GET['l']-2;
-				$allusersphotos=PhotosHashtags::model()->with('photos','photos.user', 'photos.user.userDetails', 'photos.user.userLocation')->findAll($criteria); 
-				$this->render('somemorehashtags', array('photos'=>$allusersphotos));
-				*/
+			{				
 				//To show Card wrt to selected HashTags..a Kind of Filter
 				$photoidArray = array();
 				$allusersphotos = '';
@@ -220,12 +236,22 @@ class SiteController extends Controller
 		$value=$time->getDate();
 		$end= $value[0];
 		$start= $end-86400000;
+		$allusersphotos = array();
+		$country = Yii::app()->user->getState('usercountry');
 		$criteria = new CDbCriteria();
 		$criteria->select = 't.* , (SELECT COUNT( * )*(0.3) FROM log_photos_comment a WHERE a.owner_id = t.user_id AND a.log_photos_comment_date BETWEEN '.$start.' AND '.$end.' ) + (SELECT COUNT( * )*(1) FROM log_photos_hearts b WHERE b.owner_id = t.user_id AND b.log_photos_hearts_date BETWEEN '.$start.' AND '.$end.' ) + (SELECT COUNT( * )*(1.1) FROM log_photos_share c WHERE c.owner_id = t.user_id AND c.log_photos_share_date BETWEEN '.$start.' AND '.$end.' ) AS totalcount';
 		$criteria->group = 't.user_id';
 		$criteria->order = 'totalcount DESC';
 		$criteria->limit=$this->cartlimit;
-		$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);
+		if(!empty($country)){
+			//Show Only User's Country
+			$criteria->condition = "userLocation.user_location_country='$country'";								
+			$allusersphotos=Photos::model()->with('user', 'user.userDetails','user.userLocation')->findAll($criteria);
+		}
+		else{
+			//If Not, Show World Wide											
+			$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);
+		}		
 		unset($criteria);
 		//Get Hash Tags Listings for sidebar, this action define in Controller class
 		$limit = (Yii::app()->user->isGuest)?9:6; //HashTag Limit			
@@ -242,35 +268,57 @@ class SiteController extends Controller
 	public function actionNewmembers()
 	{		
 		$this->layout='front_layout';
-		Yii::app()->clientScript->registerCoreScript('jquery'); 
-		$criteria = new CDbCriteria();		
-		$criteria->group = 'user.user_id';
-		$criteria->condition = 'exists(select * from photos where user_id=t.user_id)';
-		$criteria->order = 'userDetails.user_details_created_date DESC';
-		$criteria->limit=$this->cartlimit;		
-		$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);		
+		Yii::app()->clientScript->registerCoreScript('jquery');
+		$allusersphotos = array();
+		$criteria = new CDbCriteria();
+		$country = Yii::app()->user->getState('usercountry');		
+		$criteria->group = 'user.user_id';			
+		if(!empty($country)){
+			//Show Only User's Country
+			$criteria->condition = "userLocation.user_location_country='$country'";			
+			$criteria->order = 'userDetails.user_details_created_date DESC';
+			$criteria->limit=$this->cartlimit;
+			$allusersphotos=Photos::model()->with('user', 'user.userDetails','user.userLocation')->findAll($criteria);
+		} else{
+			$criteria->condition = 'exists(select * from photos where user_id=t.user_id)';
+			$criteria->order = 'userDetails.user_details_created_date DESC';
+			$criteria->limit=$this->cartlimit;
+			$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);				
+		}				
 		unset($criteria);				
 		//Get Hash Tags Listings for sidebar, this action define in Controller class
 		$limit = (Yii::app()->user->isGuest)?9:6; //HashTag Limit	
 		$hash_tags = $this->actionHashtaglist($limit);		
 		$this->render('index', array('photos'=>$allusersphotos,'hash_tags'=>$hash_tags,'menulink'=>'newmember'));		
+	
 	}
 	
 	/**
 	* Top members
 	* Change urlManager array in Main.php for proper redirect
-	* Last Modified: 01-Aug-14
+	* Last Modified: 26-Sept-14
 	*/
 	public function actionTopmembers()
 	{		
 		$this->layout='front_layout';
-		Yii::app()->clientScript->registerCoreScript('jquery'); 
-		$criteria = new CDbCriteria();		
-		$criteria->group = 'user.user_id';
-		$criteria->condition = 'exists(select * from photos where user_id=t.user_id)';
-		$criteria->order = 'userDetails.user_rank_worldwide ASC';
+		Yii::app()->clientScript->registerCoreScript('jquery');		
+		$allusersphotos = array();
+		$criteria = new CDbCriteria();
+		$criteria->select = 't.* , (SELECT COUNT(*) FROM log_photos_hearts b WHERE b.owner_id = t.user_id) AS totalcount';
+		$criteria->group = 't.user_id';
+		$criteria->order = 'totalcount DESC';
 		$criteria->limit=$this->cartlimit;		
-		$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);		
+		$country = Yii::app()->user->getState('usercountry');
+		if(!empty($country)){
+			//Show Only User's Country
+			$criteria->condition = "userLocation.user_location_country='$country'";			
+			$allusersphotos=Photos::model()->with('user', 'user.userDetails','user.userLocation')->findAll($criteria);
+		}		
+		else{
+			//If Not, Show World Wide
+			$criteria->condition = 'exists(select * from photos where user_id=t.user_id)';			
+			$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);
+		}	
 		unset($criteria);				
 		//Get Hash Tags Listings for sidebar, this action define in Controller class
 		$limit = (Yii::app()->user->isGuest)?9:6; //HashTag Limit		
@@ -288,16 +336,24 @@ class SiteController extends Controller
 	{		
 		$this->layout='front_layout';
 		Yii::app()->clientScript->registerCoreScript('jquery'); 
+		$allusersphotos = array();
 		$time=new CTimestamp;
 		$value=$time->getDate();
 		$end= $value[0];
 		$start= $end-86400000;
+		$country = Yii::app()->user->getState('usercountry');
 		$criteria = new CDbCriteria();
 		$criteria->select = 't.* , (SELECT COUNT( * )*(0.3) FROM log_photos_comment a WHERE a.owner_id = t.user_id AND a.log_photos_comment_date BETWEEN '.$start.' AND '.$end.' ) + (SELECT COUNT( * )*(1) FROM log_photos_hearts b WHERE b.owner_id = t.user_id AND b.log_photos_hearts_date BETWEEN '.$start.' AND '.$end.' ) + (SELECT COUNT( * )*(1.1) FROM log_photos_share c WHERE c.owner_id = t.user_id AND c.log_photos_share_date BETWEEN '.$start.' AND '.$end.' ) AS totalcount';
 		$criteria->group = 't.user_id';
 		$criteria->order = 'totalcount DESC';
 		$criteria->limit=$this->cartlimit;
-		$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);
+		if(!empty($country)){
+			//Show Only User's Country
+			$criteria->condition = "userLocation.user_location_country='$country'";								
+			$allusersphotos=Photos::model()->with('user', 'user.userDetails','user.userLocation')->findAll($criteria);
+		} else{
+			$allusersphotos=Photos::model()->with('user', 'user.userDetails')->findAll($criteria);
+		}		
 		unset($criteria);
 		//Get Hash Tags Listings for sidebar, this action define in Controller class
 		$limit = (Yii::app()->user->isGuest)?9:6; //HashTag Limit		
@@ -875,7 +931,7 @@ Posly Team
 	/**
 	This user define Ajax function is used to return the html for rendering of
 	user's Activities List at Sidebar as well as For Top-Header Notification.
-	Last Modified:17-Sep-14
+	Last Modified:26-Sep-14
 	*/
 	public function actionShowusersactivities()
 	{	
@@ -898,12 +954,18 @@ Posly Team
 					$uname = ($uid==$v['userid'])?'You':$v['username'];
 					$owner_name = $v['ownername'];					
 					$msg = ' Likes '.$owner_name.'&#39;s photo:';
-					$msg.='<img class="img-responsive thumbimg" alt="" src="'.Yii::app()->theme->baseUrl.'/img/avatar2.jpg" />';
-					$activityArray[$v['hdate']] = array('avatar'=>$v['useravatar'],'name'=>$uname,'message'=>$msg);
+					$src=Yii::app()->baseUrl.'/files/'.$v['owner_id'].'/thumbnail/'.$v['photos_name'];				
+					$file_path = Yii::getPathOfAlias('webroot').'/files/'.$v['owner_id'].'/'.$v['photos_name'];										
+					if(!file_exists($file_path)){
+						$src=Yii::app()->theme->baseUrl.'/img/noimage.jpg';
+					}
+					$img='<img class="img-responsive thumbimg" alt="" src="'.$src.'" />';
+					$activityArray[$v['hdate']] = array('avatar'=>$v['useravatar'],'name'=>$uname,'message'=>$msg,'image'=>$img);
 					
 					//Duplicate Testing	DUMMY Data .......
-					$activityArray['1410354280'] = array('avatar'=>$v['useravatar'],'name'=>$uname,'message'=>$msg);
-					$activityArray['1410354380'] = array('avatar'=>$v['useravatar'],'name'=>$uname,'message'=>$msg);					
+					$img='<img class="img-responsive thumbimg" alt="" src="'.Yii::app()->theme->baseUrl.'/img/avatar2.jpg" />';
+					$activityArray['1410354280'] = array('avatar'=>$v['useravatar'],'name'=>$uname,'message'=>$msg,'image'=>$img);
+					$activityArray['1410354380'] = array('avatar'=>$v['useravatar'],'name'=>$uname,'message'=>$msg,'image'=>$img);					
 					//Duplicate Ends
 				}
 			}
@@ -917,7 +979,7 @@ Posly Team
 				{					
 					$date1 = $v['user_friend_created_date'];
 					$msg = ' and '.$v['friend']['user_details_firstname'].' '.$v['friend']['user_details_lastname'].' are now friends';
-					$activityArray[$date1] = array('avatar'=>$v['friend']['user_details_avatar'],'name'=>'you','message'=>$msg);
+					$activityArray[$date1] = array('avatar'=>$v['friend']['user_details_avatar'],'name'=>'you','message'=>$msg,'image'=>'');
 				}
 			}			
 			unset($friends);
@@ -929,8 +991,9 @@ Posly Team
 				foreach($friends as $k=>$v)
 				{					
 					$date1 = $v['user_friend_created_date'];
-					$msg = ' Had Sent You a Friend Request';					
-					$activityArray[$date1] = array('avatar'=>$v['user']['user_details_avatar'],'name'=>$v['user']['user_details_firstname'],'message'=>$msg);
+					$msg = ' Had Sent You a Friend Request';
+					$avatar = $v['user']['user_details_avatar'];
+					$activityArray[$date1] = array('avatar'=>$avatar,'name'=>$v['user']['user_details_firstname'],'message'=>$msg,'image'=>'');
 				}
 			}			
 			unset($friends);
@@ -942,13 +1005,29 @@ Posly Team
 				{	//where $[name] is your(loggedIn User) frnd , who also become frnd with $v['ffname']
 					$date1 = $v['date']; 
 					$msg = ' and '.$v['ffname'].' are now friends';
-					$activityArray[$date1] = array('avatar'=>$v['avatar'],'name'=>$v['name'],'message'=>$msg);
+					$activityArray[$date1] = array('avatar'=>$v['avatar'],'name'=>$v['name'],'message'=>$msg,'image'=>'');
 				}
 			}			
 			unset($friends);
+			//Get List of users who started to follow you..
+			$followers=UsersFollow::model()->getActivityFollow($limit,$uid);
+			if(count($followers)>0)
+			{		
+				foreach($followers as $k=>$v)
+				{	
+					$date1 = $v['date']; 
+					$msg = ' is now your follower';
+					$activityArray[$date1] = array('avatar'=>$v['avatar'],'name'=>$v['name'],'message'=>$msg,'image'=>'');
+				}
+			}	
+			unset($followers);
+			
 			//Now get List of Extra Notification of Posly, only for Top-Header DUMMY Data .......
-			if($flag=="header")
-			$activityArray['1410835502'] = array('avatar'=>'avatar1_small.jpg','name'=>'Posly','message'=>'There is an event to be organised at bangalore, at 1-oct-14, for Fashion ..an fasion event'); //*Duplicate Testing Data
+			if($flag=="header"){
+				$msg = 'There is an event to be organised at bangalore, at 1-oct-14, for Fashion ..an fasion event';
+				$activityArray['1410835502'] = array('avatar'=>'avatar1_small.jpg','name'=>'Posly','message'=>$msg,'image'=>''); 
+				//*Duplicate Testing Data
+			}
 		}
 		else
 		{
@@ -959,7 +1038,7 @@ Posly Team
 			{
 				foreach($photolikes as $k=>$v){					
 					$msg = ' Likes '.$v['ownername'].'&#39;s photo:';
-					$activityArray[$v['hdate']] = array('avatar'=>$v['useravatar'],'name'=>$v['username'],'message'=>$msg);
+					$activityArray[$v['hdate']] = array('avatar'=>$v['useravatar'],'name'=>$v['username'],'message'=>$msg,'image'=>'');
 				}
 			}
 			unset($photolikes);
@@ -973,11 +1052,12 @@ Posly Team
 					$user = $v['user']['user_details_firstname'].' '.$v['user']['user_details_lastname'];
 					$date1 = $v['user_friend_created_date'];
 					$msg = ' and '.$v['friend']['user_details_firstname'].' '.$v['friend']['user_details_lastname'].' are now friends';
-					$activityArray[$date1] = array('avatar'=>$v['user']['user_details_avatar'],'name'=>$user,'message'=>$msg);
+					$avatar = $v['user']['user_details_avatar'];
+					$activityArray[$date1] = array('avatar'=>$avatar,'name'=>$user,'message'=>$msg,'image'=>'');
 				}
 			}			
 			unset($friends);
-		}	
+		}
 		
 		//Now Create the display Activity HTML		
 		if(count($activityArray)>0)
@@ -1015,7 +1095,9 @@ Posly Team
 					//This for Side-Bar UserActivity/Notification Display
 					$str.='
 					<li class="noti-area"><img class="avatar img-responsive" alt="" src="'.$avatar.'" />
-					<div class="message"><span class="name">'.$values['name'].'</span> '.$values['message'].' </div>
+					<div class="message">
+					<span class="notimsg"><span class="name">'.$values['name'].'</span> '.$values['message'].'</span>'.$values['image'].'					
+					</div>
 					</li>					
 					';
 				}

@@ -6,7 +6,7 @@
  * The followings are the available columns in table 'users_follow':
  * @property integer $user_follow_id
  * @property integer $user_id
- * @property integer $follow_id
+ * @property integer $follow_id .. who follows the user_id
  * @property integer $user_follow_type
  *
  * The followings are the available model relations:
@@ -103,9 +103,28 @@ class UsersFollow extends CActiveRecord
 		return parent::model($className);
 	}
 	
+	/**
+	 * Name: getActivityFollow
+	 * User_Define Function, to get list of Users who followed You	 
+	 * @param numeric $limit record limit.
+	 * @param numeric $uid userid.
+	 * @return Array of records	 
+	 */
+	public function getActivityFollow($limit = 15,$uid = null)
+	{
+		if(!empty($uid))
+		{			
+			$query="SELECT CONCAT(fu.user_details_firstname,' ',fu.user_details_lastname) as name,fu.user_details_avatar as avatar,";
+			$query.="f.user_id,f.follow_id,f.user_follow_created_date as date FROM users_follow f JOIN users_details fu";				
+			$query.=" ON f.follow_id=fu.user_id WHERE f.user_id='$uid' ORDER BY f.user_follow_id DESC";
+			$command= Yii::app()->db->createCommand($query);		
+			$rawData = $command->queryAll();		
+			return $rawData;
+		}	
+	}	
 	
 	
-	  //for process follow request
+	//for process follow request
 	public function follow_friend($profile_current,$profile_other){
 		$parameters = array(":profile_current"=>$profile_current,":profile_other"=>$profile_other);
 		$query ="SELECT * FROM users_follow WHERE user_id = $profile_current AND follow_id = $profile_other";
@@ -127,9 +146,7 @@ class UsersFollow extends CActiveRecord
 		Yii::app()->end();
 	}
 	
-	// For removing follow request
-	
-	
+	// For removing follow request	
 	public function following_friend($profile_current,$profile_other){
 		$parameters = array(":profile_current"=>$profile_current,":profile_other"=>$profile_other);
 		$query ="SELECT * FROM users_follow WHERE user_id = $profile_current AND follow_id = $profile_other";
@@ -159,20 +176,6 @@ class UsersFollow extends CActiveRecord
 			return false;
 		}
 		
-	}
-	
-	//public function check_following($profile_current,$profile_other){
-	//	$query ="SELECT * FROM users_follow WHERE user_id = $profile_current AND follow_id = $profile_other";
-	//	$command= Yii::app()->db->createCommand($query);		
-	//	$rawData = $command->queryAll();
-	//	$rawCount = count($rawData);
-	//	if($rawCount>0){
-	//		return true;
-	//	}
-	//	else{
-	//		return false;
-	//	}
-	//	
-	//}		
+	}	
 	
 }

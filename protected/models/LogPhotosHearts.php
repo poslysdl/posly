@@ -118,8 +118,7 @@ class LogPhotosHearts extends CActiveRecord
 		$command= Yii::app()->db->createCommand($query);
 		$command->bindValue(':pid', $photo_id);
 		$command->bindValue(':limit', $limit);		
-		$rawData = $command->queryAll();
-		
+		$rawData = $command->queryAll();		
 		return $rawData;
 	}
 	
@@ -129,43 +128,103 @@ class LogPhotosHearts extends CActiveRecord
 	 * Due to Some Techical difficulty we are created HTML here in Model
 	 * which is used in multiple place in Cart through Ajax & direct page Render process..
 	 * @param numeric photo id and total likecount
-	 * @return string	 
+	 * @return string
+	 * Last Modified: 27-Sept-14
 	 */
 	public function createLikeCountHtml($photo_id,$likescount)
 	{
 		$uid=Yii::app()->user->id;		
-		$peopleLike = array();
 		$lcount = $likescount;
 		$you = false;
+		$peopleLike = array();
+		$myfriendsArray = array();
+		$person_likes = array();
 		if(!empty($uid))
-			$peopleLike = $this->getpeopleWhoLikes($photo_id);
-		if(count($peopleLike)>0)
 		{
-			$person_likes = array();				
+			$peopleLike = $this->getpeopleWhoLikes($photo_id); //List of People Who Likes..
+			//Get List of All yr Friends...
+			$query = "SELECT user_id,friend_id FROM users_friends WHERE user_id = '$uid'";
+			$query.=" OR friend_id='$uid' AND status='1'";
+			$command= Yii::app()->db->createCommand($query);				
+			$rawData = $command->queryAll();
+			if(isset($rawData) && count($rawData)>0)
+			{
+				foreach($rawData as $keys=>$values){
+					if($values['user_id']==$uid)
+						$myfriendsArray[] = $values['friend_id'];
+					else
+						$myfriendsArray[] = $values['user_id'];
+				}
+			}
+		}	
+		if(count($peopleLike)>0)
+		{		
 			foreach($peopleLike as $keys=>$values)
 			{
 				if($values['user_id']==$uid){
 					$you = true;
-				} else{
+				} else{	
+					//Get List of Users who Liked It
 					$person_likes[] = array('userid'=>$values['user_id'],
 					'fname'=>$values['firstname'],'lname'=>$values['lastname']);
 				}
-			}
-		}		
+			}			
+		}
+		//Create HTML Now ..
 		$str = '';
-		if($likescount==0){		
+		$pp='';
+		if($likescount==0){	
+			//No Likes
 			$str.='<i class="icon-heart"></i><span lphid="'.$photo_id.'">0 Likes</span>';		
-		} elseif($likescount==1){
-			$firstname = ($you)?'You':$person_likes[0]['fname'].' '.$person_likes[0]['lname'];		
+		}
+		elseif($likescount==1)
+		{	//Only 1 - Person Likes It
+			if(count($person_likes)>0)
+			{
+				$ppid = $person_likes[0]['userid'];
+				if(array_search($ppid, $myfriendsArray)){
+					$pp = $person_likes[0]['fname'].' '.$person_likes[0]['lname'];					
+				} else{
+					$pp='1';
+				}
+			} 
+			else{ 
+				$pp=''; 
+			}			
+			$firstname = ($you)?'You':$pp;			
 			$str.='<i class="icon-heart"></i> <a href="#">'.$firstname.'</a> ';
 			$str.='<span lphid="'.$photo_id.'"> like this</span>';
-		 } else{
-			$lcount = $lcount - 1;
-			$firstname = ($you)?'You':$person_likes[0]['fname'].' '.$person_likes[0]['lname'];		
-			$str.='<i class="icon-heart"></i> <a href="#">'.$firstname.'</a> ';
-			$str.='<span lphid="'.$photo_id.'"> & '.$lcount.' others like this</span>';		
 		} 
-		
+		else
+		{	// Multiple People Likes it ....
+			//$lcount = $lcount - 1;
+			if(count($person_likes)>0)
+			{
+				foreach($person_likes as $k1=>$v1)
+				{
+					$ppid = $v1['userid'];				
+					if(array_search($ppid, $myfriendsArray)===false){
+						$pp='';
+					} else{						
+						$pp = $person_likes[0]['fname'].' '.$person_likes[0]['lname'];
+						$lcount = $lcount - 1;
+						break; //atleast one of yr frnd Like it
+					}
+				} 
+			}		
+			$str.='<i class="icon-heart"></i>';
+			if($you)
+				$str.='<a href="#">You</a>&nbsp;';
+			if($pp!='' && $you===true)
+				$str.=',<a href="#">'.$pp.'</a>'; // for , symbol
+			if($pp!='' && $you===false)
+				$str.='<a href="#">'.$pp.'</a>';
+			if($str==''){
+				$str.='<span lphid="'.$photo_id.'"> '.$lcount.' people like this</span>';
+			} else{				
+				$str.='<span lphid="'.$photo_id.'"> and '.$lcount.' others like this</span>';
+			}
+		}		
 		return $str;
 	}
 	

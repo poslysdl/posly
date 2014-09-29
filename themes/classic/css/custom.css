@@ -110,4 +110,8 @@
 }
 
 .unreadmsg{ background-color: #e5e5e5 !important; }
+.nocardmsg {
+    color: red;
+	text-align:center;
+}
 /* end */

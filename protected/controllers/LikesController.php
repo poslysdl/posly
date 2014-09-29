@@ -66,7 +66,7 @@ class LikesController extends Controller
 		$value=$time->getDate();
 		$likes->log_photos_hearts_date=$value[0];
 		$likes->save();	
-		$this->Updaterank('add',$count->user_id); //Update User Ranking		
+		//$this->Updaterank('add',$count->user_id); //Update User Ranking		
 		echo $count->photos_hearts_count;
 		Yii::app()->end();
 	}

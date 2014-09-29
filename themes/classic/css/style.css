@@ -5021,6 +5021,12 @@ notifi
 	float: right;
 }
 
+.notifi-panel li.noti-area .message .notimsg {
+	display:block;
+	float:left;
+	width:70%;
+}
+
 .notifi-panel li.noti-area {
 	cursor:pointer; 
 	padding: 6px 8px;

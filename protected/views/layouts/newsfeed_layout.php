@@ -358,15 +358,15 @@ $(document).ready(function(){
 		var cnt = getAjaxreturn('<?php echo $this->createUrl("/site/removenotifycount"); ?>','','');
 	});	
 	//** Timer to update Notification every 4min
-	setInterval(function(){showNotifications()}, 40000);
-	setInterval(function(){showSidebarMessageList()}, 60000);
+	setInterval(function(){showNotifications()}, 240000); // 240000 ms = 4min
+	setInterval(function(){showSidebarMessageList()}, 300000); //1000 ms = 1 second, 60000 ms = 1min
    
 });
 
 <?php if(!Yii::app()->user->isGuest){ ?>
-	showUsersActivities();
-	setTimeout(function(){showNotifications()}, 1000);
-	setTimeout(function(){showSidebarMessageList()}, 4000);
+	showUsersActivities(); //Side-Bar Notification
+	setTimeout(function(){showNotifications()}, 6000); //Only Once executed after 6sec of PageLoad
+	setTimeout(function(){showSidebarMessageList()}, 3000);
 	
 <?php } else{ //Guset Login *** ?>
 $(window).load(function() {

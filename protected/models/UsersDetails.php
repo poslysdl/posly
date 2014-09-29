@@ -220,5 +220,4 @@ class UsersDetails extends CActiveRecord
 		}
 		return null;
 	}	
-	
 }

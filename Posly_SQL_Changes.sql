@@ -156,5 +156,6 @@ ALTER TABLE `users_details` CHANGE `user_details_slogan` `user_details_slogan` T
 ALTER TABLE `photos` ADD `photos_slotno` SMALLINT( 2 ) NOT NULL DEFAULT '0' AFTER `photos_hearts_count` ;
 ALTER TABLE `photos` ADD `photos_share_count` INT( 11 ) NOT NULL DEFAULT '0' AFTER `photos_slotno` ;
 
----------------------------------------------------------------------------
+------------------------------26-Sept-14--------------------------------------
+ALTER TABLE `users_follow` ADD `user_follow_created_date` INT( 11 ) NULL ;
 

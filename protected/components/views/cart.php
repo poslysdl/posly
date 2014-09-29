@@ -1,7 +1,7 @@
 <?php  
 /* This Widget Creates an Single Cart container with main ,Carousel Images,
 * comments, likes and Hearts...for Catwalk,Posly,goingViral,Topmembers...
-* Last Modified: 24-Sep-14
+* Last Modified: 26-Sep-14
 */
 $p = $this->cartinfo['data'];
 $i = $this->cartinfo['i'];
@@ -57,6 +57,12 @@ $cartuser_lastname = $p->user->userDetails->user_details_lastname;
 $cartuser_url = $p->user->userDetails->user_unique_url;
 $cart_userId = $p->user_id;
 $likeConPath= urlencode(Yii::app()->createUrl("/comments/commentlike"));
+//RANK
+$logged_user_country = Yii::app()->user->getState('usercountry');
+if(empty($logged_user_country))
+	$user_rank = $p->user->userDetails->user_rank_worldwide;
+else
+	$user_rank = $p->user->userDetails->user_rank_incountry;
 ?>
 <div class="portlet box blue boxshadown bRd">
 	<div class="portlet-title">
@@ -72,7 +78,7 @@ $likeConPath= urlencode(Yii::app()->createUrl("/comments/commentlike"));
 	<div class="rank">
 		<!--<div class="share-on"> 			
 		</div>-->
-	<h2> #<?php echo $p->user->userDetails->user_rank_worldwide; ?> Rank </h2>
+	<h2> #<?php echo $user_rank; ?> Rank </h2>
 	<span class="arrow"> </span> 
 	</div>
 	</div>
